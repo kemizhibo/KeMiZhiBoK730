@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <View
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/res_30dp"
+        android:layout_height="@dimen/res_2dp"
+        android:background="@color/green_tab"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/res_6dp"
+        android:layout_marginBottom="@dimen/res_10dp"
+        />

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_marginTop="@dimen/res_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="@dimen/res_287.5dp"
+            android:layout_height="@dimen/res_160dp">
+            <ImageView
+                android:id="@+id/myclass_imageview"
+                android:scaleType="centerCrop"
+                android:layout_width="@dimen/res_287.5dp"
+                android:layout_height="@dimen/res_160dp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/res_12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/myclass_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中国的猫头鹰种类"
+                android:textColor="@color/text_333333"
+                android:textStyle="bold"
+                android:textSize="@dimen/res_textsize_15sp"/>
+            <TextView
+                android:id="@+id/myclass_state"
+                android:layout_marginTop="@dimen/res_37dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已备课"
+                android:textColor="@color/green_tab"
+                android:textSize="@dimen/res_textsize_10sp"/>
+            <TextView
+                android:id="@+id/myclass_time"
+                android:layout_marginTop="@dimen/res_39dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2018年6月14日"
+                android:textColor="@color/text_999999"
+                android:textSize="@dimen/res_textsize_10sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

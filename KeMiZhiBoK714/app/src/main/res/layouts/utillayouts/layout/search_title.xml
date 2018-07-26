@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_46dp"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:background="@drawable/search_shape"
+            android:layout_weight="1"
+            android:layout_width="@dimen/res_0dp"
+            android:layout_height="@dimen/res_32dp"
+            >
+            <ImageView
+                android:background="@color/white"
+                android:id="@+id/search_iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/res_15dp"
+                android:src="@mipmap/fanhui"
+                android:paddingRight="@dimen/res_28dp"
+                />
+            <EditText
+                android:id="@+id/search_et"
+                android:layout_width="@dimen/res_0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/res_10dp"
+                android:hint="输入您要搜索的内容"
+                android:drawablePadding="9dp"
+                android:textSize="@dimen/res_textsize_12sp"
+                android:textColor="@color/black_dddddd"
+                android:background="@null"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/search_tv_go_search"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="搜索"
+            android:paddingRight="@dimen/res_15dp"
+            android:paddingLeft="@dimen/res_22dp"
+            android:textColor="@color/text_444444"
+            android:textSize="@dimen/res_textsize_13sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

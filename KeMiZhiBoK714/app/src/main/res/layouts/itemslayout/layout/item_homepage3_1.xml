@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/res_15dp"
+        android:textSize="@dimen/res_textsize_14sp"
+        android:textColor="@color/black_353535"
+        />
+    <include layout="@layout/green_tab_view"/>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/res_8dp"
+    android:paddingRight="@dimen/res_8dp"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/WeightStyle"
+        android:layout_marginRight="@dimen/res_3dp"
+        >
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_165dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp">
+                <ImageView
+                    android:id="@+id/homepage_iv_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/homepage_tv_1"
+            android:layout_marginTop="@dimen/res_10dp"
+            android:paddingLeft="@dimen/res_5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/black_6d6d6d"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/WeightStyle"
+        android:layout_marginLeft="@dimen/res_3dp"
+        >
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_165dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp">
+            <ImageView
+                android:id="@+id/homepage_iv_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/homepage_tv_2"
+            android:layout_marginTop="@dimen/res_10dp"
+            android:paddingLeft="@dimen/res_5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/black_6d6d6d"
+            />
+
+    </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            style="@style/WeightStyle"
+            android:layout_marginLeft="@dimen/res_3dp"
+            >
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/res_165dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="2dp">
+                <ImageView
+                    android:id="@+id/homepage_iv_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/homepage_tv_3"
+                android:layout_marginTop="@dimen/res_10dp"
+                android:paddingLeft="@dimen/res_5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/black_6d6d6d"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

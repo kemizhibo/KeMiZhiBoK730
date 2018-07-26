@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical">
+    
+    <TextView
+        android:id="@+id/tv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="@dimen/res_textsize_11sp"
+        android:textColor="@color/text_a7a7a7"
+        android:text="科米课堂"
+        android:paddingLeft="@dimen/res_12dp"
+        android:drawableLeft="@drawable/ic_back"
+        android:drawablePadding="@dimen/res_10dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_dynamic"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="动态"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:drawableRight="@drawable/ic_dynamic"
+        android:drawablePadding="@dimen/res_5dp"
+        android:textSize="@dimen/res_textsize_13sp"
+        android:textColor="@color/text_444444"
+        />
+
+    <TextView
+        android:id="@+id/tv_publish"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="发布"
+        android:textColor="@color/text_5e5e5e"
+        android:textSize="@dimen/res_textsize_12sp"
+        android:paddingRight="@dimen/res_12dp"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        />
+
+    </RelativeLayout>

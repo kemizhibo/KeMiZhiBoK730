@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".yhr.activity.logins.FinishActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_margin="@dimen/res_24dp"
+            android:src="@mipmap/fanhui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="找回密码"
+            android:textColor="#7f7e7e"
+            android:textSize="@dimen/res_textsize_18sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <View
+        android:background="#dcdcdc"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_1dp" />
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/res_27.5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/wancheng_2"/>
+    <ImageView
+        android:layout_marginTop="@dimen/res_100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/milier"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/res_14dp"
+        android:textSize="@dimen/res_textsize_18sp"
+        android:textColor="#7f7e7e"
+        android:text="恭喜您！成功找回密码"/>
+    <TextView
+        android:id="@+id/daojishi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/res_38dp"
+        android:textSize="@dimen/res_textsize_11sp"
+        android:textColor="#caccca" />
+
+</LinearLayout>
+

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true">
+    <com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout
+        android:id="@+id/videp_back_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+        <ImageView
+            android:id="@+id/videp_back_image"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:visibility="gone" />
+        <!--<RelativeLayout
+            android:id="@+id/public_title_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_45dp">
+            <LinearLayout
+                android:id="@+id/public_title_bar_left"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/res_15dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical" />
+            <TextView
+                android:id="@+id/public_title_bar_left_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:textColor="@color/text_444444"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/titleBarTitle"
+                android:layout_width="250dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/text_333333"
+                android:textSize="@dimen/res_textsize_16sp" />
+
+            <ImageView
+                android:id="@+id/ic_title"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/public_title_bar_right"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/public_title_bar_right2"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible" />
+            <LinearLayout
+                android:id="@+id/public_title_bar_right2"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/public_title_bar_layout">
+
+        </LinearLayout>-->
+    </com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout>
+</RelativeLayout>

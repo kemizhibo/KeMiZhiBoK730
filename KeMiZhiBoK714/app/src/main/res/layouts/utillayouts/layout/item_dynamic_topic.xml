@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_dynamic_topic"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/res_30dp"
+    android:text="全部"
+    android:textSize="@dimen/res_textsize_13sp"
+    android:gravity="center"
+    android:textColor="@color/text_c9c9c9"
+    android:layout_marginLeft="@dimen/res_13dp"
+    android:layout_marginRight="@dimen/res_13dp"
+    android:background="@drawable/search_shape"
+    android:paddingTop="@dimen/res_3dp"
+    android:paddingBottom="@dimen/res_3dp"
+    android:paddingLeft="@dimen/res_10dp"
+    android:paddingRight="@dimen/res_10dp"
+    android:layout_marginBottom="@dimen/res_10dp"
+    android:layout_marginTop="@dimen/res_10dp"
+  />

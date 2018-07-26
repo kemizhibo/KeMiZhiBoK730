@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/forteaching_shaixuan_butn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/res_22.5dp"
+            android:text="筛选"
+            android:textColor="@color/text_7f7e7e"
+            android:textSize="@dimen/res_textsize_12sp" />
+        <ImageView
+            android:id="@+id/forteaching_shaixuan_imageview"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/res_10dp"
+            android:src="@mipmap/xiala_2" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/forteaching_shaixuan_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_200dp"
+        android:background="@color/green_tab">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/res_textsize_30sp"
+            android:text="筛选条件的布局"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="备课中心的内容"/>
+
+</LinearLayout>
+

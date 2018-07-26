@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.kemizhibo.kemizhibo.yhr.activity.LectureDetailActivity">
+
+    <include layout="@layout/pubic_title_bar"/>
+    <include layout="@layout/line"/>
+    <RelativeLayout
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="76dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_img"
+            android:layout_width="@dimen/res_42dp"
+            android:layout_height="@dimen/res_42dp"
+            android:layout_centerVertical="true"
+            />
+        <LinearLayout
+            android:layout_toRightOf="@id/circle_img"
+            android:layout_marginLeft="@dimen/res_17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/res_textsize_13sp"
+                android:textColor="@color/text_333333"
+                />
+            <TextView
+                android:id="@+id/tv_grade"
+                android:layout_marginTop="@dimen/res_8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/res_textsize_11sp"
+                android:textColor="@color/text_999999"
+                />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tv_time"
+            android:textSize="8sp"
+            android:layout_marginRight="@dimen/res_8dp"
+            android:textColor="@color/text_a6a4a4"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="8sp"
+            android:textColor="@color/text_a6a4a4"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+    <TextView
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/res_textsize_12sp"
+        android:textColor="@color/text_999999"
+        android:lineSpacingExtra="@dimen/res_3dp"
+        />
+</LinearLayout>
