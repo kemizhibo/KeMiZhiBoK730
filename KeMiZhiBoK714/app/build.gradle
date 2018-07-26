@@ -18,7 +18,8 @@ android {
                     '/src/main/res/layouts/readyclasspackge',
                     '/src/main/res/layouts/refresh_load',
                     '/src/main/res/layouts/resourcescenter',
-                    '/src/main/res/layouts/utillayouts'
+                    '/src/main/res/layouts/utillayouts',
+                    '/src/main/res/layouts/other'
             ]
         }
     }
@@ -100,4 +101,5 @@ dependencies {
     compile project(':rxretrofitlibrary')
     compile project(':recyclerviewlibrary')
 
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
 }
