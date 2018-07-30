@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.androidkun.xtablayout.XTabLayout;
@@ -85,4 +86,19 @@ public class ForTeachingFragment extends BaseFragment {
         mFragmentList.add(new ForTeanchingSecondFragment());
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+            try{
+                List<Fragment> fragments = getChildFragmentManager().getFragments();
+                ForTeanchingFirstFragment firstFragment = (ForTeanchingFirstFragment) fragments.get(0);
+                ForTeanchingSecondFragment secondFragment = (ForTeanchingSecondFragment) fragments.get(1);
+                firstFragment.onHidden();
+                secondFragment.onHidden();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 }

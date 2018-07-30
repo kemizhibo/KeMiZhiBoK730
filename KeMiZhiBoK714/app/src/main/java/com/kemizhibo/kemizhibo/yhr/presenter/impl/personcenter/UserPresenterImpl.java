@@ -30,7 +30,7 @@ public class UserPresenterImpl extends BasePresenterImpl<UserView> implements Us
     public UserPresenterImpl() {}
 
     @Override
-    public void getUserData(BaseActivity activity, String token) {
+    public void userData(BaseActivity activity, String token) {
         userIteractor.loadUserData(activity, new IGetDataDelegate<UserBean>() {
             @Override
             public void getDataSuccess(UserBean userBean) {

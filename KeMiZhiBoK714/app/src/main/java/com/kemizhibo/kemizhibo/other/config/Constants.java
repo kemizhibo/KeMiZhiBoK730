@@ -7,6 +7,7 @@ package com.kemizhibo.kemizhibo.other.config;
 public class Constants {
     public static final String PREPARING_CENTER_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/prepareList";
     public static final String PREPARING_ONLINE_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/planList";
+    public static final String COMMON_FILTER_URL = "http://39.155.221.165:8080/kemiapi/queryCriteria/queryBaseInfo";
 
     public static final int NET_ERROR_CODE = 12345;
     public static final int REQUEST_ERROR_CODE = 23456;

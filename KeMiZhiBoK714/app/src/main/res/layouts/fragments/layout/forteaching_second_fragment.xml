@@ -8,7 +8,8 @@
     <RelativeLayout
         android:id="@+id/forteaching_shaixuan_butn"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/res_40dp">
+        android:layout_height="@dimen/res_40dp"
+        android:background="@color/white">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

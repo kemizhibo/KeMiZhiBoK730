@@ -54,6 +54,9 @@
     <color name="lvse_tab">#67c58c</color>
     <color name="img_default_gray">#f1f1f1</color>
 
+    <color name="filter_text_normal">#666666</color>
+    <color name="filter_text_select">#67c58c</color>
+
     <!--pop框的字体颜色-->
     <color name="lvse">#56c78c</color>
     <color name="heise">#666666</color>

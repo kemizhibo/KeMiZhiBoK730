@@ -4,16 +4,25 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
+import com.kemizhibo.kemizhibo.other.common.presenter.CommonFilterPresenter;
+import com.kemizhibo.kemizhibo.other.common.presenter.CommonFilterPresenterImp;
+import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_online.adapter.PreparingOnlineListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_online.bean.PreparingOnlineBean;
 import com.kemizhibo.kemizhibo.other.preparing_online.presenter.PreparingOnlinePresenter;
 import com.kemizhibo.kemizhibo.other.preparing_online.presenter.PreparingOnlinePresenterImp;
 import com.kemizhibo.kemizhibo.other.preparing_online.view.PreparingOnlineView;
+import com.kemizhibo.kemizhibo.other.utils.FilterPopUtils;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
@@ -27,6 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Author: yhr
@@ -34,13 +44,18 @@ import butterknife.ButterKnife;
  * Describe:
  */
 
-public class ForTeanchingSecondFragment extends BaseFragment implements PreparingOnlineView{
+public class ForTeanchingSecondFragment extends BaseFragment implements PreparingOnlineView, CommonView {
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
     @BindView(R.id.list_view)
     ListView listView;
+    @BindView(R.id.forteaching_shaixuan_imageview)
+    ImageView forteachingShaixuanImageview;
+    @BindView(R.id.forteaching_shaixuan_butn)
+    RelativeLayout forteachingShaixuanButn;
 
     private PreparingOnlinePresenter presenter;
+    private CommonFilterPresenter filterPresenter;
     private String materialId = "";
     private String gradeId = "";
     private String semesterId = "";
@@ -48,10 +63,20 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     private List<PreparingOnlineBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private PreparingOnlineListAdapter  adapter;
 
+    private PopupWindow filterPop = null;
+    private String[] materials = null;
+    private String[] grades = null;
+    private String[] semesters = null;
+    private int materialSelectI = -1;
+    private int gradeSelectI = -1;
+    private int semesterSelectI = -1;
+    private CommonFilterBean filterBean;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         presenter = new PreparingOnlinePresenterImp(this);
+        filterPresenter = new CommonFilterPresenterImp(this);
     }
 
     @Override
@@ -63,6 +88,47 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     @Override
     public void load() {
         setState(LoadingPager.LoadResult.success);
+    }
+
+    @OnClick(R.id.forteaching_shaixuan_butn)
+    public void onViewClicked() {
+        if(null != filterPop && filterPop.isShowing()){
+            filterPop.dismiss();
+        }else{
+            if(null == materials){
+                filterPresenter.getCommonFilterData();
+            }else{
+                showFilterPop();
+            }
+        }
+    }
+
+    private void showFilterPop() {
+        filterPop = FilterPopUtils.show(getActivity(), materials, grades, semesters, materialSelectI, gradeSelectI, semesterSelectI, new FilterPopUtils.OnPopIndicatorClickListener() {
+            @Override
+            public void onClick(String category, int position) {
+                switch (category) {
+                    case FilterPopUtils.CATEGORY_MATERIAL:
+                        materialId = String.valueOf(filterBean.getContent().getMaterial().get(position).getSubjectId());
+                        materialSelectI = position;
+                        presenter.refresh();
+                        break;
+                    case FilterPopUtils.CATEGORY_GRADE:
+                        gradeId = String.valueOf(filterBean.getContent().getGrade().get(position).getSubjectId());
+                        gradeSelectI = position;
+                        presenter.refresh();
+                        break;
+                    case FilterPopUtils.CATEGORY_SEMESTER:
+                        semesterId = String.valueOf(filterBean.getContent().getSemester().get(position).getSubjectId());
+                        semesterSelectI = position;
+                        presenter.refresh();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        filterPop.showAsDropDown(forteachingShaixuanButn, 0, 0, Gravity.BOTTOM);
     }
 
     @Override
@@ -77,6 +143,9 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                materialId = "";
+                gradeId = "";
+                semesterId = "";
                 presenter.refresh();
             }
 
@@ -143,6 +212,55 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             refreshLayout.finishLoadMore();
         }else{
             refreshLayout.finishRefresh();
+        }
+    }
+
+    @Override
+    public void getCommonFilterSuccess(CommonFilterBean bean) {
+        filterBean = bean;
+        List<CommonFilterBean.ContentBean.MaterialBean> material = bean.getContent().getMaterial();
+        materials = new String[material.size()];
+        for (int i = 0; i < material.size(); i++) {
+            materials[i] = material.get(i).getSubjectName();
+        }
+        List<CommonFilterBean.ContentBean.GradeBean> grade = bean.getContent().getGrade();
+        grades = new String[grade.size()];
+        for (int i = 0; i < grade.size(); i++) {
+            grades[i] = grade.get(i).getSubjectName();
+        }
+        List<CommonFilterBean.ContentBean.SemesterBean> semester = bean.getContent().getSemester();
+        semesters = new String[semester.size()];
+        for (int i = 0; i < semester.size(); i++) {
+            semesters[i] = semester.get(i).getSubjectName();
+        }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showFilterPop();
+            }
+        });
+    }
+
+    @Override
+    public void getCommonFilterError() {
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()) {
+
+        }else {
+            if(null != filterPop && filterPop.isShowing()){
+                filterPop.dismiss();
+            }
+        }
+    }
+
+    public void onHidden(){
+        if(null != filterPop && filterPop.isShowing()){
+            filterPop.dismiss();
         }
     }
 }
