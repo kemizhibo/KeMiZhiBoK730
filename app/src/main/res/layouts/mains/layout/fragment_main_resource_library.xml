@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/res_25dp"
+        android:id="@+id/relay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_47dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:text="资源库"
+            android:textSize="@dimen/res_textsize_18sp" />
+
+        <ImageView
+            android:layout_width="@dimen/res_16.5dp"
+            android:layout_height="@dimen/res_16.5dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/res_15dp"
+            android:layout_marginRight="@dimen/res_15dp"
+            android:src="@mipmap/sousuo_2"
+            android:id="@+id/ziyuanku_sousuo" />
+
+    </RelativeLayout>
+    <View
+        android:layout_below="@+id/relay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_1dp"
+        android:background="#dcdcdc"
+        android:id="@+id/view" />
+    <LinearLayout
+        android:layout_below="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/ziyuanku_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_47.5dp"
+            android:background="#fafafa"
+            app:tabIndicatorHeight="@dimen/res_2.5dp">
+        </android.support.design.widget.TabLayout>
+        <!--<RelativeLayout
+            android:id="@+id/shaixuan_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fafafa">
+            <TextView
+                android:id="@+id/shaixuan_ceshi"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/res_200dp"
+                android:textSize="@dimen/res_textsize_30sp"
+                android:text="影像素材筛选条件"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/res_1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#dcdcdc"/>
+        </RelativeLayout>-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/ziyuanku_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

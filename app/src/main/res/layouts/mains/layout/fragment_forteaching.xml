@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/res_25dp"
+        android:id="@+id/forteaching_relay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_47dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:text="备授课"
+            android:textSize="@dimen/text_size_18sp" />
+
+        <ImageView
+            android:layout_width="@dimen/res_16.5dp"
+            android:layout_height="@dimen/res_16.5dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/res_15dp"
+            android:layout_marginRight="@dimen/res_15dp"
+            android:src="@mipmap/sousuo_2"
+            android:id="@+id/forteaching_sousuo" />
+    </RelativeLayout>
+    <View
+        android:layout_below="@+id/forteaching_relay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_1dp"
+        android:background="#dcdcdc"
+        android:id="@+id/view" />
+    <LinearLayout
+        android:layout_below="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.androidkun.xtablayout.XTabLayout
+            android:background="@color/fafafa"
+            android:id="@+id/forteaching_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_47.5dp"
+            app:tabIndicatorHeight="@dimen/res_2.5dp"
+            app:xTabIndicatorWidth="@dimen/res_20dp"
+            app:xTabIndicatorHeight="@dimen/res_3dp"
+            app:xTabIndicatorColor="@color/green_tab"
+            app:xTabSelectedTextColor="@color/lvse_tab"
+            app:xTabTextColor="@color/text_333333"
+            app:xTabTextSize="@dimen/res_textsize_15sp"
+            app:xTabSelectedTextSize="@dimen/res_textsize_15sp"
+            app:xTabDisplayNum="2"
+            app:xTabDividerColor="@color/text_333333"
+            app:xTabTextSelectedBold="true">
+        </com.androidkun.xtablayout.XTabLayout>
+        <android.support.v4.view.ViewPager
+            android:background="@color/white"
+            android:id="@+id/forteaching_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+</RelativeLayout>

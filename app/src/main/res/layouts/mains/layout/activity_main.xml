@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MMStyle">
+
+    <LinearLayout
+        style="@style/MMStyle"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:id="@+id/v_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_2dp"
+            android:alpha="0.5"
+            android:background="@drawable/shadow" />
+
+        <RadioGroup
+            android:id="@+id/main_rg_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_49dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/main_rb_homepage"
+                style="@style/MainButtonStyle"
+                android:drawableTop="@drawable/main_homepage_selecter"
+                />
+
+            <RadioButton
+                android:id="@+id/main_rb_forteaching"
+                style="@style/MainButtonStyle"
+                android:drawableTop="@drawable/main_forteaching_selecter"
+                />
+
+            <RadioButton
+                android:id="@+id/main_rb_resourcelibrary"
+                style="@style/MainButtonStyle"
+                android:drawableTop="@drawable/main_resourcelibrary_selecter"
+                />
+
+            <!--<ImageView
+                android:id="@+id/main_bt_lecture"
+                style="@style/MainButtonStyle"
+                android:src="@drawable/lecture"
+                />-->
+
+            <RadioButton
+                android:id="@+id/main_rb_personalcenter"
+                style="@style/MainButtonStyle"
+                android:drawableTop="@drawable/main_personalcenter_selecter"
+                />
+        </RadioGroup>
+    </LinearLayout>
+</RelativeLayout>

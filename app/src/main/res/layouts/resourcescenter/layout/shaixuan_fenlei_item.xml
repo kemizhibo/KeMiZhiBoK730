@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/shaixuan_fenlei_recyclerview_item_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/res_37.5dp"
+        android:textColor="@drawable/itemcolor"
+        android:textSize="@dimen/text_size_12sp"
+        android:text="分类"/>
+
+</RelativeLayout>

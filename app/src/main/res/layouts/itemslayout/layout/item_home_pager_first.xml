@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_marginTop="@dimen/res_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/home_pager_first_fresco"
+            android:layout_width="@dimen/res_287.5dp"
+            android:layout_height="@dimen/res_160dp"
+            fresco:roundedCornerRadius="@dimen/res_5dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center_horizontal"
+            fresco:placeholderImage="@mipmap/a22"  />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/res_12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/home_pager_first_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中国的猫头鹰种类"
+                android:textColor="@color/text_333333"
+                android:textStyle="bold"
+                android:textSize="@dimen/res_textsize_15sp"/>
+            <TextView
+                android:id="@+id/home_pager_first_state"
+                android:layout_marginTop="@dimen/res_37dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已备课"
+                android:textColor="@color/green_tab"
+                android:textSize="@dimen/res_textsize_10sp"/>
+            <TextView
+                android:id="@+id/home_pager_first_time"
+                android:layout_marginTop="@dimen/res_39dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2018年6月14日"
+                android:textColor="@color/text_999999"
+                android:textSize="@dimen/res_textsize_10sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

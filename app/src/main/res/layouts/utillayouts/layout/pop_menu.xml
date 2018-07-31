@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@drawable/menu_pop_bg"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/pop_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登录超时，请重新登录"/>
+    <Button
+        android:id="@+id/pop_butn"
+        android:layout_marginTop="@dimen/res_20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="前往登陆"/>
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/res_12dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:background="@color/dcdcdc"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_40dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/teacher_look_fragment_video_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_2a2a2a"
+            android:textSize="@dimen/res_textsize_13sp"
+            android:text="讲解视频的标题"/>
+    </LinearLayout>
+    <cn.jzvd.JZVideoPlayerStandard
+        android:id="@+id/teacher_look_fragment_video"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_255dp">
+
+    </cn.jzvd.JZVideoPlayerStandard>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/res_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/teacher_look_fragment_teacher_touxiang"
+            android:layout_marginLeft="@dimen/res_12dp"
+            android:layout_width="@dimen/res_52dp"
+            android:layout_height="@dimen/res_52dp"
+            android:src="@mipmap/milier"/>
+        <LinearLayout
+            android:layout_marginLeft="@dimen/res_16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/teacher_look_fragment_teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_222222"
+                android:textSize="@dimen/res_textsize_12sp"
+                android:text="老师的名字"/>
+            <TextView
+                android:id="@+id/teacher_look_fragment_txt"
+                android:layout_marginTop="@dimen/res_10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_626262"
+                android:textSize="@dimen/res_textsize_11sp"
+                android:text="介绍的内容介绍的内容介绍的内容"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
