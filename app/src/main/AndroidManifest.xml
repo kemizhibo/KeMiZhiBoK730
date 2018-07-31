@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kemizhibo.kemizhibo">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".yhr.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".yhr.activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".yhr.activity.SplashActivity"></activity>
+        <activity android:name=".yhr.activity.ShowImageActivity" />
+        <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
+        <activity android:name=".yhr.activity.logins.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".yhr.activity.logins.FinishActivity" />
+        <activity android:name=".yhr.activity.logins.WangJiActivity" />
+        <activity android:name=".yhr.activity.logins.XiuGaiActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterBianJiActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterShouCangActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterLiuLanActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterSuCaiActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterBeiShouKeJiLuActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterFanKuiActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterSheZhiActivity" />
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity"
+            android:configChanges="orientation"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity"
+            android:configChanges="orientation"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
+            android:hardwareAccelerated="true" />
+        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
+    </application>
+
+</manifest>
