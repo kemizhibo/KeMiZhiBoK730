@@ -57,6 +57,7 @@
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
             android:hardwareAccelerated="true" />
         <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
+        <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity"></activity>
     </application>
 
 </manifest>
