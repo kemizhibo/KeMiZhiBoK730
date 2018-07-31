@@ -88,6 +88,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     //教师培训直播收藏
     private CollectionBean collectionBeans;
     private String token;
+    private SharedPreferences sp;
 
     @Override
     protected int getLayoutId() {
@@ -113,9 +114,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     @Override
     protected void getData() {
         super.getData();
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, courseId);
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, courseId, "HLS", "true", "HD");
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, courseId);
+        sp = getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer "+token,courseId);
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer "+token,courseId, "HLS", "true", "HD");
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer "+token,courseId);
     }
 
     private void initFragment() {
@@ -207,7 +210,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onViewClicked() {
         showPopTopWithDarkBg();
         //点击以后请求收藏的接口
-        SharedPreferences sp = getSharedPreferences("loginToken", 0);
+        sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         teacherTrainingDetailsVideoPresenter.getCollectionData(this,courseId,"Bearer "+token);
     }

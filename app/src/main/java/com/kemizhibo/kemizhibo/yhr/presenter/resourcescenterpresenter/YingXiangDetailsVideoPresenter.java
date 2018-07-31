@@ -11,11 +11,11 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.YingXiangDetailsV
  */
 
 public interface YingXiangDetailsVideoPresenter extends BasePresenter<YingXiangDetailsVideoView> {
-    void getYingXiangDetailsVideoData(BaseActivity activity,String courseId);
+    void getYingXiangDetailsVideoData(BaseActivity activity,String token,String courseId);
 
-    void getYingXiangDetailsVideoUrlData(BaseActivity activity,String courseId,String videoType,String encryption,String videoClarity);
+    void getYingXiangDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
 
-    void getYingXiangDetailsVideoCommentData(BaseActivity activity,String otherId,String page,String size,String type);
+    void getYingXiangDetailsVideoCommentData(BaseActivity activity,String token,String otherId,String page,String size,String type);
     //发表评论
     void getPutCommentData(BaseActivity activity,String token,String courseId,String content,String pCommentId);
     //回复评论

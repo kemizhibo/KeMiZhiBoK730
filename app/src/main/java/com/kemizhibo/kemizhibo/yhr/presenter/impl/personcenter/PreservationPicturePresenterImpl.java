@@ -3,61 +3,44 @@ package com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter;
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.SowingMapBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
-import com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor.SowingMapIteractor;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetChangeUserIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetUserIteractor;
-import com.kemizhibo.kemizhibo.yhr.presenter.homepagerpresenter.SowingMapPresenter;
+import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.PreservationPictureIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.GetUserPresenter;
-import com.kemizhibo.kemizhibo.yhr.view.homepagerview.SowingMapView;
+import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.PreservationPicturePresenter;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
+import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
 
 import javax.inject.Inject;
 
 /**
  * Author: yhr
  * Date: 2018/5/24
- * Describe  获取用户信息
+ * Describe  保存头像
  */
-public class GetUserPresenterImpl extends BasePresenterImpl<GetUserView> implements GetUserPresenter {
+public class PreservationPicturePresenterImpl extends BasePresenterImpl<PreservationPictureView> implements PreservationPicturePresenter {
     //注意public全局
     @Inject
-    public GetUserIteractor getUserIteractor ;
-    @Inject
-    public GetChangeUserIteractor getChangeUserIteractor ;
+    public PreservationPictureIteractor preservationPictureIteractor ;
 
     @Inject
-    public GetUserPresenterImpl() {}
+    public PreservationPicturePresenterImpl() {}
 
     @Override
-    public void getUserData(BaseActivity activity, String token) {
-        getUserIteractor.loadGetUserData(activity, new IGetDataDelegate<GetUserBean>() {
+    public void getPreservationPictureData(BaseActivity activity, String token, String picImg) {
+        preservationPictureIteractor.loadPreservationPictureData(activity, new IGetDataDelegate<PreservationPictureBean>() {
             @Override
-            public void getDataSuccess(GetUserBean getUserBean) {
-                mPresenterView.onUserSuccess(getUserBean);
+            public void getDataSuccess(PreservationPictureBean preservationPictureBean) {
+                mPresenterView.onPreservationPictureSuccess(preservationPictureBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onUserError(errmsg);
+                mPresenterView.onPreservationPictureError(errmsg);
             }
-        },token);
-    }
-
-    @Override
-    public void getChangeUserData(BaseActivity activity, String token, String school, String realName, String grade, String subject, String idCardNo, String email, String address) {
-        getChangeUserIteractor.loadGetChangeUserData(activity, new IGetDataDelegate<ChangeUserBean>() {
-            @Override
-            public void getDataSuccess(ChangeUserBean changeUserBean) {
-                mPresenterView.onChangeUserSuccess(changeUserBean);
-            }
-
-            @Override
-            public void getDataError(String errmsg) {
-                mPresenterView.onChangeUserError(errmsg);
-            }
-        },token,school,realName,grade,subject,idCardNo,email,address);
+        },token,picImg);
     }
 }

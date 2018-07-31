@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.TakePhotoActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
@@ -42,4 +44,6 @@ public interface ActivityComponent {
     void inject(SearchActivity activity);
     void inject(SplashActivity activity);
     void inject(PictrueDetailsActivity activity);
+    void inject(PersonCenterBianJiActivity activity);
+    void inject(TakePhotoActivity activity);
 }

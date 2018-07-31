@@ -53,7 +53,7 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
     public YingXiangDetailsVideoPresenterImpl() {}
 
     @Override
-    public void getYingXiangDetailsVideoData(BaseActivity activity, String courseId) {
+    public void getYingXiangDetailsVideoData(BaseActivity activity, String token,String courseId) {
         yingXiangDetailsVideoIteractor.loadYingXiangDetailsVideoData(activity, new IGetDataDelegate<YingXiangDetailsVideoBean>() {
             @Override
             public void getDataSuccess(YingXiangDetailsVideoBean yingXiangDetailsVideoBean) {
@@ -64,12 +64,12 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
             public void getDataError(String errmsg) {
                 mPresenterView.onYingXiangDetailsVideoError(errmsg);
             }
-        },courseId);
+        },token,courseId);
     }
 
 
     @Override
-    public void getYingXiangDetailsVideoUrlData(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity) {
+    public void getYingXiangDetailsVideoUrlData(BaseActivity activity,String token, String courseId, String videoType, String encryption, String videoClarity) {
         yingXiangDetailsVideoUrlIteractor.loadYingXiangDetailsVideoUrlData(activity, new IGetDataDelegate<YingXiangDetailsVideoUrlBean>() {
             @Override
             public void getDataSuccess(YingXiangDetailsVideoUrlBean yingXiangDetailsVideoUrlBean) {
@@ -80,11 +80,11 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
             public void getDataError(String errmsg) {
                 mPresenterView.onYingXiangDetailsVideoUrlError(errmsg);
             }
-        },courseId,videoType,encryption,videoClarity);
+        },token,courseId,videoType,encryption,videoClarity);
     }
 
     @Override
-    public void getYingXiangDetailsVideoCommentData(BaseActivity activity, String otherId, String page, String size, String type) {
+    public void getYingXiangDetailsVideoCommentData(BaseActivity activity, String token,String otherId, String page, String size, String type) {
         yingXiangDetailsVideoCommentIteractor.loadYingXiangDetailsVideoCommentData(activity, new IGetDataDelegate<CommentBean>() {
             @Override
             public void getDataSuccess(CommentBean commentBean) {
@@ -96,7 +96,7 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
             public void getDataError(String errmsg) {
                 mPresenterView.onYingXiangDetailsVideoCommentError(errmsg);
             }
-        },otherId,page,size,type);
+        },token,otherId,page,size,type);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
     }
 
     @Override
-    public void getCollectionData(BaseActivity activity, String courseId, String token) {
+    public void getCollectionData(BaseActivity activity, String token, String courseId) {
         collectionIteractor.loadCollectionData(activity, new IGetDataDelegate<CollectionBean>() {
             @Override
             public void getDataSuccess(CollectionBean collectionBean) {
@@ -143,7 +143,7 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
             public void getDataError(String errmsg) {
                 mPresenterView.onGetCollectionError(errmsg);
             }
-        },courseId,token);
+        },token,courseId);
     }
 
     @Override

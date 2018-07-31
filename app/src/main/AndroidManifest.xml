@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".yhr.MyApplication"
@@ -16,18 +17,16 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".yhr.activity.MainActivity"
-            android:hardwareAccelerated="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".yhr.activity.SplashActivity">
-
-        </activity>
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".yhr.activity.SplashActivity"></activity>
         <activity android:name=".yhr.activity.ShowImageActivity" />
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
         <activity android:name=".yhr.activity.logins.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,19 +42,22 @@
         <activity android:name=".yhr.activity.personcenters.PersonCenterSheZhiActivity" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity"
-            android:hardwareAccelerated="true"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity"
-            android:hardwareAccelerated="true"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity"
-            android:hardwareAccelerated="true"/>
-        <activity android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
-            android:hardwareAccelerated="true"/>
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
+            android:hardwareAccelerated="true" />
+        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
+        <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity"></activity>
     </application>
 
 </manifest>

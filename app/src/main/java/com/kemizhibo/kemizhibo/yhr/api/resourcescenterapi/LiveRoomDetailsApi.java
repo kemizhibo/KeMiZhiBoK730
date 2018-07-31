@@ -19,8 +19,9 @@ import rx.Observable;
 
 public class LiveRoomDetailsApi extends BaseApi<LiveRoomDetailsBean> {
     //声明参数
+    private String token;
     private String courseId;
-    public LiveRoomDetailsApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String courseId) {
+    public LiveRoomDetailsApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String courseId) {
         super(listener, rxAppCompatActivity);
         this.courseId = courseId ;
     }
@@ -29,7 +30,7 @@ public class LiveRoomDetailsApi extends BaseApi<LiveRoomDetailsBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getYingXinagVideoDetailsData(courseId);
+        return httpGetService.getYingXinagVideoDetailsData(token,courseId);
     }
 
     @Override

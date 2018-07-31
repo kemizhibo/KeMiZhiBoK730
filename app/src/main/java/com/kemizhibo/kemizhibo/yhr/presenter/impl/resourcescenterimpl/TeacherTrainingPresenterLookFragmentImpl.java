@@ -48,8 +48,9 @@ public class TeacherTrainingPresenterLookFragmentImpl extends BasePresenterImpl<
         },sellType,subjectId,currentPage,pageSize);
     }
 
+
     @Override
-    public void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity) {
+    public void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity,String token, String courseId, String videoType, String encryption, String videoClarity) {
         teacherTrainingDetailsVideoUrlIteractor.loadYingXiangDetailsVideoUrlData(activity, new IGetDataDelegate<TeacherTrainingDetailsVideoUrlBean>() {
             @Override
             public void getDataSuccess(TeacherTrainingDetailsVideoUrlBean teacherTrainingDetailsVideoUrlBean) {
@@ -60,6 +61,6 @@ public class TeacherTrainingPresenterLookFragmentImpl extends BasePresenterImpl<
             public void getDataError(String errmsg) {
                 mPresenterView.onTeacherTrainingDetailsVideoUrlError(errmsg);
             }
-        },courseId,videoType,encryption,videoClarity);
+        },token,courseId,videoType,encryption,videoClarity);
     }
 }

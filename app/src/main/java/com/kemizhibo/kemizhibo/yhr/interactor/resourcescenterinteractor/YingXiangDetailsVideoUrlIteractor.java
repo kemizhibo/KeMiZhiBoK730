@@ -26,9 +26,9 @@ public class YingXiangDetailsVideoUrlIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadYingXiangDetailsVideoUrlData(BaseActivity activity, IGetDataDelegate<YingXiangDetailsVideoUrlBean> mDelegate,String courseId,String videoType,String encryption,String videoClarity){
+    public void loadYingXiangDetailsVideoUrlData(BaseActivity activity, IGetDataDelegate<YingXiangDetailsVideoUrlBean> mDelegate,String token,String courseId,String videoType,String encryption,String videoClarity){
         this.mDelegate = mDelegate;
-        YingXiangDetailsVideoUrlApi yingXiangDetailsVideoUrlApi = new YingXiangDetailsVideoUrlApi(listener,activity,courseId,videoType,encryption,videoClarity);
+        YingXiangDetailsVideoUrlApi yingXiangDetailsVideoUrlApi = new YingXiangDetailsVideoUrlApi(listener,activity,token,courseId,videoType,encryption,videoClarity);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(yingXiangDetailsVideoUrlApi);
     }

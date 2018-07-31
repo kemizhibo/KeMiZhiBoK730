@@ -13,8 +13,8 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.TeacherTrainingDe
 
 public interface LiveRoomDetailsVideoPresenter extends BasePresenter<LiveRoomDetailsView> {
 
-    void getLiveRoomDetailsVideoData(BaseActivity activity, String courseId);
+    void getLiveRoomDetailsVideoData(BaseActivity activity, String token,String courseId);
 
     //获取视频地址
-    void getLiveRoomDetailsVideoUrlData(BaseActivity activity,String courseId,String videoType,String encryption,String videoClarity);
+    void getLiveRoomDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
 }

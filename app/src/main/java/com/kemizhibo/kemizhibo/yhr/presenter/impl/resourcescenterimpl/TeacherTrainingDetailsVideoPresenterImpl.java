@@ -34,7 +34,7 @@ public class TeacherTrainingDetailsVideoPresenterImpl extends BasePresenterImpl<
 
 
     @Override
-    public void getTeacherTrainingDetailsVideoData(BaseActivity activity, String courseId) {
+    public void getTeacherTrainingDetailsVideoData(BaseActivity activity,String token, String courseId) {
         teacherTrainingDetailsVideoIteractor.loadTeacherTrainingDetailsVideoData(activity, new IGetDataDelegate<TeacherTrainingDetailsVideoBean>() {
             @Override
             public void getDataSuccess(TeacherTrainingDetailsVideoBean teacherTrainingDetailsVideoBean) {
@@ -45,11 +45,11 @@ public class TeacherTrainingDetailsVideoPresenterImpl extends BasePresenterImpl<
             public void getDataError(String errmsg) {
                 mPresenterView.onTeacherTrainingDetailsVideoError(errmsg);
             }
-        },courseId);
+        },token,courseId);
     }
 
     @Override
-    public void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity) {
+    public void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity, String token,String courseId, String videoType, String encryption, String videoClarity) {
         teacherTrainingDetailsVideoUrlIteractor.loadYingXiangDetailsVideoUrlData(activity, new IGetDataDelegate<TeacherTrainingDetailsVideoUrlBean>() {
             @Override
             public void getDataSuccess(TeacherTrainingDetailsVideoUrlBean teacherTrainingDetailsVideoUrlBean) {
@@ -60,11 +60,11 @@ public class TeacherTrainingDetailsVideoPresenterImpl extends BasePresenterImpl<
             public void getDataError(String errmsg) {
                 mPresenterView.onTeacherTrainingDetailsVideoUrlError(errmsg);
             }
-        },courseId,videoType,encryption,videoClarity);
+        },token,courseId,videoType,encryption,videoClarity);
     }
 
     @Override
-    public void getCollectionData(BaseActivity activity, String courseId, String token) {
+    public void getCollectionData(BaseActivity activity, String token, String courseId) {
         collectionIteractor.loadCollectionData(activity, new IGetDataDelegate<CollectionBean>() {
             @Override
             public void getDataSuccess(CollectionBean collectionBean) {
@@ -75,6 +75,6 @@ public class TeacherTrainingDetailsVideoPresenterImpl extends BasePresenterImpl<
             public void getDataError(String errmsg) {
                 mPresenterView.onGetCollectionError(errmsg);
             }
-        },courseId,token);
+        },token,courseId);
     }
 }

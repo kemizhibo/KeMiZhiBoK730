@@ -37,7 +37,7 @@ public class LiveRoomDetailsVideoPresenterImpl extends BasePresenterImpl<LiveRoo
 
 
     @Override
-    public void getLiveRoomDetailsVideoData(BaseActivity activity, String courseId) {
+    public void getLiveRoomDetailsVideoData(BaseActivity activity,String token, String courseId) {
         liveRoomDetailsVideoIteractor.loadLiveRoomDetailsVideoData(activity, new IGetDataDelegate<LiveRoomDetailsBean>() {
             @Override
             public void getDataSuccess(LiveRoomDetailsBean liveRoomDetailsBean) {
@@ -48,11 +48,12 @@ public class LiveRoomDetailsVideoPresenterImpl extends BasePresenterImpl<LiveRoo
             public void getDataError(String errmsg) {
                 mPresenterView.onLiveRoomDetailsError(errmsg);
             }
-        },courseId);
+        },token,courseId);
     }
 
+
     @Override
-    public void getLiveRoomDetailsVideoUrlData(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity) {
+    public void getLiveRoomDetailsVideoUrlData(BaseActivity activity, String token,String courseId, String videoType, String encryption, String videoClarity) {
         liveRoomDetailsVideoUrlIteractor.loadLiveRoomDetailsVideoUrlData(activity, new IGetDataDelegate<LiveRoomDetailsVideoUrlBean>() {
             @Override
             public void getDataSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
@@ -63,6 +64,6 @@ public class LiveRoomDetailsVideoPresenterImpl extends BasePresenterImpl<LiveRoo
             public void getDataError(String errmsg) {
                 mPresenterView.onLiveRoomDetailsError(errmsg);
             }
-        },courseId,videoType,encryption,videoClarity);
+        },token,courseId,videoType,encryption,videoClarity);
     }
 }

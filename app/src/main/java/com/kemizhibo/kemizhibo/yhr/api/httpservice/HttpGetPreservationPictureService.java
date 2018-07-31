@@ -16,9 +16,9 @@ import rx.Observable;
  * Describe: 保存用户头像
  */
 
-public interface PreservationPictureService {
+public interface HttpGetPreservationPictureService {
     @FormUrlEncoded
    @POST("ketang/user/info/editPicImg")
     Observable<ResponseBody> getPreservationPictureData(@Header("Authorization") String token,
-                                                        @Field("courseId") String courseId);
+                                                        @Field("picImg") String picImg);
 }

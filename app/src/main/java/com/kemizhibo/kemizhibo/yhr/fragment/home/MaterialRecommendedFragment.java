@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,13 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MaterialRecommendedAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
 import com.liaoinstan.springview.container.AliFooter;
@@ -44,6 +51,14 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
     @BindView(R.id.material_recommended_spring)
     SpringView materialRecommendedSpring;
 
+    private Intent intent;
+    private Bundle bundle;
+    private int currentPage;
+    //上或者下拉的状态判断
+    int isUp = 1;
+    //刷新适配器的判断
+    private boolean isFlag;
+
     //申明presenterImpl对象,推荐素材列表
     private List<HomePageBean.ContentBean.ReturnMaterialBean> materialBean;
     @Inject
@@ -71,13 +86,32 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
         materialRecommendedRecyclerview.setLayoutManager(myClassManage);
         materialRecommendedSpring.setType(SpringView.Type.FOLLOW);
         materialRecommendedAdapter = new MaterialRecommendedAdapter(R.layout.material_recommended_adapter, materialBean);
-       /* myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        materialRecommendedAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                knowledgeId = String.valueOf(myclassBean.get(position).getSubjectId());
-                ToastUtils.showToast(materialEdition);
+                if (NoFastClickUtils.isFastClick()) {
+                } else {
+                    switch (materialBean.get(position).getFileType()) {
+                        case "VIDEO":
+                            intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
+                            bundle = new Bundle();
+                            bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
+                            intent.putExtras(bundle);
+                            //这里一定要获取到所在Activity再startActivity()；
+                            getActivity().startActivity(intent);
+                            break;
+                        default:
+                            intent = new Intent(getActivity().getApplicationContext(), PictrueDetailsActivity.class);
+                            bundle = new Bundle();
+                            bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
+                            intent.putExtras(bundle);
+                            //这里一定要获取到所在Activity再startActivity()；
+                            getActivity().startActivityForResult(intent, MyApplication.YINGXIANG_TO_PICK_req);
+                            break;
+                    }
+                }
             }
-        });*/
+        });
         materialRecommendedRecyclerview.setAdapter(materialRecommendedAdapter);
         //上拉下拉
         materialRecommendedSpring.setListener(new SpringView.OnFreshListener() {
@@ -86,6 +120,9 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 1;
+                        currentPage = 1;
+                        homePagePresenter.getHomePageData(mActivity);
                         materialRecommendedSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -96,6 +133,9 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 2;
+                        currentPage++;
+                        homePagePresenter.getHomePageData(mActivity);
                         materialRecommendedSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -129,5 +169,4 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
         fragmentComponent.inject(this);
         return homePagePresenter;
     }
-
 }

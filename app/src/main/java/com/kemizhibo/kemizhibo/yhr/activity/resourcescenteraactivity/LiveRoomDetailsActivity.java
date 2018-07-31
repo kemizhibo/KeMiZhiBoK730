@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -101,8 +102,10 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
     @Override
     protected void getData() {
         super.getData();
-        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoData(this, courseId);
-        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this, courseId, "HLS", "true", "HD");
+        SharedPreferences sp = getSharedPreferences("logintoken", 0);
+        String token = sp.getString("token", "");
+        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoData(this, "Bearer "+token,courseId);
+        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this,"Bearer "+token, courseId, "HLS", "true", "HD");
     }
 
     @Override

@@ -14,12 +14,12 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.DemoFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
-import com.kemizhibo.kemizhibo.yhr.fragment.PersonalCenterFragment;
+import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ResourceLibraryFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 
 import java.util.ArrayList;
@@ -126,8 +126,8 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
         fragments.add(new HomePageFragment());//首页
         fragments.add(new ForTeachingFragment());//备授课
         fragments.add(new ResourceLibraryFragment());//资源库
-        fragments.add(new PersonalCenterFragment());//个人中心
-
+        fragments.add(new PersonCenterFragment());//个人中心
+        //fragments.add(new DemoFragment());//个人中心
         defaultFragment(fragments.get(position));
     }
 

@@ -14,5 +14,5 @@ public interface TeacherTrainingLookFragmentPresenter extends BasePresenter<Teac
 
     void getTeacherTrainingLookFragmentData(BaseActivity activity, String sellType, String subjectId,String currentPage, String pageSize);
     //获取视频地址
-    void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity,String courseId,String videoType,String encryption,String videoClarity);
+    void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
 }

@@ -21,9 +21,11 @@ import rx.Observable;
 
 public class PictureApi extends BaseApi<PictureBean> {
     //声明参数
+    private String token;
     private String courseId;
-    public PictureApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String courseId) {
+    public PictureApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String courseId) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.courseId = courseId ;
     }
 
@@ -31,7 +33,7 @@ public class PictureApi extends BaseApi<PictureBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getPictrueFragmnetData(courseId);
+        return httpGetService.getPictrueFragmnetData(token,courseId);
     }
 
     @Override

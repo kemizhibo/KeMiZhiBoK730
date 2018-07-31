@@ -1,11 +1,10 @@
 package com.kemizhibo.kemizhibo.yhr.api.personcenterapi;
 
 import com.alibaba.fastjson.JSON;
-import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
+import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetPreservationPictureService;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetUserService;
-import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -20,24 +19,26 @@ import rx.Observable;
  * Created by yhr on 2018/7/1.
  */
 
-public class GetUserApi extends BaseApi<GetUserBean> {
+public class PreservationPictureApi extends BaseApi<PreservationPictureBean> {
 
     String token;
+    String picImgl;
 
-    public GetUserApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token) {
+    public PreservationPictureApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String picImgl) {
         super(listener, rxAppCompatActivity);
         this.token = token;
+        this.picImgl = picImgl;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
-        HttpGetUserService httpGetService = retrofit.create(HttpGetUserService.class);
-        return httpGetService.getUserData(token);
+        HttpGetPreservationPictureService httpGetPreservationPictureService = retrofit.create(HttpGetPreservationPictureService.class);
+        return httpGetPreservationPictureService.getPreservationPictureData(token,picImgl);
     }
 
     @Override
-    public GetUserBean call(ResponseBody responseBody) {
+    public PreservationPictureBean call(ResponseBody responseBody) {
         //解析
         String string = "";
         try {
@@ -46,6 +47,6 @@ public class GetUserApi extends BaseApi<GetUserBean> {
             e.printStackTrace();
         }
         //LogUtils.e("00000000000000000000000000",string);
-        return JSON.parseObject(string, GetUserBean.class);
+        return JSON.parseObject(string, PreservationPictureBean.class);
     }
 }

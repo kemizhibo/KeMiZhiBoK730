@@ -11,7 +11,7 @@ public class YingXiangDetailsVideoBean {
     /**
      * code : 0
      * message : success
-     * content : {"courseId":2222,"courseName":"讲科普","subjectId":1011,"context":"谈科普\r\nsdfsf\r\n时代峻峰拉开始就","title":"","logo":"http://192.168.1.101:8080/images/upload/focusing/20171222/1513910089845.jpg","pageViewcount":16658,"playCount":91,"commentnum":null,"courseType":"FOCUSING","knowledge":null,"liveStartDuration":null,"videoDuration":null,"liveStatus":"UNKNOWN","teacherName":null,"liveBeginTime":null,"liveEndTime":null,"praiseHistory":0,"favouriteHistory":0,"praiseCount":1,"imageText":null,"isImageText":0,"addTime":1513910093000,"teacher":null,"startTime":null,"courseSource":"","courseEdition":"","videoUrl":"","materialEdition":""}
+     * content : {"courseId":1003162,"courseName":"郁波讲堂","subjectId":407,"context":"郁波科学家大讲堂","title":"","logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","pageViewcount":34380,"playCount":12311,"commentnum":null,"courseType":"TEACHERCOURSE","knowledge":"新建知识点","liveStartDuration":null,"videoDuration":null,"liveStatus":"UNKNOWN","teacherName":"郁波","liveBeginTime":null,"liveEndTime":null,"praiseHistory":0,"favouriteHistory":0,"praiseCount":416,"imageText":null,"isImageText":0,"addTime":1524192412000,"teacher":{"picPath":"/images/upload/teacher/20150915/1442297919077.jpg","career":"为中国科学教育的振兴而努力","education":"科学讲师","isStar":true,"name":"郁波","id":171},"startTime":null,"courseSource":"1672","courseEdition":"1652","videoUrl":"","materialEdition":"1591"}
      * otherData : null
      */
 
@@ -54,37 +54,35 @@ public class YingXiangDetailsVideoBean {
 
     public static class ContentBean {
         /**
-         * courseId : 2222
-         * courseName : 讲科普
-         * subjectId : 1011
-         * context : 谈科普
-         sdfsf
-         时代峻峰拉开始就
+         * courseId : 1003162
+         * courseName : 郁波讲堂
+         * subjectId : 407
+         * context : 郁波科学家大讲堂
          * title :
-         * logo : http://192.168.1.101:8080/images/upload/focusing/20171222/1513910089845.jpg
-         * pageViewcount : 16658
-         * playCount : 91
+         * logo : http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg
+         * pageViewcount : 34380
+         * playCount : 12311
          * commentnum : null
-         * courseType : FOCUSING
-         * knowledge : null
+         * courseType : TEACHERCOURSE
+         * knowledge : 新建知识点
          * liveStartDuration : null
          * videoDuration : null
          * liveStatus : UNKNOWN
-         * teacherName : null
+         * teacherName : 郁波
          * liveBeginTime : null
          * liveEndTime : null
          * praiseHistory : 0
          * favouriteHistory : 0
-         * praiseCount : 1
+         * praiseCount : 416
          * imageText : null
          * isImageText : 0
-         * addTime : 1513910093000
-         * teacher : null
+         * addTime : 1524192412000
+         * teacher : {"picPath":"/images/upload/teacher/20150915/1442297919077.jpg","career":"为中国科学教育的振兴而努力","education":"科学讲师","isStar":true,"name":"郁波","id":171}
          * startTime : null
-         * courseSource :
-         * courseEdition :
+         * courseSource : 1672
+         * courseEdition : 1652
          * videoUrl :
-         * materialEdition :
+         * materialEdition : 1591
          */
 
         private int courseId;
@@ -97,11 +95,11 @@ public class YingXiangDetailsVideoBean {
         private int playCount;
         private Object commentnum;
         private String courseType;
-        private Object knowledge;
+        private String knowledge;
         private Object liveStartDuration;
         private Object videoDuration;
         private String liveStatus;
-        private Object teacherName;
+        private String teacherName;
         private Object liveBeginTime;
         private Object liveEndTime;
         private int praiseHistory;
@@ -110,7 +108,7 @@ public class YingXiangDetailsVideoBean {
         private Object imageText;
         private int isImageText;
         private long addTime;
-        private Object teacher;
+        private TeacherBean teacher;
         private Object startTime;
         private String courseSource;
         private String courseEdition;
@@ -197,11 +195,11 @@ public class YingXiangDetailsVideoBean {
             this.courseType = courseType;
         }
 
-        public Object getKnowledge() {
+        public String getKnowledge() {
             return knowledge;
         }
 
-        public void setKnowledge(Object knowledge) {
+        public void setKnowledge(String knowledge) {
             this.knowledge = knowledge;
         }
 
@@ -229,11 +227,11 @@ public class YingXiangDetailsVideoBean {
             this.liveStatus = liveStatus;
         }
 
-        public Object getTeacherName() {
+        public String getTeacherName() {
             return teacherName;
         }
 
-        public void setTeacherName(Object teacherName) {
+        public void setTeacherName(String teacherName) {
             this.teacherName = teacherName;
         }
 
@@ -301,11 +299,11 @@ public class YingXiangDetailsVideoBean {
             this.addTime = addTime;
         }
 
-        public Object getTeacher() {
+        public TeacherBean getTeacher() {
             return teacher;
         }
 
-        public void setTeacher(Object teacher) {
+        public void setTeacher(TeacherBean teacher) {
             this.teacher = teacher;
         }
 
@@ -347,6 +345,84 @@ public class YingXiangDetailsVideoBean {
 
         public void setMaterialEdition(String materialEdition) {
             this.materialEdition = materialEdition;
+        }
+
+        public static class TeacherBean {
+            /**
+             * picPath : /images/upload/teacher/20150915/1442297919077.jpg
+             * career : 为中国科学教育的振兴而努力
+             * education : 科学讲师
+             * isStar : true
+             * name : 郁波
+             * id : 171
+             */
+
+            private String picPath;
+            private String career;
+            private String education;
+            private boolean isStar;
+            private String name;
+            private int id;
+
+            public String getPicPath() {
+                return picPath;
+            }
+
+            public void setPicPath(String picPath) {
+                this.picPath = picPath;
+            }
+
+            public String getCareer() {
+                return career;
+            }
+
+            public void setCareer(String career) {
+                this.career = career;
+            }
+
+            public String getEducation() {
+                return education;
+            }
+
+            public void setEducation(String education) {
+                this.education = education;
+            }
+
+            public boolean isIsStar() {
+                return isStar;
+            }
+
+            public void setIsStar(boolean isStar) {
+                this.isStar = isStar;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            @Override
+            public String toString() {
+                return "TeacherBean{" +
+                        "picPath='" + picPath + '\'' +
+                        ", career='" + career + '\'' +
+                        ", education='" + education + '\'' +
+                        ", isStar=" + isStar +
+                        ", name='" + name + '\'' +
+                        ", id=" + id +
+                        '}';
+            }
         }
     }
 }

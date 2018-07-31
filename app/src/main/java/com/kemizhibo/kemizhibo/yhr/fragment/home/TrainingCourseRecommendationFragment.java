@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,13 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.TrainingCourseRecommendationAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
 import com.liaoinstan.springview.container.AliFooter;
@@ -46,6 +51,12 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     @BindView(R.id.training_course_recommendation_spring)
     SpringView trainingCourseRecommendationSpring;
 
+    private int currentPage;
+    //上或者下拉的状态判断
+    int isUp = 1;
+    //刷新适配器的判断
+    private boolean isFlag;
+
     //申明presenterImpl对象,我的备课列表
     private List<HomePageBean.ContentBean.ReturnTrainBean> trainBean;
     TrainingCourseRecommendationAdapter trainingCourseRecommendationAdapter;
@@ -72,13 +83,20 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
         trainingCourseRecommendationRecyclerview.setLayoutManager(trainingCourseRecommendationManage);
         trainingCourseRecommendationSpring.setType(SpringView.Type.FOLLOW);
         trainingCourseRecommendationAdapter = new TrainingCourseRecommendationAdapter(R.layout.training_course_recommendation_adapter, trainBean);
-       /* myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        trainingCourseRecommendationAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                knowledgeId = String.valueOf(myclassBean.get(position).getSubjectId());
-                ToastUtils.showToast(materialEdition);
+                if (NoFastClickUtils.isFastClick()) {
+                } else {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(trainBean.get(position).getCourseId()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    getActivity().startActivity(intent);
+                }
             }
-        });*/
+        });
         trainingCourseRecommendationRecyclerview.setAdapter(trainingCourseRecommendationAdapter);
         //上拉下拉
         trainingCourseRecommendationSpring.setListener(new SpringView.OnFreshListener() {
@@ -87,6 +105,9 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 1;
+                        currentPage = 1;
+                        homePagePresenter.getHomePageData(mActivity);
                         trainingCourseRecommendationSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -97,6 +118,9 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 2;
+                        currentPage++;
+                        homePagePresenter.getHomePageData(mActivity);
                         trainingCourseRecommendationSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);

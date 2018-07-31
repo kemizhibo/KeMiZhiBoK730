@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.fragment.LiveRoomFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PeiXunFragment;
+import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.YingXiangFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.MyClassFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.MaterialRecommendedFragment;
@@ -14,7 +15,6 @@ import com.kemizhibo.kemizhibo.yhr.model.modules.FragmentModule;
 import com.kemizhibo.kemizhibo.yhr.di.scope.ContextLife;
 import com.kemizhibo.kemizhibo.yhr.di.scope.PerFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
-import com.kemizhibo.kemizhibo.yhr.fragment.PersonalCenterFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ResourceLibraryFragment;
 import dagger.Component;
 
@@ -37,7 +37,7 @@ public interface FragmentComponent {
     Activity getActivity();
 
     void inject(HomePageFragment fragment);
-    void inject(PersonalCenterFragment fragment);
+    void inject(PersonCenterFragment fragment);
     void inject(ResourceLibraryFragment fragment);
     void inject(TrainingCourseRecommendationFragment fragment);
     void inject(YingXiangFragment fragment);

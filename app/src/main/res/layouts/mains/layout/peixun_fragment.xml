@@ -99,6 +99,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/res_17.5dp"
+                android:layout_marginBottom="@dimen/res_17.5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
@@ -110,25 +111,6 @@
                     android:text="学期:"/>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/teacher_training_shaixuan_xueqi_recyclerview"
-                    android:layout_marginLeft="@dimen/res_25dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginBottom="@dimen/res_17.5dp"
-                android:layout_marginTop="@dimen/res_17.5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginLeft="@dimen/res_25dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_999999"
-                    android:textSize="@dimen/text_size_12sp"
-                    android:text="分类:"/>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/teacher_training_shaixuan_fenlei_recyclerview"
                     android:layout_marginLeft="@dimen/res_25dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">

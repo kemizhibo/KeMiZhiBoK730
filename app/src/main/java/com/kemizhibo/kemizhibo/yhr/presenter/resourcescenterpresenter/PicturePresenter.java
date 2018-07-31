@@ -12,7 +12,7 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.TeacherTrainingDe
  */
 
 public interface PicturePresenter extends BasePresenter<PictureView> {
-    void getPictureData(BaseActivity activity, String courseId);
+    void getPictureData(BaseActivity activity, String token,String courseId);
     //收藏
-    void getCollectionData(BaseActivity activity, String courseId,String token);
+    void getCollectionData(BaseActivity activity, String token,String courseId);
 }

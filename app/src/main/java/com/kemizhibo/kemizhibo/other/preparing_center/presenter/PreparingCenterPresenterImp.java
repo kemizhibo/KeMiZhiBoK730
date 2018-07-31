@@ -18,7 +18,7 @@ import okhttp3.Response;
  * Created by Administrator on 2018/7/24.
  */
 
-public class PreparingCenterPresenterImp implements PreparingCenterPresenter{
+public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
 
     private PreparingCenterView preparingCenterView;
     public final static int DEFAULT_PAGE_SIZE = 10;

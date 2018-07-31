@@ -24,9 +24,9 @@ public class CollectionIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadCollectionData(BaseActivity activity, IGetDataDelegate<CollectionBean> mDelegate,String courseId,String token){
+    public void loadCollectionData(BaseActivity activity, IGetDataDelegate<CollectionBean> mDelegate,String token,String courseId){
         this.mDelegate = mDelegate;
-        CollectionApi collectionApi = new CollectionApi(listener,activity,courseId,token);
+        CollectionApi collectionApi = new CollectionApi(listener,activity,token,courseId);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(collectionApi);
     }

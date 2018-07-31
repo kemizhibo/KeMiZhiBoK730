@@ -20,9 +20,11 @@ import rx.Observable;
 
 public class YingXiangDetailsVideoApi extends BaseApi<YingXiangDetailsVideoBean> {
     //声明参数
+    private String token;
     private String courseId;
-    public YingXiangDetailsVideoApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String courseId) {
+    public YingXiangDetailsVideoApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token, String courseId) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.courseId = courseId ;
     }
 
@@ -30,7 +32,7 @@ public class YingXiangDetailsVideoApi extends BaseApi<YingXiangDetailsVideoBean>
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getYingXinagVideoDetailsData(courseId);
+        return httpGetService.getYingXinagVideoDetailsData(token,courseId);
     }
 
     @Override

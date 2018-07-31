@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.PopupWindow;
 
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.custom.CustomIndicator;
 
 /**

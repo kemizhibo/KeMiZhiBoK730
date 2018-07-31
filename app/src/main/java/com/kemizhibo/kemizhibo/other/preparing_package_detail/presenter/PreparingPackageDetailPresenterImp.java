@@ -19,7 +19,7 @@ import okhttp3.Response;
  * Created by Administrator on 2018/7/31.
  */
 
-public class PreparingPackageDetailPresenterImp implements PreparingPackageDetailPresenter{
+public class PreparingPackageDetailPresenterImp implements PreparingPackageDetailPresenter {
     PreparingPackageDetailView detailView;
 
     public PreparingPackageDetailPresenterImp(PreparingPackageDetailView detailView) {

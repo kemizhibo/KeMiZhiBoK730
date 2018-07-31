@@ -3,7 +3,6 @@ package com.kemizhibo.kemizhibo.yhr.api.httpservice;
 
 
 import okhttp3.ResponseBody;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -15,18 +14,11 @@ import rx.Observable;
 /**
  * Author: yhr
  * Date: 2018/5/8
- * Describe: 收藏
+ * Describe: 获取用户信息
  */
 
-public interface HttpGetCollectionService {
+public interface HttpGetUserService {
 
-   /* @POST("course/shortvideo/createfavorites")
-    Observable<ResponseBody> getCollectionData(@Header("Authorization") String token,
-      @FormUrlEncoded                                          @Body String courseId);*/
-   @FormUrlEncoded
-   @POST("course/shortvideo/createfavorites")
-    Observable<ResponseBody> getCollectionData(@Field("courseId") String courseId,
-                                               @Header("Authorization") String token);
-
-
+   @GET("ketang/user/info/get")
+    Observable<ResponseBody> getUserData(@Header("Authorization") String token);
 }

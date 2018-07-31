@@ -47,6 +47,11 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     RecyclerView myclassRecyclerview;
     @BindView(R.id.myclass_spring)
     SpringView myclassSpring;
+    private int currentPage;
+    //上或者下拉的状态判断
+    int isUp = 1;
+    //刷新适配器的判断
+    private boolean isFlag;
 
     @Inject
     public HomePagePresenterImpl homePagePresenter;
@@ -76,7 +81,8 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         myclassRecyclerview.setLayoutManager(myClassManage);
         myclassSpring.setType(SpringView.Type.FOLLOW);
         myClassAdapter = new MyClassAdapter(R.layout.myclass_fragment, myclassBean);
-       /* myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        //子条目点击事件
+        /*myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 knowledgeId = String.valueOf(myclassBean.get(position).getSubjectId());
@@ -91,6 +97,9 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 1;
+                        currentPage = 1;
+                        homePagePresenter.getHomePageData(mActivity);
                         myclassSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -101,6 +110,9 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 2;
+                        currentPage++;
+                        homePagePresenter.getHomePageData(mActivity);
                         myclassSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);

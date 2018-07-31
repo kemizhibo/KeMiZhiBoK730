@@ -182,6 +182,10 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
 
     @OnClick(R.id.yingxiang_shaixuan_butn)
     public void onViewClicked() {
+        materialEdition="";
+        subjectId="";
+        semester="";
+        knowledgeId="";
         filterPresenter.getFilterData(mActivity);
     }
 
@@ -206,6 +210,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 knowledgeId = String.valueOf(filterImgSciencedata.get(position).getSubjectId());
+                LogUtils.i("00000000000000000000",knowledgeId);
                 //改变单选状态，并且刷新数据
                 for (int i=0;i<filterImgSciencedata.size();i++){
                     filterImgSciencedata.get(i).setFlage(false);
@@ -214,7 +219,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 filterImgSciencedata.get(position).setFlage(true);
                 filterImgSciencedata.set(position, filterImgSciencedata.get(position));
                 filterImgScienceAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
                 isFlag = true;
             }
         });
@@ -241,7 +246,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 filterSemesterdata.get(position).setFlage(true);
                 filterSemesterdata.set(position, filterSemesterdata.get(position));
                 filterSemesterAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
                 isFlag = true;
             }
         });
@@ -268,7 +273,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 filterGradedata.get(position).setFlage(true);
                 filterGradedata.set(position, filterGradedata.get(position));
                 filterGradeAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
                 isFlag = true;
             }
         });
@@ -295,7 +300,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 filterMaterialdata.get(position).setFlage(true);
                 filterMaterialdata.set(position, filterMaterialdata.get(position));
                 filterMaterialAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
                 isFlag = true;
 
             }

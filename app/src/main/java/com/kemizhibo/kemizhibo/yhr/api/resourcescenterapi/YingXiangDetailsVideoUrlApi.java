@@ -19,13 +19,15 @@ import rx.Observable;
 
 public class YingXiangDetailsVideoUrlApi extends BaseApi<YingXiangDetailsVideoUrlBean> {
     //声明参数
+    private String token;
     private String courseId;
     private String videoType;
     private String encryption;
     private String videoClarity;
 
-    public YingXiangDetailsVideoUrlApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String courseId,String videoType,String encryption,String videoClarity) {
+    public YingXiangDetailsVideoUrlApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String courseId,String videoType,String encryption,String videoClarity) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.courseId = courseId ;
         this.videoType = videoType ;
         this.encryption = encryption ;
@@ -37,7 +39,7 @@ public class YingXiangDetailsVideoUrlApi extends BaseApi<YingXiangDetailsVideoUr
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getYingXinagVideoDetailsUrlData(courseId,videoType,encryption,videoClarity);
+        return httpGetService.getYingXinagVideoDetailsUrlData(token,courseId,videoType,encryption,videoClarity);
     }
 
     @Override

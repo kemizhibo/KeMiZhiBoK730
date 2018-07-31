@@ -26,9 +26,9 @@ public class LiveRoomDetailsVideoUrlIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadLiveRoomDetailsVideoUrlData(BaseActivity activity, IGetDataDelegate<LiveRoomDetailsVideoUrlBean> mDelegate,String courseId,String videoType,String encryption,String videoClarity){
+    public void loadLiveRoomDetailsVideoUrlData(BaseActivity activity, IGetDataDelegate<LiveRoomDetailsVideoUrlBean> mDelegate,String token,String courseId,String videoType,String encryption,String videoClarity){
         this.mDelegate = mDelegate;
-        LiveRoomDetailsVideoUrlApi liveRoomDetailsVideoUrlApi = new LiveRoomDetailsVideoUrlApi(listener,activity,courseId,videoType,encryption,videoClarity);
+        LiveRoomDetailsVideoUrlApi liveRoomDetailsVideoUrlApi = new LiveRoomDetailsVideoUrlApi(listener,activity,token,courseId,videoType,encryption,videoClarity);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(liveRoomDetailsVideoUrlApi);
     }

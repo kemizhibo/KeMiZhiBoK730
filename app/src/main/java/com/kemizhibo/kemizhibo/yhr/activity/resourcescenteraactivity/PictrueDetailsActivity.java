@@ -32,6 +32,7 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +70,8 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     private BottomSheetDialog dialog;
     //图文详情收藏
     private CollectionBean collectionBeans;
+    private PictureBean.ContentBean content;
+    private SharedPreferences sp;
 
 
     @Override
@@ -79,8 +82,9 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     @Override
     protected void getData() {
         super.getData();
-        picturePresenter.getPictureData(this, courseId);
-        LogUtils.i("55555555555555555",courseId);
+        sp = getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        picturePresenter.getPictureData(this,"Bearer "+token, courseId);
     }
 
     @Override
@@ -104,18 +108,29 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onPictureSuccess(PictureBean pictureBean) {
+        content = pictureBean.getContent();
+        //判断是否收藏过
+        if (content.getFavouriteHistory() == 1) {
+            pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
+        } else {
+            pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
+        }
         //解析json串
         picBean = pictureBean.getContent();
         List<Map> list = JSON.parseArray(picBean.getImageText(),Map.class);
+
         Map map = list.get(0);
         text = (String)map.get("text");
-        Object images = map.get("imgList");
-        l = (List) images;
+        l = (List)map.get("imgList");
+        for (String s:l  ) {
+            LogUtils.i("1========================================="+s);
+        }
 
         //图片标题
         pictrueDetailsTitle.setText(picBean.getContext());
         //图片介绍
         pictrueDetailsTxt.setText(text);
+
         LogUtils.i("6666666666666666666666",l.toString());
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         pictrueDetailsViewpager.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
@@ -131,22 +146,12 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onPictureError(String msg) {
-        LogUtils.i("555555555555555555555555",msg);
+        LogUtils.i("=========================================",msg);
     }
 
     @Override
     public void onGetCollectionSuccess(CollectionBean collectionBean) {
         collectionBeans = collectionBean;
-        /*if (collectionBeans.getCode()==0){
-            yingxiangDetailsShoucangImageview.setBackgroundResource(R.mipmap.dianzan_select);
-        }else {
-            showCollectionDialog();
-        }*/
-       /* if (contentBean.getFavouriteHistory()==1){
-            yingxiangDetailsShoucangImageview.setBackgroundResource(R.mipmap.dianzan_select);
-        }else {
-            yingxiangDetailsShoucangImageview.setBackgroundResource(R.mipmap.dianzan_kong);
-        }*/
         if (collectionBean.getMessage().equals("收藏成功")){
             pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
             ToastUtils.showToast(collectionBean.getMessage());
@@ -193,7 +198,10 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     private class MyLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(context).load((String) path).into(imageView);
+            Glide.with(context).load((String) path)
+                    .error(R.mipmap.milier)
+                    .placeholder(R.mipmap.milier)
+                    .into(imageView);
         }
     }
 
@@ -201,11 +209,9 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     @OnClick(R.id.pictrue_details_collection)
     public void onViewClicked() {
         //点击收藏判断是否登录，登录成功改变图片，失败弹出popwindow
-        SharedPreferences sp = getSharedPreferences("logintoken", 0);
+        sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        picturePresenter.getCollectionData(this, courseId, "Bearer " + token);
+        picturePresenter.getCollectionData(this, "Bearer " + token,courseId);
         //如果成功拿到数据，就正常收藏，否则就弹框
     }
-
-
 }

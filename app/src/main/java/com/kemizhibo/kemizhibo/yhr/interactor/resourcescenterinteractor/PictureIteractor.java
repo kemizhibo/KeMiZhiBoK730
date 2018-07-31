@@ -26,9 +26,9 @@ public class PictureIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadPictureData(BaseActivity activity, IGetDataDelegate<PictureBean> mDelegate,String courseId){
+    public void loadPictureData(BaseActivity activity, IGetDataDelegate<PictureBean> mDelegate,String token,String courseId){
         this.mDelegate = mDelegate;
-        PictureApi pictureApi = new PictureApi(listener,activity,courseId);
+        PictureApi pictureApi = new PictureApi(listener,activity,token,courseId);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(pictureApi);
     }

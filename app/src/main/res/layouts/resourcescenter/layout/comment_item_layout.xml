@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:descendantFocusability= "blocksDescendants"
     android:orientation="vertical">
         <LinearLayout
             android:layout_marginLeft="@dimen/res_12dp"
@@ -76,13 +75,6 @@
             android:textColor="@color/text_a6a4a4"
             android:textSize="@dimen/res_textsize_10sp" />
         <ImageView
-            android:layout_marginRight="@dimen/res_30dp"
-            android:id="@+id/comment_logo"
-            android:layout_width="@dimen/res_10dp"
-            android:layout_height="@dimen/res_9.5dp"
-            android:src="@mipmap/pinglun_2"/>
-        <ImageView
-            android:focusable="false"
             android:layout_marginRight="@dimen/res_31.5dp"
             android:id="@+id/comment_dianzan"
             android:layout_width="@dimen/res_8.5dp"

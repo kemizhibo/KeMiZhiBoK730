@@ -12,9 +12,9 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.YingXiangDetailsV
  */
 
 public interface TeacherTrainingDetailsVideoPresenter extends BasePresenter<TeacherTrainingDetailsVideoView> {
-    void getTeacherTrainingDetailsVideoData(BaseActivity activity, String courseId);
+    void getTeacherTrainingDetailsVideoData(BaseActivity activity, String token,String courseId);
     //获取视频地址
-    void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity,String courseId,String videoType,String encryption,String videoClarity);
+    void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
     //收藏
     void getCollectionData(BaseActivity activity, String courseId,String token);
 }

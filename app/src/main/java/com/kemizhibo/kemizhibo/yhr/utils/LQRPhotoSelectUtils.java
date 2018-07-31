@@ -1,4 +1,4 @@
-package com.takephoto_android70;
+package com.kemizhibo.kemizhibo.yhr.utils;
 
 import android.app.Activity;
 import android.content.ContentValues;

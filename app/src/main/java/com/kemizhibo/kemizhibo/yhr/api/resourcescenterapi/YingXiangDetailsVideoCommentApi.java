@@ -20,12 +20,14 @@ import rx.Observable;
 
 public class YingXiangDetailsVideoCommentApi extends BaseApi<CommentBean> {
     //声明参数
+    private String token;
     private String otherId;
     private String page;
     private String size;
     private String type;
-    public YingXiangDetailsVideoCommentApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String otherId,String page,String size,String type) {
+    public YingXiangDetailsVideoCommentApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token, String otherId,String page,String size,String type) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.otherId = otherId ;
         this.page = page ;
         this.size = size ;
@@ -36,7 +38,7 @@ public class YingXiangDetailsVideoCommentApi extends BaseApi<CommentBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getYingXinagVideoDetailsCommentData(otherId,page,size,type);
+        return httpGetService.getYingXinagVideoDetailsCommentData(token,otherId,page,size,type);
     }
 
     @Override

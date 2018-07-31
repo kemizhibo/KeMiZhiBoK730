@@ -76,6 +76,7 @@
     <dimen name="res_40dp">40.0dp</dimen>
     <dimen name="res_41dp">41.0dp</dimen>
     <dimen name="res_42dp">42.0dp</dimen>
+    <dimen name="res_42.5dp">42.5dp</dimen>
     <dimen name="res_43dp">43.0dp</dimen>
     <dimen name="res_43.5dp">43.5dp</dimen>
     <dimen name="res_44dp">44.0dp</dimen>
@@ -84,6 +85,7 @@
     <dimen name="res_47dp">47.0dp</dimen>
     <dimen name="res_47.5dp">47.5dp</dimen>
     <dimen name="res_48dp">48.0dp</dimen>
+    <dimen name="res_48.5dp">48.5dp</dimen>
     <dimen name="res_49dp">49.0dp</dimen>
     <dimen name="res_50dp">50.0dp</dimen>
     <dimen name="res_51dp">51.0dp</dimen>

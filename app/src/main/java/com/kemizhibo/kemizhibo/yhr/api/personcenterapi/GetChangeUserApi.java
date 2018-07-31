@@ -1,10 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.api.personcenterapi;
 
 import com.alibaba.fastjson.JSON;
-import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
+import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpChangeUserService;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetUserService;
-import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -19,24 +20,38 @@ import rx.Observable;
  * Created by yhr on 2018/7/1.
  */
 
-public class GetUserApi extends BaseApi<GetUserBean> {
+public class GetChangeUserApi extends BaseApi<ChangeUserBean> {
 
     String token;
+    String school;
+    String realName;
+    String grade;
+    String subject;
+    String idCardNo;
+    String email;
+    String address;
 
-    public GetUserApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token) {
+    public GetChangeUserApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String school,String realName,String grade,String subject,String idCardNo,String email,String address) {
         super(listener, rxAppCompatActivity);
         this.token = token;
+        this.school = school;
+        this.realName = realName;
+        this.grade = grade;
+        this.subject = subject;
+        this.idCardNo = idCardNo;
+        this.email = email;
+        this.address = address;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
-        HttpGetUserService httpGetService = retrofit.create(HttpGetUserService.class);
-        return httpGetService.getUserData(token);
+        HttpChangeUserService httpChangeUserService = retrofit.create(HttpChangeUserService.class);
+        return httpChangeUserService.getChangeUserData(token,school,realName,grade,subject,idCardNo,email,address);
     }
 
     @Override
-    public GetUserBean call(ResponseBody responseBody) {
+    public ChangeUserBean call(ResponseBody responseBody) {
         //解析
         String string = "";
         try {
@@ -44,7 +59,6 @@ public class GetUserApi extends BaseApi<GetUserBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //LogUtils.e(string);
-        return JSON.parseObject(string, GetUserBean.class);
+        return JSON.parseObject(string, ChangeUserBean.class);
     }
 }

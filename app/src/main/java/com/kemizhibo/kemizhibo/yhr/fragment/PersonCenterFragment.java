@@ -2,18 +2,26 @@ package com.kemizhibo.kemizhibo.yhr.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBeiShouKeJiLuActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
@@ -21,6 +29,8 @@ import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActi
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSheZhiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSuCaiActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.TakePhotoActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
@@ -41,21 +51,12 @@ import butterknife.Unbinder;
  * Describe: 个人中心
  */
 
-public class PersonalCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> implements GetUserView {
+public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> implements GetUserView {
     @Inject
     public GetUserPresenterImpl getUserPresenter;
-
-
+    private BottomSheetDialog dialog;
     @BindView(R.id.person_bianji_butn)
     ImageView personBianjiButn;
-    @BindView(R.id.person_touxiang)
-    SimpleDraweeView personTouxiang;
-    @BindView(R.id.person_school_name)
-    TextView personSchoolName;
-    @BindView(R.id.person_student_grade)
-    TextView personStudentGrade;
-    @BindView(R.id.person_student_type)
-    TextView personStudentType;
     @BindView(R.id.shoucang_layout)
     LinearLayout shoucangLayout;
     @BindView(R.id.liulan_layout)
@@ -83,33 +84,54 @@ public class PersonalCenterFragment extends BaseMvpFragment<GetUserPresenterImpl
 
     @Override
     public View createSuccessView() {
-        View view = UIUtils.inflate(R.layout.fragment_personcenter);
+        View view = UIUtils.inflate(mActivity,R.layout.fragment_personcenter);
         ButterKnife.bind(this, view);
+        TextView school = view.findViewById(R.id.person_school_name);
+        TextView grade = view.findViewById(R.id.person_student_grade);
+        TextView typr = view.findViewById(R.id.person_student_type);
+        SimpleDraweeView simpleDraweeView = view.findViewById(R.id.person_touxiang);
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(userData.getPicImg())
+                .setAutoPlayAnimations(true)
+                .build();
+        simpleDraweeView.setController(controller);
+        school.setText(userData.getSchool());
+        grade.setText(userData.getGrade());
+        typr.setText(userData.getSubject());
         return view;
     }
 
     @Override
     public void load() {
-        sp = mActivity.getSharedPreferences("logintoken", 0);
+        sp = getContext().getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         getUserPresenter.getUserData(mActivity, "Bearer " + token);
     }
 
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(200);
+                setState(LoadingPager.LoadResult.success);
+                sp = getContext().getSharedPreferences("logintoken", 0);
+                token = sp.getString("token", "");
+                getUserPresenter.getUserData(mActivity, "Bearer " + token);
+            }
+        }).start();
+    }*/
 
     @Override
     public void onUserSuccess(GetUserBean getUserBean) {
         setState(LoadingPager.LoadResult.success);
-        //TextView personSchoolName = getActivity().findViewById(R.id.person_school_name);
         userData = getUserBean.getContent();
-        //text.setText(userData.getIdCardNo());
-        LogUtils.i("00000000000000", "123"+userData.getIdCardNo());
-        //LogUtils.i("00000000000000", "123"+userData.toString());
     }
 
     @Override
     public void onUserError(String msg) {
         setState(LoadingPager.LoadResult.error);
-        LogUtils.i("0000000000000000", "456" + msg);
     }
 
     @Override
@@ -136,6 +158,8 @@ public class PersonalCenterFragment extends BaseMvpFragment<GetUserPresenterImpl
                 startActivity(new Intent(getActivity(), PersonCenterBianJiActivity.class));
                 break;
             case R.id.person_touxiang:
+                //点击跳转
+                startActivity(new Intent(getActivity(), TakePhotoActivity.class));
                 break;
             case R.id.shoucang_layout:
                 startActivity(new Intent(getActivity(), PersonCenterShouCangActivity.class));

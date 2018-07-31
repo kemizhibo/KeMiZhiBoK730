@@ -64,8 +64,6 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     RecyclerView teacherTrainingShaixuanNianjiRecyclerview;
     @BindView(R.id.teacher_training_shaixuan_xueqi_recyclerview)
     RecyclerView teacherTrainingShaixuanXueqiRecyclerview;
-    @BindView(R.id.teacher_training_shaixuan_fenlei_recyclerview)
-    RecyclerView teacherTrainingShaixuanFenleiRecyclerview;
     @BindView(R.id.teacher_training_xiala_dropDownMenu)
     DropDownMenuView teacherTrainingXialaDropDownMenu;
 
@@ -223,6 +221,10 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
 
     @OnClick(R.id.teacher_training_shaixuan_butn)
     public void onViewClicked() {
+        materialEdition="";
+        subjectId="";
+        semester="";
+        knowledgeId="";
         teacherTrainingPresenter.getFilterData(mActivity);
     }
 
@@ -232,10 +234,10 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
         setDataFilterMaterial();
         setDataFilterGrade();
         setDataFilterSemester();
-        setDataFilterImgScience();
+        //setDataFilterImgScience();
     }
 
-    private void setDataFilterImgScience() {
+    /*private void setDataFilterImgScience() {
         //RecyclerView yingxiangShaixuanFenleiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_fenlei_recyclerview);
         //设置适配器
         LinearLayoutManager imgScienceManage = new LinearLayoutManager(getContext());
@@ -260,7 +262,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
             }
         });
         teacherTrainingShaixuanFenleiRecyclerview.setAdapter(filterImgScienceAdapter);
-    }
+    }*/
 
     private void setDataFilterSemester() {
         //RecyclerView yingxiangShaixuanXueqiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_xueqi_recyclerview);

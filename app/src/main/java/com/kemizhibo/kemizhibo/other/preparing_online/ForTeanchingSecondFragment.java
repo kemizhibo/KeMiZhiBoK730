@@ -61,7 +61,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     private String semesterId = "";
     private String chapterId = "";
     private List<PreparingOnlineBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
-    private PreparingOnlineListAdapter  adapter;
+    private PreparingOnlineListAdapter adapter;
 
     private PopupWindow filterPop = null;
     private String[] materials = null;

@@ -1,10 +1,10 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor;
 
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
-import com.kemizhibo.kemizhibo.yhr.api.homeapi.SowingMapApi;
+import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.GetChangeUserApi;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.GetUserApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
-import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.SowingMapBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -14,29 +14,29 @@ import javax.inject.Inject;
 /**
  * Author: yhr
  * Date: 2018/5/24
- * Describe   获取用户信息
+ * Describe   更改用户信息
  */
-public class GetUserIteractor {
+public class GetChangeUserIteractor {
 
-    private IGetDataDelegate<GetUserBean> mDelegate;
+    private IGetDataDelegate<ChangeUserBean> mDelegate;
 
     @Inject
-    public GetUserIteractor() {}
+    public GetChangeUserIteractor() {}
 
     /**
      * 执行网络操作，获取数据
      */
-    public void loadGetUserData(BaseActivity activity, IGetDataDelegate<GetUserBean> mDelegate,String device){
+    public void loadGetChangeUserData(BaseActivity activity, IGetDataDelegate<ChangeUserBean> mDelegate,String token,String school,String realName,String grade,String subject,String idCardNo,String email,String address){
         this.mDelegate = mDelegate;
-        GetUserApi getUserApi = new GetUserApi(listener,activity,device);
+        GetChangeUserApi getChangeUserApi = new GetChangeUserApi(listener,activity,token,school,realName,grade,subject,idCardNo,email,address);
         HttpManager manager = HttpManager.getInstance();
-        manager.doHttpDeal(getUserApi);
+        manager.doHttpDeal(getChangeUserApi);
     }
 
-    private HttpOnNextListener<GetUserBean> listener = new HttpOnNextListener<GetUserBean>() {
+    private HttpOnNextListener<ChangeUserBean> listener = new HttpOnNextListener<ChangeUserBean>() {
         @Override
-        public void onNext(GetUserBean getUserBean) {
-            mDelegate.getDataSuccess(getUserBean);
+        public void onNext(ChangeUserBean changeUserBean) {
+            mDelegate.getDataSuccess(changeUserBean);
         }
 
         @Override

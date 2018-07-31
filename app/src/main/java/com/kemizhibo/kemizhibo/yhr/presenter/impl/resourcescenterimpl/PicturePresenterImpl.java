@@ -36,7 +36,7 @@ public class PicturePresenterImpl extends BasePresenterImpl<PictureView> impleme
     public PicturePresenterImpl() {}
 
     @Override
-    public void getPictureData(BaseActivity activity, String courseId) {
+    public void getPictureData(BaseActivity activity, String token,String courseId) {
         pictureIteractor.loadPictureData(activity, new IGetDataDelegate<PictureBean>() {
             @Override
             public void getDataSuccess(PictureBean pictureBean) {
@@ -47,11 +47,11 @@ public class PicturePresenterImpl extends BasePresenterImpl<PictureView> impleme
             public void getDataError(String errmsg) {
                 mPresenterView.onPictureError(errmsg);
             }
-        },courseId);
+        },token,courseId);
     }
 
     @Override
-    public void getCollectionData(BaseActivity activity, String courseId, String token) {
+    public void getCollectionData(BaseActivity activity, String token, String courseId) {
         collectionIteractor.loadCollectionData(activity, new IGetDataDelegate<CollectionBean>() {
             @Override
             public void getDataSuccess(CollectionBean collectionBean) {
@@ -62,6 +62,6 @@ public class PicturePresenterImpl extends BasePresenterImpl<PictureView> impleme
             public void getDataError(String errmsg) {
                 mPresenterView.onGetCollectionError(errmsg);
             }
-        },courseId,token);
+        },token,courseId);
     }
 }

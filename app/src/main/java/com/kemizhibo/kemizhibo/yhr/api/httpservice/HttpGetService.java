@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.yhr.api.httpservice;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -49,22 +50,26 @@ public interface HttpGetService {
 
     //影像素材视频详情页面，教师培训详情页,科学观察室详情页
     @GET("course/getCourse")
-    Observable<ResponseBody> getYingXinagVideoDetailsData(@Query("courseId") String courseId);
+    Observable<ResponseBody> getYingXinagVideoDetailsData(@Header("Authorization") String token,
+                                                          @Query("courseId") String courseId);
     //获取视频地址
     @GET("course/getPlayUrl")
-    Observable<ResponseBody> getYingXinagVideoDetailsUrlData(@Query("courseId") String courseId,
+    Observable<ResponseBody> getYingXinagVideoDetailsUrlData(@Header("Authorization") String token,
+                                                             @Query("courseId") String courseId,
                                                       @Query("videoType") String videoType,
                                                       @Query("encryption") String encryption,
                                                       @Query("videoClarity") String videoClarity);
     //视屏详情评论列表
     @GET("course/shortvideo/comment/list")
-    Observable<ResponseBody> getYingXinagVideoDetailsCommentData(@Query("otherId") String otherId,
+    Observable<ResponseBody> getYingXinagVideoDetailsCommentData(@Header("Authorization") String token,
+                                                             @Query("otherId") String otherId,
                                                              @Query("page") String page,
                                                              @Query("size") String size,
                                                              @Query("type") String type);
     //图文详情
     @GET("course/getCourse")
-    Observable<ResponseBody> getPictrueFragmnetData(@Query("courseId") String courseId);
+    Observable<ResponseBody> getPictrueFragmnetData(@Header("Authorization") String token,
+                                                    @Query("courseId") String courseId);
 
     //教师培训列表页
     @GET("course/focusing/getSimpleCourse")

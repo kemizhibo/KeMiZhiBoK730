@@ -20,20 +20,20 @@ import rx.Observable;
 
 public class CollectionApi extends BaseApi<CollectionBean> {
     //声明参数
-    private String courseId;
     private String token;
+    private String courseId;
 
-    public CollectionApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String courseId,String token) {
+    public CollectionApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token,String courseId) {
         super(listener, rxAppCompatActivity);
-        this.courseId = courseId ;
         this.token = token ;
+        this.courseId = courseId ;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetCollectionService httpGetCollectionService = retrofit.create(HttpGetCollectionService.class);
-        return httpGetCollectionService.getCollectionData(courseId,token);
+        return httpGetCollectionService.getCollectionData(token,courseId);
     }
 
     @Override
@@ -45,7 +45,6 @@ public class CollectionApi extends BaseApi<CollectionBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtils.i("1111111",string);
         return JSON.parseObject(string, CollectionBean.class);
     }
 }

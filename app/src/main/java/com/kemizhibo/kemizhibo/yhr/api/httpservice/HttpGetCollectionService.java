@@ -25,8 +25,8 @@ public interface HttpGetCollectionService {
       @FormUrlEncoded                                          @Body String courseId);*/
    @FormUrlEncoded
    @POST("course/shortvideo/createfavorites")
-    Observable<ResponseBody> getCollectionData(@Field("courseId") String courseId,
-                                               @Header("Authorization") String token);
+    Observable<ResponseBody> getCollectionData(@Header("Authorization") String token,
+                                               @Field("courseId") String courseId);
 
 
 }
