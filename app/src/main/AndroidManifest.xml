@@ -37,7 +37,7 @@
         <activity android:name=".yhr.activity.personcenters.PersonCenterShouCangActivity" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterLiuLanActivity" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterSuCaiActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterBeiShouKeJiLuActivity" />
+        <activity android:name=".other.preparing_teaching_lessons.PersonCenterBeiShouKeJiLuActivity" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterFanKuiActivity" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterSheZhiActivity" />
         <activity

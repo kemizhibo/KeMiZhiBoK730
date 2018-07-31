@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.other.utils;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.kemizhibo.kemizhibo.R;
@@ -54,7 +55,7 @@ public class FilterPopUtils {
                 }
             }
         });
-        PopupWindow popupWindow = new PopupWindow(context);
+        PopupWindow popupWindow = new PopupWindow( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setContentView(popView);
         popupWindow.setFocusable(false);
         popupWindow.setOutsideTouchable(false);
