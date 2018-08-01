@@ -52,6 +52,11 @@ public interface HttpGetService {
     @GET("course/getCourse")
     Observable<ResponseBody> getYingXinagVideoDetailsData(@Header("Authorization") String token,
                                                           @Query("courseId") String courseId);
+    //收藏夹
+    @GET("user/favourite/listForB")
+    Observable<ResponseBody> getCollectionBoxData(@Header("Authorization") String token,
+                                                          @Query("page") String page,
+                                                          @Query("size") String size);
     //获取视频地址
     @GET("course/getPlayUrl")
     Observable<ResponseBody> getYingXinagVideoDetailsUrlData(@Header("Authorization") String token,

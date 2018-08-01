@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/collection_box_recyclerview_imageview"
+        android:layout_width="@dimen/res_287.5dp"
+        android:layout_height="@dimen/res_160dp"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/collection_box_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/res_15dp"
+        android:layout_marginTop="@dimen/res_15dp"
+        android:layout_marginBottom="@dimen/res_25dp"
+        android:text="精彩内容正在加载中"
+        android:textColor="@color/black"
+        android:textSize="@dimen/res_textsize_15sp" />
+
+</LinearLayout>

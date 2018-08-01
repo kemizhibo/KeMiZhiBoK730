@@ -47,12 +47,15 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
     public SearchPresenterImpl searchPresenter;
     SearchAdapter searchAdapter;
     private List<SearchBean.ContentBean.DataBean> dataBeans;
+    //上或者下拉的状态判断
+    int isUp = 1;
+    private int currentPage;
+    private String coursename;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_search;
     }
-
 
     @Override
     protected void initData() {
@@ -60,10 +63,10 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
         searchViewBox.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String courseName) {
-                searchPresenter.getSearchData(SearchActivity.this,"YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", courseName);
+                coursename = courseName;
+                searchPresenter.getSearchData(SearchActivity.this,"YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
             }
         });
-
 
         // 3. 设置点击返回按键后的操作（通过回调接口）
         searchViewBox.setOnClickBack(new bCallBack() {
@@ -124,6 +127,9 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 1;
+                        currentPage = 1;
+                        searchPresenter.getSearchData(SearchActivity.this,"YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
                         searchSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -134,6 +140,9 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isUp = 2;
+                        currentPage++;
+                        searchPresenter.getSearchData(SearchActivity.this,"YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
                         searchSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);

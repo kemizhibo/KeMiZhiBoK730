@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPicturePresenterImpl;
@@ -103,7 +104,6 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                         ).request();
             }
         });*/
-
         btnSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

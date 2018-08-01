@@ -5,7 +5,6 @@ package com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter;
  * Date: on 2018/7/3.
  * Describe:
  */
-
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
@@ -14,7 +13,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangFragmentBean;
 import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
-
 import java.util.List;
 
 public class YingXiangFragmentAdapter extends BaseQuickAdapter<YingXiangFragmentBean.ContentBean.DataBean, BaseViewHolder> {
@@ -34,7 +32,7 @@ public class YingXiangFragmentAdapter extends BaseQuickAdapter<YingXiangFragment
 */
         //设置圆角图片
         Glide.with(mContext).load(item.getLogo()).error(R.mipmap.milier).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.yinxiang_recyclerview_imageview));
-        helper.setText(R.id.yinxiang_item_title, (String)item.getTitle());
+        helper.setText(R.id.yinxiang_item_title, item.getCourseName());
     }
 
 }
