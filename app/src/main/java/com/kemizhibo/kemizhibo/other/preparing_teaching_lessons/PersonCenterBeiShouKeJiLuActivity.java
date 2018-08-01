@@ -1,4 +1,4 @@
-package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
+package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
