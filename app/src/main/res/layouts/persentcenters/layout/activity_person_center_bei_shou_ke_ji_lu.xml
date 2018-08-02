@@ -5,95 +5,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.PersonCenterBeiShouKeJiLuActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x120"
-        android:background="#33CC99">
+        android:layout_height="@dimen/x100"
+        android:layout_marginTop="@dimen/x30"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/back_img"
             android:layout_width="@dimen/x30"
             android:layout_height="@dimen/x30"
             android:src="@drawable/back"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginTop="@dimen/x75"/>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"/>
 
-        <LinearLayout
-            android:layout_width="@dimen/x360"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/x70">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_centerHorizontal="true">
-
-                    <TextView
-                        android:id="@+id/preparing_lessons_text"
-                        android:layout_width="@dimen/x120"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:text="备课记录"/>
-
-                    <TextView
-                        android:id="@+id/preparing_lessons_line"
-                        android:layout_width="@dimen/x100"
-                        android:layout_height="@dimen/x4"
-                        android:background="@color/white"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_centerHorizontal="true">
-
-                    <TextView
-                        android:id="@+id/teaching_lessons_text"
-                        android:layout_width="@dimen/x120"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:text="授课记录"/>
-
-                    <TextView
-                        android:id="@+id/teaching_lessons_line"
-                        android:layout_width="@dimen/x100"
-                        android:layout_height="@dimen/x4"
-                        android:background="@color/white"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </LinearLayout>
+            android:text="备授课记录"
+            android:textSize="14sp"
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:id="@+id/filter_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x10"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/x75">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/x30"
@@ -109,5 +53,35 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_1dp"
+        android:background="#dcdcdc" />
+
+    <com.androidkun.xtablayout.XTabLayout
+        android:background="@color/fafafa"
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_47.5dp"
+        app:tabIndicatorHeight="@dimen/res_2.5dp"
+        app:xTabIndicatorWidth="@dimen/res_20dp"
+        app:xTabIndicatorHeight="@dimen/res_3dp"
+        app:xTabIndicatorColor="@color/green_tab"
+        app:xTabSelectedTextColor="@color/lvse_tab"
+        app:xTabTextColor="@color/text_333333"
+        app:xTabTextSize="@dimen/res_textsize_15sp"
+        app:xTabSelectedTextSize="@dimen/res_textsize_15sp"
+        app:xTabDisplayNum="2"
+        app:xTabDividerColor="@color/text_333333"
+        app:xTabTextSelectedBold="true">
+    </com.androidkun.xtablayout.XTabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:background="@color/white"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>

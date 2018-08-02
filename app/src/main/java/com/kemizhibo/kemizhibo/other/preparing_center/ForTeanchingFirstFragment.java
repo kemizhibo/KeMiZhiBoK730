@@ -17,8 +17,9 @@ import android.widget.RelativeLayout;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
-import com.kemizhibo.kemizhibo.other.common.presenter.CommonFilterPresenter;
-import com.kemizhibo.kemizhibo.other.common.presenter.CommonFilterPresenterImp;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
+import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
+import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_center.adapter.PreparingCenterGridAdapter;
@@ -63,7 +64,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     ValueAnimator valueAnimator = null;
     private ViewGroup.LayoutParams layoutParams;
     private PreparingCenterPresenter presenter;
-    private CommonFilterPresenter filterPresenter;
+    private CommonPresenter filterPresenter;
     private String materialId = "";//教材版本id
     private String gradeId = "";//年级id
     private String semesterId = "";//学期id
@@ -83,7 +84,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     public void onAttach(Context context) {
         super.onAttach(context);
         presenter = new PreparingCenterPresenterImp(this);
-        filterPresenter = new CommonFilterPresenterImp(this);
+        filterPresenter = new CommonPresenterImp(this);
     }
 
     @Override
@@ -249,6 +250,16 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     }
 
     @Override
+    public Context getCommonCustomContext() {
+        return getActivity();
+    }
+
+    @Override
+    public Map getCommonRequestParams() {
+        return null;
+    }
+
+    @Override
     public void getCommonFilterSuccess(CommonFilterBean bean) {
         filterBean = bean;
         List<CommonFilterBean.ContentBean.MaterialBean> material = bean.getContent().getMaterial();
@@ -275,7 +286,17 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     }
 
     @Override
-    public void getCommonFilterError() {
+    public void getCommonFilterError(int errorCode) {
+
+    }
+
+    @Override
+    public void getCommonUserInfoSuccess(CommonUserInfoBean bean) {
+
+    }
+
+    @Override
+    public void getCommonUserInfoError(int errorCode) {
 
     }
 
