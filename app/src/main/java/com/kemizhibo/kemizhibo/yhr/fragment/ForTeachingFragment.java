@@ -85,4 +85,19 @@ public class ForTeachingFragment extends BaseFragment {
         mFragmentList.add(new ForTeanchingSecondFragment());
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+            List<Fragment> fragments = getChildFragmentManager().getFragments();
+            try{
+                ForTeanchingFirstFragment firstFragment = (ForTeanchingFirstFragment) fragments.get(0);
+                ForTeanchingSecondFragment secondFragment = (ForTeanchingSecondFragment) fragments.get(1);
+                firstFragment.onHidden();
+                secondFragment.onHidden();
+            }catch (Exception e){
+
+            }
+        }
+    }
 }
