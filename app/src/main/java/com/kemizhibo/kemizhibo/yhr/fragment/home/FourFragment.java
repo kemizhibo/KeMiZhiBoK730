@@ -17,11 +17,13 @@ import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
  */
 
 public class FourFragment extends BaseFragment{
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         show();
     }
+
     @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.home_four_fragment);

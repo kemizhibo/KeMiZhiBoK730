@@ -20,21 +20,16 @@ import butterknife.Unbinder;
 /**
  * Author: 闫浩然
  * Date: on 2018/7/27.
- * Describe:
+ * Describe:测试fragment
  */
 
 public class DemoFragment extends BaseFragment {
     private TextView textView;
-
-    /*@BindView(R.id.text)
-    TextView text;*/
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         show();
     }
-
     @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity,R.layout.demo);
@@ -43,7 +38,6 @@ public class DemoFragment extends BaseFragment {
         textView.setText("11111111111111111111111111111111");
         return view;
     }
-
     @Override
     public void load() {
         new Thread(new Runnable() {

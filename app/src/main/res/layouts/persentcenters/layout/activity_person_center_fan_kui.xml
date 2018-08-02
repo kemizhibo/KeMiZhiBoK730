@@ -1,9 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity">
+    <include layout="@layout/pubic_title_bar"/>
+    <include layout="@layout/line"/>
+    <RadioGroup
+        android:id="@+id/fankui_radio_group"
+        android:layout_marginTop="@dimen/res_20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginLeft="@dimen/res_12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/res_textsize_12sp"
+            android:text="意见类别"/>
+        <RadioButton
+            android:id="@+id/fankui_butn_one"
+            android:layout_marginLeft="@dimen/res_17.5dp"
+            android:layout_width="@dimen/res_81.0dp"
+            android:layout_height="@dimen/res_28dp"
+            android:background="@drawable/rediogroup_selecter"
+            android:button="@null"
+            android:gravity="center"
+            android:text="功能意见"
+            android:textColor="@drawable/rediogroup_text_selecter"
+            android:textSize="@dimen/res_textsize_12sp" />
+        <RadioButton
+            android:id="@+id/fankui_butn_two"
+            android:layout_marginLeft="@dimen/res_30dp"
+            android:layout_width="@dimen/res_81.0dp"
+            android:layout_height="@dimen/res_28dp"
+            android:layout_marginStart="@dimen/res_10dp"
+            android:background="@drawable/rediogroup_selecter"
+            android:button="@null"
+            android:gravity="center"
+            android:text="BUG反馈"
+            android:textColor="@drawable/rediogroup_text_selecter"
+            android:textSize="@dimen/res_textsize_12sp" />
+        <RadioButton
+            android:id="@+id/fankui_butn_three"
+            android:layout_marginLeft="@dimen/res_30dp"
+            android:layout_width="@dimen/res_81.0dp"
+            android:layout_height="@dimen/res_28dp"
+            android:layout_marginStart="@dimen/res_10dp"
+            android:background="@drawable/rediogroup_selecter"
+            android:button="@null"
+            android:gravity="center"
+            android:text="无法观看"
+            android:textColor="@drawable/rediogroup_text_selecter"
+            android:textSize="@dimen/res_textsize_12sp" />
+        <RadioButton
+            android:id="@+id/fankui_butn_four"
+            android:layout_marginLeft="@dimen/res_30dp"
+            android:layout_width="@dimen/res_81.0dp"
+            android:layout_height="@dimen/res_28dp"
+            android:layout_marginStart="@dimen/res_10dp"
+            android:background="@drawable/rediogroup_selecter"
+            android:button="@null"
+            android:gravity="center"
+            android:text="其他"
+            android:textColor="@drawable/rediogroup_text_selecter"
+            android:textSize="@dimen/res_textsize_12sp" />
+    </RadioGroup>
+    <RelativeLayout
+        android:layout_marginTop="@dimen/res_20dp"
+        android:layout_width="@dimen/res_576.0dp"
+        android:layout_height="@dimen/res_310dp"
+        android:background="@color/white"
+        android:elevation="@dimen/res_4dp"
+        android:padding="@dimen/res_25dp"
+        android:layout_gravity="center_horizontal">
+        <EditText
+            android:id="@+id/fankui_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="200"
+            android:background="@null"
+            android:hint="对科米课堂有什么建议意见吗？欢迎吐槽～"
+            android:textColorHint="@color/text_dcd9d9"
+            android:textSize="@dimen/res_textsize_13sp">
+        </EditText>
+    </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/fankui_text"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/res_22dp"
+        android:layout_marginTop="@dimen/res_17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_dcd9d9"
+        android:textSize="@dimen/res_textsize_13sp"
+        android:text="还可以输入200个字呢～"/>
+    <Button
+        android:id="@+id/fankui_butn_commit"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/res_70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/login_butn"
+        android:textColor="@color/white"
+        android:text="提交"/>
+</LinearLayout>

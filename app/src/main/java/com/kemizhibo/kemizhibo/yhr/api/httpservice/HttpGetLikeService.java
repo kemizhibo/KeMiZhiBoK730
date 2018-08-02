@@ -21,7 +21,7 @@ import rx.Observable;
 public interface HttpGetLikeService {
 
     @FormUrlEncoded
-    @POST("course/praise/add")
+    @POST("course/praise/addForB")
     Observable<ResponseBody> getLikeData(@Header("Authorization") String token,
                                           @Field("targetId") String targetId,
                                           @Field("type") String type);

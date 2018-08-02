@@ -111,6 +111,7 @@
     <dimen name="res_78dp">78.0dp</dimen>
     <dimen name="res_79dp">79.0dp</dimen>
     <dimen name="res_80dp">80.0dp</dimen>
+    <dimen name="res_81.0dp">81.0dp</dimen>
     <dimen name="res_84dp">84.0dp</dimen>
     <dimen name="res_85dp">85.0dp</dimen>
     <dimen name="res_87dp">87.0dp</dimen>
@@ -149,6 +150,7 @@
     <dimen name="res_286dp">286.0dp</dimen>
     <dimen name="res_287.5dp">287.5dp</dimen>
     <dimen name="res_300dp">300.0dp</dimen>
+    <dimen name="res_310dp">310.0dp</dimen>
     <dimen name="res_320dp">320.0dp</dimen>
     <dimen name="res_337dp">337.0dp</dimen>
     <dimen name="res_375dp">375.0dp</dimen>
@@ -156,6 +158,7 @@
     <dimen name="res_461.5dp">461.5dp</dimen>
     <dimen name="res_530.0dp">530.0dp</dimen>
     <dimen name="res_565.5dp">565.5dp</dimen>
+    <dimen name="res_576.0dp">576.0dp</dimen>
     <dimen name="res_600dp">600.0dp</dimen>
     <dimen name="res_textsize_9sp">9.0sp</dimen>
     <dimen name="res_textsize_10sp">10.0sp</dimen>

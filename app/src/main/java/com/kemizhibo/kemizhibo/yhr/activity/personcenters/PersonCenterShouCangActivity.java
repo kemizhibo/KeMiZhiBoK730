@@ -40,8 +40,6 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
 
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
-
-
     @Inject
     public CollectionBoxPresenterImpl collectionBoxPresenter;
     CollectionBoxAdapter collectionBoxAdapter;

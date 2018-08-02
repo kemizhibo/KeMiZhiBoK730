@@ -2,6 +2,8 @@ package com.kemizhibo.kemizhibo.yhr.api.httpservice;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -39,7 +41,7 @@ public interface HttpGetService {
    Observable<ResponseBody> getFilterData();
 
     //影像素材列表页
-    @GET("course/focusing/getSimpleCourse")
+    @GET("course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getYingXinagFragmentData(@Query("sellType") String sellType,
                                                       @Query("currentPage") String currentPage,
                                                       @Query("pageSize") String pageSize,
@@ -49,7 +51,7 @@ public interface HttpGetService {
                                                       @Query("knowledgeId") String knowledgeId);
 
     //影像素材视频详情页面，教师培训详情页,科学观察室详情页
-    @GET("course/getCourse")
+    @GET("course/getCourseForB")
     Observable<ResponseBody> getYingXinagVideoDetailsData(@Header("Authorization") String token,
                                                           @Query("courseId") String courseId);
     //收藏夹
@@ -65,19 +67,25 @@ public interface HttpGetService {
                                                       @Query("encryption") String encryption,
                                                       @Query("videoClarity") String videoClarity);
     //视屏详情评论列表
-    @GET("course/shortvideo/comment/list")
+    @GET("course/shortvideo/comment/listForB")
     Observable<ResponseBody> getYingXinagVideoDetailsCommentData(@Header("Authorization") String token,
                                                              @Query("otherId") String otherId,
                                                              @Query("page") String page,
                                                              @Query("size") String size,
                                                              @Query("type") String type);
+    //反馈
+    @FormUrlEncoded
+    @POST("course/saveUserOption")
+    Observable<ResponseBody> getFeedBackData(@Header("Authorization") String token,
+                                                                 @Field("content") String content,
+                                                                 @Field("type") String type);
     //图文详情
-    @GET("course/getCourse")
+    @GET("course/getCourseForB")
     Observable<ResponseBody> getPictrueFragmnetData(@Header("Authorization") String token,
                                                     @Query("courseId") String courseId);
 
     //教师培训列表页
-    @GET("course/focusing/getSimpleCourse")
+    @GET("course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getTeacherTrainingData(@Query("sellType") String sellType,
                                                    @Query("currentPage") String currentPage,
                                                    @Query("pageSize") String pageSize,
@@ -87,7 +95,7 @@ public interface HttpGetService {
                                                    @Query("courseType") String courseType,
                                                    @Query("knowledgeId") String knowledgeId);
     //教师培训直播详情讲解列表页
-    @GET("course/focusing/getSimpleCourse")
+    @GET("course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getTeacherTrainingLookFragmnetData(@Query("sellType") String sellType,
                                                                 @Query("subjectId") String subjectId,
                                                                 @Query("currentPage") String currentPage,

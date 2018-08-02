@@ -16,7 +16,7 @@ import rx.Observable;
 public interface HttpGetReplyCommentService {
 
     @FormUrlEncoded
-    @POST("course/comment/put")
+    @POST("course/comment/putForB")
     Observable<ResponseBody> getPutCommentData(@Header("Authorization") String token,
                                                @Field("courseId") String courseId,
                                                @Field("content") String content,
