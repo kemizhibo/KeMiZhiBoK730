@@ -86,7 +86,9 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     @Override
     public void onCollectionBoxSuccess(CollectionBoxBean collectionBoxBean) {
         dataBeans = new ArrayList<>();
-        dataBeans.add(collectionBoxBean.getContent().getData().get(0).getCourse());
+        for (int i = 0;collectionBoxBean.getContent().getData().size()>i;i++){
+            dataBeans.add(collectionBoxBean.getContent().getData().get(i).getCourse());
+        }
         GridLayoutManager layoutManage = new GridLayoutManager(this, 2);
         collectionBoxRecyclerview.setLayoutManager(layoutManage);
         //上拉下拉动画效果
