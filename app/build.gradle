@@ -19,12 +19,16 @@ android {
                     '/src/main/res/layouts/refresh_load',
                     '/src/main/res/layouts/resourcescenter',
                     '/src/main/res/layouts/utillayouts',
-                    '/src/main/res/layouts/other'
+                    '/src/main/res/layouts/other',
+                    '/src/main/res/layouts/videos'
             ]
         }
     }
     compileSdkVersion 27
     defaultConfig {
+        ndk{
+            abiFilters "armeabi ","armeabi-v7a"
+        }
         applicationId "com.kemizhibo.kemizhibo"
         minSdkVersion 19
         targetSdkVersion 27
@@ -102,6 +106,10 @@ dependencies {
     compile 'com.ycjiang:ImagePreview:2.1.2'
     compile project(':rxretrofitlibrary')
     compile project(':recyclerviewlibrary')
+    //视频播放器
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-java:2.5.2'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-armv7a:2.5.2'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:2.5.2'
 
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
 }

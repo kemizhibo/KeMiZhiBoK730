@@ -62,4 +62,8 @@
     <!--pop框的字体颜色-->
     <color name="lvse">#56c78c</color>
     <color name="heise">#666666</color>
+    <!--播放器-->
+    <color name="theme_color">#39C5BB</color>
+    <color name="player_theme_color_translucent">#9939C5BB</color>
+    <color name="player_background_color">#96000000</color>
 </resources>

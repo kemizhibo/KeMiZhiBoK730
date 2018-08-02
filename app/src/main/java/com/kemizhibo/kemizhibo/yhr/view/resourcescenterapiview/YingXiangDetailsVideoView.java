@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview;
 
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.DeleteCommentBean;
@@ -44,6 +45,8 @@ public interface YingXiangDetailsVideoView extends BaseView{
     //点赞评论
     void onGetLikeSuccess(GetLikeBean getLikeBean);
     void onGetLikeError(String msg);
-
+    //记录第一次播放位置
+    void onGetOneLookSuccess(LookBean lookBean);
+    void onGetOneLookError(String msg);
 
 }

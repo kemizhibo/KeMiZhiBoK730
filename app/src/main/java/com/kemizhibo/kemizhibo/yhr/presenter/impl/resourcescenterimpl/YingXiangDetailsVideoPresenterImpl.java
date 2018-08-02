@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl;
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
@@ -14,6 +15,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangDetailsVide
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.CollectionIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.DeleteCommentIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.GetLikeIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.OneLookIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.PutCommentIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.ReplyCommentIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.YingXiangDetailsVideoCommentIteractor;
@@ -27,7 +29,7 @@ import javax.inject.Inject;
 /**
  * Author: yhr
  * Date: on 2018/7/3.
- * Describe:
+ * Describe:影像素材详情页
  */
 
 public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXiangDetailsVideoView> implements YingXiangDetailsVideoPresenter {
@@ -48,6 +50,8 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
     public DeleteCommentIteractor deleteCommentIteractor ;
     @Inject
     public GetLikeIteractor getLikeIteractor ;
+    @Inject
+    public OneLookIteractor oneLookIteractor ;
 
     @Inject
     public YingXiangDetailsVideoPresenterImpl() {}
@@ -174,5 +178,20 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
                 mPresenterView.onGetLikeError(errmsg);
             }
         },token,targetId,type);
+    }
+
+    @Override
+    public void getOneLookData(BaseActivity activity, String token, String playPosition, String courseId, String watchTime, String isEnd) {
+        oneLookIteractor.loadOneLookData(activity, new IGetDataDelegate<LookBean>() {
+            @Override
+            public void getDataSuccess(LookBean lookBean) {
+                mPresenterView.onGetOneLookSuccess(lookBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onGetOneLookError(errmsg);
+            }
+        },token,playPosition,courseId,watchTime,isEnd);
     }
 }

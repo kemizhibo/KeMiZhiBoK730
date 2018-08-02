@@ -79,6 +79,24 @@ public interface HttpGetService {
     Observable<ResponseBody> getFeedBackData(@Header("Authorization") String token,
                                                                  @Field("content") String content,
                                                                  @Field("type") String type);
+
+ //第一次播放视频记录
+ @FormUrlEncoded
+ @POST("user/watchHistory/putForB")
+ Observable<ResponseBody> getOneLookData(@Header("Authorization") String token,
+                                          @Field("playPosition") String playPosition,
+                                          @Field("courseId") String courseId,
+                                          @Field("watchTime") String watchTime,
+                                          @Field("isEnd") String isEnd);
+ //第二次及以后播放视频记录
+ @FormUrlEncoded
+ @POST("user/watchHistory/putForB")
+ Observable<ResponseBody> getTwoLookData(@Header("Authorization") String token,
+                                         @Field("playPosition") String playPosition,
+                                         @Field("keyId") String keyId,
+                                         @Field("courseId") String courseId,
+                                         @Field("watchTime") String watchTime,
+                                         @Field("isEnd") String isEnd);
     //图文详情
     @GET("course/getCourseForB")
     Observable<ResponseBody> getPictrueFragmnetData(@Header("Authorization") String token,

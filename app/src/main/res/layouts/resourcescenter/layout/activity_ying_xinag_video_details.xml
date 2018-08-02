@@ -7,17 +7,14 @@
         android:layout_above="@+id/pinglun_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <cn.jzvd.JZVideoPlayerStandard
+        <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
             android:layout_alignParentTop="true"
-            android:id="@+id/yingxiang_details_video"
+            android:id="@+id/player"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/res_375dp" >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </cn.jzvd.JZVideoPlayerStandard>
+            android:layout_height="@dimen/res_375dp" />
+
         <android.support.design.widget.CoordinatorLayout
-            android:layout_below="@+id/yingxiang_details_video"
+            android:layout_below="@+id/player"
             app:titleEnabled="false"
             android:id="@+id/main_content"
             android:layout_width="match_parent"

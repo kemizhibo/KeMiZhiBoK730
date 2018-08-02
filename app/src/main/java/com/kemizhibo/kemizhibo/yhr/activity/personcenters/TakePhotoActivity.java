@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -66,19 +68,19 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
         init();
         initListener();
         //上传图片
-        intiPhoto();
+        //intiPhoto();
     }
 
-    private void intiPhoto() {
-        String url = "http://39.155.221.165:8080/image/upload";
-        String fileName = "yhr";
+    /*private void intiPhoto() {
+        *//*String url = "http://39.155.221.165:8080/image/upload";
+        String fileName = "yhr";*//*
         //文件转换
         //File file = new File();
         Map map = new HashMap();
         map.put("param","picImg");
         //创建map集合
-        //OkHttpRequest.uploadFile(url, file, fileName, map);
-    }
+        OkHttpRequest.uploadFile(url, file, "yhr", map);
+    }*/
 
     private void bindTitleBar() {
         publicTitleBarRoot.setLeftImageResouse(R.drawable.ic_back).setLeftLinearLayoutListener(new TapBarLayout.LeftOnClickListener() {
@@ -116,6 +118,16 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
             }
         });
     }
+   /* //图片路径转换file的方法
+    private void getFile(){
+        Uri uri = data.getData();
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor actualimagecursor = managedQuery(uri,proj,null,null,null);
+        int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        actualimagecursor.moveToFirst();
+        String img_path = actualimagecursor.getString(actual_image_column_index);
+        File file = new File(img_path);
+    }*/
 
     private void init() {
         // 1、创建LQRPhotoSelectUtils（一个Activity对应一个LQRPhotoSelectUtils）
@@ -127,8 +139,8 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                 //得到图片的路径和URL
                 file = outputFile.getAbsolutePath();
                 url = outputUri.toString();
-                LogUtils.i("********************", file);
-                LogUtils.i("********************", url);
+                /*LogUtils.i("********************", file);
+                LogUtils.i("********************", url);*/
                 Glide.with(TakePhotoActivity.this).load(outputUri).into(ivPic);
             }
         }, true);//true裁剪，false不裁剪
