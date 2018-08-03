@@ -18,24 +18,31 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.androidkun.xtablayout.XTabLayout;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnDismissListener;
+import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.contrarywind.view.WheelView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.PreparingLessonsFragment;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.TeachingLessonsFragment;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
@@ -56,21 +63,30 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     XTabLayout tabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
-    private int currentIndex = 0;
-    private List<Fragment> fragments;
-    private List<String> titles;
-    private CommonPresenter userInfoPresenter;
-    private int roleId;
-    private List<String> statusList;
+    private int currentIndex = 0;//记录viewPager的当前索引
+    private List<Fragment> fragments;//加载的faragments
+    private List<String> titles;//对应的title
+    private CommonPresenter commonPresenter;//
+    private int roleId;//用来判断是管理者还是一般用户
+    private List<String> statusList;//状态筛选的集合
     private PreparingLessonsFragment preparingLessonsFragment;
     private TeachingLessonsFragment teachingLessonsFragment;
-    private PopupWindow statusFilterPop;
-    private TimePickerView pvTime;
-    private int startYear = 2017;
-    private int endYear;
-    private Calendar startDate;
-    private Calendar endDate;
-    private ImageView rightImageView;
+    private PopupWindow statusFilterPop;//
+    private TimePickerView pvTime;//日期筛选控件对象
+    private Calendar selectCalendar;
+    private int startYear = 2017;//日期开始的年
+    private int endYear;//结束的年，为当前年
+    private Calendar startDate;//日期筛选的开始日期
+    private Calendar endDate;//日期筛选的截止日期
+    private ImageView rightImageView;//筛选按钮
+    private OptionsPickerView pvOptions;//条件筛选（管理者筛选）控件对象
+    private List<String> teacherItems;//老师的集合
+    private List<String> yearItems;//年的集合
+    private List<String> monthItems;//月的集合
+    private int teacherSelectIndex = 0;//老师选中的索引
+    private int yearSelectIndex;//年选中的索引
+    private int monthSelectIndex;//月选中的索引
+    private boolean lastIsCurrentYear = true;//上一次滑动选中是否为当年
 
     @Override
     protected int getLayoutId() {
@@ -80,8 +96,8 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     @Override
     protected void initData() {
         bindTitleBar();
-        userInfoPresenter = new CommonPresenterImp(this);
-        userInfoPresenter.getUserInfo();
+        commonPresenter = new CommonPresenterImp(this);
+        commonPresenter.getUserInfo();
     }
 
     private void bindTitleBar() {
@@ -98,15 +114,25 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     }
 
     private void initializeData() {
-        if(roleId == 8){
+        if(roleId == Constants.MANAGER_ROLE_ID){
             publicTitleBarRoot.setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
                 @Override
                 public void onClick() {
-                    showManagerFilterPop();
+                    if(teacherItems.size() <= 0){
+                        commonPresenter.getTeacher();
+                    }else{
+                        showManagerFilterPop2();
+                    }
+                    /*teacherItems.add("yaojuntian001");
+                    teacherItems.add("xueyutong001");
+                    teacherItems.add("douhuihui001");
+                    teacherItems.add("555555");
+                    showManagerFilterPop2();
+                    pvOptions.show();*/
                 }
             });
         }
-        if(roleId == 9){
+        if(roleId == Constants.CHILD_ROLE_ID){
             publicTitleBarRoot.setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
                 @Override
                 public void onClick() {
@@ -123,16 +149,17 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
         startDate.set(Calendar.MONTH, 0);
         endDate = Calendar.getInstance();
         endYear = endDate.get(Calendar.YEAR);
+        selectCalendar = endDate;
         fragments = new ArrayList();
         preparingLessonsFragment = new PreparingLessonsFragment();
         teachingLessonsFragment = new TeachingLessonsFragment();
         fragments.add(preparingLessonsFragment);
         fragments.add(teachingLessonsFragment);
         titles = new ArrayList<>();
-        if(8 == roleId){
+        if(Constants.MANAGER_ROLE_ID == roleId){
             titles.add("备课情况");
             titles.add("授课情况");
-        }else if(9 == roleId){
+        }else if(Constants.CHILD_ROLE_ID == roleId){
             titles.add("备课记录");
             titles.add("授课记录");
         }
@@ -172,6 +199,17 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
 
             }
         });
+        teacherItems = new ArrayList();
+        yearItems = new ArrayList<>();
+        for (int i = startYear; i <= endYear; i++) {
+            yearItems.add(String.valueOf(i));
+        }
+        yearSelectIndex = yearItems.size();
+        monthItems = new ArrayList<>();
+        for (int i = 1; i <= endDate.get(Calendar.MONTH ) + 1; i++) {
+            monthItems.add(String.valueOf(i));
+        }
+        monthSelectIndex = monthItems.size();
     }
 
     private void showDateFilterPop() {
@@ -182,6 +220,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 String time = dateFormat.format(date);
                 Log.d("PersonCenterBeiShouKeJi", time);
                 if(currentIndex == 1){
+                    selectCalendar.setTime(date);
                     teachingLessonsFragment.onDateFilterClick(time);
                 }
             }
@@ -195,7 +234,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 .setCancelColor(Color.BLACK)//取消按钮文字颜色
                 .setTitleBgColor(getResources().getColor(R.color.line_f1f1f1))//标题背景颜色 Night mode
                 .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
-                .setDate(endDate)// 如果不设置的话，默认是系统时间*/
+                .setDate(selectCalendar)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate,endDate)//起始终止年月日设定
                 .setLabel("","","日","时","分","秒")//默认设置为年月日时分秒
                 .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
@@ -271,7 +310,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
         statusFilterPop.showAsDropDown(rightImageView, 0, 0, Gravity.BOTTOM);
     }
 
-    private void showManagerFilterPop() {
+    /*private void showManagerFilterPop() {
         View view = LayoutInflater.from(this).inflate(R.layout.pop_manager_date_filter, null, false);
         TextView cancel = view.findViewById(R.id.cancel_text);
         TextView sure = view.findViewById(R.id.sure_text);
@@ -287,7 +326,72 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.showAtLocation(getCurrentFocus(), Gravity.BOTTOM, 0 , 0);
+        //popupWindow.showAtLocation(getCurrentFocus(), Gravity.BOTTOM, 0 , 0);
+    }*/
+
+    private void showManagerFilterPop2(){
+        pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+                //返回的分别是三个级别的选中位置
+                teacherSelectIndex = options1;
+                yearSelectIndex = option2;
+                monthSelectIndex = options3;
+            }
+        }) .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
+            @Override
+            public void onOptionsSelectChanged(int options1, int options2, int options3) {
+                if(options2 == yearItems.size() -1 && !lastIsCurrentYear){
+                    changeMonthItems(true);
+                    pvOptions.setNPicker(teacherItems, yearItems, monthItems);
+                    pvOptions.setSelectOptions(options1, options2, options3);
+                    lastIsCurrentYear = true;
+                }else if(options2 < yearItems.size() -1 && lastIsCurrentYear){
+                    teacherSelectIndex = options1;
+                    yearSelectIndex = options2;
+                    monthSelectIndex = options3;
+                    changeMonthItems(false);
+                    pvOptions.setNPicker(teacherItems, yearItems, monthItems);
+                    pvOptions.setSelectOptions(options1, options2, options3);
+                    lastIsCurrentYear = false;
+                }
+            }
+        })
+                .setSubmitText("确定")//确定按钮文字
+                .setCancelText("取消")//取消按钮文字
+                .setOutSideCancelable(true)
+                .setSubmitColor(getResources().getColor(R.color.filter_text_select))//确定按钮文字颜色
+                .setCancelColor(Color.BLACK)//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.line_f1f1f1))//标题背景颜色 Night mode
+                .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
+                .setLabels("", "", "")//设置选择的三级单位
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setCyclic(false, false, false)//循环与否
+                .setSelectOptions(teacherSelectIndex, yearItems.size(), monthItems.size())  //设置默认选中项
+                .setOutSideCancelable(false)//点击外部dismiss default true
+                .isDialog(true)//是否显示为对话框样式
+                .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
+                .build();
+
+        pvOptions.setNPicker(teacherItems, yearItems, monthItems);//添加数据源
+        Dialog mDialog = pvOptions.getDialog();
+        if (mDialog != null) {
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM);
+
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+            pvOptions.getDialogContainerLayout().setLayoutParams(params);
+
+            Window dialogWindow = mDialog.getWindow();
+            if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(R.style.picker_view_slide_anim);//修改动画样式
+                dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
+            }
+        }
     }
 
     @Override
@@ -313,7 +417,8 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     @Override
     public void getCommonUserInfoSuccess(CommonUserInfoBean bean) {
         roleId = bean.getContent().getRoleId();
-        roleId = 9;
+        roleId = Constants.CHILD_ROLE_ID;
+        PreferencesUtils.saveIntValue(Constants.ROLE_ID, roleId, this);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -326,4 +431,34 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     public void getCommonUserInfoError(int errorCode) {
 
     }
+
+    @Override
+    public void getCommonTeacherSuccess(CommonTeacherBean bean) {
+        List<CommonTeacherBean.ContentBean> content = bean.getContent();
+        for (int i = 0; i < content.size(); i++) {
+            teacherItems.add(content.get(i).getUserName());
+            Log.d("PersonCenterBeiShouKeJi", content.get(i).getUserName());
+        }
+        showManagerFilterPop2();
+        pvOptions.show();
+    }
+
+    @Override
+    public void getCommonTeacherError(int errorCode) {
+        Log.d("PersonCenterBeiShouKeJi", "eoor" + errorCode);
+    }
+
+    public void changeMonthItems(boolean isCurrentYear){
+        monthItems.clear();
+        if(isCurrentYear){
+            for (int i = 1; i <= endDate.get(Calendar.MONTH ) + 1; i++) {
+                monthItems.add(String.valueOf(i));
+            }
+        }else{
+            for (int i = 1; i <= 12; i++) {
+                monthItems.add(String.valueOf(i));
+            }
+        }
+    }
+
 }

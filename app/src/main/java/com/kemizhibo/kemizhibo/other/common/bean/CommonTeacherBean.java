@@ -1,32 +1,24 @@
 package com.kemizhibo.kemizhibo.other.common.bean;
 
+import java.util.List;
+
 /**
- * Created by Administrator on 2018/8/2.
+ * Created by Administrator on 2018/8/3.
  */
 
-public class CommonUserInfoBean {
+public class CommonTeacherBean {
 
     /**
-     * flag : true
      * code : 0
-     * message : 成功
-     * content : {"userId":27782,"mobile":"17600993868","email":null,"password":"","userName":"yanhaoran001","showName":"北京清华大学","sex":0,"age":0,"createTime":null,"isavalible":1,"picImg":"http://192.168.1.101:8080file:///storage/emulated/0/Android/data/com.kemizhibo.kemizhibo/1532678127460.jpg","bannerUrl":null,"msgNum":0,"sysMsgNum":0,"lastSystemTime":null,"loginAccount":null,"registerFrom":"register","invitationCode":null,"loginTimeStamp":0,"courseName":null,"displayName":"北京清华大学","userProfileList":null,"forTeacherStatus":null,"mobileNotNull":null,"emailNotNull":null,"realName":"温暖的胖子","idCardNo":null,"province":0,"city":0,"area":0,"school":"北京清华大学","subject":"单身少女情感顾问","subPrimaryKeyId":null,"roleId":8,"parentId":0,"serialNumber":null,"position":null,"period":"","grade":"大二","major":null,"schoolProfile":null,"address":"北京","loginCount":null,"usualIp":null,"lastLoginIp":"127.0.0.1","lastLoginTime":"2018-08-02 10:09:43","schoolSystem":null,"paDogToken":"","testUserType":null,"enterpriseId":0,"firstLoginFlag":0,"userType":1,"lectureTruthPicImg":"file:///storage/emulated/0/Android/data/com.kemizhibo.kemizhibo/1532678127460.jpg","lectureTruthShowName":"北京清华大学","lectureTruthSchoolName":"","lectureTruthProfile":"","lectureTruthPeriod":"","lectureTruthGrade":"","lectureTruthSubject":"","lectureTruthSysUserId":0,"lectureTruthIsAudit":0,"lectureTruthAuditTime":null,"lectureTruthAuditRemark":null}
-     * page : null
+     * message : success
+     * content : [{"userId":2631,"mobile":null,"email":null,"password":null,"userName":"yaojuntian001","showName":"研发部","sex":0,"age":0,"createTime":null,"isavalible":0,"picImg":null,"bannerUrl":null,"msgNum":0,"sysMsgNum":0,"lastSystemTime":null,"loginAccount":null,"registerFrom":null,"invitationCode":null,"loginTimeStamp":0,"courseName":null,"displayName":null,"userProfileList":null,"forTeacherStatus":null,"mobileNotNull":null,"emailNotNull":null,"realName":"姚俊天","idCardNo":null,"province":0,"city":0,"area":0,"school":null,"subject":null,"subPrimaryKeyId":2631,"roleId":null,"parentId":null,"serialNumber":null,"position":null,"period":null,"grade":null,"major":null,"schoolProfile":null,"address":null,"loginCount":null,"usualIp":null,"lastLoginIp":null,"lastLoginTime":null,"schoolSystem":null,"paDogToken":null,"testUserType":null,"enterpriseId":null,"firstLoginFlag":null,"userType":null,"lectureTruthPicImg":null,"lectureTruthShowName":null,"lectureTruthSchoolName":null,"lectureTruthProfile":null,"lectureTruthPeriod":null,"lectureTruthGrade":null,"lectureTruthSubject":null,"lectureTruthSysUserId":null,"lectureTruthIsAudit":null,"lectureTruthAuditTime":null,"lectureTruthAuditRemark":null},{"userId":3101,"mobile":null,"email":null,"password":null,"userName":"xueyutong001","showName":"测试","sex":0,"age":0,"createTime":null,"isavalible":0,"picImg":null,"bannerUrl":null,"msgNum":0,"sysMsgNum":0,"lastSystemTime":null,"loginAccount":null,"registerFrom":null,"invitationCode":null,"loginTimeStamp":0,"courseName":null,"displayName":null,"userProfileList":null,"forTeacherStatus":null,"mobileNotNull":null,"emailNotNull":null,"realName":"么么","idCardNo":null,"province":0,"city":0,"area":0,"school":null,"subject":null,"subPrimaryKeyId":3101,"roleId":null,"parentId":null,"serialNumber":null,"position":null,"period":null,"grade":null,"major":null,"schoolProfile":null,"address":null,"loginCount":null,"usualIp":null,"lastLoginIp":null,"lastLoginTime":null,"schoolSystem":null,"paDogToken":null,"testUserType":null,"enterpriseId":null,"firstLoginFlag":null,"userType":null,"lectureTruthPicImg":null,"lectureTruthShowName":null,"lectureTruthSchoolName":null,"lectureTruthProfile":null,"lectureTruthPeriod":null,"lectureTruthGrade":null,"lectureTruthSubject":null,"lectureTruthSysUserId":null,"lectureTruthIsAudit":null,"lectureTruthAuditTime":null,"lectureTruthAuditRemark":null},{"userId":3422,"mobile":null,"email":null,"password":null,"userName":"douhuihui001","showName":"佩奇","sex":0,"age":0,"createTime":null,"isavalible":0,"picImg":null,"bannerUrl":null,"msgNum":0,"sysMsgNum":0,"lastSystemTime":null,"loginAccount":null,"registerFrom":null,"invitationCode":null,"loginTimeStamp":0,"courseName":null,"displayName":null,"userProfileList":null,"forTeacherStatus":null,"mobileNotNull":null,"emailNotNull":null,"realName":"","idCardNo":null,"province":0,"city":0,"area":0,"school":null,"subject":null,"subPrimaryKeyId":3422,"roleId":null,"parentId":null,"serialNumber":null,"position":null,"period":null,"grade":null,"major":null,"schoolProfile":null,"address":null,"loginCount":null,"usualIp":null,"lastLoginIp":null,"lastLoginTime":null,"schoolSystem":null,"paDogToken":null,"testUserType":null,"enterpriseId":null,"firstLoginFlag":null,"userType":null,"lectureTruthPicImg":null,"lectureTruthShowName":null,"lectureTruthSchoolName":null,"lectureTruthProfile":null,"lectureTruthPeriod":null,"lectureTruthGrade":null,"lectureTruthSubject":null,"lectureTruthSysUserId":null,"lectureTruthIsAudit":null,"lectureTruthAuditTime":null,"lectureTruthAuditRemark":null},{"userId":3712,"mobile":null,"email":null,"password":null,"userName":"555555","showName":"测试","sex":0,"age":0,"createTime":null,"isavalible":0,"picImg":null,"bannerUrl":null,"msgNum":0,"sysMsgNum":0,"lastSystemTime":null,"loginAccount":null,"registerFrom":null,"invitationCode":null,"loginTimeStamp":0,"courseName":null,"displayName":null,"userProfileList":null,"forTeacherStatus":null,"mobileNotNull":null,"emailNotNull":null,"realName":"","idCardNo":null,"province":0,"city":0,"area":0,"school":null,"subject":null,"subPrimaryKeyId":3712,"roleId":null,"parentId":null,"serialNumber":null,"position":null,"period":null,"grade":null,"major":null,"schoolProfile":null,"address":null,"loginCount":null,"usualIp":null,"lastLoginIp":null,"lastLoginTime":null,"schoolSystem":null,"paDogToken":null,"testUserType":null,"enterpriseId":null,"firstLoginFlag":null,"userType":null,"lectureTruthPicImg":null,"lectureTruthShowName":null,"lectureTruthSchoolName":null,"lectureTruthProfile":null,"lectureTruthPeriod":null,"lectureTruthGrade":null,"lectureTruthSubject":null,"lectureTruthSysUserId":null,"lectureTruthIsAudit":null,"lectureTruthAuditTime":null,"lectureTruthAuditRemark":null}]
+     * otherData : null
      */
 
-    private boolean flag;
     private int code;
     private String message;
-    private ContentBean content;
-    private Object page;
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
+    private Object otherData;
+    private List<ContentBean> content;
 
     public int getCode() {
         return code;
@@ -44,110 +36,110 @@ public class CommonUserInfoBean {
         this.message = message;
     }
 
-    public ContentBean getContent() {
+    public Object getOtherData() {
+        return otherData;
+    }
+
+    public void setOtherData(Object otherData) {
+        this.otherData = otherData;
+    }
+
+    public List<ContentBean> getContent() {
         return content;
     }
 
-    public void setContent(ContentBean content) {
+    public void setContent(List<ContentBean> content) {
         this.content = content;
-    }
-
-    public Object getPage() {
-        return page;
-    }
-
-    public void setPage(Object page) {
-        this.page = page;
     }
 
     public static class ContentBean {
         /**
-         * userId : 27782
-         * mobile : 17600993868
+         * userId : 2631
+         * mobile : null
          * email : null
-         * password :
-         * userName : yanhaoran001
-         * showName : 北京清华大学
+         * password : null
+         * userName : yaojuntian001
+         * showName : 研发部
          * sex : 0
          * age : 0
          * createTime : null
-         * isavalible : 1
-         * picImg : http://192.168.1.101:8080file:///storage/emulated/0/Android/data/com.kemizhibo.kemizhibo/1532678127460.jpg
+         * isavalible : 0
+         * picImg : null
          * bannerUrl : null
          * msgNum : 0
          * sysMsgNum : 0
          * lastSystemTime : null
          * loginAccount : null
-         * registerFrom : register
+         * registerFrom : null
          * invitationCode : null
          * loginTimeStamp : 0
          * courseName : null
-         * displayName : 北京清华大学
+         * displayName : null
          * userProfileList : null
          * forTeacherStatus : null
          * mobileNotNull : null
          * emailNotNull : null
-         * realName : 温暖的胖子
+         * realName : 姚俊天
          * idCardNo : null
          * province : 0
          * city : 0
          * area : 0
-         * school : 北京清华大学
-         * subject : 单身少女情感顾问
-         * subPrimaryKeyId : null
-         * roleId : 8
-         * parentId : 0
+         * school : null
+         * subject : null
+         * subPrimaryKeyId : 2631
+         * roleId : null
+         * parentId : null
          * serialNumber : null
          * position : null
-         * period :
-         * grade : 大二
+         * period : null
+         * grade : null
          * major : null
          * schoolProfile : null
-         * address : 北京
+         * address : null
          * loginCount : null
          * usualIp : null
-         * lastLoginIp : 127.0.0.1
-         * lastLoginTime : 2018-08-02 10:09:43
+         * lastLoginIp : null
+         * lastLoginTime : null
          * schoolSystem : null
-         * paDogToken :
+         * paDogToken : null
          * testUserType : null
-         * enterpriseId : 0
-         * firstLoginFlag : 0
-         * userType : 1
-         * lectureTruthPicImg : file:///storage/emulated/0/Android/data/com.kemizhibo.kemizhibo/1532678127460.jpg
-         * lectureTruthShowName : 北京清华大学
-         * lectureTruthSchoolName :
-         * lectureTruthProfile :
-         * lectureTruthPeriod :
-         * lectureTruthGrade :
-         * lectureTruthSubject :
-         * lectureTruthSysUserId : 0
-         * lectureTruthIsAudit : 0
+         * enterpriseId : null
+         * firstLoginFlag : null
+         * userType : null
+         * lectureTruthPicImg : null
+         * lectureTruthShowName : null
+         * lectureTruthSchoolName : null
+         * lectureTruthProfile : null
+         * lectureTruthPeriod : null
+         * lectureTruthGrade : null
+         * lectureTruthSubject : null
+         * lectureTruthSysUserId : null
+         * lectureTruthIsAudit : null
          * lectureTruthAuditTime : null
          * lectureTruthAuditRemark : null
          */
 
         private int userId;
-        private String mobile;
+        private Object mobile;
         private Object email;
-        private String password;
+        private Object password;
         private String userName;
         private String showName;
         private int sex;
         private int age;
         private Object createTime;
         private int isavalible;
-        private String picImg;
+        private Object picImg;
         private Object bannerUrl;
         private int msgNum;
         private int sysMsgNum;
         private Object lastSystemTime;
         private Object loginAccount;
-        private String registerFrom;
+        private Object registerFrom;
         private Object invitationCode;
         private int loginTimeStamp;
         private Object courseName;
-        private String displayName;
+        private Object displayName;
         private Object userProfileList;
         private Object forTeacherStatus;
         private Object mobileNotNull;
@@ -157,37 +149,37 @@ public class CommonUserInfoBean {
         private int province;
         private int city;
         private int area;
-        private String school;
-        private String subject;
-        private Object subPrimaryKeyId;
-        private int roleId;
-        private int parentId;
+        private Object school;
+        private Object subject;
+        private int subPrimaryKeyId;
+        private Object roleId;
+        private Object parentId;
         private Object serialNumber;
         private Object position;
-        private String period;
-        private String grade;
+        private Object period;
+        private Object grade;
         private Object major;
         private Object schoolProfile;
-        private String address;
+        private Object address;
         private Object loginCount;
         private Object usualIp;
-        private String lastLoginIp;
-        private String lastLoginTime;
+        private Object lastLoginIp;
+        private Object lastLoginTime;
         private Object schoolSystem;
-        private String paDogToken;
+        private Object paDogToken;
         private Object testUserType;
-        private long enterpriseId;
-        private int firstLoginFlag;
-        private int userType;
-        private String lectureTruthPicImg;
-        private String lectureTruthShowName;
-        private String lectureTruthSchoolName;
-        private String lectureTruthProfile;
-        private String lectureTruthPeriod;
-        private String lectureTruthGrade;
-        private String lectureTruthSubject;
-        private int lectureTruthSysUserId;
-        private int lectureTruthIsAudit;
+        private Object enterpriseId;
+        private Object firstLoginFlag;
+        private Object userType;
+        private Object lectureTruthPicImg;
+        private Object lectureTruthShowName;
+        private Object lectureTruthSchoolName;
+        private Object lectureTruthProfile;
+        private Object lectureTruthPeriod;
+        private Object lectureTruthGrade;
+        private Object lectureTruthSubject;
+        private Object lectureTruthSysUserId;
+        private Object lectureTruthIsAudit;
         private Object lectureTruthAuditTime;
         private Object lectureTruthAuditRemark;
 
@@ -199,11 +191,11 @@ public class CommonUserInfoBean {
             this.userId = userId;
         }
 
-        public String getMobile() {
+        public Object getMobile() {
             return mobile;
         }
 
-        public void setMobile(String mobile) {
+        public void setMobile(Object mobile) {
             this.mobile = mobile;
         }
 
@@ -215,11 +207,11 @@ public class CommonUserInfoBean {
             this.email = email;
         }
 
-        public String getPassword() {
+        public Object getPassword() {
             return password;
         }
 
-        public void setPassword(String password) {
+        public void setPassword(Object password) {
             this.password = password;
         }
 
@@ -271,11 +263,11 @@ public class CommonUserInfoBean {
             this.isavalible = isavalible;
         }
 
-        public String getPicImg() {
+        public Object getPicImg() {
             return picImg;
         }
 
-        public void setPicImg(String picImg) {
+        public void setPicImg(Object picImg) {
             this.picImg = picImg;
         }
 
@@ -319,11 +311,11 @@ public class CommonUserInfoBean {
             this.loginAccount = loginAccount;
         }
 
-        public String getRegisterFrom() {
+        public Object getRegisterFrom() {
             return registerFrom;
         }
 
-        public void setRegisterFrom(String registerFrom) {
+        public void setRegisterFrom(Object registerFrom) {
             this.registerFrom = registerFrom;
         }
 
@@ -351,11 +343,11 @@ public class CommonUserInfoBean {
             this.courseName = courseName;
         }
 
-        public String getDisplayName() {
+        public Object getDisplayName() {
             return displayName;
         }
 
-        public void setDisplayName(String displayName) {
+        public void setDisplayName(Object displayName) {
             this.displayName = displayName;
         }
 
@@ -431,43 +423,43 @@ public class CommonUserInfoBean {
             this.area = area;
         }
 
-        public String getSchool() {
+        public Object getSchool() {
             return school;
         }
 
-        public void setSchool(String school) {
+        public void setSchool(Object school) {
             this.school = school;
         }
 
-        public String getSubject() {
+        public Object getSubject() {
             return subject;
         }
 
-        public void setSubject(String subject) {
+        public void setSubject(Object subject) {
             this.subject = subject;
         }
 
-        public Object getSubPrimaryKeyId() {
+        public int getSubPrimaryKeyId() {
             return subPrimaryKeyId;
         }
 
-        public void setSubPrimaryKeyId(Object subPrimaryKeyId) {
+        public void setSubPrimaryKeyId(int subPrimaryKeyId) {
             this.subPrimaryKeyId = subPrimaryKeyId;
         }
 
-        public int getRoleId() {
+        public Object getRoleId() {
             return roleId;
         }
 
-        public void setRoleId(int roleId) {
+        public void setRoleId(Object roleId) {
             this.roleId = roleId;
         }
 
-        public int getParentId() {
+        public Object getParentId() {
             return parentId;
         }
 
-        public void setParentId(int parentId) {
+        public void setParentId(Object parentId) {
             this.parentId = parentId;
         }
 
@@ -487,19 +479,19 @@ public class CommonUserInfoBean {
             this.position = position;
         }
 
-        public String getPeriod() {
+        public Object getPeriod() {
             return period;
         }
 
-        public void setPeriod(String period) {
+        public void setPeriod(Object period) {
             this.period = period;
         }
 
-        public String getGrade() {
+        public Object getGrade() {
             return grade;
         }
 
-        public void setGrade(String grade) {
+        public void setGrade(Object grade) {
             this.grade = grade;
         }
 
@@ -519,11 +511,11 @@ public class CommonUserInfoBean {
             this.schoolProfile = schoolProfile;
         }
 
-        public String getAddress() {
+        public Object getAddress() {
             return address;
         }
 
-        public void setAddress(String address) {
+        public void setAddress(Object address) {
             this.address = address;
         }
 
@@ -543,19 +535,19 @@ public class CommonUserInfoBean {
             this.usualIp = usualIp;
         }
 
-        public String getLastLoginIp() {
+        public Object getLastLoginIp() {
             return lastLoginIp;
         }
 
-        public void setLastLoginIp(String lastLoginIp) {
+        public void setLastLoginIp(Object lastLoginIp) {
             this.lastLoginIp = lastLoginIp;
         }
 
-        public String getLastLoginTime() {
+        public Object getLastLoginTime() {
             return lastLoginTime;
         }
 
-        public void setLastLoginTime(String lastLoginTime) {
+        public void setLastLoginTime(Object lastLoginTime) {
             this.lastLoginTime = lastLoginTime;
         }
 
@@ -567,11 +559,11 @@ public class CommonUserInfoBean {
             this.schoolSystem = schoolSystem;
         }
 
-        public String getPaDogToken() {
+        public Object getPaDogToken() {
             return paDogToken;
         }
 
-        public void setPaDogToken(String paDogToken) {
+        public void setPaDogToken(Object paDogToken) {
             this.paDogToken = paDogToken;
         }
 
@@ -583,99 +575,99 @@ public class CommonUserInfoBean {
             this.testUserType = testUserType;
         }
 
-        public long getEnterpriseId() {
+        public Object getEnterpriseId() {
             return enterpriseId;
         }
 
-        public void setEnterpriseId(long enterpriseId) {
+        public void setEnterpriseId(Object enterpriseId) {
             this.enterpriseId = enterpriseId;
         }
 
-        public int getFirstLoginFlag() {
+        public Object getFirstLoginFlag() {
             return firstLoginFlag;
         }
 
-        public void setFirstLoginFlag(int firstLoginFlag) {
+        public void setFirstLoginFlag(Object firstLoginFlag) {
             this.firstLoginFlag = firstLoginFlag;
         }
 
-        public int getUserType() {
+        public Object getUserType() {
             return userType;
         }
 
-        public void setUserType(int userType) {
+        public void setUserType(Object userType) {
             this.userType = userType;
         }
 
-        public String getLectureTruthPicImg() {
+        public Object getLectureTruthPicImg() {
             return lectureTruthPicImg;
         }
 
-        public void setLectureTruthPicImg(String lectureTruthPicImg) {
+        public void setLectureTruthPicImg(Object lectureTruthPicImg) {
             this.lectureTruthPicImg = lectureTruthPicImg;
         }
 
-        public String getLectureTruthShowName() {
+        public Object getLectureTruthShowName() {
             return lectureTruthShowName;
         }
 
-        public void setLectureTruthShowName(String lectureTruthShowName) {
+        public void setLectureTruthShowName(Object lectureTruthShowName) {
             this.lectureTruthShowName = lectureTruthShowName;
         }
 
-        public String getLectureTruthSchoolName() {
+        public Object getLectureTruthSchoolName() {
             return lectureTruthSchoolName;
         }
 
-        public void setLectureTruthSchoolName(String lectureTruthSchoolName) {
+        public void setLectureTruthSchoolName(Object lectureTruthSchoolName) {
             this.lectureTruthSchoolName = lectureTruthSchoolName;
         }
 
-        public String getLectureTruthProfile() {
+        public Object getLectureTruthProfile() {
             return lectureTruthProfile;
         }
 
-        public void setLectureTruthProfile(String lectureTruthProfile) {
+        public void setLectureTruthProfile(Object lectureTruthProfile) {
             this.lectureTruthProfile = lectureTruthProfile;
         }
 
-        public String getLectureTruthPeriod() {
+        public Object getLectureTruthPeriod() {
             return lectureTruthPeriod;
         }
 
-        public void setLectureTruthPeriod(String lectureTruthPeriod) {
+        public void setLectureTruthPeriod(Object lectureTruthPeriod) {
             this.lectureTruthPeriod = lectureTruthPeriod;
         }
 
-        public String getLectureTruthGrade() {
+        public Object getLectureTruthGrade() {
             return lectureTruthGrade;
         }
 
-        public void setLectureTruthGrade(String lectureTruthGrade) {
+        public void setLectureTruthGrade(Object lectureTruthGrade) {
             this.lectureTruthGrade = lectureTruthGrade;
         }
 
-        public String getLectureTruthSubject() {
+        public Object getLectureTruthSubject() {
             return lectureTruthSubject;
         }
 
-        public void setLectureTruthSubject(String lectureTruthSubject) {
+        public void setLectureTruthSubject(Object lectureTruthSubject) {
             this.lectureTruthSubject = lectureTruthSubject;
         }
 
-        public int getLectureTruthSysUserId() {
+        public Object getLectureTruthSysUserId() {
             return lectureTruthSysUserId;
         }
 
-        public void setLectureTruthSysUserId(int lectureTruthSysUserId) {
+        public void setLectureTruthSysUserId(Object lectureTruthSysUserId) {
             this.lectureTruthSysUserId = lectureTruthSysUserId;
         }
 
-        public int getLectureTruthIsAudit() {
+        public Object getLectureTruthIsAudit() {
             return lectureTruthIsAudit;
         }
 
-        public void setLectureTruthIsAudit(int lectureTruthIsAudit) {
+        public void setLectureTruthIsAudit(Object lectureTruthIsAudit) {
             this.lectureTruthIsAudit = lectureTruthIsAudit;
         }
 

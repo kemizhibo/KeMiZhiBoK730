@@ -9,8 +9,6 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/x15"
-        android:paddingRight="@dimen/x15"
         app:srlAccentColor="#fff"
         app:srlPrimaryColor="#444"
         app:srlEnablePreviewInEditMode="false">
@@ -23,7 +21,9 @@
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:background="#F1F1F1">
 
         </ListView>
 

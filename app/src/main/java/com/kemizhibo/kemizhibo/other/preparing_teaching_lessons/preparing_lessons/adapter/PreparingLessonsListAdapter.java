@@ -2,13 +2,19 @@ package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lesso
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.CommonViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.bean.PreparingLessonsBean;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 
 import java.util.List;
 
@@ -19,10 +25,12 @@ import java.util.List;
 public class PreparingLessonsListAdapter extends BaseAdapter {
     private Context context;
     private List<PreparingLessonsBean.ContentBean.DataBean> dataBeanList;
+    private final int roleId;
 
     public PreparingLessonsListAdapter(Context context, List<PreparingLessonsBean.ContentBean.DataBean> dataBeanList) {
         this.context = context;
         this.dataBeanList = dataBeanList;
+        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, context);
     }
 
     @Override
@@ -44,26 +52,49 @@ public class PreparingLessonsListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         CommonViewHolder holder;
         if(convertView == null){
-            convertView = View.inflate(context, R.layout.item_preparing_teaching_lessons_list, null);
-            holder = new CommonViewHolder();
-            holder.desc = convertView.findViewById(R.id.desc);
-            holder.name = convertView.findViewById(R.id.name);
-            holder.time = convertView.findViewById(R.id.time);
-            holder.name2 = convertView.findViewById(R.id.name_2);
-            holder.status = convertView.findViewById(R.id.status);
-            holder.go = convertView.findViewById(R.id.go);
-            convertView.setTag(holder);
+            if(roleId == Constants.MANAGER_ROLE_ID){
+                convertView = View.inflate(context, R.layout.item_manager_preparing_teaching_lessons_list, null);
+                holder = new CommonViewHolder();
+                holder.childAccount = convertView.findViewById(R.id.child_account);
+                holder.logo = convertView.findViewById(R.id.logo);
+                holder.desc = convertView.findViewById(R.id.desc);
+                holder.name = convertView.findViewById(R.id.name);
+                holder.time = convertView.findViewById(R.id.time);
+                holder.docName = convertView.findViewById(R.id.doc_name);
+                convertView.setTag(holder);
+            }else{
+                convertView = View.inflate(context, R.layout.item_preparing_teaching_lessons_list, null);
+                holder = new CommonViewHolder();
+                holder.logo = convertView.findViewById(R.id.logo);
+                holder.desc = convertView.findViewById(R.id.desc);
+                holder.name = convertView.findViewById(R.id.name);
+                holder.time = convertView.findViewById(R.id.time);
+                holder.statusImg = convertView.findViewById(R.id.status_img);
+                holder.statusText = convertView.findViewById(R.id.status_text);
+                holder.docName = convertView.findViewById(R.id.doc_name);
+                convertView.setTag(holder);
+            }
         }else{
             holder = (CommonViewHolder) convertView.getTag();
         }
 
         PreparingLessonsBean.ContentBean.DataBean dataBean = dataBeanList.get(position);
-        holder.desc.setText(dataBean.getMaterialName() + " " + dataBean.getGradeName() + " " + "(" + ("1".equals(dataBean.getSemester()) ? "上" : "下") + ")");
-        holder.name.setText(dataBean.getCourseName());
+        if(null != dataBean.getLogo()){
+            /*GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(context.getResources());
+            GenericDraweeHierarchy FIT_XY = builder.setActualImageScaleType(ScalingUtils.ScaleType.FIT_XY).build();
+            holder.logo.setHierarchy(FIT_XY);*/
+            holder.logo.setImageURI(Uri.parse((String) dataBean.getLogo()));
+        }
+        if(null != holder.childAccount)
+            holder.childAccount.setText(dataBean.getPrepareName());
+        holder.desc.setText(dataBean.getMaterialName() + " "  + "(" + dataBean.getGradeName() + ("1".equals(dataBean.getSemester()) ? "上" : "下") + ")");
+        holder.name.setText((String) dataBean.getCourseName());
         holder.time.setText(dataBean.getCreateTime());
-        holder.name2.setText(dataBean.getPrepareName());
-        holder.status.setText(dataBean.getPlanIsFinish() == 1 ? "未授课" : "已授课");
-        holder.status.setTextColor(dataBean.getPlanIsFinish() == 1 ? Color.RED : Color.GRAY);
+        holder.docName.setText(dataBean.getDocName());
+        if(null != holder.statusText)
+            holder.statusText.setText(dataBean.getPlanIsFinish() == 1 ? "未授课" : "已授课");
+        if(null != holder.statusText)
+            holder.statusText.setTextColor(dataBean.getPlanIsFinish() == 1 ? context.getResources().getColor(R.color.filter_text_select) : Color.GRAY);
 
         return convertView;
     }

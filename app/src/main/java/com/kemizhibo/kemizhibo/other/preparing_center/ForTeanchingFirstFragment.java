@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
@@ -297,6 +298,16 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
 
     @Override
     public void getCommonUserInfoError(int errorCode) {
+
+    }
+
+    @Override
+    public void getCommonTeacherSuccess(CommonTeacherBean bean) {
+
+    }
+
+    @Override
+    public void getCommonTeacherError(int errorCode) {
 
     }
 

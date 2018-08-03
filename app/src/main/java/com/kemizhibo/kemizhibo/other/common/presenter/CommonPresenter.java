@@ -7,4 +7,5 @@ package com.kemizhibo.kemizhibo.other.common.presenter;
 public interface CommonPresenter {
     void getCommonFilterData();
     void getUserInfo();
+    void getTeacher();
 }

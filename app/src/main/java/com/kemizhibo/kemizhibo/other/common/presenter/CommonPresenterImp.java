@@ -2,8 +2,10 @@ package com.kemizhibo.kemizhibo.other.common.presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
@@ -82,6 +84,31 @@ public class CommonPresenterImp implements CommonPresenter {
                 }else{
                     commonView.getCommonUserInfoError(Constants.REQUEST_ERROR_CODE);
                 }
+            }
+        });
+    }
+
+    @Override
+    public void getTeacher() {
+        if(!NetUtils.isConnected(commonView.getCommonCustomContext())){
+            commonView.getCommonTeacherError(Constants.NET_ERROR_CODE);
+            return;
+        }
+        OkHttpRequest.doGet(Constants.GET_TEACHER, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d("CommonPresenterImp", response.body().string());
+                /*CommonTeacherBean bean = GsonUtils.getBean(response.body().string(), CommonTeacherBean.class);
+                if(null != bean && 0 == bean.getCode()){
+                    commonView.getCommonTeacherSuccess(bean);
+                }else{
+                    commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
+                }*/
             }
         });
     }

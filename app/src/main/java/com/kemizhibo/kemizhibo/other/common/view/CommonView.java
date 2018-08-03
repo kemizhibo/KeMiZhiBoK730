@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.other.common.view;
 import android.content.Context;
 
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
 
 import java.util.Map;
@@ -18,4 +19,6 @@ public interface CommonView {
     void getCommonFilterError(int errorCode);
     void getCommonUserInfoSuccess(CommonUserInfoBean bean);
     void getCommonUserInfoError(int errorCode);
+    void getCommonTeacherSuccess(CommonTeacherBean bean);
+    void getCommonTeacherError(int errorCode);
 }

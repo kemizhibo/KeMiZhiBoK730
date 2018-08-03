@@ -14,7 +14,7 @@
         android:id="@+id/logo"
         android:layout_width="@dimen/x200"
         android:layout_height="@dimen/x160"
-        fresco:roundedCornerRadius="@dimen/x5"
+        fresco:roundedCornerRadius="@dimen/x10"
         fresco:placeholderImage="@mipmap/ic_launcher"
         fresco:failureImage="@mipmap/ic_launcher"
         android:scaleType="fitXY"/>

@@ -62,9 +62,9 @@ public class PreparingOnlineListAdapter extends BaseAdapter{
             holder = (PreparingOnlineListViewHolder) convertView.getTag();
         }
 
-        GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(context.getResources());
+        /*GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(context.getResources());
         GenericDraweeHierarchy FIT_XY = builder.setActualImageScaleType(ScalingUtils.ScaleType.FIT_XY).build();
-        holder.logo.setHierarchy(FIT_XY);
+        holder.logo.setHierarchy(FIT_XY);*/
         if(!TextUtils.isEmpty(dataBeanList.get(position).getLogo())){
             holder.logo.setImageURI(Uri.parse(dataBeanList.get(position).getLogo()));
         }else{
