@@ -31,6 +31,7 @@ public class TapBarLayout extends RelativeLayout {
     private LinearLayout mLeftLinearLayout;
     //右边layout
     private LinearLayout mRightLinearLayout;
+    private LinearLayout mRightLinearLayout2;
     //中间文字标题
     private TextView titleBarTitle;
     //中间图片标题
@@ -44,6 +45,7 @@ public class TapBarLayout extends RelativeLayout {
     private RightOnClickListener mRightOnClickListener;
     private TextView mLeftTv;//左边文字
     private OnClickListener mLeftTvListen;//左边文字 监听
+    private ImageView rightImageView;
 
 
     /**
@@ -67,6 +69,7 @@ public class TapBarLayout extends RelativeLayout {
         super.onFinishInflate();
         mLeftLinearLayout = (LinearLayout) findViewById(R.id.public_title_bar_left);
         mRightLinearLayout = (LinearLayout) findViewById(R.id.public_title_bar_right);
+        mRightLinearLayout2 = (LinearLayout) findViewById(R.id.public_title_bar_right2);
         titleBarTitle = (TextView) findViewById(R.id.titleBarTitle);
         mLeftTv = (TextView) findViewById(R.id.public_title_bar_left_tv);
         imgViewTitle = (ImageView) findViewById(R.id.ic_title);
@@ -175,6 +178,7 @@ public class TapBarLayout extends RelativeLayout {
     public void setListener() {
         mLeftLinearLayout.setOnClickListener(new NoDoubleClickListener());
         mRightLinearLayout.setOnClickListener(new NoDoubleClickListener());
+        mRightLinearLayout2.setOnClickListener(new NoDoubleClickListener());
         if (null != mLeftTvListen) mLeftTv.setOnClickListener(mLeftTvListen);
     }
 
@@ -199,14 +203,15 @@ public class TapBarLayout extends RelativeLayout {
             rl.gravity = Gravity.CENTER;
             mLeftLinearLayout.addView(imageView, rl);
         }
-//        if (rightResId != 0) {
-//            ShopCardNumImg imageView = new ShopCardNumImg(mContext, rightResId);
-//            imageView.setImageResource(rightResId);
-//            mRightLinearLayout.setVisibility(View.VISIBLE);
-//            LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(-2, -2);
-//            rl.gravity = Gravity.CENTER;
-//            mRightLinearLayout.addView(imageView, rl);
-//        }
+        if (rightResId != 0) {
+            rightImageView = new ImageView(mContext);
+            rightImageView.setImageResource(rightResId);
+            mRightLinearLayout2.setVisibility(View.VISIBLE);
+
+            LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(60, 15);
+            rl.gravity = Gravity.CENTER;
+            mRightLinearLayout2.addView(rightImageView, rl);
+        }
         setListener();
     }
 //
@@ -265,13 +270,17 @@ public class TapBarLayout extends RelativeLayout {
                     if (mLeftOnClickListener != null) {
                         mLeftOnClickListener.onClick();
                     }
-                } else if (mRightLinearLayout == view) {
+                } else if (mRightLinearLayout2 == view) {
                     if (mRightOnClickListener != null) {
                         mRightOnClickListener.onClick();
                     }
                 }
             }
         }
+    }
+
+    public ImageView getRightImageView(){
+        return rightImageView;
     }
 
     public TapBarLayout setLeftLinearLayoutListener(LeftOnClickListener leftOnClickListener) {

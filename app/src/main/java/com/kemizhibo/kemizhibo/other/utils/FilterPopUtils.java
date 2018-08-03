@@ -58,7 +58,7 @@ public class FilterPopUtils {
         PopupWindow popupWindow = new PopupWindow( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setContentView(popView);
         popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(false);
+        popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(null);
         popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
 

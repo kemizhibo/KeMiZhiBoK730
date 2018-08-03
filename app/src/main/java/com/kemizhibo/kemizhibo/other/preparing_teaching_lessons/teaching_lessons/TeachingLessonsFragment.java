@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.adapter.PreparingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.adapter.TeachingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.bean.TeachingLessonsBean;
@@ -42,6 +43,7 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
     private List<TeachingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private TeachingLessonsListAdapter adapter;
     private TeachingLessonsPresenter presenter;
+    private String startTime = "";
 
     @Override
     public void onAttach(Context context) {
@@ -63,11 +65,13 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
         refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                startTime = "";
                 presenter.loadMoreTeachingLessonsData();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                startTime = "";
                 presenter.refreshTeachingLessonsData();
             }
         });
@@ -82,6 +86,7 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
     @Override
     public Map getRequestParams() {
         Map params = new HashMap();
+        params.put(Constants.START_TIME, startTime);
         return params;
     }
 
@@ -129,5 +134,10 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
                 }
             }
         });
+    }
+
+    public void onDateFilterClick(String startTime){
+        this.startTime = startTime;
+        presenter.refreshTeachingLessonsData();
     }
 }

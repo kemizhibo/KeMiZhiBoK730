@@ -67,11 +67,13 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
         refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                planStatus = 0;
                 presenter.loadMorePreparingLessonsData();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                planStatus = 0;
                 presenter.refreshPreparingLessonsData();
             }
         });
@@ -140,5 +142,10 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 }
             }
         });
+    }
+
+    public void onStatusFilterClick(int planStatus) {
+        this.planStatus = planStatus;
+        presenter.refreshPreparingLessonsData();
     }
 }

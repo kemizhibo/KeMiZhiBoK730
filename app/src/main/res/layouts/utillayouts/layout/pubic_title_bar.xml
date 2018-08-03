@@ -69,12 +69,13 @@
                 android:visibility="visible" />
             <LinearLayout
                 android:id="@+id/public_title_bar_right2"
-                android:layout_width="45dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:paddingRight="@dimen/res_15dp"/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="wrap_content"

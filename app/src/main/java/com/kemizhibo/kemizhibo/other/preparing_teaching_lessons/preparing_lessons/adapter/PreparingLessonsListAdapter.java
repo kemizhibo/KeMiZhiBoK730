@@ -62,8 +62,8 @@ public class PreparingLessonsListAdapter extends BaseAdapter {
         holder.name.setText(dataBean.getCourseName());
         holder.time.setText(dataBean.getCreateTime());
         holder.name2.setText(dataBean.getPrepareName());
-        holder.status.setText(dataBean.getPlanIsFinish() == 1 ? "已授课" : "未授课");
-        holder.status.setTextColor(dataBean.getPlanIsFinish() == 1 ? Color.GRAY : Color.RED);
+        holder.status.setText(dataBean.getPlanIsFinish() == 1 ? "未授课" : "已授课");
+        holder.status.setTextColor(dataBean.getPlanIsFinish() == 1 ? Color.RED : Color.GRAY);
 
         return convertView;
     }

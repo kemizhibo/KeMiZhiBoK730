@@ -11,7 +11,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x320"
+        android:layout_height="@dimen/x213"
         fresco:roundedCornerRadius="@dimen/x10"
         fresco:placeholderImage="@mipmap/ic_launcher"
         fresco:failureImage="@mipmap/ic_launcher"/>
