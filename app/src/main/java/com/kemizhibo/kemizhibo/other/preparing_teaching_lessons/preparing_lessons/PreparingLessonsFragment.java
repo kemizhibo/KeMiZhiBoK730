@@ -19,6 +19,7 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lesson
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter.PreparingLessonsPresenter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter.PreparingLessonsPresenterImp;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.view.PreparingLessonsView;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
@@ -46,10 +47,14 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     private List<PreparingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private PreparingLessonsListAdapter adapter;
     private PreparingLessonsPresenter presenter;
+    private String startTime = "";
+    private String userId = "0";
+    private int roleId;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, context);
         presenter = new PreparingLessonsPresenterImp(this);
     }
 
@@ -67,12 +72,16 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
         refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                userId = "0";
+                startTime = "";
                 planStatus = 0;
                 presenter.loadMorePreparingLessonsData();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                userId = "0";
+                startTime = "";
                 planStatus = 0;
                 presenter.refreshPreparingLessonsData();
             }
@@ -94,7 +103,12 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     @Override
     public Map getRequestParams() {
         Map params = new HashMap();
-        params.put(Constants.PLAN_STATUS, String.valueOf(planStatus));
+        if(roleId == 8){
+            params.put(Constants.USER_ID, userId);
+            params.put(Constants.START_TIME, startTime);
+        }else{
+            params.put(Constants.PLAN_STATUS, String.valueOf(planStatus));
+        }
         return params;
     }
 
@@ -144,8 +158,14 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
         });
     }
 
-    public void onStatusFilterClick(int planStatus) {
+    public void onStatusFilterSelect(int planStatus) {
         this.planStatus = planStatus;
+        presenter.refreshPreparingLessonsData();
+    }
+
+    public void onManagerFilterSelect(int userId, String time) {
+        this.userId = String.valueOf(userId);
+        this.startTime = time;
         presenter.refreshPreparingLessonsData();
     }
 }

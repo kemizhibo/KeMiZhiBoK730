@@ -1,7 +1,9 @@
 package com.kemizhibo.kemizhibo.other.config;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.kemizhibo.kemizhibo.other.utils.NetUtils;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 
 import java.io.File;
@@ -39,11 +42,10 @@ import okhttp3.Response;
 public class OkHttpRequest {
     private static OkHttpClient okHttpClient = null;
 
-
     private OkHttpRequest() {
     }
 
-    public static OkHttpClient getInstance() {
+    public static OkHttpClient getInstance(Context context) {
         if (okHttpClient == null) {
             //加同步安全
             synchronized (OkHttpRequest.class) {
@@ -57,6 +59,7 @@ public class OkHttpRequest {
                             .connectTimeout(15, TimeUnit.SECONDS)//连接超时
                             .writeTimeout(20, TimeUnit.SECONDS)//写入超时
                             .readTimeout(20, TimeUnit.SECONDS)//读取超时
+                            .addInterceptor(new TokenInterceptor(context))
                             .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize))//设置缓存
                             .build();
                 }
@@ -65,17 +68,23 @@ public class OkHttpRequest {
         return okHttpClient;
     }
 
+    private static String getToken(Context context) {
+        return PreferencesUtils.getLoginInfo("token", context);
+    }
     /**
      * get请求
      * 参数1 url
      * 参数2 回调Callback
      */
 
-    public static void doGet(String url, Callback callback) {
+    public static void doGet(Context context, String url, Callback callback) {
         //创建OkHttpClient请求对象
-        OkHttpClient okHttpClient = getInstance();
+        OkHttpClient okHttpClient = getInstance(context);
         //创建Request
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + getToken(context))
+                .build();
         //得到Call对象
         Call call = okHttpClient.newCall(request);
         //执行异步请求
@@ -120,9 +129,9 @@ public class OkHttpRequest {
      * add()
      */
 
-    public static void doPost(String url, Map<String, String> params, Callback callback) {
+    public static void doPost(Context context, String url, Map<String, String> params, Callback callback) {
         //创建OkHttpClient请求对象
-        OkHttpClient okHttpClient = getInstance();
+        OkHttpClient okHttpClient = getInstance(context);
         //3.x版本post请求换成FormBody 封装键值对参数
 
         FormBody.Builder builder = new FormBody.Builder();
@@ -133,7 +142,11 @@ public class OkHttpRequest {
             }
         }
         //创建Request
-        Request request = new Request.Builder().url(url).post(builder.build()).build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(builder.build())
+                .addHeader("Authorization", "Bearer " + getToken(context))
+                .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(callback);
     }
@@ -145,9 +158,9 @@ public class OkHttpRequest {
      * fileName....文件的名字,,例如aaa.jpg
      * params ....传递除了file文件 其他的参数放到map集合
      */
-    public static void uploadFile(String url, File file, String fileName, Map<String, String> params) {
+    public static void uploadFile(Context context, String url, File file, String fileName, Map<String, String> params) {
         //创建OkHttpClient请求对象
-        final OkHttpClient okHttpClient = getInstance();
+        final OkHttpClient okHttpClient = getInstance(context);
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
 
@@ -165,7 +178,10 @@ public class OkHttpRequest {
         MultipartBody multipartBody = builder.build();
 
         //创建Request
-        Request request = new Request.Builder().url(url).post(multipartBody).build();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + getToken(context))
+                .post(multipartBody).build();
 
         //得到Call
         Call call = okHttpClient.newCall(request);
@@ -189,27 +205,17 @@ public class OkHttpRequest {
     }
 
     /**
-     * Post请求发送JSON数据....{"name":"zhangsan","pwd":"123456"}
-     * 参数一：请求Url
-     * 参数二：请求的JSON
-     * 参数三：请求回调
-     */
-    public static void doPostJson(String url, String jsonParams, Callback callback) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonParams);
-        Request request = new Request.Builder().url(url).post(requestBody).build();
-        Call call = getInstance().newCall(request);
-        call.enqueue(callback);
-
-    }
-
-    /**
      * 下载文件 以流的形式把apk写入的指定文件 得到file后进行安装
      * 参数er：请求Url
      * 参数san：保存文件的文件夹....download
      */
     public static void download(final Activity context, final String url, final String saveDir) {
-        Request request = new Request.Builder().url(url).build();
-        Call call = getInstance().newCall(request);
+        Request request = new Request
+                .Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + getToken(context))
+                .build();
+        Call call = getInstance(context).newCall(request);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -291,38 +297,6 @@ public class OkHttpRequest {
      */
     private static String getNameFromUrl(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
-    }
-
-    /**
-     * 网络缓存的拦截器......注意在这里更改cache-control头是很危险的,一般客户端不进行更改,,,,服务器端直接指定
-     * <p>
-     * 没网络取缓存的时候,一般都是在数据库或者sharedPerfernce中取出来的
-     */
-    private static class CacheInterceptor implements Interceptor {
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            //老的响应
-            Response oldResponse = chain.proceed(chain.request());
-
-            if (NetUtils.isConnected(MyApplication.getContext())) {
-                int maxAge = 120; // 在线缓存在2分钟内可读取
-
-                return oldResponse.newBuilder()
-                        .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 14; // 离线时缓存保存2周
-                return oldResponse.newBuilder()
-                        .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .build();
-            }
-
-        }
     }
 
 }

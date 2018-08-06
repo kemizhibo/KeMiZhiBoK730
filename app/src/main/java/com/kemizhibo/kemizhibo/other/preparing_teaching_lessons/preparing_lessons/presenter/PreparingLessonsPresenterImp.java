@@ -42,7 +42,7 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
         Map requestParams = preparingLessonsView.getRequestParams();
         requestParams.put(Constants.CURRENT_PAGE, String.valueOf(DEFAULT_PAGE_NUM));
         requestParams.put(Constants.PAGE_SIZE, String.valueOf(pageSize));
-        OkHttpRequest.doPost(Constants.PREPARING_LESSONS_RECORD_URL, requestParams, new Callback() {
+        OkHttpRequest.doPost(preparingLessonsView.getCustomContext(), Constants.PREPARING_LESSONS_RECORD_URL, requestParams, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 preparingLessonsView.error(Constants.REQUEST_ERROR_CODE, false);
@@ -70,7 +70,7 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
         Map requestParams = preparingLessonsView.getRequestParams();
         requestParams.put(Constants.CURRENT_PAGE, String.valueOf(++pageNum));
         requestParams.put(Constants.PAGE_SIZE, String.valueOf(pageSize));
-        OkHttpRequest.doPost(Constants.PREPARING_LESSONS_RECORD_URL, requestParams, new Callback() {
+        OkHttpRequest.doPost(preparingLessonsView.getCustomContext(), Constants.PREPARING_LESSONS_RECORD_URL, requestParams, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 preparingLessonsView.error(Constants.REQUEST_ERROR_CODE, true);

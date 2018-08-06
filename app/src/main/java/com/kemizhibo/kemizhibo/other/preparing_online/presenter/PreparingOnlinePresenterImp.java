@@ -43,7 +43,7 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
         requestParams.put(Constants.TYPE, "app");
         requestParams.put(Constants.CURRENT_PAGE, String.valueOf(DEFAULT_PAGE_NUM));
         requestParams.put(Constants.PAGE_SIZE, String.valueOf(pageSize));
-        OkHttpRequest.doGet(OkHttpRequest.attachHttpGetParams(Constants.PREPARING_ONLINE_URL, requestParams), new Callback() {
+        OkHttpRequest.doGet(preparingOnlineView.getCustomContext(), OkHttpRequest.attachHttpGetParams(Constants.PREPARING_ONLINE_URL, requestParams), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, false);
@@ -72,7 +72,7 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
         requestParams.put(Constants.TYPE, "app");
         requestParams.put(Constants.CURRENT_PAGE, String.valueOf(++pageNum));
         requestParams.put(Constants.PAGE_SIZE, String.valueOf(pageSize));
-        OkHttpRequest.doGet(OkHttpRequest.attachHttpGetParams(Constants.PREPARING_ONLINE_URL, requestParams), new Callback() {
+        OkHttpRequest.doGet(preparingOnlineView.getCustomContext(), OkHttpRequest.attachHttpGetParams(Constants.PREPARING_ONLINE_URL, requestParams), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, true);

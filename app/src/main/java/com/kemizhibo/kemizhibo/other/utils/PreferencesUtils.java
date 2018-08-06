@@ -85,4 +85,16 @@ public class PreferencesUtils {
         SharedPreferences.Editor editor = sp.edit();
         editor.clear().commit();
     }
+
+    public static String getLoginInfo(String key, Context context){
+        SharedPreferences sp = context.getSharedPreferences("logintoken", context.MODE_PRIVATE);
+        return sp.getString(key, "");
+    }
+
+    public static void saveLoginInfo(String key, String value, Context context){
+        SharedPreferences sp = context.getSharedPreferences("logintoken", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
 }

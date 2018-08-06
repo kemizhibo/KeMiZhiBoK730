@@ -15,6 +15,7 @@ public class Constants {
     public static final String TEACHING_LESSONS_RECORD_URL = SERVER + "kemiapi/prepare/module/getPlanRecord";
     public static final String GET_USER_INFO = SERVER + "kemiapi/ketang/user/info/get";
     public static final String GET_TEACHER = SERVER + "kemiapi/prepare/module/getTeacherBySchoolId";
+    public static final String LOGIN = SERVER + "kemiapi/ketang/user/login";
 
     public static final int NET_ERROR_CODE = 12345;
     public static final int REQUEST_ERROR_CODE = 23456;

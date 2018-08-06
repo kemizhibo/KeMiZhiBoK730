@@ -25,13 +25,11 @@ import android.widget.TextView;
 import com.androidkun.xtablayout.XTabLayout;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnDismissListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
-import com.contrarywind.view.WheelView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
@@ -87,6 +85,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     private int yearSelectIndex;//年选中的索引
     private int monthSelectIndex;//月选中的索引
     private boolean lastIsCurrentYear = true;//上一次滑动选中是否为当年
+    private List<CommonTeacherBean.ContentBean> content;
 
     @Override
     protected int getLayoutId() {
@@ -123,12 +122,6 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                     }else{
                         showManagerFilterPop2();
                     }
-                    /*teacherItems.add("yaojuntian001");
-                    teacherItems.add("xueyutong001");
-                    teacherItems.add("douhuihui001");
-                    teacherItems.add("555555");
-                    showManagerFilterPop2();
-                    pvOptions.show();*/
                 }
             });
         }
@@ -221,7 +214,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 Log.d("PersonCenterBeiShouKeJi", time);
                 if(currentIndex == 1){
                     selectCalendar.setTime(date);
-                    teachingLessonsFragment.onDateFilterClick(time);
+                    teachingLessonsFragment.onDateFilterSelect(time);
                 }
             }
         })
@@ -298,7 +291,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 if(null != statusFilterPop && statusFilterPop.isShowing()){
                     statusFilterPop.dismiss();
                 }
-                preparingLessonsFragment.onStatusFilterClick(position);
+                preparingLessonsFragment.onStatusFilterSelect(position);
             }
         });
         statusFilterPop = new PopupWindow(this);
@@ -334,9 +327,28 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
             @Override
             public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                 //返回的分别是三个级别的选中位置
-                teacherSelectIndex = options1;
+                /*teacherSelectIndex = options1;
                 yearSelectIndex = option2;
-                monthSelectIndex = options3;
+                monthSelectIndex = options3;*/
+                int userId = content.get(options1).getUserId();
+                String year = yearItems.get(option2);
+                String monthStr = monthItems.get(options3);
+                try{
+                    int month = Integer.parseInt(monthStr);
+                    if(month < 10){
+                        monthStr = "0" + monthStr;
+                    }
+                }catch (Exception e){
+
+                }
+                String time = year + "-" + monthStr;
+                if(currentIndex == 0){
+                    preparingLessonsFragment.onManagerFilterSelect(userId, time);
+                }else{
+                    teachingLessonsFragment.onManagerFilterSelect(userId, time);
+                }
+                Log.d("PersonCenterBeiShouKeJi", "userId:" + userId);
+                Log.d("PersonCenterBeiShouKeJi", time);
             }
         }) .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
             @Override
@@ -392,6 +404,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
             }
         }
+        pvOptions.show();
     }
 
     @Override
@@ -417,7 +430,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     @Override
     public void getCommonUserInfoSuccess(CommonUserInfoBean bean) {
         roleId = bean.getContent().getRoleId();
-        roleId = Constants.CHILD_ROLE_ID;
+        //roleId = Constants.CHILD_ROLE_ID;
         PreferencesUtils.saveIntValue(Constants.ROLE_ID, roleId, this);
         runOnUiThread(new Runnable() {
             @Override
@@ -434,13 +447,17 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
 
     @Override
     public void getCommonTeacherSuccess(CommonTeacherBean bean) {
-        List<CommonTeacherBean.ContentBean> content = bean.getContent();
+        content = bean.getContent();
         for (int i = 0; i < content.size(); i++) {
             teacherItems.add(content.get(i).getUserName());
             Log.d("PersonCenterBeiShouKeJi", content.get(i).getUserName());
         }
-        showManagerFilterPop2();
-        pvOptions.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showManagerFilterPop2();
+            }
+        });
     }
 
     @Override

@@ -38,7 +38,7 @@ public class CommonPresenterImp implements CommonPresenter {
             commonView.getCommonFilterError(Constants.NET_ERROR_CODE);
             return;
         }
-        OkHttpRequest.doGet(Constants.COMMON_FILTER_URL, new Callback() {
+        OkHttpRequest.doGet(commonView.getCommonCustomContext(), Constants.COMMON_FILTER_URL, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 commonView.getCommonFilterError(Constants.REQUEST_ERROR_CODE);
@@ -94,7 +94,7 @@ public class CommonPresenterImp implements CommonPresenter {
             commonView.getCommonTeacherError(Constants.NET_ERROR_CODE);
             return;
         }
-        OkHttpRequest.doGet(Constants.GET_TEACHER, new Callback() {
+        OkHttpRequest.doGet(commonView.getCommonCustomContext(), Constants.GET_TEACHER, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
@@ -102,13 +102,13 @@ public class CommonPresenterImp implements CommonPresenter {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d("CommonPresenterImp", response.body().string());
-                /*CommonTeacherBean bean = GsonUtils.getBean(response.body().string(), CommonTeacherBean.class);
+                //Log.d("CommonPresenterImp", response.body().string());
+                CommonTeacherBean bean = GsonUtils.getBean(response.body().string(), CommonTeacherBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonTeacherSuccess(bean);
                 }else{
                     commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
-                }*/
+                }
             }
         });
     }

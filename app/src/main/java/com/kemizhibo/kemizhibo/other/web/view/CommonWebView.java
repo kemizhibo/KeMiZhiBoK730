@@ -6,5 +6,6 @@ import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
  */
 
 public interface CommonWebView {
-
+    void loadError();
+    void back();
 }

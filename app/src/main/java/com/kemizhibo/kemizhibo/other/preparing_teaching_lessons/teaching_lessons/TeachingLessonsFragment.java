@@ -18,6 +18,7 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.presenter.TeachingLessonsPresenter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.presenter.TeachingLessonsPresenterImp;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.view.TeachingLessonsView;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -44,10 +45,13 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
     private TeachingLessonsListAdapter adapter;
     private TeachingLessonsPresenter presenter;
     private String startTime = "";
+    private String userId = "0";
+    private int roleId;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, context);
         presenter = new TeachingLessonsPresenterImp(this);
     }
 
@@ -65,12 +69,14 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
         refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                userId = "0";
                 startTime = "";
                 presenter.loadMoreTeachingLessonsData();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                userId = "0";
                 startTime = "";
                 presenter.refreshTeachingLessonsData();
             }
@@ -87,6 +93,9 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
     public Map getRequestParams() {
         Map params = new HashMap();
         params.put(Constants.START_TIME, startTime);
+        if(roleId == 8){
+            params.put(Constants.USER_ID, userId);
+        }
         return params;
     }
 
@@ -136,8 +145,14 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
         });
     }
 
-    public void onDateFilterClick(String startTime){
+    public void onDateFilterSelect(String startTime){
         this.startTime = startTime;
+        presenter.refreshTeachingLessonsData();
+    }
+
+    public void onManagerFilterSelect(int userId, String time) {
+        this.userId = String.valueOf(userId);
+        this.startTime = time;
         presenter.refreshTeachingLessonsData();
     }
 }

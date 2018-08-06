@@ -19,8 +19,8 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".yhr.activity.SplashActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".yhr.activity.SplashActivity" />
         <activity android:name=".yhr.activity.ShowImageActivity" />
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
         <activity android:name=".yhr.activity.logins.LoginActivity">
@@ -44,7 +44,7 @@
             android:name=".yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity"
             android:configChanges="orientation"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity"
             android:configChanges="orientation"
@@ -56,8 +56,9 @@
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
             android:hardwareAccelerated="true" />
-        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
-        <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity"></activity>
+        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity" />
+        <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
+        <activity android:name=".other.web.CommonWebActivity"></activity>
     </application>
 
 </manifest>

@@ -33,7 +33,7 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
         }
         Map map = new HashMap();
         map.put(Constants.COURSE_ID, detailView.getCourseId());
-        OkHttpRequest.doGet(OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DETAIL_URL, map), new Callback() {
+        OkHttpRequest.doGet(detailView.getCustomContext(), OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DETAIL_URL, map), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
