@@ -1,1 +1,1 @@
-include ':app', ':rxretrofitlibrary', ':recyclerviewlibrary'
+include ':app', ':rxretrofitlibrary', ':recyclerviewlibrary', ':mediapicker'

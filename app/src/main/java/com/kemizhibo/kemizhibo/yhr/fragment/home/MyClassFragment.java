@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,6 +12,9 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
@@ -82,13 +86,21 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         myclassSpring.setType(SpringView.Type.FOLLOW);
         myClassAdapter = new MyClassAdapter(R.layout.myclass_fragment, myclassBean);
         //子条目点击事件
-        /*myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                knowledgeId = String.valueOf(myclassBean.get(position).getSubjectId());
-                ToastUtils.showToast(materialEdition);
+                int prepareStatus = myclassBean.get(position).getPrepareStatus();
+                Intent intent = null;
+                if(1 == prepareStatus){
+                    intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
+                    intent.putExtra(Constants.COURSE_ID, myclassBean.get(position).getCourseId());
+                }else if(3 == prepareStatus){
+                    intent = new Intent(getActivity(), CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                }
+                startActivity(intent);
             }
-        });*/
+        });
         myclassRecyclerview.setAdapter(myClassAdapter);
         //上拉下拉
         myclassSpring.setListener(new SpringView.OnFreshListener() {

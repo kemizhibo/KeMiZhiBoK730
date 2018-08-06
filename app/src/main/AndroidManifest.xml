@@ -59,6 +59,10 @@
         <activity android:name=".yhr.activity.personcenters.TakePhotoActivity" />
         <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
         <activity android:name=".other.web.CommonWebActivity"></activity>
+        <activity
+            android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MediaPickerTheme" />
     </application>
 
 </manifest>
