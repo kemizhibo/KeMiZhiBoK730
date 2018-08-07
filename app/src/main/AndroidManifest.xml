@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <application
         android:name=".yhr.MyApplication"
         android:allowBackup="true"
@@ -63,6 +66,7 @@
             android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MediaPickerTheme" />
+        <activity android:name=".other.preparing_package_detail.view.WordShowActivity"></activity>
     </application>
 
 </manifest>

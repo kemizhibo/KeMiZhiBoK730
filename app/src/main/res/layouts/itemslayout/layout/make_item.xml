@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/make_pic"
+        android:background="@drawable/ic_launcher"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/makeadj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/make_pic"
+        android:layout_toLeftOf="@+id/btn" />
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/make_pic"
+        android:background="#f060"
+        android:text="选用素材" />
+    <Button
+        android:id="@+id/btnmake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/btn"
+        android:background="#f060"
+        android:text="在线制作" />
+</RelativeLayout>

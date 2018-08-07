@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="一键投递" />
+
+    <cn.jzvd.JZVideoPlayerStandard
+        android:id="@+id/jc"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone"></cn.jzvd.JZVideoPlayerStandard>
+
+    <RelativeLayout
+        android:id="@+id/rword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/mword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是上传的WORD版文档" />
+
+        <TextView
+            android:id="@+id/mcheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/mdown"
+            android:paddingRight="20dp"
+            android:text="查看" />
+
+        <TextView
+            android:id="@+id/mdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="20dp"
+            android:text="下载" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rppt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/mppt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是上传的PPT版文档" />
+
+        <TextView
+            android:id="@+id/mcheckppt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/mdownppt"
+            android:paddingRight="20dp"
+            android:text="查看" />
+
+        <TextView
+            android:id="@+id/mdownppt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="20dp"
+            android:text="加入授课" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rimage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/mimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/none"
+        android:visibility="gone"
+        android:text="暂无相关内容"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
