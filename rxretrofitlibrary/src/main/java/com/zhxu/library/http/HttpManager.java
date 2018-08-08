@@ -1,7 +1,5 @@
 package com.zhxu.library.http;
 
-import android.util.Log;
-
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.zhxu.library.RxRetrofitApp;
 import com.zhxu.library.api.BaseApi;
@@ -10,10 +8,13 @@ import com.zhxu.library.http.cookie.CookieInterceptor;
 import com.zhxu.library.listener.HttpOnNextListener;
 import com.zhxu.library.subscribers.ProgressSubscriber;
 
+import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -44,6 +45,7 @@ public class HttpManager {
         return INSTANCE;
     }
 
+
     /**
      * 处理http请求
      *
@@ -57,6 +59,7 @@ public class HttpManager {
         if(RxRetrofitApp.isDebug()){
             builder.addInterceptor(getHttpLoggingInterceptor());
         }
+
 
 
         /*创建retrofit对象*/
@@ -110,7 +113,7 @@ public class HttpManager {
         HttpLoggingInterceptor loggingInterceptor=new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.d("RxRetrofit","Retrofit====Message:"+message);
+                //Log.d("RxRetrofit","Retrofit====Message:"+message);
             }
         });
         loggingInterceptor.setLevel(level);

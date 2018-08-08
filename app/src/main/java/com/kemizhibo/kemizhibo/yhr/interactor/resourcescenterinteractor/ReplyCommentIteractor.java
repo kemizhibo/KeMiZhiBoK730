@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.PutCommentApi;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.ReplyCommentApi;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 public class ReplyCommentIteractor {
 
     private IGetDataDelegate<ReplyCommentBean> mDelegate;
+    private Context context;
 
     @Inject
     public ReplyCommentIteractor() {}

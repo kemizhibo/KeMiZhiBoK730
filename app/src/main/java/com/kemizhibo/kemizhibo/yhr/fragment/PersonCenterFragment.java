@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -27,6 +26,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 
@@ -51,19 +51,20 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     LinearLayout shoucangLayout;
     @BindView(R.id.liulan_layout)
     LinearLayout liulanLayout;
-    @BindView(R.id.sucai_layout)
-    LinearLayout sucaiLayout;
+    /*@BindView(R.id.sucai_layout)
+    LinearLayout sucaiLayout;*/
     @BindView(R.id.jilu_layout)
     LinearLayout jiluLayout;
     @BindView(R.id.fankui_layout)
     LinearLayout fankuiLayout;
-    @BindView(R.id.clear_layout)
-    LinearLayout clearLayout;
+   /* @BindView(R.id.clear_layout)
+    LinearLayout clearLayout;*/
     @BindView(R.id.shehzi_layout)
     LinearLayout shehziLayout;
     private SharedPreferences sp;
     private String token;
     private GetUserBean.ContentBean userData;
+    private TextView qingchuhuancun_txt;
 
 
     @Override
@@ -97,7 +98,6 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         token = sp.getString("token", "");
         getUserPresenter.getUserData(mActivity, "Bearer " + token);
     }
-
     /*@Override
     public void onResume() {
         super.onResume();
@@ -141,7 +141,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     }
 
 
-    @OnClick({R.id.person_bianji_butn, R.id.person_touxiang, R.id.shoucang_layout, R.id.liulan_layout, R.id.sucai_layout, R.id.jilu_layout, R.id.fankui_layout, R.id.clear_layout, R.id.shehzi_layout})
+    @OnClick({R.id.person_bianji_butn, R.id.person_touxiang, R.id.shoucang_layout, R.id.liulan_layout,  R.id.jilu_layout, R.id.fankui_layout,  R.id.shehzi_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_bianji_butn:
@@ -157,16 +157,14 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
             case R.id.liulan_layout:
                 startActivity(new Intent(getActivity(), PersonCenterLiuLanActivity.class));
                 break;
-            case R.id.sucai_layout:
+            /*case R.id.sucai_layout:
                 startActivity(new Intent(getActivity(), PersonCenterSuCaiActivity.class));
-                break;
+                break;*/
             case R.id.jilu_layout:
                 startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
                 break;
             case R.id.fankui_layout:
                 startActivity(new Intent(getActivity(), PersonCenterFanKuiActivity.class));
-                break;
-            case R.id.clear_layout:
                 break;
             case R.id.shehzi_layout:
                 startActivity(new Intent(getActivity(), PersonCenterSheZhiActivity.class));

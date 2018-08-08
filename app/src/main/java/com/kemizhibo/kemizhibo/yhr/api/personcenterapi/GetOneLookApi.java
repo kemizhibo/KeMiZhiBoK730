@@ -2,9 +2,7 @@ package com.kemizhibo.kemizhibo.yhr.api.personcenterapi;
 
 import com.alibaba.fastjson.JSON;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
-import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetUserService;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -19,7 +17,7 @@ import rx.Observable;
  * Created by yhr on 2018/7/1.
  */
 
-public class GetOneLookApi extends BaseApi<LookBean> {
+public class GetOneLookApi extends BaseApi<LiuLanBean> {
 
     String token;
     String playPosition;
@@ -44,7 +42,7 @@ public class GetOneLookApi extends BaseApi<LookBean> {
     }
 
     @Override
-    public LookBean call(ResponseBody responseBody) {
+    public LiuLanBean call(ResponseBody responseBody) {
         //解析
         String string = "";
         try {
@@ -53,6 +51,6 @@ public class GetOneLookApi extends BaseApi<LookBean> {
             e.printStackTrace();
         }
         //LogUtils.e("00000000000000000000000000",string);
-        return JSON.parseObject(string, LookBean.class);
+        return JSON.parseObject(string, LiuLanBean.class);
     }
 }

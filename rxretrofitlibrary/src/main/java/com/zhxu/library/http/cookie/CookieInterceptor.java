@@ -32,7 +32,6 @@ public class CookieInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        //请求头添加token
         Request request = chain.request();
         Response response = chain.proceed(request);
 

@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.CollectionApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
@@ -17,6 +19,7 @@ import javax.inject.Inject;
 public class CollectionIteractor {
 
     private IGetDataDelegate<CollectionBean> mDelegate;
+    private Context context;
 
     @Inject
     public CollectionIteractor() {}

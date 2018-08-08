@@ -19,6 +19,6 @@ import rx.Observable;
 
 public interface HttpGetUserService {
 
-   @GET("ketang/user/info/get")
+   @GET("kemiapi/ketang/user/info/get")
     Observable<ResponseBody> getUserData(@Header("Authorization") String token);
 }

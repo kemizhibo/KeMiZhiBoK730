@@ -1,12 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.GetOneLookApi;
-import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.PutCommentApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
-import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
 
@@ -19,7 +18,8 @@ import javax.inject.Inject;
  */
 public class OneLookIteractor {
 
-    private IGetDataDelegate<LookBean> mDelegate;
+    private IGetDataDelegate<LiuLanBean> mDelegate;
+    private Context context;
 
     @Inject
     public OneLookIteractor() {}
@@ -27,17 +27,17 @@ public class OneLookIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadOneLookData(BaseActivity activity, IGetDataDelegate<LookBean> mDelegate,String token, String playPosition, String courseId, String watchTime,String isEnd){
+    public void loadOneLookData(BaseActivity activity, IGetDataDelegate<LiuLanBean> mDelegate, String token, String playPosition, String courseId, String watchTime, String isEnd){
         this.mDelegate = mDelegate;
         GetOneLookApi getOneLookApi = new GetOneLookApi(listener,activity,token,playPosition,courseId,watchTime,isEnd);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(getOneLookApi);
     }
 
-    private HttpOnNextListener<LookBean> listener = new HttpOnNextListener<LookBean>() {
+    private HttpOnNextListener<LiuLanBean> listener = new HttpOnNextListener<LiuLanBean>() {
         @Override
-        public void onNext(LookBean lookBean) {
-            mDelegate.getDataSuccess(lookBean);
+        public void onNext(LiuLanBean liuLanBean) {
+            mDelegate.getDataSuccess(liuLanBean);
         }
 
         @Override

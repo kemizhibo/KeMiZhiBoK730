@@ -99,6 +99,7 @@
     <dimen name="res_60dp">60.0dp</dimen>
     <dimen name="res_62dp">62.0dp</dimen>
     <dimen name="res_63dp">63.0dp</dimen>
+    <dimen name="res_64dp">64.0dp</dimen>
     <dimen name="res_65dp">65.0dp</dimen>
     <dimen name="res_66dp">66.0dp</dimen>
     <dimen name="res_68dp">68.0dp</dimen>
@@ -118,8 +119,10 @@
     <dimen name="res_88dp">88.0dp</dimen>
     <dimen name="res_88.5dp">88.5dp</dimen>
     <dimen name="res_89dp">89.0dp</dimen>
+    <dimen name="res_90dp">90.0dp</dimen>
     <dimen name="res_91dp">91.0dp</dimen>
     <dimen name="res_93dp">93.0dp</dimen>
+    <dimen name="res_94.5dp">94.5dp</dimen>
     <dimen name="res_95dp">95.0dp</dimen>
     <dimen name="res_98dp">98.0dp</dimen>
     <dimen name="res_99dp">99.0dp</dimen>
@@ -130,9 +133,12 @@
     <dimen name="res_108dp">108.0dp</dimen>
     <dimen name="res_109dp">109.0dp</dimen>
     <dimen name="res_110dp">110.0dp</dimen>
+    <dimen name="res_117.5dp">117.5dp</dimen>
     <dimen name="res_120dp">120.0dp</dimen>
+    <dimen name="res_130dp">130.0dp</dimen>
     <dimen name="res_137dp">137.0dp</dimen>
     <dimen name="res_143dp">143.0dp</dimen>
+    <dimen name="res_146dp">146.0dp</dimen>
     <dimen name="res_157dp">157.0dp</dimen>
     <dimen name="res_160dp">160.0dp</dimen>
     <dimen name="res_165dp">165.0dp</dimen>
@@ -152,9 +158,12 @@
     <dimen name="res_300dp">300.0dp</dimen>
     <dimen name="res_310dp">310.0dp</dimen>
     <dimen name="res_320dp">320.0dp</dimen>
+    <dimen name="res_336.5dp">336.5dp</dimen>
     <dimen name="res_337dp">337.0dp</dimen>
+    <dimen name="res_362.5dp">362.5dp</dimen>
     <dimen name="res_375dp">375.0dp</dimen>
     <dimen name="res_400dp">400.0dp</dimen>
+    <dimen name="res_425dp">425.0dp</dimen>
     <dimen name="res_461.5dp">461.5dp</dimen>
     <dimen name="res_530.0dp">530.0dp</dimen>
     <dimen name="res_565.5dp">565.5dp</dimen>

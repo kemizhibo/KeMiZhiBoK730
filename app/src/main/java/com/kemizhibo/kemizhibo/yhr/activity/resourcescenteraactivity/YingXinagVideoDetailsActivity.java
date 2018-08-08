@@ -3,7 +3,6 @@ package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -33,7 +31,7 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.CommentAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
@@ -48,15 +46,11 @@ import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionController;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.YingXiangDetailsVideoView;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
@@ -316,7 +310,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
 
     //第一次记录播放时间
     @Override
-    public void onGetOneLookSuccess(LookBean lookBean) {
+    public void onGetOneLookSuccess(LiuLanBean liuLanBean) {
 
     }
 
@@ -510,8 +504,6 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
                 String targetId = String.valueOf(commentList.get(position).getCommentId());
-                LogUtils.i("0000000000000000000000", targetId);
-                LogUtils.i("0000000000000000000000", token);
                 yingXiangDetailsVideoPresenter.getLikeData(YingXinagVideoDetailsActivity.this, "Bearer " + token, targetId, "4");
             }
         });
@@ -570,6 +562,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
                 //点击收藏判断是否登录，登录成功改变图片，失败弹出popwindow
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
+                LogUtils.i("********************", token);
                 yingXiangDetailsVideoPresenter.getCollectionData(this, "Bearer " + token, courseId);
                 //如果成功拿到数据，就正常收藏，否则就弹框
                 break;

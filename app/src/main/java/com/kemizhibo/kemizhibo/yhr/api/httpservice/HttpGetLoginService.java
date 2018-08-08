@@ -22,7 +22,7 @@ public interface HttpGetLoginService {
     //获取Token
     @Headers({"User-Agent: Mozilla/5.0 (Linux; U; Android 3.0; en-us; Xoom Build/HRI39) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13"})
 
-    @POST("user/school/login")
+    @POST("kemiapi/ketang/user/login")
     Observable<ResponseBody> getTokenData(@Query("account") String account,
                                           @Query("password") String password);
 

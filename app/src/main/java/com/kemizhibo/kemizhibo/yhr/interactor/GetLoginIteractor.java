@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.tokenapi.GetLoginApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
@@ -17,6 +19,7 @@ import javax.inject.Inject;
 public class GetLoginIteractor {
 
     private IGetDataDelegate<LoginBean> mDelegate;
+    private Context context;
 
     @Inject
     public GetLoginIteractor() {}

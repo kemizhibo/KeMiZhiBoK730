@@ -24,7 +24,7 @@ public interface HttpGetCollectionService {
     Observable<ResponseBody> getCollectionData(@Header("Authorization") String token,
       @FormUrlEncoded                                          @Body String courseId);*/
    @FormUrlEncoded
-   @POST("course/shortvideo/createfavoritesForB")
+   @POST("kemiapi/course/shortvideo/createfavoritesForB")
     Observable<ResponseBody> getCollectionData(@Header("Authorization") String token,
                                                @Field("courseId") String courseId);
 

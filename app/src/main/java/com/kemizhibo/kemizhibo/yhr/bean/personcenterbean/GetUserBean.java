@@ -159,7 +159,7 @@ public class GetUserBean {
         private int userType;
         private int parentId;
         private int roleId;
-        private long enterpriseId;
+        private Long enterpriseId;
         private String period;
         private String grade;
         private String address;
@@ -468,11 +468,11 @@ public class GetUserBean {
             this.roleId = roleId;
         }
 
-        public long getEnterpriseId() {
+        public Long getEnterpriseId() {
             return enterpriseId;
         }
 
-        public void setEnterpriseId(long enterpriseId) {
+        public void setEnterpriseId(Long enterpriseId) {
             this.enterpriseId = enterpriseId;
         }
 

@@ -3,7 +3,7 @@ package com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl;
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
@@ -182,10 +182,10 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
 
     @Override
     public void getOneLookData(BaseActivity activity, String token, String playPosition, String courseId, String watchTime, String isEnd) {
-        oneLookIteractor.loadOneLookData(activity, new IGetDataDelegate<LookBean>() {
+        oneLookIteractor.loadOneLookData(activity, new IGetDataDelegate<LiuLanBean>() {
             @Override
-            public void getDataSuccess(LookBean lookBean) {
-                mPresenterView.onGetOneLookSuccess(lookBean);
+            public void getDataSuccess(LiuLanBean liuLanBean) {
+                mPresenterView.onGetOneLookSuccess(liuLanBean);
             }
 
             @Override

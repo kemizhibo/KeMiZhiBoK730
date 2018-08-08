@@ -5,26 +5,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSheZhiActivity">
-    <RelativeLayout
+    <include layout="@layout/pubic_title_bar"/>
+    <include layout="@layout/line"/>
+    <LinearLayout
+        android:id="@+id/change_pwd_layout"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/xiugai_back"
-            android:layout_margin="@dimen/res_12dp"
-            android:src="@mipmap/fanhui"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_height="@dimen/res_65dp">
         <TextView
-            android:text="找回密码"
-            android:textColor="#7f7e7e"
-            android:textSize="@dimen/res_textsize_18sp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-    <View
-        android:background="#dcdcdc"
+            android:layout_marginLeft="@dimen/res_15dp"
+            android:textSize="@dimen/res_textsize_17sp"
+            android:textColor="@color/black_666666"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="修改密码"/>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/res_9dp"
+            android:layout_height="@dimen/res_17dp"
+            android:layout_marginRight="@dimen/res_15dp"
+            android:src="@mipmap/person_more_2" />
+    </LinearLayout>
+    <include layout="@layout/line"/>
+    <LinearLayout
+        android:id="@+id/clear_layout"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/res_1dp" />
+        android:layout_height="@dimen/res_65dp">
+        <TextView
+            android:layout_marginLeft="@dimen/res_15dp"
+            android:textSize="@dimen/res_textsize_17sp"
+            android:textColor="@color/black_666666"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="清除缓存"/>
+        <TextView
+            android:id="@+id/clear_num_text"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/res_15dp"
+            android:textSize="@dimen/res_textsize_17sp"
+            android:textColor="@color/text_999999"
+            android:text="2M"/>
+    </LinearLayout>
+    <include layout="@layout/line"/>
+    <LinearLayout
+        android:id="@+id/get_new_lauout"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_65dp">
+        <TextView
+            android:layout_marginLeft="@dimen/res_15dp"
+            android:textSize="@dimen/res_textsize_17sp"
+            android:textColor="@color/black_666666"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="版本更新"/>
+        <TextView
+            android:id="@+id/get_new_num_text"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/res_15dp"
+            android:textSize="@dimen/res_textsize_17sp"
+            android:textColor="@color/text_999999"
+            android:text="V2.0"/>
+    </LinearLayout>
+    <include layout="@layout/line"/>
+    <View
+        android:layout_marginTop="@dimen/res_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_eeeeee"/>
+    <TextView
+        android:layout_marginTop="@dimen/res_22dp"
+        android:id="@+id/finish_login_butn"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_67c58c"
+        android:textSize="@dimen/res_textsize_19sp"
+        android:text="退出登录"/>
+    <TextView
+        android:id="@+id/fuwu"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/res_425dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_67c58c"
+        android:textSize="@dimen/res_textsize_13sp"
+        android:text="科米课堂服务使用协议"/>
+
 </LinearLayout>

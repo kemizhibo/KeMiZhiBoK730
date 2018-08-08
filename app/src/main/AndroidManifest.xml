@@ -59,7 +59,7 @@
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
             android:hardwareAccelerated="true" />
-        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity" />
+        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
         <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
         <activity android:name=".other.web.CommonWebActivity"></activity>
         <activity
@@ -67,6 +67,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/MediaPickerTheme" />
         <activity android:name=".other.preparing_package_detail.view.WordShowActivity"></activity>
+        <activity android:name=".other.web.CommonWebActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
+        <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
+        <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
+        <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
+        <activity android:name=".yhr.activity.personcenters.FuWuActivity"></activity>
     </application>
 
 </manifest>

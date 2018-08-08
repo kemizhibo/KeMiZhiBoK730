@@ -5,13 +5,20 @@ import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenter;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
 
+import java.io.File;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 /**
  * Author: yhr
  * Date: 2018/5/24
  * Describe  保存头像
  */
 public interface PreservationPicturePresenter extends BasePresenter<PreservationPictureView> {
-    //获取用户信息
+    //保存头像
     void getPreservationPictureData(BaseActivity activity, String token,String picImg);
+    //上传头像
+    void getTakePhotoData(BaseActivity activity, MultipartBody.Part file);
 
 }

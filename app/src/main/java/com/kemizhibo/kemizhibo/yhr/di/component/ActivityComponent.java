@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePhoneActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePwdActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSheZhiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.SetNewPhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.TakePhotoActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
@@ -50,4 +55,9 @@ public interface ActivityComponent {
     void inject(TakePhotoActivity activity);
     void inject(PersonCenterShouCangActivity activity);
     void inject(PersonCenterFanKuiActivity activity);
+    void inject(ChangePhoneActivity activity);
+    void inject(SetNewPhoneActivity activity);
+    void inject(ChangePwdActivity activity);
+    void inject(PersonCenterSheZhiActivity activity);
+    void inject(PersonCenterLiuLanActivity activity);
 }

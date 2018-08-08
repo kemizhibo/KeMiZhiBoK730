@@ -7,4 +7,15 @@
     tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity">
     <include layout="@layout/pubic_title_bar"/>
     <include layout="@layout/line"/>
+    <com.liaoinstan.springview.widget.SpringView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/liulan_springview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/liulan_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </com.liaoinstan.springview.widget.SpringView>
 </LinearLayout>

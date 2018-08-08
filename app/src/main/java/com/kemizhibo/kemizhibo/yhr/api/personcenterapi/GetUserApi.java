@@ -45,7 +45,7 @@ public class GetUserApi extends BaseApi<GetUserBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //LogUtils.e("00000000000000000000000000",string);
+        LogUtils.e("00000000000000000000000000",string);
         return JSON.parseObject(string, GetUserBean.class);
     }
 }
