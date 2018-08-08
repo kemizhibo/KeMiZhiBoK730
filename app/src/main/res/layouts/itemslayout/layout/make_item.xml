@@ -1,36 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="50dp"
+    android:padding="10dp">
 
     <ImageView
-        android:id="@+id/make_pic"
-        android:background="@drawable/ic_launcher"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/piconline"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/online" />
 
     <TextView
         android:id="@+id/makeadj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/make_pic"
-        android:layout_toLeftOf="@+id/btn" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/picxiugai"
+        android:layout_toRightOf="@+id/piconline"
+        android:text="这是文件名称（在线制作）" />
 
-    <Button
-        android:id="@+id/btn"
+    <ImageView
+        android:id="@+id/picxiugai"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/mcheckonline"
+        android:src="@drawable/xiugai" />
+
+    <TextView
+        android:id="@+id/mcheckonline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/picdelete"
+        android:paddingRight="20dp"
+        android:text="修改" />
+
+    <ImageView
+        android:id="@+id/picdelete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/mdeleteonline"
+        android:src="@drawable/delete" />
+
+    <TextView
+        android:id="@+id/mdeleteonline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/make_pic"
-        android:background="#f060"
-        android:text="选用素材" />
-    <Button
-        android:id="@+id/btnmake"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/btn"
-        android:background="#f060"
-        android:text="在线制作" />
+        android:layout_centerVertical="true"
+        android:paddingRight="20dp"
+        android:text="删除" />
 </RelativeLayout>

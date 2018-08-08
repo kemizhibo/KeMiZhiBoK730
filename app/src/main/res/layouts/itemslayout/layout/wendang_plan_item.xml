@@ -5,26 +5,43 @@
 
     <TextView
         android:id="@+id/mword"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/picxiugaiword"
         android:text="这是上传的WORD版文档" />
+
+    <ImageView
+        android:id="@+id/picxiugaiword"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/mcheck"
+        android:src="@drawable/xiugai" />
 
     <TextView
         android:id="@+id/mcheck"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/mdown"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/picdeleteword"
         android:paddingRight="20dp"
         android:text="修改" />
 
+    <ImageView
+        android:id="@+id/picdeleteword"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/mdeleteword"
+        android:src="@drawable/delete" />
+
     <TextView
         android:id="@+id/mdeleteword"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:paddingRight="20dp"
         android:text="删除" />
 </RelativeLayout>

@@ -116,11 +116,11 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
-                case TYPE_MAKE://在线制作
+              /*  case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     convertView.setTag(holder);
-                    break;
+                    break;*/
                 default:
                     break;
             }
@@ -141,10 +141,11 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = otherBeanList.get(position).getModuleId();
             RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId);
-        } else if (itemViewType == TYPE_MAKE) {
+        }
+       /* else if (itemViewType == TYPE_MAKE) {
             moduleId = otherBeanList.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
-        }
+        }*/
         return convertView;
     }
 

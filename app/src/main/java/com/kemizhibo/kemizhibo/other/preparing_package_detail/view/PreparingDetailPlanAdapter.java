@@ -61,9 +61,10 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
     private int moduleId;
     private static final int TYPE_MAKE = 4;//在线制作
 
-    public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList) {
+    public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList,Handler mHandler) {
         this.context = context;
         this.planBeanList = planBeanList;
+        this.mHandler=mHandler;
     }
 
 
@@ -141,6 +142,8 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                 case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
+                    holder.mdeleteonline = (TextView) convertView.findViewById(R.id.mdeleteonline);
+                    holder.mcheckonline = (TextView) convertView.findViewById(R.id.mcheckonline);
                     convertView.setTag(holder);
                     break;
                 default:
@@ -177,7 +180,15 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId);
         } else if (itemViewType == TYPE_MAKE) {
             moduleId = planBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
+            holder.mmake.setText(planBeanList.get(position).getDocName());
+            holder.mdeleteonline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deletePPT(7, position);
+                }
+            });
+          /*  moduleId = planBeanList.get(position).getModuleId();
+            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);*/
         }
         return convertView;
     }

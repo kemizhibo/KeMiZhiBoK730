@@ -61,7 +61,6 @@
             android:hardwareAccelerated="true" />
         <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
         <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
-        <activity android:name=".other.web.CommonWebActivity"></activity>
         <activity
             android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
             android:screenOrientation="portrait"

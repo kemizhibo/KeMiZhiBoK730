@@ -101,7 +101,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getMaterial());
                     listViewsu.setAdapter(preparingDetailAdapter);
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
-                    PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan());
+                    PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(),mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
                     List<PreparingPackageDetailBean.ContentBean.OtherBean> other = bean.getContent().getOther();
                     if (other.size() > 0) {

@@ -36,7 +36,7 @@ import okhttp3.Response;
 public class RequestUtil {
 
     private static boolean isjump = false;
-    private  static  BDocInfo docInfo;
+    private static BDocInfo docInfo;
     private static TextView id;
     private static int type;
 
@@ -68,13 +68,13 @@ public class RequestUtil {
                                 @Override
                                 public void onClick(View v) {
                                     isjump = true;
-                                    getDocMessage(context,bean.getContent().getDocId(), holder,3);
+                                    getDocMessage(context, bean.getContent().getDocId(), holder, 3);
                                 }
                             });
                             holder.mdownppt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    getDocMessage(context,bean.getContent().getDocId(), holder,3);
+                                    getDocMessage(context, bean.getContent().getDocId(), holder, 3);
 
                                 }
                             });
@@ -114,7 +114,7 @@ public class RequestUtil {
                             String docName = bean.getContent().getFileName();
                             final String url = bean.getContent().getUrl();
                             Log.i("-code---", bean.getCode() + "");
-                            Log.i("-docurl---", bean.getContent().getUrl()+ "");
+                            Log.i("-docurl---", bean.getContent().getUrl() + "");
                             if (type == 4) {
                                 holder.mmake.setText(docName);
                             } else if (type == 1) {
@@ -124,7 +124,7 @@ public class RequestUtil {
                                 @Override
                                 public void onClick(View v) {
                                     if (url != null) {
-                                        getDocMessage(context,bean.getContent().getDocId(), holder,1);
+                                        getDocMessage(context, bean.getContent().getDocId(), holder, 1);
                                     }
                                 }
                             });
@@ -132,7 +132,7 @@ public class RequestUtil {
                                 @Override
                                 public void onClick(View v) {
                                     isjump = true;
-                                    getDocMessage(context,bean.getContent().getDocId(), holder,1);
+                                    getDocMessage(context, bean.getContent().getDocId(), holder, 1);
                                 }
                             });
                         }
@@ -166,16 +166,16 @@ public class RequestUtil {
                     int pageCount = previewBean.getPageCount();
                     String title = previewBean.getTitle();
                     String documentId = previewBean.getDocumentId();
-                    String docs="";
-                     if (i==1){
-                        docs="doc";
-                         id= holder.mdown;
-                         type=1;
-                     }else if (i==3){
-                         docs="pptx";
-                        id= holder.mdownppt;
-                         type=3;
-                     }
+                    String docs = "";
+                    if (i == 1) {
+                        docs = "doc";
+                        id = holder.mdown;
+                        type = 1;
+                    } else if (i == 3) {
+                        docs = "pptx";
+                        id = holder.mdownppt;
+                        type = 3;
+                    }
                     docInfo = new BDocInfo(host, documentId, docs, token)
                             .setLocalFileDir("")
                             .setTotalPage(pageCount)
@@ -188,12 +188,12 @@ public class RequestUtil {
                     if (isjump) {
                         Intent intent = new Intent(context, WordShowActivity.class);
                         intent.putExtra("word", doc);
-                        Log.i("----","zhanshi");
+                        Log.i("----", "zhanshi");
                         context.startActivity(intent);
                         isjump = false;
                     } else {
-                        Log.i("----","xiazai");
-                        SampleObserver observer = new SampleObserver(id, docInfo,type);
+                        Log.i("----", "xiazai");
+                        SampleObserver observer = new SampleObserver(id, docInfo, type);
                         DocDownloadManager.getInstance(context, "mydoc")
                                 .startOrResumeDownloader(docInfo.getDocId(),
                                         docInfo.getToken(),
@@ -227,6 +227,7 @@ public class RequestUtil {
                 if (null != picbean && 0 == picbean.getCode()) {
                     String url = picbean.getContent().getUrl();
                     Log.i("-picurl---", url + "");
+                    Log.i("-picmiaoshu---", picbean.getContent().getFileName() + "");
                     final Uri parse = Uri.parse(Constants.TEST_IMAGE_URL);
                     // final Uri parse = Uri.parse(url);
                     final Bitmap bitmap = getURLimage(Constants.TEST_IMAGE_URL);
@@ -234,7 +235,9 @@ public class RequestUtil {
                         @Override
                         public void run() {
                             holder.miv.setImageURI(parse);
-                            holder.madjsucai.setText(picbean.getContent().getIntroduce());
+                            if (picbean.getContent().getIntroduce() != null) {
+                                holder.madjsucai.setText(picbean.getContent().getFileName());
+                            }
                         }
                     });
                 }

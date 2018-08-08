@@ -78,6 +78,7 @@ dependencies {
     compile 'com.androidkun:XTabLayout:1.1.3'
     compile 'com.liaoinstan.springview:library:1.2.6'
     compile 'com.github.LidongWen:MultiTypeAdapter:0.1.3'
+    compile 'cn.jzvd:jiaozivideoplayer:6.2.12'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     //CoordinatorLayout和tablayout结合的库
     compile 'cn.hugeterry.coordinatortablayout:coordinatortablayout:1.1.0'

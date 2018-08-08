@@ -11,7 +11,7 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 
 public  class MyViewHolder {
-    public TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai;
+    public TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline;
     public JZVideoPlayerStandard jcVideoPlayer;
     public TextView mwendang;
     public SimpleDraweeView miv;
