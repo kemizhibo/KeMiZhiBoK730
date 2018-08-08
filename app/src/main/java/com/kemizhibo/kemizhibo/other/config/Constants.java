@@ -17,6 +17,10 @@ public class Constants {
     public static final String GET_TEACHER = SERVER + "kemiapi/prepare/module/getTeacherBySchoolId";
     public static final String LOGIN = SERVER + "kemiapi/ketang/user/login";
 
+    public static final String H5_MAKE = "http://demo.mulpush.cn/kemi/#/make/${id}?courseId=${courseId}";
+    public static final String H5_PREVIEW = "http://demo.mulpush.cn/kemi/#/preview/${id}";
+    public static final String H5_TEACH = "http://demo.mulpush.cn/kemi/#/lesson/${id}";
+
     public static final int NET_ERROR_CODE = 12345;
     public static final int REQUEST_ERROR_CODE = 23456;
 

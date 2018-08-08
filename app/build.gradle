@@ -103,8 +103,8 @@ dependencies {
     implementation 'com.github.dueeeke.dkplayer:dkplayer-java:2.5.2'
     implementation 'com.github.dueeeke.dkplayer:dkplayer-armv7a:2.5.2'
     implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:2.5.2'
-
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     compile 'com.contrarywind:Android-PickerView:4.1.6'
     compile 'com.contrarywind:wheelview:4.0.8'
+    implementation project(':mediapicker')
 }

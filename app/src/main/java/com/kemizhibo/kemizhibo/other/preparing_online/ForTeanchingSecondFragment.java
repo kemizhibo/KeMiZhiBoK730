@@ -1,11 +1,13 @@
 package com.kemizhibo.kemizhibo.other.preparing_online;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -25,6 +27,7 @@ import com.kemizhibo.kemizhibo.other.preparing_online.presenter.PreparingOnlineP
 import com.kemizhibo.kemizhibo.other.preparing_online.presenter.PreparingOnlinePresenterImp;
 import com.kemizhibo.kemizhibo.other.preparing_online.view.PreparingOnlineView;
 import com.kemizhibo.kemizhibo.other.utils.FilterPopUtils;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
@@ -156,6 +159,14 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             }
         });
         presenter.refresh();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent
+                         = new Intent(getActivity(), CommonWebActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     public void initialize(){
