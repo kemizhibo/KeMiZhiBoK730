@@ -296,6 +296,7 @@
                     android:layout_height="@dimen/res_19.5dp"
                     android:src="@mipmap/person_clear_2"/>
                 <TextView
+                    android:id="@+id/qingchuhuancun_txt"
                     android:layout_toRightOf="@+id/image6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

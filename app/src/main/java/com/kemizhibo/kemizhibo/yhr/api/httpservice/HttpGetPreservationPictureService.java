@@ -2,6 +2,8 @@ package com.kemizhibo.kemizhibo.yhr.api.httpservice;
 
 
 
+import java.io.File;
+
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,7 +20,14 @@ import rx.Observable;
 
 public interface HttpGetPreservationPictureService {
     @FormUrlEncoded
-   @POST("ketang/user/info/editPicImg")
+    @POST("kemiapi/ketang/user/info/editPicImg")
     Observable<ResponseBody> getPreservationPictureData(@Header("Authorization") String token,
                                                         @Field("picImg") String picImg);
+
+    //上传头像
+    @FormUrlEncoded
+    @POST("image/upload")
+    Observable<ResponseBody> getTakePhotoData(@Header("Authorization") String token,
+                                                        @Field("uploadfile") File uploadfile,
+                                                        @Field("param") String param);
 }

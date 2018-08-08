@@ -32,5 +32,4 @@ public class FeedBackActivity extends BaseActivity {
         publicTitleBarRoot.changeTitleBar("意见反馈");
         publicTitleBarRoot.buildFinish();
     }
-
 }

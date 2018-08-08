@@ -4,28 +4,28 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.TakePhotoBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LQRPhotoSelectUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
+
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+
 import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,6 +50,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     private String token;
     private String file;
     private String url;
+    private File outputFile;
 
     @Override
     protected int getLayoutId() {
@@ -70,18 +71,6 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
         //上传图片
         //intiPhoto();
     }
-
-    /*private void intiPhoto() {
-        *//*String url = "http://39.155.221.165:8080/image/upload";
-        String fileName = "yhr";*//*
-        //文件转换
-        //File file = new File();
-        Map map = new HashMap();
-        map.put("param","picImg");
-        //创建map集合
-        OkHttpRequest.uploadFile(url, file, "yhr", map);
-    }*/
-
     private void bindTitleBar() {
         publicTitleBarRoot.setLeftImageResouse(R.drawable.ic_back).setLeftLinearLayoutListener(new TapBarLayout.LeftOnClickListener() {
             @Override
@@ -118,29 +107,17 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
             }
         });
     }
-   /* //图片路径转换file的方法
-    private void getFile(){
-        Uri uri = data.getData();
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor actualimagecursor = managedQuery(uri,proj,null,null,null);
-        int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        actualimagecursor.moveToFirst();
-        String img_path = actualimagecursor.getString(actual_image_column_index);
-        File file = new File(img_path);
-    }*/
 
     private void init() {
         // 1、创建LQRPhotoSelectUtils（一个Activity对应一个LQRPhotoSelectUtils）
         mLqrPhotoSelectUtils = new LQRPhotoSelectUtils(this, new LQRPhotoSelectUtils.PhotoSelectListener() {
-
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
+                TakePhotoActivity.this.outputFile = outputFile;
                 // 4、当拍照或从图库选取图片成功后回调
                 //得到图片的路径和URL
                 file = outputFile.getAbsolutePath();
                 url = outputUri.toString();
-                /*LogUtils.i("********************", file);
-                LogUtils.i("********************", url);*/
                 Glide.with(TakePhotoActivity.this).load(outputUri).into(ivPic);
             }
         }, true);//true裁剪，false不裁剪
@@ -222,18 +199,29 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     public void onViewClicked() {
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        preservationPicturePresenter.getPreservationPictureData(this,"Bearer "+token,url);
+        preservationPicturePresenter.getTakePhotoData(this,"Bearer "+token,outputFile,"picImg");
+        LogUtils.i("000000000000000000",token+"----------"+outputFile);
         finish();
     }
-
+    //保存头像
     @Override
     public void onPreservationPictureSuccess(PreservationPictureBean preservationPictureBean) {
-        LogUtils.i("*************",preservationPictureBean.getMessage());
+
     }
 
     @Override
     public void onPreservationPictureError(String msg) {
-        LogUtils.i("*************",msg);
+
+    }
+    //上传头像
+    @Override
+    public void onTakePhotoSuccess(TakePhotoBean takePhotoBean) {
+
+    }
+
+    @Override
+    public void onTakePhotoError(String msg) {
+
     }
 
     @Override

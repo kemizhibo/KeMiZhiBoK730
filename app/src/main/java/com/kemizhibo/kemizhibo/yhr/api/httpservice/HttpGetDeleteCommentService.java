@@ -18,7 +18,7 @@ import rx.Observable;
 public interface HttpGetDeleteCommentService {
 
     //删除评论commentId
-    @GET("course/shortvideo/comment/deleteForB")
+    @GET("kemiapi/course/shortvideo/comment/deleteForB")
     Observable<ResponseBody> getDeleteCommentData(@Header("Authorization") String token,
                                                   @Query("commentId") String commentId,
                                                   @Query("type") String type);

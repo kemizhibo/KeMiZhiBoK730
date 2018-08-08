@@ -81,7 +81,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
     public void onLoginSuccess(LoginBean loginBean) {
 
         if(loginBean.getCode()==0){
-            SharedPreferences sp = getSharedPreferences("logintoken", MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences("logintoken", 0);
             SharedPreferences.Editor edit = sp.edit();
             edit.putString("token",loginBean.getContent()).
                     putString("name",name).putString("pwd",pwd).commit();
@@ -104,6 +104,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
         activityComponent.inject(this);
         return getTokenPresenter;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

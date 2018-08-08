@@ -30,18 +30,18 @@ public interface HttpGetService {
     //获取Token
     //@Headers({"User-Agent: Mozilla/5.0 (Linux; U; Android 3.0; en-us; Xoom Build/HRI39) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13"})
     //登录
-    @GET("user/school/login")
+    @GET("kemiapi/user/school/login")
     Observable<ResponseBody> getLoginData(@Query("account") String account,
                                           @Query("password") String password);
 
    /* @GET("product/getProducts")
     Observable<ResponseBody> getDemoData(@Query("pscid") String pscid,@Query("page") String page);*/
    //筛选条件
-   @GET("queryCriteria/queryBaseInfo")
+   @GET("kemiapi/queryCriteria/queryBaseInfo")
    Observable<ResponseBody> getFilterData();
 
     //影像素材列表页
-    @GET("course/focusing/getSimpleCourseForB")
+    @GET("kemiapi/course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getYingXinagFragmentData(@Query("sellType") String sellType,
                                                       @Query("currentPage") String currentPage,
                                                       @Query("pageSize") String pageSize,
@@ -51,23 +51,23 @@ public interface HttpGetService {
                                                       @Query("knowledgeId") String knowledgeId);
 
     //影像素材视频详情页面，教师培训详情页,科学观察室详情页
-    @GET("course/getCourseForB")
+    @GET("kemiapi/course/getCourseForB")
     Observable<ResponseBody> getYingXinagVideoDetailsData(@Header("Authorization") String token,
                                                           @Query("courseId") String courseId);
     //收藏夹
-    @GET("user/favourite/listForB")
+    @GET("kemiapi/user/favourite/listForB")
     Observable<ResponseBody> getCollectionBoxData(@Header("Authorization") String token,
                                                           @Query("page") String page,
                                                           @Query("size") String size);
     //获取视频地址
-    @GET("course/getPlayUrl")
+    @GET("kemiapi/course/getPlayUrl")
     Observable<ResponseBody> getYingXinagVideoDetailsUrlData(@Header("Authorization") String token,
                                                              @Query("courseId") String courseId,
                                                       @Query("videoType") String videoType,
                                                       @Query("encryption") String encryption,
                                                       @Query("videoClarity") String videoClarity);
     //视屏详情评论列表
-    @GET("course/shortvideo/comment/listForB")
+    @GET("kemiapi/course/shortvideo/comment/listForB")
     Observable<ResponseBody> getYingXinagVideoDetailsCommentData(@Header("Authorization") String token,
                                                              @Query("otherId") String otherId,
                                                              @Query("page") String page,
@@ -75,14 +75,14 @@ public interface HttpGetService {
                                                              @Query("type") String type);
     //反馈
     @FormUrlEncoded
-    @POST("course/saveUserOption")
+    @POST("kemiapi/course/saveUserOption")
     Observable<ResponseBody> getFeedBackData(@Header("Authorization") String token,
                                                                  @Field("content") String content,
                                                                  @Field("type") String type);
 
  //第一次播放视频记录
  @FormUrlEncoded
- @POST("user/watchHistory/putForB")
+ @POST("kemiapi/user/watchHistory/putForB")
  Observable<ResponseBody> getOneLookData(@Header("Authorization") String token,
                                           @Field("playPosition") String playPosition,
                                           @Field("courseId") String courseId,
@@ -90,7 +90,7 @@ public interface HttpGetService {
                                           @Field("isEnd") String isEnd);
  //第二次及以后播放视频记录
  @FormUrlEncoded
- @POST("user/watchHistory/putForB")
+ @POST("kemiapi/user/watchHistory/putForB")
  Observable<ResponseBody> getTwoLookData(@Header("Authorization") String token,
                                          @Field("playPosition") String playPosition,
                                          @Field("keyId") String keyId,
@@ -98,12 +98,30 @@ public interface HttpGetService {
                                          @Field("watchTime") String watchTime,
                                          @Field("isEnd") String isEnd);
     //图文详情
-    @GET("course/getCourseForB")
+    @GET("kemiapi/course/getCourseForB")
     Observable<ResponseBody> getPictrueFragmnetData(@Header("Authorization") String token,
                                                     @Query("courseId") String courseId);
 
+    //新旧手机发送验证码
+    @GET("kemiapi/ketang/user/info/{flag}/sendMsg")
+    Observable<ResponseBody> getSendYanZhengMaData(@Path("flag") String flag,
+                                                   @Header("Authorization") String token,
+                                                   @Query("mobile") String mobile);
+    //验证旧手机号
+    @FormUrlEncoded
+    @POST("kemiapi/ketang/user/info/validate/old")
+    Observable<ResponseBody> getOldPhoneData(@Header("Authorization") String token,
+                                             @Field("mobile") String mobile,
+                                             @Field("code") String code);
+    //验证新手机号
+    @FormUrlEncoded
+    @POST("kemiapi/ketang/user/info/validate/new")
+    Observable<ResponseBody> getNewPhoneData(@Header("Authorization") String token,
+                                             @Field("mobile") String mobile,
+                                             @Field("code") String code);
+
     //教师培训列表页
-    @GET("course/focusing/getSimpleCourseForB")
+    @GET("kemiapi/course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getTeacherTrainingData(@Query("sellType") String sellType,
                                                    @Query("currentPage") String currentPage,
                                                    @Query("pageSize") String pageSize,
@@ -113,28 +131,28 @@ public interface HttpGetService {
                                                    @Query("courseType") String courseType,
                                                    @Query("knowledgeId") String knowledgeId);
     //教师培训直播详情讲解列表页
-    @GET("course/focusing/getSimpleCourseForB")
+    @GET("kemiapi/course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getTeacherTrainingLookFragmnetData(@Query("sellType") String sellType,
                                                                 @Query("subjectId") String subjectId,
                                                                 @Query("currentPage") String currentPage,
                                                                 @Query("pageSize") String pageSize);
     //资源中心搜索总列表接口
-    @GET("course/focusing/getSimpleCourse")
+    @GET("kemiapi/course/focusing/getSimpleCourse")
     Observable<ResponseBody> getSearchData(@Query("sellType") String sellType,
                                            @Query("currentPage") String currentPage,
                                            @Query("pageSize") String pageSize,
                                            @Query("courseName") String courseName);
     //首页轮播图
-    @GET("prepare/module/homePageBanner")
+    @GET("kemiapi/prepare/module/homePageBanner")
     Observable<ResponseBody> getSowingMapData(@Query("device") String device);
     //首页数据
-    @POST("prepare/module/appHomePage")
+    @POST("kemiapi/prepare/module/appHomePage")
     Observable<ResponseBody> getHomePageData();
 
-    @GET("recommend")
+    @GET("kemiapi/recommend")
     Observable<ResponseBody> getRecommendData();
 
-    @GET("microblog/init")
+    @GET("kemiapi/microblog/init")
     Observable<ResponseBody> getDynamicData();
 
 

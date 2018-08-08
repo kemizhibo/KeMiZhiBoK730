@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePhoneActivity">
+    <include layout="@layout/pubic_title_bar"/>
+    <include layout="@layout/line"/>
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/res_27.5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/anquanyanzheng_2"/>
+    <TextView
+        android:id="@+id/person_change_old_phone"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/res_48dp"
+        android:textColor="@color/text_d3d2d2"
+        android:textSize="@dimen/res_textsize_13sp"
+        android:text="旧的手机号"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/res_31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/yanzhengma_2"/>
+        <EditText
+            android:id="@+id/person_change_edittext"
+            android:layout_marginLeft="@dimen/res_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入您收到的验证码"/>
+        <Button
+            android:id="@+id/person_change_send_yanzhengma"
+            android:layout_width="@dimen/res_120dp"
+            android:layout_height="@dimen/res_25dp"
+            android:text="获取验证码"
+            android:textColor="#ffffff"
+            android:background="@mipmap/login_butn"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/person_change_next_butn"
+        android:layout_marginTop="@dimen/res_146dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/login_butn"
+        android:textColor="@color/white"
+        android:text="下一步"/>
+</LinearLayout>
+

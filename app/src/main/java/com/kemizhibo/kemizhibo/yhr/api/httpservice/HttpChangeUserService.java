@@ -17,7 +17,7 @@ import rx.Observable;
 
 public interface HttpChangeUserService {
     @FormUrlEncoded
-   @POST("ketang/user/info/edit")
+    @POST("kemiapi/ketang/user/info/edit")
     Observable<ResponseBody> getChangeUserData(@Header("Authorization") String token,
                                                @Field("school") String school,
                                                @Field("realName") String realName,

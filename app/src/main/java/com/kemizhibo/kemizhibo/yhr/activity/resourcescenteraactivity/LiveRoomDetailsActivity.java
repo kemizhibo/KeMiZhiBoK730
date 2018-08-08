@@ -8,11 +8,12 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.androidkun.xtablayout.XTabLayout;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.dueeeke.videoplayer.player.IjkPlayer;
+import com.dueeeke.videoplayer.player.PlayerConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
@@ -21,17 +22,19 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsVideo
 import com.kemizhibo.kemizhibo.yhr.fragment.resourcescenterfragment.TeacherTrainingLookFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.resourcescenterfragment.TeacherTrainingTalkFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.LiveRoomDetailsVideoPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionController;
+import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.LiveRoomDetailsView;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.BindView;
-import cn.jzvd.JZVideoPlayerStandard;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVideoPresenterImpl> implements LiveRoomDetailsView {
 
-    @BindView(R.id.teacher_training_details_video)
-    JZVideoPlayerStandard teacherTrainingDetailsVideo;
     @BindView(R.id.teacher_training_toolbar)
     Toolbar teacherTrainingToolbar;
     @BindView(R.id.teacher_training_collapsing_toolbar)
@@ -54,12 +57,14 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
     LinearLayout teacherTrainingDetailPageAboveContainer;
     @BindView(R.id.teacher_training_content)
     CoordinatorLayout teacherTrainingContent;
+    @BindView(R.id.player)
+    DefinitionIjkVideoView ijkVideoView;
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
 
     String courseId;
-
+    private DefinitionController controller;
     @Inject
     public LiveRoomDetailsVideoPresenterImpl liveRoomDetailsVideoPresenter;
     //科学观察室详情页的用户和视频信息
@@ -76,6 +81,7 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
         initTitile();
         //添加fragment
         initFragment();
+        initVideo();
         //接受传来的值
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
@@ -85,6 +91,52 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
         liveRoomDetailsXTablayout.setupWithViewPager(liveRoomDetailsViewPager);
     }
 
+    private void initVideo() {
+        controller = new DefinitionController(this);
+        ijkVideoView.setPlayerConfig(new PlayerConfig.Builder()
+                .setCustomMediaPlayer(new IjkPlayer(this) {
+                    @Override
+                    public void setOptions() {
+                        //精准seek
+                        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
+                    }
+                })
+                .autoRotate()//自动旋转屏幕
+                .build());
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ijkVideoView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ijkVideoView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ijkVideoView.release();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (!ijkVideoView.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
     private void initFragment() {
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new TeacherTrainingLookFragment());
@@ -104,8 +156,8 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
         super.getData();
         SharedPreferences sp = getSharedPreferences("logintoken", 0);
         String token = sp.getString("token", "");
-        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoData(this, "Bearer "+token,courseId);
-        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this,"Bearer "+token, courseId, "HLS", "true", "HD");
+        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoData(this, "Bearer " + token, courseId);
+        liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
     }
 
     @Override
@@ -127,15 +179,27 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
         LiveRoomDetailsVideoUrlBean contentUrlBean = liveRoomDetailsVideoUrlBean;
         //视频地址
         String str = contentUrlBean.getContent();
-        teacherTrainingDetailsVideo.setUp(str,
-                JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                "");
-        Glide.with(this)
-                .load(contentBean.getLogo())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(teacherTrainingDetailsVideo.thumbImageView);
-        //LogUtils.d("str",str);
+        //获取不同清晰度的视频路径
+        /*LinkedHashMap<String, String> videos = new LinkedHashMap<>();
+        videos.put("标清", str);
+        videos.put("高清", str);
+        LogUtils.i("0000000000000000000高清路径",str);
+        videos.put("超清", str);
+        LogUtils.i("0000000000000000000超清",str);
+        videos.put("原画", str);
+        LogUtils.i("0000000000000000000原画",str);
+        if (videos.keySet().equals("高清")){
+            //liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
+        }else if (videos.keySet().equals("超清")){
+            //liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
+        }else if (videos.keySet().equals("原画")){
+            //liveRoomDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
+        }else {
+            ijkVideoView.setDefinitionVideos(videos);
+            ijkVideoView.setVideoController(controller);
+            ijkVideoView.setTitle("视屏详情");
+            ijkVideoView.start();
+        }*/
     }
 
     @Override
@@ -148,4 +212,5 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
         activityComponent.inject(this);
         return liveRoomDetailsVideoPresenter;
     }
+
 }

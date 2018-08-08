@@ -10,16 +10,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.androidkun.xtablayout.XTabLayout;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.dueeeke.videoplayer.player.IjkPlayer;
+import com.dueeeke.videoplayer.player.PlayerConfig;
 import com.example.zhouwei.library.CustomPopWindow;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
@@ -31,22 +31,20 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingDetai
 import com.kemizhibo.kemizhibo.yhr.fragment.resourcescenterfragment.TeacherTrainingLookFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.resourcescenterfragment.TeacherTrainingTalkFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.TeacherTrainingDetailsVideoPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionController;
+import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.TeacherTrainingDetailsVideoView;
-
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.jzvd.JZVideoPlayer;
-import cn.jzvd.JZVideoPlayerStandard;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrainingDetailsVideoPresenterImpl> implements TeacherTrainingDetailsVideoView {
 
-    @BindView(R.id.teacher_training_details_video)
-    JZVideoPlayerStandard teacherTrainingDetailsVideo;
     @BindView(R.id.teacher_training_toolbar)
     Toolbar teacherTrainingToolbar;
     @BindView(R.id.teacher_training_collapsing_toolbar)
@@ -73,12 +71,15 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     RelativeLayout relativelayoutFragment;
     @BindView(R.id.collection_imageview)
     ImageView collectionImageview;
+    @BindView(R.id.player)
+    DefinitionIjkVideoView ijkVideoView;
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
 
     String courseId;
     private CustomPopWindow mCustomPopWindow;
+    private DefinitionController controller;
 
 
     @Inject
@@ -102,6 +103,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         initTitile();
         //添加fragment
         initFragment();
+        initVideo();
         //接受传来的值
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
@@ -111,14 +113,61 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         teacherTrainingXTablayout.setupWithViewPager(teacherTrainingViewPager);
     }
 
+    private void initVideo() {
+        controller = new DefinitionController(this);
+        ijkVideoView.setPlayerConfig(new PlayerConfig.Builder()
+                .setCustomMediaPlayer(new IjkPlayer(this) {
+                    @Override
+                    public void setOptions() {
+                        //精准seek
+                        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
+                    }
+                })
+                .autoRotate()//自动旋转屏幕
+                .build());
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ijkVideoView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ijkVideoView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ijkVideoView.release();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (!ijkVideoView.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     protected void getData() {
         super.getData();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer "+token,courseId);
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer "+token,courseId, "HLS", "true", "HD");
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer "+token,courseId);
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer " + token, courseId);
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer " + token, courseId);
     }
 
     private void initFragment() {
@@ -154,15 +203,27 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         TeacherTrainingDetailsVideoUrlBean contentUrlBean = teacherTrainingDetailsVideoUrlBean;
         //视频地址
         String str = contentUrlBean.getContent();
-        teacherTrainingDetailsVideo.setUp(str,
-                JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                "");
-        Glide.with(this)
-                .load(contentBean.getLogo())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(teacherTrainingDetailsVideo.thumbImageView);
-        //LogUtils.d("str",str);
+        //获取不同清晰度的视频路径
+        LinkedHashMap<String, String> videos = new LinkedHashMap<>();
+        videos.put("标清", str);
+        videos.put("高清", str);
+        LogUtils.i("0000000000000000000高清路径",str);
+        videos.put("超清", str);
+        LogUtils.i("0000000000000000000超清",str);
+        videos.put("原画", str);
+        LogUtils.i("0000000000000000000原画",str);
+        if (videos.keySet().equals("高清")){
+            teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "SD");
+        }else if (videos.keySet().equals("超清")){
+            teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "LD");
+        }else if (videos.keySet().equals("原画")){
+            teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "UD");
+        }else {
+            ijkVideoView.setDefinitionVideos(videos);
+            ijkVideoView.setVideoController(controller);
+            ijkVideoView.setTitle("视屏详情");
+            ijkVideoView.start();
+        }
     }
 
     @Override
@@ -174,9 +235,9 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     @Override
     public void onGetCollectionSuccess(CollectionBean collectionBean) {
         collectionBeans = collectionBean;
-        if (collectionBeans.getCode()==0){
+        if (collectionBeans.getCode() == 0) {
             collectionImageview.setBackgroundResource(R.mipmap.dianzan_select);
-        }else{
+        } else {
             showPopTopWithDarkBg();
         }
     }
@@ -186,19 +247,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (JZVideoPlayer.backPress()) {
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        JZVideoPlayer.releaseAllVideos();
-    }
 
     @Override
     protected TeacherTrainingDetailsVideoPresenterImpl initInject() {
@@ -212,8 +260,9 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         //点击以后请求收藏的接口
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        teacherTrainingDetailsVideoPresenter.getCollectionData(this,courseId,"Bearer "+token);
+        teacherTrainingDetailsVideoPresenter.getCollectionData(this, courseId, "Bearer " + token);
     }
+
     /**
      * 显示PopupWindow 同时背景变暗
      */
@@ -248,4 +297,5 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             }
         });
     }
+
 }

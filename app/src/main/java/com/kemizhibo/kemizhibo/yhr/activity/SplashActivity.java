@@ -61,10 +61,9 @@ public class SplashActivity extends BaseMvpActivity<GetLoginPresenterImpl> imple
     @Override
     public void onLoginSuccess(LoginBean loginBean) {
         if (loginBean.getCode()==0){
-            SharedPreferences sp = getSharedPreferences("logintoken", MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences("logintoken", 0);
             SharedPreferences.Editor edit = sp.edit();
             edit.putString("token",loginBean.getContent()).commit();
-            LogUtils.e("111111111111111",loginBean.getContent());
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

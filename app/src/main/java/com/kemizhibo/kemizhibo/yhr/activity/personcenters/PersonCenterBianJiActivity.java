@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
@@ -70,6 +72,7 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     private String personAddressEdittextHint;
     private String personIdcardEdittextHint;
     private String personEmailEdittextHint;
+    private String mobile;
 
     @Override
     protected int getLayoutId() {
@@ -111,8 +114,9 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
         address = getUserBean.getContent().getAddress();
         idcard = (String) getUserBean.getContent().getIdCardNo();
         email = (String) getUserBean.getContent().getEmail();
+        mobile = getUserBean.getContent().getMobile();
         //手机号码
-        personPhoneEdittext.setText(getUserBean.getContent().getMobile());
+        personPhoneEdittext.setText(mobile);
         //学校
         if (school.equals(null) || school.equals("")) {
             school = "";
@@ -159,7 +163,7 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
 
     @Override
     public void onUserError(String msg) {
-        LogUtils.i("11111111111111", msg);
+
     }
 
     //更改用户信息
@@ -255,6 +259,12 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_change_phone:
+                //回传值
+                Intent intent = new Intent(this,ChangePhoneActivity.class);
+                intent.putExtra("mobile",mobile);
+                startActivity(intent);
+                //startActivityForResult(intent,1000);
+                //startActivity(new Intent(this, ChangePhoneActivity.class));
                 break;
             case R.id.finish_butn:
                 if (personSchoolNameEdittextHint==null){
@@ -277,7 +287,6 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 }else {
                     personGradleEdittextHint = personGradleEdittext.getHint().toString();
                 }
-                LogUtils.i("00000000000000000000000",personGradleEdittextHint);
                 if (personAddressEdittextHint==null){
                     personAddressEdittextHint = address;
                 }else {
@@ -293,10 +302,10 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 }else {
                     personEmailEdittextHint = personEmailEdittext.getText().toString();
                 }
-                LogUtils.i("00000000000000000000",personSchoolNameEdittextHint+"++"+personLianxirenEdittextHint+personTypeEdittextHint+"++"+personGradleEdittextHint+"++"+personAddressEdittextHint+"++"+personIdcardEdittextHint+"++"+personIdcardEdittextHint+"++"+personEmailEdittextHint);
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
                 getUserPresenter.getChangeUserData(this, "Bearer " + token, personSchoolNameEdittextHint, personLianxirenEdittextHint, personGradleEdittextHint, personTypeEdittextHint, personIdcardEdittextHint, personEmailEdittextHint, personAddressEdittextHint);
+
                 break;
         }
     }
