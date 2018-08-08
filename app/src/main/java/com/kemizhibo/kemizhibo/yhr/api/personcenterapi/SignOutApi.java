@@ -1,16 +1,13 @@
 package com.kemizhibo.kemizhibo.yhr.api.personcenterapi;
 
 import com.alibaba.fastjson.JSON;
-import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetPreservationPictureService;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.TakePhotoBean;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SignOutBean;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
 import com.zhxu.library.listener.HttpOnNextListener;
 
-import java.io.File;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
@@ -21,26 +18,22 @@ import rx.Observable;
  * Created by yhr on 2018/7/1.
  */
 
-public class SendYanZhengMaApi extends BaseApi<SendYanZhengMaBean> {
-    String flag;
+public class SignOutApi extends BaseApi<SignOutBean> {
     String token;
-    String mobile;
-    public SendYanZhengMaApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String flag,String token, String mobile) {
+    public SignOutApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token) {
         super(listener, rxAppCompatActivity);
-        this.flag = flag;
         this.token = token;
-        this.mobile = mobile;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getSendYanZhengMaData(flag,token,mobile);
+        return httpGetService.getSignOutData(token);
     }
 
     @Override
-    public SendYanZhengMaBean call(ResponseBody responseBody) {
+    public SignOutBean call(ResponseBody responseBody) {
         //解析
         String string = "";
         try {
@@ -48,6 +41,6 @@ public class SendYanZhengMaApi extends BaseApi<SendYanZhengMaBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(string, SendYanZhengMaBean.class);
+        return JSON.parseObject(string, SignOutBean.class);
     }
 }

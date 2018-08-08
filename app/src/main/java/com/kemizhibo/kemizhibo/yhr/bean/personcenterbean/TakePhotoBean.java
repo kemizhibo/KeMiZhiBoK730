@@ -8,4 +8,27 @@ package com.kemizhibo.kemizhibo.yhr.bean.personcenterbean;
 
 public class TakePhotoBean {
 
+    /**
+     * code : 500
+     * message : inner server fail : com.sun.proxy.$Proxy196 cannot be cast to org.springframework.web.multipart.MultipartHttpServletRequest
+     */
+
+    private int code;
+    private String message;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

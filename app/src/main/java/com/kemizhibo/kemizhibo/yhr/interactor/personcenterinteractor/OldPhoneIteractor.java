@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.OldPhoneApi;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.SendYanZhengMaApi;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 public class OldPhoneIteractor {
 
     private IGetDataDelegate<SendYanZhengMaBean> mDelegate;
+    private Context context;
 
     @Inject
     public OldPhoneIteractor() {}

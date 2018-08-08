@@ -2,6 +2,7 @@ package com.kemizhibo.kemizhibo.yhr.api.personcenterapi;
 
 import com.alibaba.fastjson.JSON;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
@@ -17,26 +18,26 @@ import rx.Observable;
  * Created by yhr on 2018/7/1.
  */
 
-public class NewPhoneApi extends BaseApi<SendYanZhengMaBean> {
+public class ChangePwdApi extends BaseApi<ChangePwdBean> {
     String token;
-    String mobile;
-    String code;
-    public NewPhoneApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, String mobile, String code) {
+    String oldPassword;
+    String newPassword;
+    public ChangePwdApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, String oldPassword, String newPassword) {
         super(listener, rxAppCompatActivity);
         this.token = token;
-        this.mobile = mobile;
-        this.code = code;
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getNewPhoneData(token,mobile,code);
+        return httpGetService.getChangePwdData(token,oldPassword,newPassword);
     }
 
     @Override
-    public SendYanZhengMaBean call(ResponseBody responseBody) {
+    public ChangePwdBean call(ResponseBody responseBody) {
         //解析
         String string = "";
         try {
@@ -44,6 +45,6 @@ public class NewPhoneApi extends BaseApi<SendYanZhengMaBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(string, SendYanZhengMaBean.class);
+        return JSON.parseObject(string, ChangePwdBean.class);
     }
 }

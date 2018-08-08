@@ -4,44 +4,42 @@ import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ChangePwdIteractor;
-import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.NewPhoneIteractor;
-import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.OldPhoneIteractor;
-import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.SendYanZhengMaIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.LiuLanIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.ChangePwdPresenter;
-import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.SendYanZhengMaPresenter;
+import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.LiuLanPresenter;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
-import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SendYanZhengMaView;
+import com.kemizhibo.kemizhibo.yhr.view.personcenterview.LiuLanView;
 
 import javax.inject.Inject;
 
 /**
  * Author: yhr
  * Date: 2018/5/24
- * Describe  修改密码
+ * Describe  浏览记录
  */
-public class ChangePwdPresenterImpl extends BasePresenterImpl<ChangePwdView> implements ChangePwdPresenter {
+public class LiuLanPresenterImpl extends BasePresenterImpl<LiuLanView> implements LiuLanPresenter {
     //注意public全局
     @Inject
-    public ChangePwdIteractor changePwdIteractor ;
+    public LiuLanIteractor liuLanIteractor ;
 
     @Inject
-    public ChangePwdPresenterImpl() {}
+    public LiuLanPresenterImpl() {}
 
 
     @Override
-    public void getChangePwdData(BaseActivity activity, String token, String oldPassword, String newPassword) {
-        changePwdIteractor.loadNewPhoneData(activity, new IGetDataDelegate<ChangePwdBean>() {
+    public void getLiuLanData(BaseActivity activity, String token, String page, String size) {
+        liuLanIteractor.loadLiuLanData(activity, new IGetDataDelegate<LiuLanBean>() {
             @Override
-            public void getDataSuccess(ChangePwdBean changePwdBean) {
-                mPresenterView.onChangePwdSuccess(changePwdBean);
+            public void getDataSuccess(LiuLanBean liuLanBean) {
+                mPresenterView.onLiuLanSuccess(liuLanBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onChangePwdError(errmsg);
+                mPresenterView.onLiuLanError(errmsg);
             }
-        },token,oldPassword,newPassword);
+        },token,page,size);
     }
 }

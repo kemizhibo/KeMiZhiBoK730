@@ -3,15 +3,15 @@ package com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter;
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.FeedBackBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
-import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.FeedBackIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ChangePwdIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.NewPhoneIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.OldPhoneIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.SendYanZhengMaIteractor;
-import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.FeedBackPresenter;
+import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.ChangePwdPresenter;
 import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.SendYanZhengMaPresenter;
-import com.kemizhibo.kemizhibo.yhr.view.personcenterview.FeedBackView;
+import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SendYanZhengMaView;
 
 import javax.inject.Inject;
@@ -19,62 +19,29 @@ import javax.inject.Inject;
 /**
  * Author: yhr
  * Date: 2018/5/24
- * Describe  获取验证码
+ * Describe  修改密码
  */
-public class SendYanZhengMaPresenterImpl extends BasePresenterImpl<SendYanZhengMaView> implements SendYanZhengMaPresenter {
+public class ChangePwdPresenterImpl extends BasePresenterImpl<ChangePwdView> implements ChangePwdPresenter {
     //注意public全局
     @Inject
-    public SendYanZhengMaIteractor sendYanZhengMaIteractor ;
-    @Inject
-    public OldPhoneIteractor oldPhoneIteractor ;
-    @Inject
-    public NewPhoneIteractor newPhoneIteractor ;
+    public ChangePwdIteractor changePwdIteractor ;
 
     @Inject
-    public SendYanZhengMaPresenterImpl() {}
+    public ChangePwdPresenterImpl() {}
+
 
     @Override
-    public void getSendYanZhengMaData(BaseActivity activity,String flag, String token,String mobile) {
-        sendYanZhengMaIteractor.loadSendYanZhengMaData(activity, new IGetDataDelegate<SendYanZhengMaBean>() {
+    public void getChangePwdData(BaseActivity activity, String token, String oldPassword, String newPassword) {
+        changePwdIteractor.loadNewPhoneData(activity, new IGetDataDelegate<ChangePwdBean>() {
             @Override
-            public void getDataSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
-                mPresenterView.onSendYanZhengMaSuccess(sendYanZhengMaBean);
+            public void getDataSuccess(ChangePwdBean changePwdBean) {
+                mPresenterView.onChangePwdSuccess(changePwdBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onSendYanZhengMaError(errmsg);
+                mPresenterView.onChangePwdError(errmsg);
             }
-        },flag,token,mobile);
-    }
-
-    @Override
-    public void getOldPhoneData(BaseActivity activity, String token, String mobile, String code) {
-        oldPhoneIteractor.loadOldPhoneData(activity, new IGetDataDelegate<SendYanZhengMaBean>() {
-            @Override
-            public void getDataSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
-                mPresenterView.onOldPhoneSuccess(sendYanZhengMaBean);
-            }
-
-            @Override
-            public void getDataError(String errmsg) {
-                mPresenterView.onOldPhoneError(errmsg);
-            }
-        },token,mobile,code);
-    }
-
-    @Override
-    public void getNewPhoneData(BaseActivity activity, String token, String mobile, String code) {
-        newPhoneIteractor.loadNewPhoneData(activity, new IGetDataDelegate<SendYanZhengMaBean>() {
-            @Override
-            public void getDataSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
-                mPresenterView.onNewPhoneSuccess(sendYanZhengMaBean);
-            }
-
-            @Override
-            public void getDataError(String errmsg) {
-                mPresenterView.onNewPhoneError(errmsg);
-            }
-        },token,mobile,code);
+        },token,oldPassword,newPassword);
     }
 }

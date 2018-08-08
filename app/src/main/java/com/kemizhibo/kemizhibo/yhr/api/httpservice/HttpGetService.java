@@ -119,6 +119,15 @@ public interface HttpGetService {
     Observable<ResponseBody> getNewPhoneData(@Header("Authorization") String token,
                                              @Field("mobile") String mobile,
                                              @Field("code") String code);
+    //修改密码
+    @FormUrlEncoded
+    @POST("kemiapi/ketang/user/info/edit/password")
+    Observable<ResponseBody> getChangePwdData(@Header("Authorization") String token,
+                                             @Field("oldPassword") String oldPassword,
+                                             @Field("newPassword") String newPassword);
+    //退出登录
+    @GET("kemiapi/ketang/user/info/exit")
+    Observable<ResponseBody> getSignOutData(@Header("Authorization") String token);
 
     //教师培训列表页
     @GET("kemiapi/course/focusing/getSimpleCourseForB")
@@ -142,6 +151,12 @@ public interface HttpGetService {
                                            @Query("currentPage") String currentPage,
                                            @Query("pageSize") String pageSize,
                                            @Query("courseName") String courseName);
+    //获取浏览记录列表
+    @GET("kemiapi/user/watchHistory/listForB")
+    Observable<ResponseBody> getLiuLanData(@Header("Authorization") String token,
+                                                             @Query("page") String page,
+                                                             @Query("size") String size);
+
     //首页轮播图
     @GET("kemiapi/prepare/module/homePageBanner")
     Observable<ResponseBody> getSowingMapData(@Query("device") String device);

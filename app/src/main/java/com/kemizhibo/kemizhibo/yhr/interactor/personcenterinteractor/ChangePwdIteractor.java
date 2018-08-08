@@ -3,9 +3,10 @@ package com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor;
 import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
+import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.ChangePwdApi;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.NewPhoneApi;
-import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.OldPhoneApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -15,30 +16,29 @@ import javax.inject.Inject;
 /**
  * Author: yhr
  * Date: 2018/5/24
- * Describe   验证新手机号
+ * Describe   修改密码
  */
-public class NewPhoneIteractor {
+public class ChangePwdIteractor {
 
-    private IGetDataDelegate<SendYanZhengMaBean> mDelegate;
-    private Context context;
+    private IGetDataDelegate<ChangePwdBean> mDelegate;
 
     @Inject
-    public NewPhoneIteractor() {}
+    public ChangePwdIteractor() {}
 
     /**
      * 执行网络操作，获取数据
      */
-    public void loadNewPhoneData(BaseActivity activity, IGetDataDelegate<SendYanZhengMaBean> mDelegate,String token,String mobile,String code){
+    public void loadNewPhoneData(BaseActivity activity, IGetDataDelegate<ChangePwdBean> mDelegate,String token,String oldPassword,String newPassword){
         this.mDelegate = mDelegate;
-        NewPhoneApi newPhoneApi = new NewPhoneApi(listener,activity,token,mobile,code);
+        ChangePwdApi changePwdApi = new ChangePwdApi(listener,activity,token,oldPassword,newPassword);
         HttpManager manager = HttpManager.getInstance();
-        manager.doHttpDeal(newPhoneApi);
+        manager.doHttpDeal(changePwdApi);
     }
 
-    private HttpOnNextListener<SendYanZhengMaBean> listener = new HttpOnNextListener<SendYanZhengMaBean>() {
+    private HttpOnNextListener<ChangePwdBean> listener = new HttpOnNextListener<ChangePwdBean>() {
         @Override
-        public void onNext(SendYanZhengMaBean sendYanZhengMaBean) {
-            mDelegate.getDataSuccess(sendYanZhengMaBean);
+        public void onNext(ChangePwdBean changePwdBean) {
+            mDelegate.getDataSuccess(changePwdBean);
         }
 
         @Override

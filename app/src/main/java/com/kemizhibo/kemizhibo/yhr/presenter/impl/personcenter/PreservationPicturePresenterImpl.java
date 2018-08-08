@@ -20,6 +20,9 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 /**
  * Author: yhr
  * Date: 2018/5/24
@@ -51,7 +54,7 @@ public class PreservationPicturePresenterImpl extends BasePresenterImpl<Preserva
     }
 
     @Override
-    public void getTakePhotoData(BaseActivity activity, String token, File uploadfile,String param) {
+    public void getTakePhotoData(BaseActivity activity,MultipartBody.Part file) {
         takePhotoIteractor.loadTakePhotoData(activity, new IGetDataDelegate<TakePhotoBean>() {
             @Override
             public void getDataSuccess(TakePhotoBean takePhotoBean) {
@@ -62,6 +65,8 @@ public class PreservationPicturePresenterImpl extends BasePresenterImpl<Preserva
             public void getDataError(String errmsg) {
                 mPresenterView.onTakePhotoError(errmsg);
             }
-        },token,uploadfile,param);
+        },file);
     }
+
+
 }

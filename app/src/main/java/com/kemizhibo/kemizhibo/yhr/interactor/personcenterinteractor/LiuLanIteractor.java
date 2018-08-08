@@ -3,9 +3,10 @@ package com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor;
 import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
+import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.LiuLanApi;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.NewPhoneApi;
-import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.OldPhoneApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -15,30 +16,29 @@ import javax.inject.Inject;
 /**
  * Author: yhr
  * Date: 2018/5/24
- * Describe   验证新手机号
+ * Describe   浏览记录
  */
-public class NewPhoneIteractor {
+public class LiuLanIteractor {
 
-    private IGetDataDelegate<SendYanZhengMaBean> mDelegate;
-    private Context context;
+    private IGetDataDelegate<LiuLanBean> mDelegate;
 
     @Inject
-    public NewPhoneIteractor() {}
+    public LiuLanIteractor() {}
 
     /**
      * 执行网络操作，获取数据
      */
-    public void loadNewPhoneData(BaseActivity activity, IGetDataDelegate<SendYanZhengMaBean> mDelegate,String token,String mobile,String code){
+    public void loadLiuLanData(BaseActivity activity, IGetDataDelegate<LiuLanBean> mDelegate,String token,String page,String size){
         this.mDelegate = mDelegate;
-        NewPhoneApi newPhoneApi = new NewPhoneApi(listener,activity,token,mobile,code);
+        LiuLanApi liuLanApi = new LiuLanApi(listener,activity,token,page,size);
         HttpManager manager = HttpManager.getInstance();
-        manager.doHttpDeal(newPhoneApi);
+        manager.doHttpDeal(liuLanApi);
     }
 
-    private HttpOnNextListener<SendYanZhengMaBean> listener = new HttpOnNextListener<SendYanZhengMaBean>() {
+    private HttpOnNextListener<LiuLanBean> listener = new HttpOnNextListener<LiuLanBean>() {
         @Override
-        public void onNext(SendYanZhengMaBean sendYanZhengMaBean) {
-            mDelegate.getDataSuccess(sendYanZhengMaBean);
+        public void onNext(LiuLanBean liuLanBean) {
+            mDelegate.getDataSuccess(liuLanBean);
         }
 
         @Override

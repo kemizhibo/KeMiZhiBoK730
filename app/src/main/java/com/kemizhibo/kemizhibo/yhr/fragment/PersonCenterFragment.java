@@ -1,12 +1,10 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,14 +51,14 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     LinearLayout shoucangLayout;
     @BindView(R.id.liulan_layout)
     LinearLayout liulanLayout;
-    @BindView(R.id.sucai_layout)
-    LinearLayout sucaiLayout;
+    /*@BindView(R.id.sucai_layout)
+    LinearLayout sucaiLayout;*/
     @BindView(R.id.jilu_layout)
     LinearLayout jiluLayout;
     @BindView(R.id.fankui_layout)
     LinearLayout fankuiLayout;
-    @BindView(R.id.clear_layout)
-    LinearLayout clearLayout;
+   /* @BindView(R.id.clear_layout)
+    LinearLayout clearLayout;*/
     @BindView(R.id.shehzi_layout)
     LinearLayout shehziLayout;
     private SharedPreferences sp;
@@ -82,7 +80,6 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         TextView school = view.findViewById(R.id.person_school_name);
         TextView grade = view.findViewById(R.id.person_student_grade);
         TextView typr = view.findViewById(R.id.person_student_type);
-        qingchuhuancun_txt = view.findViewById(R.id.qingchuhuancun_txt);
         SimpleDraweeView simpleDraweeView = view.findViewById(R.id.person_touxiang);
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(userData.getPicImg())
@@ -92,13 +89,6 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         school.setText(userData.getSchool());
         grade.setText(userData.getGrade());
         typr.setText(userData.getSubject());
-        //计算应用缓存大小
-        try {
-            String totalCacheSize = DataClearManager.getTotalCacheSize(getContext());
-            qingchuhuancun_txt.setText(totalCacheSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return view;
     }
 
@@ -151,7 +141,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     }
 
 
-    @OnClick({R.id.person_bianji_butn, R.id.person_touxiang, R.id.shoucang_layout, R.id.liulan_layout, R.id.sucai_layout, R.id.jilu_layout, R.id.fankui_layout, R.id.clear_layout, R.id.shehzi_layout})
+    @OnClick({R.id.person_bianji_butn, R.id.person_touxiang, R.id.shoucang_layout, R.id.liulan_layout,  R.id.jilu_layout, R.id.fankui_layout,  R.id.shehzi_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_bianji_butn:
@@ -167,31 +157,14 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
             case R.id.liulan_layout:
                 startActivity(new Intent(getActivity(), PersonCenterLiuLanActivity.class));
                 break;
-            case R.id.sucai_layout:
+            /*case R.id.sucai_layout:
                 startActivity(new Intent(getActivity(), PersonCenterSuCaiActivity.class));
-                break;
+                break;*/
             case R.id.jilu_layout:
                 startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
                 break;
             case R.id.fankui_layout:
                 startActivity(new Intent(getActivity(), PersonCenterFanKuiActivity.class));
-                break;
-            case R.id.clear_layout:
-                try {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("确定要清空本地缓存吗？");
-                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DataClearManager.cleanInternalCache(mActivity);
-                            qingchuhuancun_txt.setText("0.0KB");
-                        }
-                    });
-                    builder.setNegativeButton("取消",null);
-                    builder.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
             case R.id.shehzi_layout:
                 startActivity(new Intent(getActivity(), PersonCenterSheZhiActivity.class));

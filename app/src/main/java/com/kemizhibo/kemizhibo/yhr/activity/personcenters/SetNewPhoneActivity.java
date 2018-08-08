@@ -14,6 +14,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SendYanZhengMaPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.PhoneFormatCheckUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
@@ -40,7 +41,6 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     private TimerUtils timerUtils;
     @Inject
     public SendYanZhengMaPresenterImpl sendYanZhengMaPresenter;
-    private String newMobile;
     private SharedPreferences sp;
     private String token;
 
@@ -52,7 +52,11 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     @Override
     protected void initData() {
         bindTitleBar();
-        newMobile = putPhoneNum.getText().toString().trim();
+    }
+
+    @Override
+    protected void getData() {
+        super.getData();
     }
 
     private void bindTitleBar() {
@@ -82,7 +86,7 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
                 else{
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
-                    sendYanZhengMaPresenter.getSendYanZhengMaData(this,"2","Bearer "+ token,newMobile);
+                    sendYanZhengMaPresenter.getSendYanZhengMaData(this,"2","Bearer "+ token,putPhoneNum.getText().toString());
                 }
                 break;
             case R.id.commit_butn:
@@ -91,7 +95,8 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
                 }else{
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
-                    sendYanZhengMaPresenter.getNewPhoneData(this,"Bearer "+token,newMobile,putYanzhengma.getText().toString().trim());
+                    sendYanZhengMaPresenter.getNewPhoneData(this,"Bearer "+token,putPhoneNum.getText().toString().trim(),putYanzhengma.getText().toString().trim());
+                    LogUtils.i("0000000000000",token+"++++"+putPhoneNum.getText().toString()+"++++"+putYanzhengma.getText().toString().trim());
                 }
                 break;
         }

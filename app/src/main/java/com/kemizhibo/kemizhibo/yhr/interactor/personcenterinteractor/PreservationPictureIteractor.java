@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.GetUserApi;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.PreservationPictureApi;
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 public class PreservationPictureIteractor {
 
     private IGetDataDelegate<PreservationPictureBean> mDelegate;
+    private Context context;
 
     @Inject
     public PreservationPictureIteractor() {}

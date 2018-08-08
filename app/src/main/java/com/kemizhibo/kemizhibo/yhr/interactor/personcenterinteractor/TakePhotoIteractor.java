@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.PreservationPictureApi;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.TakePhotoApi;
@@ -12,6 +14,9 @@ import com.zhxu.library.listener.HttpOnNextListener;
 import java.io.File;
 
 import javax.inject.Inject;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Author: yhr
@@ -28,9 +33,9 @@ public class TakePhotoIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadTakePhotoData(BaseActivity activity, IGetDataDelegate<TakePhotoBean> mDelegate, String token, File uploadfile,String param){
+    public void loadTakePhotoData(BaseActivity activity, IGetDataDelegate<TakePhotoBean> mDelegate,MultipartBody.Part file){
         this.mDelegate = mDelegate;
-        TakePhotoApi takePhotoApi = new TakePhotoApi(listener,activity,token,uploadfile,param);
+        TakePhotoApi takePhotoApi = new TakePhotoApi(listener,activity,file);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(takePhotoApi);
     }

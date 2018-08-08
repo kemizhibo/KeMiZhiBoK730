@@ -23,6 +23,7 @@
         <activity android:name=".yhr.activity.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,11 +58,14 @@
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
             android:hardwareAccelerated="true" />
-        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity" />
+        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
         <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
+        <activity android:name=".other.web.CommonWebActivity" android:screenOrientation="landscape"/>
         <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
-        <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity"></activity>
+        <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
+        <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
+        <activity android:name=".yhr.activity.personcenters.FuWuActivity"></activity>
     </application>
 
 </manifest>

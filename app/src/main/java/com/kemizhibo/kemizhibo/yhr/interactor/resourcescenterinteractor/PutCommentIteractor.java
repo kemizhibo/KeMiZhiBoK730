@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.PutCommentApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 public class PutCommentIteractor {
 
     private IGetDataDelegate<CommentDetailBean> mDelegate;
+    private Context context;
 
     @Inject
     public PutCommentIteractor() {}

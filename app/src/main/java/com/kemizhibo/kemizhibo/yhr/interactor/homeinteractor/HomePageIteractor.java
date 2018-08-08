@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.homeapi.HomePageApi;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.CollectionApi;
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 public class HomePageIteractor {
 
     private IGetDataDelegate<HomePageBean> mDelegate;
+    private Context context;
 
     @Inject
     public HomePageIteractor() {}

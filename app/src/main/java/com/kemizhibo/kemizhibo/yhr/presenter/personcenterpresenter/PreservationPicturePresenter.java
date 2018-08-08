@@ -7,6 +7,9 @@ import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView
 
 import java.io.File;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 /**
  * Author: yhr
  * Date: 2018/5/24
@@ -16,6 +19,6 @@ public interface PreservationPicturePresenter extends BasePresenter<Preservation
     //保存头像
     void getPreservationPictureData(BaseActivity activity, String token,String picImg);
     //上传头像
-    void getTakePhotoData(BaseActivity activity, String token, File uploadfile,String param);
+    void getTakePhotoData(BaseActivity activity, MultipartBody.Part file);
 
 }

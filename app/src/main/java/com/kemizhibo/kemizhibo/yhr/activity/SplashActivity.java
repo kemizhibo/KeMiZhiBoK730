@@ -25,7 +25,6 @@ import javax.inject.Inject;
 public class SplashActivity extends BaseMvpActivity<GetLoginPresenterImpl> implements LoginView {
     private final long SPLASH_LENGTH = 3000;
     Handler handler = new Handler();
-    //private String token;
     @Inject
     public GetLoginPresenterImpl getTokenPresenter;
 

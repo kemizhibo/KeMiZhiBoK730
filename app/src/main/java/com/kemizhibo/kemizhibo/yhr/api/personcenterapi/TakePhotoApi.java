@@ -12,6 +12,8 @@ import com.zhxu.library.listener.HttpOnNextListener;
 import java.io.File;
 import java.io.IOException;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -21,22 +23,17 @@ import rx.Observable;
  */
 
 public class TakePhotoApi extends BaseApi<TakePhotoBean> {
-
-    String token;
-    File uploadfile;
-    String param;
-    public TakePhotoApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, File uploadfile,String param) {
+    MultipartBody.Part file;
+    public TakePhotoApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, MultipartBody.Part file) {
         super(listener, rxAppCompatActivity);
-        this.token = token;
-        this.uploadfile = uploadfile;
-        this.param = param;
+        this.file = file;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetPreservationPictureService httpGetPreservationPictureService = retrofit.create(HttpGetPreservationPictureService.class);
-        return httpGetPreservationPictureService.getTakePhotoData(token,uploadfile,param);
+        return httpGetPreservationPictureService.getTakePhotoData(file);
     }
 
     @Override
@@ -48,7 +45,7 @@ public class TakePhotoApi extends BaseApi<TakePhotoBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtils.e("00000000000000000000000000",string);
+        LogUtils.e("111111111111111111111111111","解析陈宫"+string);
         return JSON.parseObject(string, TakePhotoBean.class);
     }
 }

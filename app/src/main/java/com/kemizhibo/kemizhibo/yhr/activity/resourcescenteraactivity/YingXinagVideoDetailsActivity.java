@@ -31,7 +31,7 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.CommentAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LookBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
@@ -310,7 +310,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
 
     //第一次记录播放时间
     @Override
-    public void onGetOneLookSuccess(LookBean lookBean) {
+    public void onGetOneLookSuccess(LiuLanBean liuLanBean) {
 
     }
 

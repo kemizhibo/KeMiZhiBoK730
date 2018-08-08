@@ -188,7 +188,7 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
         return getUserPresenter;
     }
 
-    @OnFocusChange({R.id.person_school_name_edittext, R.id.person_lianxiren_edittext, R.id.person_type_edittext, R.id.person_gradle_edittext, R.id.person_address_edittext, R.id.person_idcard_edittext, R.id.person_email_edittext, R.id.person_phone_edittext, R.id.person_change_phone})
+    /*@OnFocusChange({R.id.person_school_name_edittext, R.id.person_lianxiren_edittext, R.id.person_type_edittext, R.id.person_gradle_edittext, R.id.person_address_edittext, R.id.person_idcard_edittext, R.id.person_email_edittext, R.id.person_phone_edittext, R.id.person_change_phone})
     public void onViewClicked(View view, boolean hasFocus) {
         switch (view.getId()) {
             case R.id.person_school_name_edittext:
@@ -253,7 +253,7 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 }
                 break;
         }
-    }
+    }*/
 
     @OnClick({R.id.person_change_phone, R.id.finish_butn})
     public void onViewClicked(View view) {
@@ -267,7 +267,7 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 //startActivity(new Intent(this, ChangePhoneActivity.class));
                 break;
             case R.id.finish_butn:
-                if (personSchoolNameEdittextHint==null){
+                /*if (personSchoolNameEdittextHint==null){
                     personSchoolNameEdittextHint = school;
                 }else {
                     personSchoolNameEdittextHint = personSchoolNameEdittext.getText().toString();
@@ -301,11 +301,11 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                     personEmailEdittextHint = email;
                 }else {
                     personEmailEdittextHint = personEmailEdittext.getText().toString();
-                }
+                }*/
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
-                getUserPresenter.getChangeUserData(this, "Bearer " + token, personSchoolNameEdittextHint, personLianxirenEdittextHint, personGradleEdittextHint, personTypeEdittextHint, personIdcardEdittextHint, personEmailEdittextHint, personAddressEdittextHint);
-
+                //getUserPresenter.getChangeUserData(this, "Bearer " + token, personSchoolNameEdittextHint, personLianxirenEdittextHint, personGradleEdittextHint, personTypeEdittextHint, personIdcardEdittextHint, personEmailEdittextHint, personAddressEdittextHint);
+                getUserPresenter.getChangeUserData(this, "Bearer " + token, school, realname, grade,subject, idcard, email, address);
                 break;
         }
     }

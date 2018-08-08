@@ -27,6 +27,8 @@ public abstract class BaseApi<T> implements Func1/*<BaseResultEntity<T>, T>*/ <R
     private boolean cache;
     /*基础url*/
     private String baseUrl = "http://39.155.221.165:8080/";
+    //private String baseUrl = "http://192.168.1.57/";
+    //private String baseUrl = "http://36.110.133.6:17002/";
     //192.168.1.57
     //private String baseUrl = "http://192.168.1.101:8080/kemiapi/";
     //private String baseUrl = "http://120.27.23.105/";

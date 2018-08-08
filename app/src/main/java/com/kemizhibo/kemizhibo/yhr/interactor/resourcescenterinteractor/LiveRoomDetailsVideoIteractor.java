@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
+import android.content.Context;
+
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.LiveRoomDetailsApi;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.TeacherTrainingDetailsVideoApi;
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 public class LiveRoomDetailsVideoIteractor {
 
     private IGetDataDelegate<LiveRoomDetailsBean> mDelegate;
+    private Context context;
 
     @Inject
     public LiveRoomDetailsVideoIteractor() {}

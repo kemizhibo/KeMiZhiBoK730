@@ -14,7 +14,7 @@ public interface PreservationPictureView extends BaseView {
     //保存头像
     void onPreservationPictureSuccess(PreservationPictureBean preservationPictureBean);
     void onPreservationPictureError(String msg);
-     //上产头像
+     //上传头像
      void onTakePhotoSuccess(TakePhotoBean takePhotoBean);
     void onTakePhotoError(String msg);
 }
