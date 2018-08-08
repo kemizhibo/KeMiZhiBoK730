@@ -89,16 +89,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                int prepareStatus = myclassBean.get(position).getPrepareStatus();
-                Intent intent = null;
-                if(1 == prepareStatus){
-                    intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
-                    intent.putExtra(Constants.COURSE_ID, myclassBean.get(position).getCourseId());
-                }else if(3 == prepareStatus){
-                    intent = new Intent(getActivity(), CommonWebActivity.class);
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
-                }
-                startActivity(intent);
+
             }
         });
         myclassRecyclerview.setAdapter(myClassAdapter);
