@@ -7,6 +7,7 @@ import android.util.Log;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
@@ -108,6 +109,30 @@ public class CommonPresenterImp implements CommonPresenter {
                     commonView.getCommonTeacherSuccess(bean);
                 }else{
                     commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUserTeachPlan() {
+        if(!NetUtils.isConnected(commonView.getCommonCustomContext())){
+            commonView.getCommonUserTeachPlanError(Constants.NET_ERROR_CODE);
+            return;
+        }
+        OkHttpRequest.doGet(commonView.getCommonCustomContext(), OkHttpRequest.attachHttpGetParams(Constants.GET_USER_TEACH_PLAN, commonView.getCommonRequestParams()), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                commonView.getCommonUserTeachPlanError(Constants.REQUEST_ERROR_CODE);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                CommonUserTeachPlanBean bean = GsonUtils.getBean(response.body().string(), CommonUserTeachPlanBean.class);
+                if(null != bean && 0 == bean.getCode()){
+                    commonView.getCommonUserTeachPlanSuccess(bean);
+                }else{
+                    commonView.getCommonUserTeachPlanError(Constants.REQUEST_ERROR_CODE);
                 }
             }
         });

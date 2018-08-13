@@ -8,4 +8,5 @@ public interface CommonPresenter {
     void getCommonFilterData();
     void getUserInfo();
     void getTeacher();
+    void getUserTeachPlan();
 }

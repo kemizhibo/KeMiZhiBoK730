@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.kemizhibo.kemizhibo.R;
@@ -19,8 +22,10 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.presenter.TeachingLessonsPresenterImp;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.view.TeachingLessonsView;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
@@ -41,6 +46,8 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
     RefreshLayout refreshLayout;
     @BindView(R.id.list_view)
     ListView listView;
+    @BindView(R.id.loading_page)
+    LinearLayout loading_page;
     private List<TeachingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private TeachingLessonsListAdapter adapter;
     private TeachingLessonsPresenter presenter;
@@ -82,6 +89,15 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
             }
         });
         presenter.refreshTeachingLessonsData();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.TEACH);
+                intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -114,6 +130,11 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
                     refreshLayout.finishLoadMore();
                 }else{
                     refreshLayout.finishRefresh();
+                    if(loading_page.getVisibility() == View.VISIBLE){
+                        loading_page.setVisibility(View.GONE);
+                        SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
+                        smartRefreshLayout.setVisibility(View.VISIBLE);
+                    }
                 }
                 if(adapter == null){
                     adapter = new TeachingLessonsListAdapter(getActivity(), dataBeanList);

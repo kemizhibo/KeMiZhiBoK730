@@ -16,10 +16,12 @@ public class Constants {
     public static final String GET_USER_INFO = SERVER + "kemiapi/ketang/user/info/get";
     public static final String GET_TEACHER = SERVER + "kemiapi/prepare/module/getTeacherBySchoolId";
     public static final String LOGIN = SERVER + "kemiapi/ketang/user/login";
+    public static final String GET_USER_TEACH_PLAN = SERVER + "kemiapi/prepare/module/getUserPlan";
 
-    public static final String H5_MAKE = "http://demo.mulpush.cn/kemi/#/make/${id}?courseId=${courseId}";
+    public static final String H5_MAKE = "http://demo.mulpush.cn/kemi/#/make/${id}";
     public static final String H5_PREVIEW = "http://demo.mulpush.cn/kemi/#/preview/${id}";
     public static final String H5_TEACH = "http://demo.mulpush.cn/kemi/#/lesson/${id}";
+    public static final String H5_REPLACE_STR = "${id}";
 
     public static final int NET_ERROR_CODE = 12345;
     public static final int REQUEST_ERROR_CODE = 23456;
@@ -39,6 +41,10 @@ public class Constants {
     public static final String START_TIME = "startTime";
 
     public static final String COURSE_ID = "courseId";
+
+    public static final String LASTPLAN = "lastPlan";
+
+    public static final String MODULE_ID = "moduleId";
 
     public static final String ROLE_ID = "roleId";
     public static final int MANAGER_ROLE_ID = 8;

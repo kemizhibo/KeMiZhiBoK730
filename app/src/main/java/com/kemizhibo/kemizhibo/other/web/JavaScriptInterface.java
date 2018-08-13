@@ -41,13 +41,17 @@ public class JavaScriptInterface {
     }
 
     @JavascriptInterface
-    public void loadError(){
-
+    public void loadError(String errorCode){
+        if(null != commonWebView){
+            commonWebView.loadError(errorCode);
+        }
     }
 
     @JavascriptInterface
     public void back(){
-
+        if(null != commonWebView){
+            commonWebView.back();
+        }
     }
 
 }
