@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +13,15 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
+import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
+import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
+import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
@@ -29,7 +38,9 @@ import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -44,7 +55,7 @@ import butterknife.Unbinder;
  * Describe:我的备课
  */
 
-public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> implements HomePageView {
+public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> implements HomePageView, CommonView {
 
 
     @BindView(R.id.myclass_recyclerview)
@@ -56,16 +67,19 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     int isUp = 1;
     //刷新适配器的判断
     private boolean isFlag;
+    private CommonPresenter commonPresenter;
 
     @Inject
     public HomePagePresenterImpl homePagePresenter;
     //申明presenterImpl对象,我的备课列表
     private List<HomePageBean.ContentBean.ReturnPrepareBean> myclassBean;
     MyClassAdapter myClassAdapter;
+    private int courseId;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        commonPresenter = new CommonPresenterImp(this);
         show();
     }
 
@@ -89,7 +103,19 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                courseId = myclassBean.get(position).getCourseId();
+                if(1 == myclassBean.get(position).getPrepareStatus()){
+                    Intent intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
+                    intent.putExtra(Constants.COURSE_ID, courseId);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                    intent.putExtra(Constants.MODULE_ID, myclassBean.get(position).getModuleId());
+                    startActivity(intent);
+                    /*commonPresenter.getUserTeachPlan();
+                    show();*/
+                }
             }
         });
         myclassRecyclerview.setAdapter(myClassAdapter);
@@ -152,4 +178,57 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         return homePagePresenter;
     }
 
+    @Override
+    public Context getCommonCustomContext() {
+        return getActivity();
+    }
+
+    @Override
+    public Map getCommonRequestParams() {
+        Map params = new HashMap();
+        params.put(Constants.COURSE_ID, courseId);
+        params.put(Constants.LASTPLAN, true);
+        return params;
+    }
+
+    @Override
+    public void getCommonFilterSuccess(CommonFilterBean bean) {
+
+    }
+
+    @Override
+    public void getCommonFilterError(int errorCode) {
+
+    }
+
+    @Override
+    public void getCommonUserInfoSuccess(CommonUserInfoBean bean) {
+
+    }
+
+    @Override
+    public void getCommonUserInfoError(int errorCode) {
+
+    }
+
+    @Override
+    public void getCommonTeacherSuccess(CommonTeacherBean bean) {
+
+    }
+
+    @Override
+    public void getCommonTeacherError(int errorCode) {
+
+    }
+
+    @Override
+    public void getCommonUserTeachPlanSuccess(CommonUserTeachPlanBean bean) {
+        /*setState(LoadingPager.LoadResult.success);
+        int docType = bean.getContent().get(0).getDocType();*/
+    }
+
+    @Override
+    public void getCommonUserTeachPlanError(int errorCode) {
+
+    }
 }

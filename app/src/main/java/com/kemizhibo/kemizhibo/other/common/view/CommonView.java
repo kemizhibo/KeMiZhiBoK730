@@ -5,6 +5,7 @@ import android.content.Context;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
 
 import java.util.Map;
 
@@ -21,4 +22,6 @@ public interface CommonView {
     void getCommonUserInfoError(int errorCode);
     void getCommonTeacherSuccess(CommonTeacherBean bean);
     void getCommonTeacherError(int errorCode);
+    void getCommonUserTeachPlanSuccess(CommonUserTeachPlanBean bean);
+    void getCommonUserTeachPlanError(int errorCode);
 }

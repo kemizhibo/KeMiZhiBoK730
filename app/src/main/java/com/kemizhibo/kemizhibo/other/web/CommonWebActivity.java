@@ -2,7 +2,9 @@ package com.kemizhibo.kemizhibo.other.web;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
@@ -37,6 +40,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private ValueCallback<Uri> mUploadCallbackBelow;
     private ArrayList<MediaItem> mediaItemSelectedList;
+    private String url;
 
     @Override
     protected int getLayoutId() {
@@ -45,6 +49,29 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        String operate = intent.getStringExtra(OPERATE_KEY);
+        if(TextUtils.isEmpty(operate)){
+            finish();
+        }else {
+            switch (operate) {
+                case MAKE:
+                    url = Constants.H5_MAKE.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.COURSE_ID, 0)));
+                    int moduleId = intent.getIntExtra(Constants.MODULE_ID, 0);
+                    if(0 != moduleId){
+                        url = url.concat("?courseId=" + moduleId);
+                    }
+                    break;
+                case PREVIEW:
+                    url = Constants.H5_PREVIEW.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.MODULE_ID, 0)));
+                    break;
+                case TEACH:
+                    url = Constants.H5_TEACH.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.MODULE_ID, 0)));
+                    break;
+                default:
+                    break;
+            }
+        }
         WebSetting.getInstance().setWebViewSetting(webView.getSettings());
         webView.addJavascriptInterface(new JavaScriptInterface(this, this), "android");
         webView.setWebChromeClient(new WebChromeClient() {
@@ -96,7 +123,8 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
 
 
         });
-        webView.loadUrl("http://demo.mulpush.cn/kemi/#/make/2832");
+        Log.d("CommonWebActivity", url);
+        webView.loadUrl(url);
     }
 
     private void takeResource() {
@@ -180,12 +208,21 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
     }
 
     @Override
-    public void loadError() {
-
+    public void loadError(String errorCode) {
+        finish();
     }
 
     @Override
     public void back() {
+        finish();
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()){
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

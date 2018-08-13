@@ -2,25 +2,31 @@ package com.kemizhibo.kemizhibo.other.preparing_online;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.preparing_online.adapter.PlanListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_online.adapter.PreparingOnlineListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_online.bean.PreparingOnlineBean;
 import com.kemizhibo.kemizhibo.other.preparing_online.presenter.PreparingOnlinePresenter;
@@ -29,6 +35,7 @@ import com.kemizhibo.kemizhibo.other.preparing_online.view.PreparingOnlineView;
 import com.kemizhibo.kemizhibo.other.utils.FilterPopUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -60,7 +67,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     RelativeLayout forteachingShaixuanButn;
 
     private PreparingOnlinePresenter presenter;
-    private CommonPresenter filterPresenter;
+    private CommonPresenter commonPresenter;
     private String materialId = "";
     private String gradeId = "";
     private String semesterId = "";
@@ -77,11 +84,15 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     private int semesterSelectI = -1;
     private CommonFilterBean filterBean;
 
+    private List<CommonUserTeachPlanBean.ContentBean> planBeanList = new ArrayList<>();
+    private int courseId;
+    private int selectIndex = -1;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         presenter = new PreparingOnlinePresenterImp(this);
-        filterPresenter = new CommonPresenterImp(this);
+        commonPresenter = new CommonPresenterImp(this);
     }
 
     @Override
@@ -101,7 +112,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             filterPop.dismiss();
         }else{
             if(null == materials){
-                filterPresenter.getCommonFilterData();
+                commonPresenter.getCommonFilterData();
             }else{
                 showFilterPop();
             }
@@ -162,11 +173,77 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent
-                         = new Intent(getActivity(), CommonWebActivity.class);
-                getActivity().startActivity(intent);
+                courseId = dataBeanList.get(position).getCourseId();
+                commonPresenter.getUserTeachPlan();
+                show();
             }
         });
+    }
+
+    private void showPlanPop() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_plan, null, false);
+        final ListView planList = view.findViewById(R.id.plan_list);
+        final PlanListAdapter planListAdapter = new PlanListAdapter(getActivity(), planBeanList);
+        planList.setAdapter(planListAdapter);
+        planListAdapter.setPlanListAdapterCallBack(new PlanListAdapter.PlanListAdapterCallBack() {
+            @Override
+            public void onCheckBoxClick(boolean isChecked, int position) {
+                if(isChecked){
+                    selectIndex = position;
+                    for (int i = 0; i < planBeanList.size(); i++) {
+                        if(i == position){
+                            planBeanList.get(i).setChecked(true);
+                        }else{
+                            planBeanList.get(i).setChecked(false);
+                        }
+                    }
+                }else{
+                    planBeanList.get(position).setChecked(false);
+                }
+                planListAdapter.notifyDataSetChanged();
+            }
+        });
+        RelativeLayout goTeach = view.findViewById(R.id.go_teach_rl);
+        final PopupWindow planPop = new PopupWindow(getActivity());
+        goTeach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                planPop.dismiss();
+                boolean isChecked = isChecked();
+                if(isChecked){
+                    int docType = planBeanList.get(selectIndex).getDocType();
+                    if(docType == 5){
+                        //视频
+                        Intent intent = new Intent(getActivity(), YingXinagVideoDetailsActivity.class);
+                        intent.putExtra(Constants.COURSE_ID, String.valueOf(planBeanList.get(selectIndex).getCourseId()));
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.TEACH);
+                        intent.putExtra(Constants.MODULE_ID, planBeanList.get(selectIndex).getModuleId());
+                        startActivity(intent);
+                    }
+                }else{
+                    Toast.makeText(mActivity, "请选择您的授课方案", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planPop.setWidth(400);
+        planPop.setContentView(view);
+        planPop.setFocusable(true);
+        planPop.setOutsideTouchable(true);
+        planPop.setBackgroundDrawable(new BitmapDrawable());
+        planPop.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
+    }
+
+    private boolean isChecked() {
+        for (int i = 0; i < planBeanList.size(); i++) {
+            if(planBeanList.get(i).isChecked()){
+                selectIndex = i;
+                return true;
+            }
+        }
+        return false;
     }
 
     public void initialize(){
@@ -246,7 +323,9 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
 
     @Override
     public Map getCommonRequestParams() {
-        return null;
+        Map params = new HashMap();
+        params.put(Constants.COURSE_ID, String.valueOf(courseId));
+        return params;
     }
 
     @Override
@@ -297,6 +376,23 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
 
     @Override
     public void getCommonTeacherError(int errorCode) {
+
+    }
+
+    @Override
+    public void getCommonUserTeachPlanSuccess(CommonUserTeachPlanBean bean) {
+         planBeanList.clear();
+         planBeanList.addAll(bean.getContent());
+         getActivity().runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                 showPlanPop();
+             }
+         });
+    }
+
+    @Override
+    public void getCommonUserTeachPlanError(int errorCode) {
 
     }
 

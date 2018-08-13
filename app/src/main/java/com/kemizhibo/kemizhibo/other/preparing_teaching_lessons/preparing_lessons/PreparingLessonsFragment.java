@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.kemizhibo.kemizhibo.R;
@@ -20,9 +23,11 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lesson
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter.PreparingLessonsPresenterImp;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.view.PreparingLessonsView;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
@@ -43,6 +48,8 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     RefreshLayout refreshLayout;
     @BindView(R.id.list_view)
     ListView listView;
+    @BindView(R.id.loading_page)
+    LinearLayout loading_page;
     private int planStatus = 0;
     private List<PreparingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private PreparingLessonsListAdapter adapter;
@@ -61,7 +68,7 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = UIUtils.inflate(getActivity(), R.layout.fragment_preparing_teaching_lessons);
+        final View view = UIUtils.inflate(getActivity(), R.layout.fragment_preparing_teaching_lessons);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -87,6 +94,20 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
             }
         });
         presenter.refreshPreparingLessonsData();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                if(roleId == Constants.MANAGER_ROLE_ID){
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                }else{
+                    //子账号跳转授课页面，H5会自己获取备课状态
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.TEACH);
+                }
+                intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -127,6 +148,11 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                     refreshLayout.finishLoadMore();
                 }else{
                     refreshLayout.finishRefresh();
+                    if(loading_page.getVisibility() == View.VISIBLE){
+                        loading_page.setVisibility(View.GONE);
+                        SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
+                        smartRefreshLayout.setVisibility(View.VISIBLE);
+                    }
                 }
                 if(adapter == null){
                     adapter = new PreparingLessonsListAdapter(getActivity(), dataBeanList);

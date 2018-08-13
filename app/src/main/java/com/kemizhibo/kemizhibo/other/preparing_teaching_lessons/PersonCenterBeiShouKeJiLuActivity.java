@@ -34,6 +34,7 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserInfoBean;
+import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
@@ -463,6 +464,16 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     @Override
     public void getCommonTeacherError(int errorCode) {
         Log.d("PersonCenterBeiShouKeJi", "eoor" + errorCode);
+    }
+
+    @Override
+    public void getCommonUserTeachPlanSuccess(CommonUserTeachPlanBean bean) {
+
+    }
+
+    @Override
+    public void getCommonUserTeachPlanError(int errorCode) {
+
     }
 
     public void changeMonthItems(boolean isCurrentYear){

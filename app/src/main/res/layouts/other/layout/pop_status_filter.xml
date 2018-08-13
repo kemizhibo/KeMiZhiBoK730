@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/x40"
     android:paddingRight="@dimen/x30"
-    android:background="@color/white">
+    android:background="@mipmap/status_filter_pop_bg">
 
     <ListView
         android:id="@+id/status_list"
