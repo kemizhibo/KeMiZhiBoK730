@@ -2,43 +2,22 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.other.config.Constants;
-import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingDocBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPPTBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPicBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingWordBen;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
-import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.jzvd.JZVideoPlayerStandard;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 /**
  * Created by asus on 2018/8/1.
@@ -104,7 +83,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         Log.i("---onekeysize--", oneKeyBeanList.size() + "");
         // 获取当前条目的类型
         int itemViewType = getItemViewType(position);
@@ -125,7 +104,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     break;
                 case TYPE_PUPIAN://图片
                     convertView = View.inflate(context, R.layout.tupian_item, null);
-                    holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+                   // holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
@@ -159,7 +138,13 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId);
+           /* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
+            holder.jcVideoPlayer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("positionclick==", "" + position);
+                }
+            });*/
         }
        /* else if (itemViewType == TYPE_MAKE) {
             moduleId = oneKeyBeanList.get(position).getModuleId();

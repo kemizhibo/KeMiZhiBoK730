@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.other.preparing_package_detail.bean;
 
+import android.support.v4.view.ViewPager;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -15,4 +16,5 @@ public  class MyViewHolder {
     public JZVideoPlayerStandard jcVideoPlayer;
     public TextView mwendang;
     public SimpleDraweeView miv;
+    public ViewPager mviewPager;
 }

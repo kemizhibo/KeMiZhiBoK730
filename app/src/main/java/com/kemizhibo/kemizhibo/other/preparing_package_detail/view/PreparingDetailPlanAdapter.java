@@ -2,15 +2,11 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,19 +15,12 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingDocBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPPTBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPicBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingWordBen;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,7 +118,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     break;
                 case TYPE_PUPIAN://图片
                     convertView = View.inflate(context, R.layout.tupian_item, null);
-                    holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+                   // holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
@@ -177,7 +166,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = planBeanList.get(position).getModuleId();
-            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId);
+          //  RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
         } else if (itemViewType == TYPE_MAKE) {
             moduleId = planBeanList.get(position).getModuleId();
             holder.mmake.setText(planBeanList.get(position).getDocName());

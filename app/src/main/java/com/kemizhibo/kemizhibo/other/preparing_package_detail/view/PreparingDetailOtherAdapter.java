@@ -106,7 +106,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     break;
                 case TYPE_PUPIAN://图片
                     convertView = View.inflate(context, R.layout.tupian_item, null);
-                    holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+                  //  holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
@@ -140,7 +140,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId);
+           // RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
         }
        /* else if (itemViewType == TYPE_MAKE) {
             moduleId = otherBeanList.get(position).getModuleId();

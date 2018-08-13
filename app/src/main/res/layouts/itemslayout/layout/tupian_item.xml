@@ -7,35 +7,43 @@
     android:background="#333"
     android:padding="@dimen/dp_10">
 
+<!--
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/mimage"
         android:layout_width="@dimen/res_400dp"
         android:layout_height="@dimen/res_160dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
         fresco:placeholderImage="@mipmap/a22"
         fresco:roundedCornerRadius="@dimen/res_10dp" />
+-->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_160dp"></android.support.v4.view.ViewPager>
 
     <TextView
-        android:text="kkkkkk"
-        android:paddingLeft="@dimen/x10"
-        android:layout_marginTop="@dimen/res_40dp"
         android:id="@+id/adj"
-        android:textColor="#ffffff"
-        android:layout_toLeftOf="@+id/btn"
-        android:layout_below="@+id/mimage"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dp_10"/>
+        android:layout_below="@+id/viewpager"
+        android:layout_marginTop="@dimen/res_40dp"
+        android:layout_toLeftOf="@+id/btn"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/x10"
+        android:text="kkkkkk"
+        android:textColor="#ffffff" />
+
     <Button
         android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_below="@+id/viewpager"
         android:layout_marginRight="@dimen/dp_10"
-        android:layout_below="@+id/mimage"
+        android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/btn_border"
         android:text="选用素材" />
 </RelativeLayout>

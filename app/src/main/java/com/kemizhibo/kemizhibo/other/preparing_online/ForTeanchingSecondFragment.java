@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.other.preparing_online;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -87,6 +88,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     private List<CommonUserTeachPlanBean.ContentBean> planBeanList = new ArrayList<>();
     private int courseId;
     private int selectIndex = -1;
+    private View parent;
 
     @Override
     public void onAttach(Context context) {
@@ -233,9 +235,19 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         planPop.setFocusable(true);
         planPop.setOutsideTouchable(true);
         planPop.setBackgroundDrawable(new BitmapDrawable());
-        planPop.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
+        backgroundAlpha(0.8f);
+        parent = getActivity().getWindow().getDecorView();
+        planPop.showAtLocation(parent, Gravity.CENTER, 0, 0);
     }
-
+    /**
+     * 设置添加屏幕的背景透明度
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getActivity().getWindow().setAttributes(lp);
+    }
     private boolean isChecked() {
         for (int i = 0; i < planBeanList.size(); i++) {
             if(planBeanList.get(i).isChecked()){

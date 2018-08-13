@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.kemizhibo.kemizhibo.BuildConfig;
@@ -49,9 +51,12 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     ListView listViewqi;
     @BindView(R.id.none)
     TextView mnone;
+    @BindView(R.id.detaile_scrollView)
+    ScrollView mdetailescrollView;
     private PreparingPackageDetailPresenter detailPresenter;
     private int courseId;
     Handler mHandler = new Handler();
+    private int mlastPosition;
 
     @Override
     protected int getLayoutId() {
@@ -63,7 +68,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         detailPresenter = new PreparingPackageDetailPresenterImp(this);
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        courseId = 2832;
+        //courseId = 2832;
         detailPresenter.getPreparingPackageDetailData();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -101,14 +106,39 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getMaterial());
                     listViewsu.setAdapter(preparingDetailAdapter);
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
-                    PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(),mHandler);
+                    PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
                     List<PreparingPackageDetailBean.ContentBean.OtherBean> other = bean.getContent().getOther();
                     if (other.size() > 0) {
                         mnone.setVisibility(View.GONE);
                         listViewqi.setAdapter(new PreparingDetailOtherAdapter(PreparingPackageDetailActivity.this, other));
                     }
+                    listViewone.setOnTouchListener(new View.OnTouchListener() {
 
+                        public boolean onTouch(View v, MotionEvent event) {
+                            // TODO Auto-generated method stub
+                            listViewone.getParent().requestDisallowInterceptTouchEvent(true);
+                            return false;
+                        }
+                    });
+                    listViewone.setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                        }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                            listViewone.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mlastPosition = listViewone.getLastVisiblePosition();
+                                }
+                            });
+                            Log.i("positionfist==", firstVisibleItem + "");
+                            Log.i("positionlast==", listViewone.getLastVisiblePosition() + "");
+                        }
+                    });
 
                 }
             });

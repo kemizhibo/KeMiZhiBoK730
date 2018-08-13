@@ -14,15 +14,18 @@ import com.baidu.bdocreader.downloader.DocDownloadManager;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyViewpagerAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.SampleObserver;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.WordShowActivity;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -39,6 +42,7 @@ public class RequestUtil {
     private static BDocInfo docInfo;
     private static TextView id;
     private static int type;
+    private static MyViewpagerAdapter adapter;
 
     public static void requestPPT(final Activity context, final MyViewHolder holder, final int doctype, int moduleId) {
         Map map = new HashMap();
@@ -208,7 +212,7 @@ public class RequestUtil {
         });
     }
 
-    public static void requestPic(final Activity context, final MyViewHolder holder, final int itemViewType, int moduleId) {
+    public static void requestPic(final Activity context, final MyViewHolder holder, final int itemViewType, int moduleId, final List<String> picurls) {
         Map map = new HashMap();
         Log.i("-picmoduleId---", moduleId + "");
         map.put("moduleId", String.valueOf(moduleId));
@@ -221,7 +225,6 @@ public class RequestUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //    Log.i("-json---", response.body().string() + "");
                 final PreparingPicBean picbean = GsonUtils.getBean(response.body().string(), PreparingPicBean.class);
                 Log.i("-piccode---", picbean.getCode() + "");
                 if (null != picbean && 0 == picbean.getCode()) {
@@ -230,11 +233,18 @@ public class RequestUtil {
                     Log.i("-picmiaoshu---", picbean.getContent().getFileName() + "");
                     final Uri parse = Uri.parse(Constants.TEST_IMAGE_URL);
                     // final Uri parse = Uri.parse(url);
-                    final Bitmap bitmap = getURLimage(Constants.TEST_IMAGE_URL);
                     context.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            holder.miv.setImageURI(parse);
+                            picurls.add(Constants.TEST_IMAGE_URL);
+                            Log.i("-picurls---", picurls.size() + "");
+                            if (null == adapter) {
+                                adapter = new MyViewpagerAdapter(MyApplication.getContext(), picurls);
+                                holder.mviewPager.setAdapter(adapter);
+                            } else {
+                                adapter.notifyDataSetChanged();
+
+                            }
                             if (picbean.getContent().getIntroduce() != null) {
                                 holder.madjsucai.setText(picbean.getContent().getFileName());
                             }

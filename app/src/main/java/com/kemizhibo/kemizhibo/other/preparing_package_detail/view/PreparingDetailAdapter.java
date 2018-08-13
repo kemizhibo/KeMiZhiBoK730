@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +40,14 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingWord
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreviewBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +65,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
     private Handler mHandler;
     private List<PreparingPackageDetailBean.ContentBean.MaterialBean> material;
+    private List<String> picurls=new ArrayList<>();
     private Context context;
 
     //定义样式常量，注意常量值要从0开始
@@ -79,6 +83,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
     public PreparingDetailAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.MaterialBean> material) {
         this.context = context;
         this.material = material;
+         this.picurls.clear();
     }
 
 
@@ -143,7 +148,8 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     break;
                 case TYPE_PUPIAN://图片
                     convertView = View.inflate(context, R.layout.tupian_item, null);
-                    holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+                 //   holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+                    holder.mviewPager = (ViewPager) convertView.findViewById(R.id.viewpager);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
@@ -177,9 +183,10 @@ public class PreparingDetailAdapter extends BaseAdapter {
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = material.get(position).getModuleId();
-            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId);
+            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId,picurls);
         }
        /* else if (itemViewType == TYPE_MAKE) {
+       +
             moduleId = material.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
         }*/

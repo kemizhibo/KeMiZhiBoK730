@@ -4,6 +4,7 @@
     style="@style/MMStyle">
 
     <LinearLayout
+        android:background="@color/backgound_fcfcfc"
         style="@style/MMStyle"
         android:orientation="vertical">
         <FrameLayout

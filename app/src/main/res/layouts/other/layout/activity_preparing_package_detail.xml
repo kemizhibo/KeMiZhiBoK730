@@ -30,6 +30,7 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/detaile_scrollView"
         android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
