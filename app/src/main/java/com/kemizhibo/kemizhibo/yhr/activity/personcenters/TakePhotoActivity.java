@@ -12,14 +12,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.dueeeke.videoplayer.util.L;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
+import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.TakePhotoBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LQRPhotoSelectUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import java.io.File;
@@ -204,17 +209,27 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     @OnClick(R.id.yes_butn)
     public void onViewClicked() {
         Map map = new HashMap();
-        /*OkHttpRequest.uploadFile(this, "http://36.110.133.6:17002/file/upload", outputFile, "yhr.jpg", map, new Callback() {
+        map.put("param","picImg");
+        OkHttpRequest.uploadFile(this, "http://39.155.221.165:8080/image/upload", outputFile, "yhr.jpg", map, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                LogUtils.i("11111111111111",e+"");
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                LogUtils.i("11111111111111",response.message()+"");
+                //返回的图片地址
+                TakePhotoBean takePhotoBean = GsonUtils.getBean(response.body().string(), TakePhotoBean.class);
+                if(takePhotoBean != null && 0 == (takePhotoBean.getCode())){
+                    String picImg = takePhotoBean.getContent().toString();
+                    sp = getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
+                }else{
+                    //解析失败
+                }
             }
-        });*/
+        });
         /*File file = new File(filepath);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
@@ -224,23 +239,27 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     //保存头像
     @Override
     public void onPreservationPictureSuccess(PreservationPictureBean preservationPictureBean) {
-        LogUtils.i("11111111111111111111111","请求数据回调陈宫");
+        if (preservationPictureBean.getCode()==0){
+            //保存chenggong
+            finish();
+        }else {
+            ToastUtils.showToast(preservationPictureBean.getMessage());
+        }
     }
 
     @Override
     public void onPreservationPictureError(String msg) {
-        LogUtils.i("11111111111111111111111","请求数据回调失败");
+
     }
     //上传头像
     @Override
     public void onTakePhotoSuccess(TakePhotoBean takePhotoBean) {
 
-        LogUtils.i("11111111111111111111111","请求数据回调陈宫"+takePhotoBean.getMessage());
     }
 
     @Override
     public void onTakePhotoError(String msg) {
-        LogUtils.i("11111111111111111111111","请求数据回调失败"+msg);
+
     }
 
     @Override

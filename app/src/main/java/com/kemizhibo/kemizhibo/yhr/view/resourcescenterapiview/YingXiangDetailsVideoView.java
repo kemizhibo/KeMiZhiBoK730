@@ -6,6 +6,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.DeleteCommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.GetLikeBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.ReplyCommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangDetailsVideoBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
@@ -46,7 +47,7 @@ public interface YingXiangDetailsVideoView extends BaseView{
     void onGetLikeSuccess(GetLikeBean getLikeBean);
     void onGetLikeError(String msg);
     //记录第一次播放位置
-    void onGetOneLookSuccess(LiuLanBean liuLanBean);
+    void onGetOneLookSuccess(OneLookBean oneLookBean);
     void onGetOneLookError(String msg);
 
 }

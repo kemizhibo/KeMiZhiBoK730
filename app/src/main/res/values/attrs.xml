@@ -18,4 +18,13 @@
         <attr name="mask_view_color" format="color"/>
         <attr name="duration" format="integer"/>
     </declare-styleable>
+    <!-- 侧滑 -->
+    <declare-styleable name="EasySwipeMenuLayout">
+        <attr name="leftMenuView" format="reference" />
+        <attr name="rightMenuView" format="reference" />
+        <attr name="contentView" format="reference" />
+        <attr name="canRightSwipe" format="boolean" />
+        <attr name="canLeftSwipe" format="boolean" />
+        <attr name="fraction" format="float" />
+    </declare-styleable>
 </resources>

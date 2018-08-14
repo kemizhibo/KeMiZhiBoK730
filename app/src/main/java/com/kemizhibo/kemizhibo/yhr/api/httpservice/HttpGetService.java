@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.api.httpservice;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -80,15 +82,22 @@ public interface HttpGetService {
                                                                  @Field("content") String content,
                                                                  @Field("type") String type);
 
+    //保存头像图片
+    @FormUrlEncoded
+    @POST("kemiapi/ketang/user/info/editPicImg")
+    Observable<ResponseBody> getPreservationPhotoData(@Header("Authorization") String token,
+                                             @Field("picImg") String picImg);
+
  //第一次播放视频记录
  @FormUrlEncoded
  @POST("kemiapi/user/watchHistory/putForB")
  Observable<ResponseBody> getOneLookData(@Header("Authorization") String token,
                                           @Field("playPosition") String playPosition,
+                                          @Field("keyId") String keyId,
                                           @Field("courseId") String courseId,
                                           @Field("watchTime") String watchTime,
                                           @Field("isEnd") String isEnd);
- //第二次及以后播放视频记录
+ /*//第二次及以后播放视频记录
  @FormUrlEncoded
  @POST("kemiapi/user/watchHistory/putForB")
  Observable<ResponseBody> getTwoLookData(@Header("Authorization") String token,
@@ -96,7 +105,7 @@ public interface HttpGetService {
                                          @Field("keyId") String keyId,
                                          @Field("courseId") String courseId,
                                          @Field("watchTime") String watchTime,
-                                         @Field("isEnd") String isEnd);
+                                         @Field("isEnd") String isEnd);*/
     //图文详情
     @GET("kemiapi/course/getCourseForB")
     Observable<ResponseBody> getPictrueFragmnetData(@Header("Authorization") String token,
@@ -129,6 +138,15 @@ public interface HttpGetService {
     @GET("kemiapi/ketang/user/info/exit")
     Observable<ResponseBody> getSignOutData(@Header("Authorization") String token);
 
+    //清空浏览记录
+    @GET("kemiapi/user/watchHistory/emptyForB")
+    Observable<ResponseBody> getClearLiuLanData(@Header("Authorization") String token);
+
+    //删除一个或者多个浏览记录
+    @GET("kemiapi/user/watchHistory/deleteForB")
+    Observable<ResponseBody> getClearOneOrMoreLiuLanData(@Header("Authorization") String token,
+                                                         @Query("ids") List ids);
+
     //教师培训列表页
     @GET("kemiapi/course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getTeacherTrainingData(@Query("sellType") String sellType,
@@ -159,10 +177,15 @@ public interface HttpGetService {
 
     //首页轮播图
     @GET("kemiapi/prepare/module/homePageBanner")
-    Observable<ResponseBody> getSowingMapData(@Query("device") String device);
+    Observable<ResponseBody> getSowingMapData(@Header("Authorization") String token,
+                                              @Query("device") String device);
     //首页数据
-    @POST("kemiapi/prepare/module/appHomePage")
-    Observable<ResponseBody> getHomePageData();
+    @GET("kemiapi/prepare/module/appHomePage")
+    Observable<ResponseBody> getHomePageData(@Header("Authorization") String token);
+
+    //获取版本信息
+    @GET("kemiapi/version/getLatestVersion")
+    Observable<ResponseBody> getVersionInformationData();
 
     @GET("kemiapi/recommend")
     Observable<ResponseBody> getRecommendData();

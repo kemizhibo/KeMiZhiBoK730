@@ -4,9 +4,11 @@ import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangFragmentBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor.HomePageIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor.VersionInformationIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.FilterIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.YingXiangFragmentIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.homepagerpresenter.HomePagePresenter;
@@ -26,11 +28,12 @@ public class HomePagePresenterImpl extends BasePresenterImpl<HomePageView> imple
     @Inject
     public HomePageIteractor homePageIteractor ;
 
+
     @Inject
     public HomePagePresenterImpl() {}
 
     @Override
-    public void getHomePageData(BaseActivity activity) {
+    public void getHomePageData(BaseActivity activity,String token) {
         homePageIteractor.loadHomePageData(activity, new IGetDataDelegate<HomePageBean>() {
             @Override
             public void getDataSuccess(HomePageBean homePageBean) {
@@ -41,6 +44,6 @@ public class HomePagePresenterImpl extends BasePresenterImpl<HomePageView> imple
             public void getDataError(String errmsg) {
                 mPresenterView.onHomePageError(errmsg);
             }
-        });
+        },token);
     }
 }

@@ -4,8 +4,10 @@ import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.SowingMapBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.SearchBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor.SowingMapIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor.VersionInformationIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.SearchIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.homepagerpresenter.SowingMapPresenter;
 import com.kemizhibo.kemizhibo.yhr.presenter.resourcescenterpresenter.SearchPresenter;
@@ -25,10 +27,13 @@ public class SowingMapPresenterImpl extends BasePresenterImpl<SowingMapView> imp
     public SowingMapIteractor sowingMapIteractor ;
 
     @Inject
+    public VersionInformationIteractor versionInformationIteractor ;
+
+    @Inject
     public SowingMapPresenterImpl() {}
 
     @Override
-    public void getSowingMapData(BaseActivity activity, String device) {
+    public void getSowingMapData(BaseActivity activity,String token, String device) {
         sowingMapIteractor.loadSowingMapData(activity, new IGetDataDelegate<SowingMapBean>() {
             @Override
             public void getDataSuccess(SowingMapBean sowingMapBean) {
@@ -39,6 +44,21 @@ public class SowingMapPresenterImpl extends BasePresenterImpl<SowingMapView> imp
             public void getDataError(String errmsg) {
                 mPresenterView.onSowingMapError(errmsg);
             }
-        },device);
+        },token,device);
+    }
+
+    @Override
+    public void getVersionInformationData(BaseActivity activity) {
+        versionInformationIteractor.loadVersionInformationData(activity, new IGetDataDelegate<VersionInformationBean>() {
+            @Override
+            public void getDataSuccess(VersionInformationBean versionInformationBean) {
+                mPresenterView.onVersionInformationSuccess(versionInformationBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onVersionInformationError(errmsg);
+            }
+        });
     }
 }

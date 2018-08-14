@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.SowingMapBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.MaterialRecommendedFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.MyClassFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.FourFragment;
@@ -96,7 +98,10 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
 
     @Override
     public void load() {
-        sowingMapPresenter.getSowingMapData(mActivity,"app");
+        SharedPreferences sp = getContext().getSharedPreferences("logintoken", 0);
+        String token = sp.getString("token", "");
+        sowingMapPresenter.getSowingMapData(mActivity,"Bearer "+token,"app");
+        sowingMapPresenter.getVersionInformationData(mActivity);
     }
 
     //轮播图的监听方法
@@ -141,7 +146,19 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
 
     @Override
     public void onSowingMapError(String msg) {
-        setState(LoadingPager.LoadResult.error);
+        //setState(LoadingPager.LoadResult.error);
+    }
+    //版本更新
+    @Override
+    public void onVersionInformationSuccess(VersionInformationBean versionInformationBean) {
+        /*if (versionInformationBean.getCode()==0&&versionInformationBean.getContent().getVersionNo()!="现在的版本号"){
+            //比较，如果有新版本，弹出提示，有新版本,确定以后调用下载最新apk接口接口
+        }*/
+    }
+
+    @Override
+    public void onVersionInformationError(String msg) {
+
     }
 
     @Override

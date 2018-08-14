@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -60,6 +61,8 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     //申明presenterImpl对象,我的备课列表
     private List<HomePageBean.ContentBean.ReturnTrainBean> trainBean;
     TrainingCourseRecommendationAdapter trainingCourseRecommendationAdapter;
+    private SharedPreferences sp;
+    private String token;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -107,7 +110,9 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
                     public void run() {
                         isUp = 1;
                         currentPage = 1;
-                        homePagePresenter.getHomePageData(mActivity);
+                        sp = getContext().getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
                         trainingCourseRecommendationSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -120,7 +125,9 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
                     public void run() {
                         isUp = 2;
                         currentPage++;
-                        homePagePresenter.getHomePageData(mActivity);
+                        sp = getContext().getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
                         trainingCourseRecommendationSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -132,7 +139,9 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
 
     @Override
     public void load() {
-        homePagePresenter.getHomePageData(mActivity);
+        sp = getContext().getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        homePagePresenter.getHomePageData(mActivity,"Bearer "+ token);
     }
 
     @Override

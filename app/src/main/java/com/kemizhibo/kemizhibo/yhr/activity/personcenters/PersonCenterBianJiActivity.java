@@ -65,13 +65,6 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     private String idcard;
     private String email;
     private SharedPreferences sp;
-    private String personSchoolNameEdittextHint;
-    private String personLianxirenEdittextHint;
-    private String personTypeEdittextHint;
-    private String personGradleEdittextHint;
-    private String personAddressEdittextHint;
-    private String personIdcardEdittextHint;
-    private String personEmailEdittextHint;
     private String mobile;
 
     @Override
@@ -121,43 +114,43 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
         if (school.equals(null) || school.equals("")) {
             school = "";
         } else {
-            personSchoolNameEdittext.setHint(school);
+            personSchoolNameEdittext.setText(school);
         }
         //名字
         if (realname.equals(null) || realname.equals("")) {
             realname = "";
         } else {
-            personLianxirenEdittext.setHint(realname);
+            personLianxirenEdittext.setText(realname);
         }
         //学科
         if (subject.equals(null) || subject.equals("")) {
             subject = "";
         } else {
-            personTypeEdittext.setHint(subject);
+            personTypeEdittext.setText(subject);
         }
         //年级
         if (grade.equals(null) || grade.equals("")) {
             grade = "";
         } else {
-            personGradleEdittext.setHint(grade);
+            personGradleEdittext.setText(grade);
         }
         //地址
         if (address.equals(null) || address.equals("")) {
             address = "";
         } else {
-            personAddressEdittext.setHint(address);
+            personAddressEdittext.setText(address);
         }
         //身份证号码
         if (idcard.equals(null) || idcard.equals("")) {
             idcard = "";
         } else {
-            personIdcardEdittext.setHint(idcard);
+            personIdcardEdittext.setText(idcard);
         }
         //邮箱
         if (email.equals(null) || email.equals("")) {
             email = "";
         } else {
-            personEmailEdittext.setHint(email);
+            personEmailEdittext.setText(email);
         }
     }
 
@@ -170,10 +163,13 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     @Override
     public void onChangeUserSuccess(ChangeUserBean changeUserBean) {
         if (changeUserBean.getCode() == 0) {
-            ToastUtils.showToast(changeUserBean.getMessage() + 0);
+            /*sp = getSharedPreferences("logintoken", 0);
+            token = sp.getString("token", "");
+            getUserPresenter.getUserData(this, "Bearer " + token);
+            LogUtils.i("123456",token);*/
             PersonCenterBianJiActivity.this.finish();
         } else {
-            ToastUtils.showToast(changeUserBean.getMessage() + 1);
+            ToastUtils.showToast(changeUserBean.getMessage());
         }
     }
 
@@ -304,6 +300,13 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 }*/
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
+                school = personSchoolNameEdittext.getText().toString();
+                realname = personLianxirenEdittext.getText().toString();
+                subject = personTypeEdittext.getText().toString();
+                grade = personGradleEdittext.getText().toString();
+                address = personAddressEdittext.getText().toString();
+                idcard = personIdcardEdittext.getText().toString();
+                email = personEmailEdittext.getText().toString();
                 //getUserPresenter.getChangeUserData(this, "Bearer " + token, personSchoolNameEdittextHint, personLianxirenEdittextHint, personGradleEdittextHint, personTypeEdittextHint, personIdcardEdittextHint, personEmailEdittextHint, personAddressEdittextHint);
                 getUserPresenter.getChangeUserData(this, "Bearer " + token, school, realname, grade,subject, idcard, email, address);
                 break;

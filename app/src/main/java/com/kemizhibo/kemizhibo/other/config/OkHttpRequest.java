@@ -158,7 +158,7 @@ public class OkHttpRequest {
      * fileName....文件的名字,,例如aaa.jpg
      * params ....传递除了file文件 其他的参数放到map集合
      */
-    public static void uploadFile(Context context, String url, File file, String fileName, Map<String, String> params) {
+    public static void uploadFile(Context context, String url, File file, String fileName, Map<String, String> params,Callback callback) {
         //创建OkHttpClient请求对象
         final OkHttpClient okHttpClient = getInstance(context);
         MultipartBody.Builder builder = new MultipartBody.Builder();
@@ -172,21 +172,20 @@ public class OkHttpRequest {
             }
         }
         //文件...参数name指的是请求路径中所接受的参数...如果路径接收参数键值是fileeeee,此处应该改变
-        builder.addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("application/octet-stream"), file));
+        builder.addFormDataPart("uploadfile", fileName, RequestBody.create(MediaType.parse("application/octet-stream"), file));
 
         //构建
-        MultipartBody multipartBody = builder.build();
-
+//        MultipartBody multipartBody = builder.build();
+        RequestBody requestBody  = builder.build(); //唯一改动 删除上一行  新增本行
         //创建Request
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + getToken(context))
-                .post(multipartBody).build();
+                .post(requestBody).build();
 
         //得到Call
         Call call = okHttpClient.newCall(request);
-        //执行请求
-        call.enqueue(new Callback() {
+        /*new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
@@ -197,10 +196,11 @@ public class OkHttpRequest {
                 //上传成功回调 目前不需要处理
                 if (response.isSuccessful()) {
                     final String s = response.body().string();
-
                 }
             }
-        });
+        }*/
+        //执行请求
+        call.enqueue(callback);
 
     }
 

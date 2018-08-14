@@ -9,6 +9,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.DeleteCommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.GetLikeBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.ReplyCommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangDetailsVideoBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangDetailsVideoUrlBean;
@@ -181,17 +182,17 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
     }
 
     @Override
-    public void getOneLookData(BaseActivity activity, String token, String playPosition, String courseId, String watchTime, String isEnd) {
-        oneLookIteractor.loadOneLookData(activity, new IGetDataDelegate<LiuLanBean>() {
+    public void getOneLookData(BaseActivity activity, String token, String playPosition,String keyId, String courseId, String watchTime, String isEnd) {
+        oneLookIteractor.loadOneLookData(activity, new IGetDataDelegate<OneLookBean>() {
             @Override
-            public void getDataSuccess(LiuLanBean liuLanBean) {
-                mPresenterView.onGetOneLookSuccess(liuLanBean);
+            public void getDataSuccess(OneLookBean oneLookBean) {
+                mPresenterView.onGetOneLookSuccess(oneLookBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
                 mPresenterView.onGetOneLookError(errmsg);
             }
-        },token,playPosition,courseId,watchTime,isEnd);
+        },token,playPosition,keyId,courseId,watchTime,isEnd);
     }
 }

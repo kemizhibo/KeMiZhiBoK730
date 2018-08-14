@@ -111,6 +111,16 @@ public class CollectionBoxBean {
             private CourseBean course;
             private int userId;
             private String addTime;
+            //多选框是否选中
+            private boolean isSelect;
+
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean isSelect) {
+                this.isSelect = isSelect;
+            }
 
             public int getId() {
                 return id;

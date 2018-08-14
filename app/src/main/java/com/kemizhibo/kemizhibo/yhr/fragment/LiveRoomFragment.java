@@ -23,6 +23,7 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterMaterialAdapter;
@@ -127,7 +128,14 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    //判断点击的是图片还是视频还是直播
+                    //点击跳转web页面，并且传值
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MyLiveRoomWebActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(liveDataBean.get(position).getCourseId()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    getActivity().startActivity(intent);
+                    /*//判断点击的是图片还是视频还是直播
                     if (liveDataBean.get(position).getFileType().equals("VIDEO")) {
                         Intent intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
                         Bundle bundle = new Bundle();
@@ -142,7 +150,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                         intent.putExtras(bundle);
                         //这里一定要获取到所在Activity再startActivity()；
                         getActivity().startActivity(intent);
-                    }
+                    }*/
                 }
             }
         });

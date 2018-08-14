@@ -27,6 +27,8 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 
@@ -74,6 +76,15 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        sp = getContext().getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        getUserPresenter.getUserData(mActivity, "Bearer " + token);
+        LogUtils.i("123456",token);
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity,R.layout.fragment_personcenter);
         ButterKnife.bind(this, view);
@@ -92,26 +103,14 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         return view;
     }
 
+
     @Override
     public void load() {
         sp = getContext().getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         getUserPresenter.getUserData(mActivity, "Bearer " + token);
     }
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(200);
-                setState(LoadingPager.LoadResult.success);
-                sp = getContext().getSharedPreferences("logintoken", 0);
-                token = sp.getString("token", "");
-                getUserPresenter.getUserData(mActivity, "Bearer " + token);
-            }
-        }).start();
-    }*/
+
 
     @Override
     public void onUserSuccess(GetUserBean getUserBean) {

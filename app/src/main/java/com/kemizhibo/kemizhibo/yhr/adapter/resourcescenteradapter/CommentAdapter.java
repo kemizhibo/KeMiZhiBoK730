@@ -1,19 +1,12 @@
 package com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -39,5 +32,8 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean.ContentBean.Dat
         helper.setText(R.id.comment_time_txt,item.getAddtime());
         helper.setText(R.id.comment_text,item.getContent());
         helper.addOnClickListener(R.id.comment_dianzan);
+        if (item.getPraiseHistory()==1){
+            helper.getView(R.id.comment_dianzan).setBackgroundResource(R.mipmap.getlike_select_2);
+        }
     }
 }

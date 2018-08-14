@@ -41,6 +41,6 @@ public class MyClassAdapter extends BaseQuickAdapter<HomePageBean.ContentBean.Re
             //view.setTextColor(R.color.text_444444);
         }
         helper.setText(R.id.myclass_title,item.getCourseName());
-        helper.setText(R.id.myclass_time,item.getCreateTime());
+        helper.setText(R.id.myclass_time, (CharSequence) item.getCreateTime());
     }
 }

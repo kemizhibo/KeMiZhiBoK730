@@ -10,11 +10,10 @@ import java.util.List;
 
 public class LiuLanBean {
 
-
     /**
      * code : 0
      * message : success
-     * content : {"page":1,"size":10,"total":1,"data":[{"id":"222403990611034112","userId":27782,"course":{"courseId":1003162,"courseName":"郁波讲堂","isAvaliable":1,"subjectId":407,"logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","courseType":"TEACHERCOURSE","commentnum":128,"pageViewcount":52333,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"imageText":null},"watchTime":"2018-08-02","playPosition":25000}]}
+     * content : {"page":1,"size":10,"total":5,"data":[{"id":"224957149271293952","userId":27782,"course":{"courseId":1004712,"courseName":"视频22222222","isAvaliable":1,"subjectId":404,"logo":"http://192.168.1.101:8080/images/upload/course/20180713/1531477404649.jpg","courseType":"YINGXIANGSUCAI","commentnum":7,"pageViewcount":6496,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":72562,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":15000},{"id":"224952523096588288","userId":27782,"course":{"courseId":2282,"courseName":"测试直播转点播","isAvaliable":1,"subjectId":404,"logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","courseType":"YINGXIANGSUCAI","commentnum":4,"pageViewcount":15831,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":0,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":155000},{"id":"224952181743157248","userId":27782,"course":{"courseId":1003162,"courseName":"郁波讲堂","isAvaliable":1,"subjectId":407,"logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","courseType":"TEACHERCOURSE","commentnum":128,"pageViewcount":80828,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":1000000,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":5000},{"id":"224951615281430528","userId":27782,"course":{"courseId":2852,"courseName":"123op","isAvaliable":1,"subjectId":404,"logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","courseType":"YINGXIANGSUCAI","commentnum":2,"pageViewcount":20226,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":0,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":635000},{"id":"224941282454142976","userId":27782,"course":{"courseId":1003182,"courseName":"郁波老师","isAvaliable":1,"subjectId":404,"logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","courseType":"YINGXIANGSUCAI","commentnum":6,"pageViewcount":18577,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":0,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":35000}]}
      * otherData : null
      */
 
@@ -59,8 +58,8 @@ public class LiuLanBean {
         /**
          * page : 1
          * size : 10
-         * total : 1
-         * data : [{"id":"222403990611034112","userId":27782,"course":{"courseId":1003162,"courseName":"郁波讲堂","isAvaliable":1,"subjectId":407,"logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","courseType":"TEACHERCOURSE","commentnum":128,"pageViewcount":52333,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"imageText":null},"watchTime":"2018-08-02","playPosition":25000}]
+         * total : 5
+         * data : [{"id":"224957149271293952","userId":27782,"course":{"courseId":1004712,"courseName":"视频22222222","isAvaliable":1,"subjectId":404,"logo":"http://192.168.1.101:8080/images/upload/course/20180713/1531477404649.jpg","courseType":"YINGXIANGSUCAI","commentnum":7,"pageViewcount":6496,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":72562,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":15000},{"id":"224952523096588288","userId":27782,"course":{"courseId":2282,"courseName":"测试直播转点播","isAvaliable":1,"subjectId":404,"logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","courseType":"YINGXIANGSUCAI","commentnum":4,"pageViewcount":15831,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":0,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":155000},{"id":"224952181743157248","userId":27782,"course":{"courseId":1003162,"courseName":"郁波讲堂","isAvaliable":1,"subjectId":407,"logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","courseType":"TEACHERCOURSE","commentnum":128,"pageViewcount":80828,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":1000000,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":5000},{"id":"224951615281430528","userId":27782,"course":{"courseId":2852,"courseName":"123op","isAvaliable":1,"subjectId":404,"logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","courseType":"YINGXIANGSUCAI","commentnum":2,"pageViewcount":20226,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":0,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":635000},{"id":"224941282454142976","userId":27782,"course":{"courseId":1003182,"courseName":"郁波老师","isAvaliable":1,"subjectId":404,"logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","courseType":"YINGXIANGSUCAI","commentnum":6,"pageViewcount":18577,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":0,"isEnd":0,"imageText":null},"watchTime":"2018-08-09","playPosition":35000}]
          */
 
         private int page;
@@ -102,11 +101,11 @@ public class LiuLanBean {
 
         public static class DataBean {
             /**
-             * id : 222403990611034112
+             * id : 224957149271293952
              * userId : 27782
-             * course : {"courseId":1003162,"courseName":"郁波讲堂","isAvaliable":1,"subjectId":407,"logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","courseType":"TEACHERCOURSE","commentnum":128,"pageViewcount":52333,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"imageText":null}
-             * watchTime : 2018-08-02
-             * playPosition : 25000
+             * course : {"courseId":1004712,"courseName":"视频22222222","isAvaliable":1,"subjectId":404,"logo":"http://192.168.1.101:8080/images/upload/course/20180713/1531477404649.jpg","courseType":"YINGXIANGSUCAI","commentnum":7,"pageViewcount":6496,"duration":null,"teacherName":null,"liveBeginTime":null,"liveEndTime":null,"liveStatus":null,"sequence":null,"isImageText":0,"title":null,"watchTime":72562,"isEnd":0,"imageText":null}
+             * watchTime : 2018-08-09
+             * playPosition : 15000
              */
 
             private String id;
@@ -114,6 +113,16 @@ public class LiuLanBean {
             private CourseBean course;
             private String watchTime;
             private int playPosition;
+            //多选框是否选中
+            private boolean isSelect;
+
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean isSelect) {
+                this.isSelect = isSelect;
+            }
 
             public String getId() {
                 return id;
@@ -157,14 +166,14 @@ public class LiuLanBean {
 
             public static class CourseBean {
                 /**
-                 * courseId : 1003162
-                 * courseName : 郁波讲堂
+                 * courseId : 1004712
+                 * courseName : 视频22222222
                  * isAvaliable : 1
-                 * subjectId : 407
-                 * logo : http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg
-                 * courseType : TEACHERCOURSE
-                 * commentnum : 128
-                 * pageViewcount : 52333
+                 * subjectId : 404
+                 * logo : http://192.168.1.101:8080/images/upload/course/20180713/1531477404649.jpg
+                 * courseType : YINGXIANGSUCAI
+                 * commentnum : 7
+                 * pageViewcount : 6496
                  * duration : null
                  * teacherName : null
                  * liveBeginTime : null
@@ -173,6 +182,8 @@ public class LiuLanBean {
                  * sequence : null
                  * isImageText : 0
                  * title : null
+                 * watchTime : 72562
+                 * isEnd : 0
                  * imageText : null
                  */
 
@@ -192,7 +203,10 @@ public class LiuLanBean {
                 private Object sequence;
                 private int isImageText;
                 private Object title;
+                private int watchTime;
+                private int isEnd;
                 private Object imageText;
+
 
                 public int getCourseId() {
                     return courseId;
@@ -322,6 +336,22 @@ public class LiuLanBean {
                     this.title = title;
                 }
 
+                public int getWatchTime() {
+                    return watchTime;
+                }
+
+                public void setWatchTime(int watchTime) {
+                    this.watchTime = watchTime;
+                }
+
+                public int getIsEnd() {
+                    return isEnd;
+                }
+
+                public void setIsEnd(int isEnd) {
+                    this.isEnd = isEnd;
+                }
+
                 public Object getImageText() {
                     return imageText;
                 }
@@ -329,6 +359,18 @@ public class LiuLanBean {
                 public void setImageText(Object imageText) {
                     this.imageText = imageText;
                 }
+            }
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "id='" + id + '\'' +
+                        ", userId=" + userId +
+                        ", course=" + course +
+                        ", watchTime='" + watchTime + '\'' +
+                        ", playPosition=" + playPosition +
+                        ", isSelect=" + isSelect +
+                        '}';
             }
         }
     }

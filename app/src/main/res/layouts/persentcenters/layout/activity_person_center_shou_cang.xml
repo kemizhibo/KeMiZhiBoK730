@@ -12,6 +12,7 @@
         android:layout_below="@+id/search_view_box"
         android:id="@+id/collection_box_springview"
         android:layout_marginLeft="@dimen/res_10dp"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
@@ -20,4 +21,33 @@
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
     </com.liaoinstan.springview.widget.SpringView>
+    <FrameLayout
+        android:id="@+id/frame_layout_shoucang"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_50dp">
+            <Button
+                android:id="@+id/select_all_butn"
+                android:background="@color/text_67c58c"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/res_textsize_15sp"
+                android:text="全选"/>
+            <Button
+                android:id="@+id/delete_butn"
+                android:background="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/text_bbbbbb"
+                android:textSize="@dimen/res_textsize_15sp"
+                android:text="删除"/>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

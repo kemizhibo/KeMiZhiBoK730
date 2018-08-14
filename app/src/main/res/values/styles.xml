@@ -122,4 +122,9 @@
         <item name="android:windowBackground">@drawable/transparent_bg</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <!-- 多选框样式 -->
+    <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_style</item>
+    </style>
 </resources>

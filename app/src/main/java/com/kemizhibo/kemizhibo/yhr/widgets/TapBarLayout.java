@@ -187,8 +187,9 @@ public class TapBarLayout extends RelativeLayout {
         return this;
     }
 
-    public void setRightImageResouse(int resouse) {
+    public TapBarLayout setRightImageResouse(int resouse) {
         this.rightResId = resouse;
+        return this;
     }
 
     public void buildFinish() {
@@ -214,25 +215,7 @@ public class TapBarLayout extends RelativeLayout {
         }
         setListener();
     }
-//
-//    //设置购物车图
-//    public void setChardImage(int imageId) {
-//        mRightLinearLayout.removeAllViews();
-//        imageView = new ShopCardNumImg(mContext, imageId);
-//        if (0 != imageId) {
-//            imageView.setImageResource(imageId);
-//        } else {
-//            imageView.setImageResource(R.drawable.main_shopping_car);
-//        }
-//        mRightLinearLayout.setVisibility(View.VISIBLE);
-//        LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(dip2px(mContext, 40), -2);
-//        rl.gravity = Gravity.CENTER;
-//        mRightLinearLayout.addView(imageView, rl);
-//    }
-//
-//    public void setShopCardNum(String num) {
-//        imageView.setCount(num);
-//    }
+
 
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

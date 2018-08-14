@@ -1,58 +1,66 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter.CollectionBoxAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.SearchAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.CollectionBoxPresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.CollectionBoxView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxPresenterImpl> implements CollectionBoxView {
+public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxPresenterImpl> implements CollectionBoxView,View.OnClickListener, CollectionBoxAdapter.OnItemClickListener{
 
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
     @Inject
     public CollectionBoxPresenterImpl collectionBoxPresenter;
-    CollectionBoxAdapter collectionBoxAdapter;
+    private CollectionBoxAdapter collectionBoxAdapter = null;
     @BindView(R.id.collection_box_recyclerview)
     RecyclerView collectionBoxRecyclerview;
     @BindView(R.id.collection_box_springview)
     SpringView collectionBoxSpringview;
-    private List<CollectionBoxBean.ContentBean.DataBean.CourseBean> dataBeans;
+    @BindView(R.id.frame_layout_shoucang)
+    FrameLayout frameLayout;
+    @BindView(R.id.select_all_butn)
+    Button selectAllButn;
+    @BindView(R.id.delete_butn)
+    Button deleteButn;
     private int page;
     //上或者下拉的状态判断
     int isUp = 1;
     private SharedPreferences sp;
     private String token;
+    //多选删除
+    private List<CollectionBoxBean.ContentBean.DataBean> mList = new ArrayList<>();
+    private static final int MYLIVE_MODE_CHECK = 0;
+    private static final int MYLIVE_MODE_EDIT = 1;
+    private int mEditMode = MYLIVE_MODE_CHECK;
+    private boolean isSelectAll = false;
+    private boolean editorStatus = false;
+    private int index = 0;
+    private AlertDialog builder;
+    //多选下标集合
+    Number array[] = new Number[5];
 
     @Override
     protected int getLayoutId() {
@@ -69,7 +77,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         super.getData();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        collectionBoxPresenter.getCollectionBoxData(this,"Bearer "+ token,"1","12");
+        collectionBoxPresenter.getCollectionBoxData(this, "Bearer " + token, "1", "12");
     }
 
     private void bindTitleBar() {
@@ -79,14 +87,74 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 finish();
             }
         });
+        publicTitleBarRoot.setRightImageResouse(R.drawable.pan_2).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
+            @Override
+            public void onClick() {
+                updataEditMode();
+            }
+        });
         publicTitleBarRoot.changeTitleBar("收藏夹");
         publicTitleBarRoot.buildFinish();
     }
 
+    //弹出多选框
+    private void updataEditMode() {
+        mEditMode = mEditMode == MYLIVE_MODE_CHECK ? MYLIVE_MODE_EDIT : MYLIVE_MODE_CHECK;
+        if (mEditMode == MYLIVE_MODE_EDIT) {
+            publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
+            frameLayout.setVisibility(View.VISIBLE);
+            editorStatus = true;
+        } else {
+            publicTitleBarRoot.setRightImageResouse(R.drawable.pan_2);
+            frameLayout.setVisibility(View.GONE);
+            editorStatus = false;
+            clearAll();
+        }
+        collectionBoxAdapter.setEditMode(mEditMode);
+    }
+
+    //清除所有
+    private void clearAll() {
+        isSelectAll = false;
+        selectAllButn.setText("全选");
+        setBtnBackground(0);
+    }
+
+    /**
+     * 根据选择的数量是否为0来判断按钮的是否可点击.
+     *
+     * @param size
+     */
+    private void setBtnBackground(int size) {
+        if (size != 0) {
+            deleteButn.setBackgroundResource(R.drawable.button_shape);
+            deleteButn.setEnabled(true);
+            deleteButn.setTextColor(Color.WHITE);
+        } else {
+            deleteButn.setBackgroundResource(R.drawable.button_noclickable_shape);
+            deleteButn.setEnabled(false);
+            deleteButn.setTextColor(ContextCompat.getColor(this, R.color.text_67c58c));
+        }
+    }
+
     @Override
     public void onCollectionBoxSuccess(CollectionBoxBean collectionBoxBean) {
-        dataBeans = new ArrayList<>();
-        for (int i = 0;collectionBoxBean.getContent().getData().size()>i;i++){
+        mList.clear();
+        mList.addAll(collectionBoxBean.getContent().getData());
+        collectionBoxAdapter = new CollectionBoxAdapter(this);
+        initListener();
+        GridLayoutManager layoutManage = new GridLayoutManager(this,2);
+        collectionBoxRecyclerview.setLayoutManager(layoutManage);
+        //上拉下拉动画效果
+        collectionBoxRecyclerview.setItemAnimator(new DefaultItemAnimator());
+        collectionBoxSpringview.setType(SpringView.Type.FOLLOW);
+        DividerItemDecoration itemDecorationHeader = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        itemDecorationHeader.setDividerDrawable(ContextCompat.getDrawable(this, R.drawable.divider_main_bg_height_1));
+        collectionBoxRecyclerview.addItemDecoration(itemDecorationHeader);
+        collectionBoxRecyclerview.setAdapter(collectionBoxAdapter);
+        collectionBoxAdapter.notifyAdapter(mList, false);
+        /*dataBeans = new ArrayList<>();
+        for (int i = 0; collectionBoxBean.getContent().getData().size() > i; i++) {
             dataBeans.add(collectionBoxBean.getContent().getData().get(i).getCourse());
         }
         GridLayoutManager layoutManage = new GridLayoutManager(this, 2);
@@ -101,21 +169,21 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 if (NoFastClickUtils.isFastClick()) {
 
                 } else {
-                    if (dataBeans.get(position).getIsImageText()==0) {
+                    if (dataBeans.get(position).getIsImageText() == 0) {
                         Intent intent = new Intent(PersonCenterShouCangActivity.this, YingXinagVideoDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
                         intent.putExtras(bundle);
                         //这里一定要获取到所在Activity再startActivity()；
                         PersonCenterShouCangActivity.this.startActivity(intent);
-                    } /*else if (dataBeans.get(position).getFileType().equals("LIVE")) {
+                    } *//*else if (dataBeans.get(position).getFileType().equals("LIVE")) {
                         Intent intent = new Intent(PersonCenterShouCangActivity.this, TeacherTrainingDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
                         intent.putExtras(bundle);
                         //这里一定要获取到所在Activity再startActivity()；
                         PersonCenterShouCangActivity.this.startActivity(intent);
-                    } */else {
+                    } *//* else {
                         Intent intent = new Intent(PersonCenterShouCangActivity.this, PictrueDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
@@ -125,7 +193,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     }
                 }
             }
-        });
+        });*/
         collectionBoxRecyclerview.setAdapter(collectionBoxAdapter);
         collectionBoxSpringview.setListener(new SpringView.OnFreshListener() {
             @Override
@@ -135,7 +203,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     public void run() {
                         isUp = 1;
                         page = 1;
-                        collectionBoxPresenter.getCollectionBoxData(PersonCenterShouCangActivity.this,"Bearer "+token,"1","12");
+                        collectionBoxPresenter.getCollectionBoxData(PersonCenterShouCangActivity.this, "Bearer " + token, "1", "12");
                         collectionBoxSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -148,7 +216,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     public void run() {
                         isUp = 2;
                         page++;
-                        collectionBoxPresenter.getCollectionBoxData(PersonCenterShouCangActivity.this,"Bearer "+token,"1","12");
+                        collectionBoxPresenter.getCollectionBoxData(PersonCenterShouCangActivity.this, "Bearer " + token, "1", "12");
                         collectionBoxSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -157,6 +225,12 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         collectionBoxSpringview.setHeader(new AliHeader(this, R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
         collectionBoxSpringview.setFooter(new AliFooter(this, true));
 
+    }
+    //点击事件
+    private void initListener() {
+        collectionBoxAdapter.setOnItemClickListener(this);
+        deleteButn.setOnClickListener(this);
+        selectAllButn.setOnClickListener(this);
     }
 
     @Override
@@ -170,4 +244,112 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         return collectionBoxPresenter;
     }
 
+
+    /**
+     * 全选和反选
+     */
+    private void selectAllMain() {
+        if (collectionBoxAdapter == null) return;
+        if (!isSelectAll) {
+            for (int i = 0, j = collectionBoxAdapter.getMyLiveList().size(); i < j; i++) {
+                collectionBoxAdapter.getMyLiveList().get(i).setSelect(true);
+                //添加集合
+
+            }
+            index = collectionBoxAdapter.getMyLiveList().size();
+            deleteButn.setEnabled(true);
+            selectAllButn.setText("取消全选");
+            isSelectAll = true;
+        } else {
+            for (int i = 0, j = collectionBoxAdapter.getMyLiveList().size(); i < j; i++) {
+                collectionBoxAdapter.getMyLiveList().get(i).setSelect(false);
+            }
+            index = 0;
+            deleteButn.setEnabled(false);
+            selectAllButn.setText("全选");
+            isSelectAll = false;
+        }
+        collectionBoxAdapter.notifyDataSetChanged();
+        setBtnBackground(index);
+    }
+
+    /**
+     * 删除逻辑
+     */
+    private void deleteVideo() {
+        if (index == 0){
+            deleteButn.setEnabled(false);
+            return;
+        }
+        builder = new AlertDialog.Builder(this)
+                .create();
+        builder.show();
+        if (builder.getWindow() == null) return;
+        builder.getWindow().setContentView(R.layout.pop_user);//设置弹出框加载的布局
+        TextView msg = (TextView) builder.findViewById(R.id.tv_msg);
+        Button cancle = (Button) builder.findViewById(R.id.btn_cancle);
+        Button sure = (Button) builder.findViewById(R.id.btn_sure);
+        if (msg == null || cancle == null || sure == null) return;
+
+        if (index == 1) {
+            msg.setText("是否删除该条目？");
+        } else {
+            msg.setText("是否删除这" + index + "个条目？");
+        }
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //删除接口
+                if (selectAllButn.getText().equals("取消全选")){
+                    //请求取消全部浏览记录
+
+                }else {
+                    //否则存数组删除多个
+                    //liuLanPresenter.getClearOneOrMoreLiuLanData(PersonCenterLiuLanActivity.this,"Bearer "+token,);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.select_all_butn:
+                selectAllMain();
+                break;
+            case R.id.delete_butn:
+                deleteVideo();
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClickListener(int pos, List<CollectionBoxBean.ContentBean.DataBean> myLiveList) {
+        if (editorStatus) {
+            CollectionBoxBean.ContentBean.DataBean myLive = myLiveList.get(pos);
+            boolean isSelect = myLive.isSelect();
+            if (!isSelect) {
+                index++;
+                myLive.setSelect(true);
+                if (index == myLiveList.size()) {
+                    isSelectAll = true;
+                    selectAllButn.setText("取消全选");
+                }
+
+            } else {
+                myLive.setSelect(false);
+                index--;
+                isSelectAll = false;
+                selectAllButn.setText("全选");
+            }
+            setBtnBackground(index);
+            collectionBoxAdapter.notifyDataSetChanged();
+        }
+    }
 }
