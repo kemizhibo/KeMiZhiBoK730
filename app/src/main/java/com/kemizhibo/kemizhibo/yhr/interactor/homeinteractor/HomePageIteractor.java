@@ -21,7 +21,6 @@ import javax.inject.Inject;
 public class HomePageIteractor {
 
     private IGetDataDelegate<HomePageBean> mDelegate;
-    private Context context;
 
     @Inject
     public HomePageIteractor() {}
@@ -29,9 +28,9 @@ public class HomePageIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadHomePageData(BaseActivity activity, IGetDataDelegate<HomePageBean> mDelegate){
+    public void loadHomePageData(BaseActivity activity, IGetDataDelegate<HomePageBean> mDelegate,String token){
         this.mDelegate = mDelegate;
-        HomePageApi homePageApi = new HomePageApi(listener,activity);
+        HomePageApi homePageApi = new HomePageApi(listener,activity,token);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(homePageApi);
     }

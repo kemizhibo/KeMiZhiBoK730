@@ -1,14 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
-import android.content.Context;
-
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.personcenterapi.GetOneLookApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
-
 import javax.inject.Inject;
 
 /**
@@ -18,8 +15,7 @@ import javax.inject.Inject;
  */
 public class OneLookIteractor {
 
-    private IGetDataDelegate<LiuLanBean> mDelegate;
-    private Context context;
+    private IGetDataDelegate<OneLookBean> mDelegate;
 
     @Inject
     public OneLookIteractor() {}
@@ -27,17 +23,17 @@ public class OneLookIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadOneLookData(BaseActivity activity, IGetDataDelegate<LiuLanBean> mDelegate, String token, String playPosition, String courseId, String watchTime, String isEnd){
+    public void loadOneLookData(BaseActivity activity, IGetDataDelegate<OneLookBean> mDelegate, String token, String playPosition,String keyId, String courseId, String watchTime, String isEnd){
         this.mDelegate = mDelegate;
-        GetOneLookApi getOneLookApi = new GetOneLookApi(listener,activity,token,playPosition,courseId,watchTime,isEnd);
+        GetOneLookApi getOneLookApi = new GetOneLookApi(listener,activity,token,playPosition,keyId,courseId,watchTime,isEnd);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(getOneLookApi);
     }
 
-    private HttpOnNextListener<LiuLanBean> listener = new HttpOnNextListener<LiuLanBean>() {
+    private HttpOnNextListener<OneLookBean> listener = new HttpOnNextListener<OneLookBean>() {
         @Override
-        public void onNext(LiuLanBean liuLanBean) {
-            mDelegate.getDataSuccess(liuLanBean);
+        public void onNext(OneLookBean oneLookBean) {
+            mDelegate.getDataSuccess(oneLookBean);
         }
 
         @Override

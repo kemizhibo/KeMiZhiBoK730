@@ -33,7 +33,7 @@ public class TeacherTrainingFragmentAdapter extends BaseQuickAdapter<TeacherTrai
 
         //设置圆角图片
         Glide.with(mContext).load(item.getLogo()).error(R.mipmap.milier).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.teacher_training_recyclerview_imageview));
-        helper.setText(R.id.teacher_training_item_title,item.getTitle());
+        helper.setText(R.id.teacher_training_item_title,item.getCourseName());
        /* helper.getView(R.id.teacher_training_recyclerview_imageview).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

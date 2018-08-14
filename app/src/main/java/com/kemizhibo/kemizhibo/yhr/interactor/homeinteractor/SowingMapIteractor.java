@@ -21,7 +21,6 @@ import javax.inject.Inject;
 public class SowingMapIteractor {
 
     private IGetDataDelegate<SowingMapBean> mDelegate;
-    private Context context;
 
     @Inject
     public SowingMapIteractor() {}
@@ -29,9 +28,9 @@ public class SowingMapIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadSowingMapData(BaseActivity activity, IGetDataDelegate<SowingMapBean> mDelegate,String device){
+    public void loadSowingMapData(BaseActivity activity, IGetDataDelegate<SowingMapBean> mDelegate,String token,String device){
         this.mDelegate = mDelegate;
-        SowingMapApi sowingMapApi = new SowingMapApi(listener,activity,device);
+        SowingMapApi sowingMapApi = new SowingMapApi(listener,activity,token,device);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(sowingMapApi);
     }

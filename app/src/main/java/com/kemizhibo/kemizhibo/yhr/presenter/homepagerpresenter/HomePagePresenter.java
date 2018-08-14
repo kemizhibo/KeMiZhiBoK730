@@ -11,6 +11,7 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.FilterView;
  * Describe  首页
  */
 public interface HomePagePresenter extends BasePresenter<HomePageView> {
+    //首页信息
+    void getHomePageData(BaseActivity activity,String token);
 
-    void getHomePageData(BaseActivity activity);
 }

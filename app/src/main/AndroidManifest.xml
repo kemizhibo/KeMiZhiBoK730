@@ -20,7 +20,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
-        <activity android:name=".yhr.activity.SplashActivity" >
+        <activity android:name=".yhr.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,9 +29,7 @@
         </activity>
         <activity android:name=".yhr.activity.ShowImageActivity" />
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
-        <activity android:name=".yhr.activity.logins.LoginActivity">
-
-        </activity>
+        <activity android:name=".yhr.activity.logins.LoginActivity"></activity>
         <activity android:name=".yhr.activity.logins.FinishActivity" />
         <activity android:name=".yhr.activity.logins.WangJiActivity" />
         <activity android:name=".yhr.activity.logins.XiuGaiActivity" />
@@ -44,7 +42,7 @@
         <activity android:name=".yhr.activity.personcenters.PersonCenterSheZhiActivity" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity
@@ -58,14 +56,17 @@
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
             android:hardwareAccelerated="true" />
-        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity"></activity>
+        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity" />
         <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
-        <activity android:name=".other.web.CommonWebActivity" android:screenOrientation="landscape"/>
+        <activity
+            android:name=".other.web.CommonWebActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
-        <activity android:name=".yhr.activity.personcenters.FuWuActivity"></activity>
+        <activity android:name=".yhr.activity.personcenters.FuWuActivity" />
+        <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity"></activity>
     </application>
 
 </manifest>

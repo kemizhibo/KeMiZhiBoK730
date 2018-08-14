@@ -21,7 +21,6 @@ import javax.inject.Inject;
 public class GetLikeIteractor {
 
     private IGetDataDelegate<GetLikeBean> mDelegate;
-    private Context context;
 
     @Inject
     public GetLikeIteractor() {}

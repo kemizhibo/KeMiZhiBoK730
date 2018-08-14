@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.yhr.api.homeapi;
 import com.alibaba.fastjson.JSON;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
 import com.zhxu.library.listener.HttpOnNextListener;
@@ -18,17 +19,17 @@ import rx.Observable;
  */
 
 public class HomePageApi extends BaseApi<HomePageBean> {
-
-    public HomePageApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity) {
+    private String token;
+    public HomePageApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token) {
         super(listener, rxAppCompatActivity);
-
+        this.token = token ;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getHomePageData();
+        return httpGetService.getHomePageData(token);
     }
 
     @Override
@@ -40,7 +41,6 @@ public class HomePageApi extends BaseApi<HomePageBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //LogUtils.e(string);
         return JSON.parseObject(string, HomePageBean.class);
     }
 }

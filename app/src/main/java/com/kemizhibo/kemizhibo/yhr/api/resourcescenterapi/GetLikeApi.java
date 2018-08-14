@@ -49,6 +49,7 @@ public class GetLikeApi extends BaseApi<GetLikeBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LogUtils.i("点赞解析",string);
         return JSON.parseObject(string, GetLikeBean.class);
     }
 }
