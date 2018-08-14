@@ -65,7 +65,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
     private Handler mHandler;
     private List<PreparingPackageDetailBean.ContentBean.MaterialBean> material;
-    private List<String> picurls=new ArrayList<>();
+    private List<String> picurls = new ArrayList<>();
     private Context context;
 
     //定义样式常量，注意常量值要从0开始
@@ -83,7 +83,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
     public PreparingDetailAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.MaterialBean> material) {
         this.context = context;
         this.material = material;
-         this.picurls.clear();
+        this.picurls.clear();
     }
 
 
@@ -146,19 +146,18 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     convertView.setTag(holder);
                     break;
-                case TYPE_PUPIAN://图片
-                    convertView = View.inflate(context, R.layout.tupian_item, null);
-                 //   holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+               /* case TYPE_PUPIAN://图片
+                    convertView = View.inflate(context, R.layout.sucai_tupian_item, null);
                     holder.mviewPager = (ViewPager) convertView.findViewById(R.id.viewpager);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
-                    break;
-                case TYPE_SHIPIN://视频
-                    convertView = View.inflate(context, R.layout.shipin_item, null);
+                    break;*/
+                /*case TYPE_SHIPIN://视频
+                    convertView = View.inflate(context, R.layout.sucai_shipin_item, null);
                     holder.jcVideoPlayer = (JZVideoPlayerStandard) convertView.findViewById(R.id.jc);
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
-                    break;
+                    break;*/
                /* case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
@@ -167,6 +166,16 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 default:
                     break;
             }
+            //if (){
+            convertView = View.inflate(context, R.layout.sucai_tupian_item, null);
+            holder.mviewPager = (ViewPager) convertView.findViewById(R.id.viewpager);
+            holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
+            convertView.setTag(holder);
+            //  }
+            convertView = View.inflate(context, R.layout.sucai_shipin_item, null);
+            holder.mshipinviewpager = (ViewPager) convertView.findViewById(R.id.shipinviewpager);
+            holder.madj = (TextView) convertView.findViewById(R.id.adj);
+            convertView.setTag(holder);
         } else {
             holder = (MyViewHolder) convertView.getTag();
         }
@@ -183,7 +192,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = material.get(position).getModuleId();
-            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId,picurls);
+            RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
         }
        /* else if (itemViewType == TYPE_MAKE) {
        +

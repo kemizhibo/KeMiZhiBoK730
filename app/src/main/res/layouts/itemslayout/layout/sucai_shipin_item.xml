@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#333"
-    android:padding="@dimen/dp_10">
+    android:background="#333333">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/mimage"
-        android:layout_width="@dimen/res_400dp"
-        android:layout_height="@dimen/res_160dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="fitXY"
-        fresco:placeholderImage="@mipmap/a22"
-        fresco:roundedCornerRadius="@dimen/res_10dp" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/shipinviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></android.support.v4.view.ViewPager>
 
+  <!--  <cn.jzvd.JZVideoPlayerStandard
+        android:id="@+id/jc"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></cn.jzvd.JZVideoPlayerStandard>-->
 
     <TextView
         android:id="@+id/adj"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewpager"
+        android:layout_below="@+id/jc"
         android:layout_marginTop="@dimen/res_40dp"
         android:layout_toLeftOf="@+id/btn"
         android:paddingBottom="@dimen/dp_10"
@@ -35,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/viewpager"
+        android:layout_below="@+id/jc"
         android:layout_marginRight="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/btn_border"

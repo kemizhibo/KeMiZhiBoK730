@@ -104,7 +104,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     break;
                 case TYPE_PUPIAN://图片
                     convertView = View.inflate(context, R.layout.tupian_item, null);
-                   // holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
+                    holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;

@@ -16,5 +16,5 @@ public  class MyViewHolder {
     public JZVideoPlayerStandard jcVideoPlayer;
     public TextView mwendang;
     public SimpleDraweeView miv;
-    public ViewPager mviewPager;
+    public ViewPager mviewPager,mshipinviewpager;
 }
