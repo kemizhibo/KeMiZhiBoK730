@@ -1,12 +1,14 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.androidkun.xtablayout.XTabLayout;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_center.ForTeanchingFirstFragment;
@@ -15,8 +17,11 @@ import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,6 +50,8 @@ public class ForTeachingFragment extends BaseFragment {
 
     @Override
     public View createSuccessView() {
+        File file = getContext().getExternalFilesDir(null);//注意该方法是Context的方法,故需要调用的地方如果不在Activity中,需要传入Context调用
+        Debug.startMethodTracing(file + "/dmtrace.trace");
         View view = UIUtils.inflate(mActivity, R.layout.fragment_forteaching);
         ButterKnife.bind(this, view);
         //添加标题
@@ -55,6 +62,7 @@ public class ForTeachingFragment extends BaseFragment {
         forteachingViewPager.setAdapter(new HomeAdapter(getChildFragmentManager(), mFragmentList, mTitleList));
         //将tablayout与fragment关联
         forteachingTabLayout.setupWithViewPager(forteachingViewPager);
+         android.os.Debug.stopMethodTracing();
         return view;
     }
 
@@ -88,14 +96,14 @@ public class ForTeachingFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(hidden){
+        if (hidden) {
             List<Fragment> fragments = getChildFragmentManager().getFragments();
-            try{
+            try {
                 ForTeanchingFirstFragment firstFragment = (ForTeanchingFirstFragment) fragments.get(0);
                 ForTeanchingSecondFragment secondFragment = (ForTeanchingSecondFragment) fragments.get(1);
                 firstFragment.onHidden();
                 secondFragment.onHidden();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }

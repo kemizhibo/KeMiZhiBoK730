@@ -24,8 +24,27 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 
 public class PreparingDetailOneAdapter extends BaseAdapter {
+    @Override
+    public int getCount() {
+        return 0;
+    }
 
-    private final List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList;
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    /*private final List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList;
     private Handler mHandler;
 
     private Context context;
@@ -114,11 +133,11 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
-               /* case TYPE_MAKE://在线制作
+               *//* case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     convertView.setTag(holder);
-                    break;*/
+                    break;*//*
                 default:
                     break;
             }
@@ -138,19 +157,19 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-           /* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
+           *//* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
             holder.jcVideoPlayer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i("positionclick==", "" + position);
                 }
-            });*/
+            });*//*
         }
-       /* else if (itemViewType == TYPE_MAKE) {
+       *//* else if (itemViewType == TYPE_MAKE) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
-        }*/
+        }*//*
         return convertView;
-    }
+    }*/
 
 }

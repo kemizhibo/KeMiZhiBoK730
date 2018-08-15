@@ -8,6 +8,7 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPack
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingPackageDetailView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.utils.NetUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,13 +45,12 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d("PreparingPackageDetailP", response.body().string());
-                /*PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
+                PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     detailView.getPreparingPackageDetailDataSuccess(bean);
                 }else{
 
-                }*/
+                }
             }
         });
     }

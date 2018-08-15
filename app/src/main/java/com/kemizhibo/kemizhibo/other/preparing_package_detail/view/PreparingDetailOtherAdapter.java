@@ -24,8 +24,27 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 
 public class PreparingDetailOtherAdapter extends BaseAdapter {
+    @Override
+    public int getCount() {
+        return 0;
+    }
 
-    private final List<PreparingPackageDetailBean.ContentBean.OtherBean> otherBeanList;
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    /*private final List<PreparingPackageDetailBean.ContentBean.OtherBean> otherBeanList;
     private Handler mHandler;
 
     private Context context;
@@ -116,11 +135,11 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
-              /*  case TYPE_MAKE://在线制作
+              *//*  case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     convertView.setTag(holder);
-                    break;*/
+                    break;*//*
                 default:
                     break;
             }
@@ -142,11 +161,11 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             moduleId = otherBeanList.get(position).getModuleId();
            // RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
         }
-       /* else if (itemViewType == TYPE_MAKE) {
+       *//* else if (itemViewType == TYPE_MAKE) {
             moduleId = otherBeanList.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
-        }*/
+        }*//*
         return convertView;
     }
-
+*/
 }

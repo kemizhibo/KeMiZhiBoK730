@@ -16,6 +16,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 
@@ -84,7 +85,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
         if(loginBean.getCode()==0){
             SharedPreferences sp = getSharedPreferences("logintoken", 0);
             SharedPreferences.Editor edit = sp.edit();
-            Log.d("LoginActivity", "token" + loginBean.getContent());
+            LogUtils.i("LoginActivity", "token" + loginBean.getContent());
             edit.putString("token",loginBean.getContent()).
                     putString("name",name).putString("pwd",pwd).commit();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

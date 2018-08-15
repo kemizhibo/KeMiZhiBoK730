@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
@@ -32,8 +33,10 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingPack
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,7 +69,6 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     protected int getLayoutId() {
         return R.layout.activity_preparing_package_detail;
     }
-
     @Override
     protected void initData() {
         bindTitleBar();
@@ -112,6 +114,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
     @Override
     public void getPreparingPackageDetailDataSuccess(final PreparingPackageDetailBean bean) {
+        LogUtils.i("detail log", "name" + bean.getContent().getAppMaterial().getKemiPic().get(0).getDocName());
         /*Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());
         if (bean.getCode() == 0) {
             runOnUiThread(new Runnable() {
