@@ -1,6 +1,8 @@
 package com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +43,6 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
     public CollectionBoxAdapter(Context context) {
         this.context = context;
     }
-
 
     public void notifyAdapter(List<CollectionBoxBean.ContentBean.DataBean> myLiveList, boolean isAdd) {
         if (!isAdd) {
@@ -71,8 +78,6 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         //填充值
         Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.collectionBoxRecyclerviewImageview);
         holder.collectionBoxItemTitle.setText(myLive.getCourse().getCourseName());
-
-
         if (mEditMode == MYLIVE_MODE_CHECK) {
             holder.checkBox.setVisibility(View.GONE);
         } else {
@@ -95,7 +100,6 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         this.mOnItemClickListener = onItemClickListener;
     }
 
-
     public interface OnItemClickListener {
         void onItemClickListener(int pos, List<CollectionBoxBean.ContentBean.DataBean> myLiveList);
     }
@@ -104,7 +108,6 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         mEditMode = editMode;
         notifyDataSetChanged();
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.collection_box_recyclerview_imageview)
@@ -119,15 +122,4 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
             ButterKnife.bind(this, itemView);
         }
     }
-
-    /*public CollectionBoxAdapter(int layoutResId, @Nullable List<CollectionBoxBean.ContentBean.DataBean.CourseBean> data) {
-        super(layoutResId, data);
-    }
-
-    @Override
-    protected void convert(BaseViewHolder helper, CollectionBoxBean.ContentBean.DataBean.CourseBean item) {
-        //设置圆角图片
-        Glide.with(mContext).load(item.getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.collection_box_recyclerview_imageview));
-        helper.setText(R.id.collection_box_item_title, item.getCourseName());
-    }*/
 }

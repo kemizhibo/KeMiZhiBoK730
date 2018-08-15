@@ -147,6 +147,11 @@ public interface HttpGetService {
     Observable<ResponseBody> getClearOneOrMoreLiuLanData(@Header("Authorization") String token,
                                                          @Query("ids") List ids);
 
+    //清空收藏夹
+    @FormUrlEncoded
+    @POST("kemiapi/course/shortvideo/clearFavoritesForB")
+    Observable<ResponseBody> getClearCollectionBoxData(@Header("Authorization") String token);
+
     //教师培训列表页
     @GET("kemiapi/course/focusing/getSimpleCourseForB")
     Observable<ResponseBody> getTeacherTrainingData(@Query("sellType") String sellType,

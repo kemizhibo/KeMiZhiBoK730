@@ -1,42 +1,34 @@
 package com.kemizhibo.kemizhibo.yhr.activity.web;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.web.JavaScriptInterface;
 import com.kemizhibo.kemizhibo.other.web.WebSetting;
-import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import vn.tungdx.mediapicker.MediaItem;
-import vn.tungdx.mediapicker.MediaOptions;
-import vn.tungdx.mediapicker.activities.MediaPickerActivity;
 
-public class MyLiveRoomWebActivity extends BaseActivity implements CommonWebView {
+public class MyLiveRoomWebActivity extends BaseActivity {
 
-    @BindView(R.id.loading_page)
-    LinearLayout loadingPage;
-    @BindView(R.id.live_web_view)
-    WebView liveWebView;
+
+    @BindView(R.id.prog)
+    ProgressBar prog;
+    @BindView(R.id.wed)
+    WebView wed;
+    @BindView(R.id.activity_wed)
+    RelativeLayout activityWed;
     private String url;
 
     @Override
@@ -46,49 +38,47 @@ public class MyLiveRoomWebActivity extends BaseActivity implements CommonWebView
 
     @Override
     protected void initData() {
-        //获取传过来的值
+        initview();
+        SettingsP();
+        //url = "http://192.168.1.101:8080/kmzb/ng/#/roomDetail/releVideo${id}".replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra("courseId", 0)));
+    }
+
+    private void initview() {
         Intent intent = getIntent();
         String courseId = intent.getStringExtra("courseId");
-        if(TextUtils.isEmpty(courseId)){
-            finish();
-        }else{
-            url = "接口路劲".replace(Constants.H5_REPLACE_STR, courseId);
-        }
-        // 设置界面跳转只在自己应用程序中
-        //liveWebView.setWebChromeClient(new WebChromeClient());
-        //加载链接路径
-        //liveWebView.loadUrl("");
-        WebSetting.getInstance().setWebViewSetting(liveWebView.getSettings());
-        liveWebView.addJavascriptInterface(new JavaScriptInterface(this, this), "android");
-        liveWebView.setWebChromeClient(new WebChromeClient() {
-            //     在WebView开始加载网页时，显示进度框；加载完毕时，隐藏进度框
-            public void onProgressChanged(WebView view, int newProgress) {
-                if(newProgress==100){
-                    loadingPage.setVisibility(View.GONE);
-                    liveWebView.setVisibility(View.VISIBLE);
-                }
-                super.onProgressChanged(view, newProgress);
+        wed.loadUrl("http://192.168.1.101:8080/kmzb/ng/#/roomDetail/releVideo?courseId="+courseId);
+    }
+
+
+    private void SettingsP() {
+        WebSettings seting = wed.getSettings();
+        seting.setJavaScriptEnabled(true);//设置webview支持javascript脚本
+
+        // 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
+        wed.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // TODO Auto-generated method stub
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
             }
         });
-        liveWebView.loadUrl(url);
+        wed.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                // TODO Auto-generated method stub
+                if (newProgress == 100) {
+                    // 网页加载完成
+                    prog.setVisibility(View.GONE);//加载完网页进度条消失
+                } else {
+                    // 加载中
+                    prog.setVisibility(View.VISIBLE);//开始加载网页时显示进度条
+                    prog.setProgress(newProgress);//设置进度值
+                }
+
+            }
+        });
     }
 
-    @Override
-    public void loadError(String errorCode) {
-        finish();
-    }
-
-    @Override
-    public void back() {
-        finish();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && liveWebView.canGoBack()){
-            liveWebView.goBack();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }

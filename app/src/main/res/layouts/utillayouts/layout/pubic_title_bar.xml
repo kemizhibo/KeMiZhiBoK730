@@ -10,12 +10,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
     <com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout
-
         android:id="@+id/public_title_bar_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        >
+        android:background="@color/transparent">
         <RelativeLayout
             android:id="@+id/public_title_bar_layout"
             android:layout_width="match_parent"

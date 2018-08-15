@@ -213,7 +213,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
         OkHttpRequest.uploadFile(this, "http://39.155.221.165:8080/image/upload", outputFile, "yhr.jpg", map, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                ToastUtils.showToast(String.valueOf(e));
             }
 
             @Override
@@ -226,7 +226,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                     token = sp.getString("token", "");
                     preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
                 }else{
-                    //解析失败
+                    ToastUtils.showToast(takePhotoBean.getMessage());
                 }
             }
         });

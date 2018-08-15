@@ -5,6 +5,12 @@
     android:background="@color/white">
 
     <ImageView
+        android:id="@+id/collection_box_recyclerview_imageview"
+        android:layout_width="@dimen/res_287.5dp"
+        android:layout_height="@dimen/res_160dp"
+        android:scaleType="fitXY"/>
+
+    <ImageView
         android:id="@+id/check_box"
         android:layout_width="@dimen/res_17.5dp"
         android:layout_height="@dimen/res_17.5dp"
@@ -12,13 +18,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="12dp"
         android:layout_marginTop="12dp"
-        android:src="@drawable/checkbox_null" />
-
-        <ImageView
-            android:id="@+id/collection_box_recyclerview_imageview"
-            android:layout_width="@dimen/res_287.5dp"
-            android:layout_height="@dimen/res_160dp"
-            android:scaleType="fitXY"/>
+        android:src="@drawable/checkbox_null"
+        android:visibility="gone"/>
 
 
 

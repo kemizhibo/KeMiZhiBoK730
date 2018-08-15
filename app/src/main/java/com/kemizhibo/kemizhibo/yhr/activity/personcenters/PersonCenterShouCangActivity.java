@@ -1,7 +1,9 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -13,11 +15,16 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter.CollectionBoxAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearCollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.CollectionBoxPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.CollectionBoxView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import com.liaoinstan.springview.container.AliFooter;
@@ -153,47 +160,6 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         collectionBoxRecyclerview.addItemDecoration(itemDecorationHeader);
         collectionBoxRecyclerview.setAdapter(collectionBoxAdapter);
         collectionBoxAdapter.notifyAdapter(mList, false);
-        /*dataBeans = new ArrayList<>();
-        for (int i = 0; collectionBoxBean.getContent().getData().size() > i; i++) {
-            dataBeans.add(collectionBoxBean.getContent().getData().get(i).getCourse());
-        }
-        GridLayoutManager layoutManage = new GridLayoutManager(this, 2);
-        collectionBoxRecyclerview.setLayoutManager(layoutManage);
-        //上拉下拉动画效果
-        collectionBoxRecyclerview.setItemAnimator(new DefaultItemAnimator());
-        collectionBoxSpringview.setType(SpringView.Type.FOLLOW);
-        collectionBoxAdapter = new CollectionBoxAdapter(R.layout.collection_box_item_layout, dataBeans);
-        collectionBoxAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()) {
-
-                } else {
-                    if (dataBeans.get(position).getIsImageText() == 0) {
-                        Intent intent = new Intent(PersonCenterShouCangActivity.this, YingXinagVideoDetailsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
-                        intent.putExtras(bundle);
-                        //这里一定要获取到所在Activity再startActivity()；
-                        PersonCenterShouCangActivity.this.startActivity(intent);
-                    } *//*else if (dataBeans.get(position).getFileType().equals("LIVE")) {
-                        Intent intent = new Intent(PersonCenterShouCangActivity.this, TeacherTrainingDetailsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
-                        intent.putExtras(bundle);
-                        //这里一定要获取到所在Activity再startActivity()；
-                        PersonCenterShouCangActivity.this.startActivity(intent);
-                    } *//* else {
-                        Intent intent = new Intent(PersonCenterShouCangActivity.this, PictrueDetailsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
-                        intent.putExtras(bundle);
-                        //这里一定要获取到所在Activity再startActivity()；
-                        PersonCenterShouCangActivity.this.startActivity(intent);
-                    }
-                }
-            }
-        });*/
         collectionBoxRecyclerview.setAdapter(collectionBoxAdapter);
         collectionBoxSpringview.setListener(new SpringView.OnFreshListener() {
             @Override
@@ -237,6 +203,16 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     public void onCollectionBoxError(String msg) {
 
     }
+    //清空收藏夹
+    @Override
+    public void onClearCollectionBoxSuccess(ClearCollectionBoxBean clearCollectionBoxBean) {
+
+    }
+
+    @Override
+    public void onClearCollectionBoxError(String msg) {
+
+    }
 
     @Override
     protected CollectionBoxPresenterImpl initInject() {
@@ -254,7 +230,6 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             for (int i = 0, j = collectionBoxAdapter.getMyLiveList().size(); i < j; i++) {
                 collectionBoxAdapter.getMyLiveList().get(i).setSelect(true);
                 //添加集合
-
             }
             index = collectionBoxAdapter.getMyLiveList().size();
             deleteButn.setEnabled(true);
@@ -316,7 +291,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             }
         });
     }
-
+    //111
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -328,28 +303,57 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 break;
         }
     }
-
+    //111
     @Override
     public void onItemClickListener(int pos, List<CollectionBoxBean.ContentBean.DataBean> myLiveList) {
+        CollectionBoxBean.ContentBean.DataBean myLive = myLiveList.get(pos);
         if (editorStatus) {
-            CollectionBoxBean.ContentBean.DataBean myLive = myLiveList.get(pos);
-            boolean isSelect = myLive.isSelect();
-            if (!isSelect) {
-                index++;
-                myLive.setSelect(true);
-                if (index == myLiveList.size()) {
-                    isSelectAll = true;
-                    selectAllButn.setText("取消全选");
+            if (NoFastClickUtils.isFastClick()) {
+            }else {
+                boolean isSelect = myLive.isSelect();
+                if (!isSelect) {
+                    index++;
+                    myLive.setSelect(true);
+                    if (index == myLiveList.size()) {
+                        isSelectAll = true;
+                        selectAllButn.setText("取消全选");
+                    }
+                } else {
+                    myLive.setSelect(false);
+                    index--;
+                    isSelectAll = false;
+                    selectAllButn.setText("全选");
                 }
-
-            } else {
-                myLive.setSelect(false);
-                index--;
-                isSelectAll = false;
-                selectAllButn.setText("全选");
+                setBtnBackground(index);
+                collectionBoxAdapter.notifyDataSetChanged();
             }
-            setBtnBackground(index);
-            collectionBoxAdapter.notifyDataSetChanged();
+            //展示的时候只多选生效否则子条目点击生效
+        }else {
+            if (NoFastClickUtils.isFastClick()) {
+            } else {
+                if (myLive.getCourse().getCourseType().equals("SCIENCEROOM")) {
+                    Intent intent = new Intent(this, MyLiveRoomWebActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    this.startActivity(intent);
+                }else if (myLive.getCourse().getIsImageText() == 1) {
+                    Intent intent = new Intent(this, PictrueDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    this.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(this, YingXinagVideoDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    this.startActivity(intent);
+                }
+            }
         }
     }
 }

@@ -4,8 +4,10 @@ import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearCollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
+import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ClearCollectionBoxIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.CollectionBoxIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetChangeUserIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetUserIteractor;
@@ -27,6 +29,9 @@ public class CollectionBoxPresenterImpl extends BasePresenterImpl<CollectionBoxV
     public CollectionBoxIteractor collectionBoxIteractor ;
 
     @Inject
+    public ClearCollectionBoxIteractor clearCollectionBoxIteractor ;
+
+    @Inject
     public CollectionBoxPresenterImpl() {}
 
     @Override
@@ -42,5 +47,20 @@ public class CollectionBoxPresenterImpl extends BasePresenterImpl<CollectionBoxV
                 mPresenterView.onCollectionBoxError(errmsg);
             }
         },token,page,size);
+    }
+
+    @Override
+    public void getClearCollectionBoxData(BaseActivity activity, String token) {
+        clearCollectionBoxIteractor.loadClearCollectionBoxData(activity, new IGetDataDelegate<ClearCollectionBoxBean>() {
+            @Override
+            public void getDataSuccess(ClearCollectionBoxBean clearCollectionBoxBean) {
+                mPresenterView.onClearCollectionBoxSuccess(clearCollectionBoxBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onClearCollectionBoxError(errmsg);
+            }
+        },token);
     }
 }

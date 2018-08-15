@@ -13,4 +13,6 @@ import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 public interface CollectionBoxPresenter extends BasePresenter<CollectionBoxView> {
 
     void getCollectionBoxData(BaseActivity activity, String token,String page,String size);
+    //清空收藏夹
+    void getClearCollectionBoxData(BaseActivity activity, String token);
 }

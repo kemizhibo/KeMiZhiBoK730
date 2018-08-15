@@ -19,6 +19,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearLiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.LiuLanPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.LiuLanView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -339,25 +340,27 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
 
     @Override
     public void onItemClickListener(int pos, List<LiuLanBean.ContentBean.DataBean> myLiveList) {
-        if (editorStatus) {
-            LiuLanBean.ContentBean.DataBean myLive = myLiveList.get(pos);
-            boolean isSelect = myLive.isSelect();
-            if (!isSelect) {
-                index++;
-                myLive.setSelect(true);
-                if (index == myLiveList.size()) {
-                    isSelectAll = true;
-                    selectAllButn.setText("取消全选");
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            if (editorStatus) {
+                LiuLanBean.ContentBean.DataBean myLive = myLiveList.get(pos);
+                boolean isSelect = myLive.isSelect();
+                if (!isSelect) {
+                    index++;
+                    myLive.setSelect(true);
+                    if (index == myLiveList.size()) {
+                        isSelectAll = true;
+                        selectAllButn.setText("取消全选");
+                    }
+                } else {
+                    myLive.setSelect(false);
+                    index--;
+                    isSelectAll = false;
+                    selectAllButn.setText("全选");
                 }
-
-            } else {
-                myLive.setSelect(false);
-                index--;
-                isSelectAll = false;
-                selectAllButn.setText("全选");
+                setBtnBackground(index);
+                liuLanAdapter.notifyDataSetChanged();
             }
-            setBtnBackground(index);
-            liuLanAdapter.notifyDataSetChanged();
         }
     }
 }

@@ -3,51 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
+
+    <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
+        android:layout_alignParentTop="true"
+        android:id="@+id/player"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_375dp" >
+        <ImageView
+            android:id="@+id/video_back_butn"
+            android:layout_marginTop="@dimen/res_20dp"
+            android:layout_marginLeft="@dimen/res_20dp"
+            android:layout_width="@dimen/res_20dp"
+            android:layout_height="@dimen/res_20dp"
+            android:src="@mipmap/fanhui"/>
+    </com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView>
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_below="@+id/player"
+        android:id="@+id/teacher_training_content"
         android:layout_above="@+id/pinglun_layout"
+        android:layout_marginBottom="@dimen/res_5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
-            android:layout_alignParentTop="true"
-            android:id="@+id/player"
+
+        <android.support.design.widget.AppBarLayout
+            android:background="@color/white"
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/res_375dp" />
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_below="@+id/player"
-            app:titleEnabled="false"
-            android:id="@+id/main_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-                <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    app:expandedTitleGravity="right|bottom"
-                    app:expandedTitleTextAppearance="@style/OpenVideoTitle"
-                    app:collapsedTitleTextAppearance="@style/ZheDieVideoTitle">
-                    <!--app:expandedTitleMarginStart="@dimen/res_textsize_15sp"
-                    app:expandedTitleMarginEnd="@dimen/res_textsize_30sp"-->
-
-                </android.support.design.widget.CollapsingToolbarLayout>
-
-            </android.support.design.widget.AppBarLayout>
-
-            <android.support.v4.widget.NestedScrollView
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/teacher_training_collapsing_toolbar"
+                app:titleEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
                     <LinearLayout
                         android:id="@+id/detail_page_above_container"
                         android:layout_width="match_parent"
@@ -157,17 +152,6 @@
                                     android:layout_marginTop="@dimen/res_12.5dp"
                                     android:textColor="#989898"/>
                             </LinearLayout>
-                            <ImageView
-                                android:layout_width="@dimen/res_10dp"
-                                android:layout_height="@dimen/res_9.5dp"
-                                android:src="@mipmap/pinglun_2"/>
-                            <ImageView
-                                android:id="@+id/detail_page_focus"
-                                android:layout_width="@dimen/res_8.5dp"
-                                android:layout_height="@dimen/res_8.5dp"
-                                android:src="@mipmap/dianzan_2"
-                                android:layout_margin="12dp"
-                                android:padding="6dp"/>
                         </LinearLayout>
                         <TextView
                             android:id="@+id/detail_page_title"
@@ -201,29 +185,26 @@
                             android:layout_marginTop="@dimen/res_15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#000000"
                             android:text="评论数"/>
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/detail_page_comment_container"
-                        android:layout_below="@+id/detail_page_above_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/comment_recyclerview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        </android.support.v7.widget.RecyclerView>
-
-                    </LinearLayout>
                 </RelativeLayout>
-            </android.support.v4.widget.NestedScrollView>
-        </android.support.design.widget.CoordinatorLayout>
-    </RelativeLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
 
+            <com.liaoinstan.springview.widget.SpringView
+                android:id="@+id/comment_springview"
+                android:background="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comment_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </com.liaoinstan.springview.widget.SpringView>
+    </android.support.design.widget.CoordinatorLayout>
 
     <RelativeLayout
         android:id="@+id/pinglun_layout"
@@ -247,6 +228,4 @@
             android:gravity="center_vertical"
             android:paddingLeft="18dp"/>
     </RelativeLayout>
-
-
 </RelativeLayout>

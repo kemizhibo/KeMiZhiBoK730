@@ -241,6 +241,42 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/res_0.5dp"
             android:background="@color/text_eeeeee"/>
+        <LinearLayout
+            android:id="@+id/guanli_layout"
+            android:layout_marginLeft="@dimen/res_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/res_49dp">
+                <ImageView
+                    android:id="@+id/image_guanli"
+                    android:layout_width="@dimen/res_17dp"
+                    android:layout_height="@dimen/res_18dp"
+                    android:src="@mipmap/person_beishoukejilu_2"/>
+                <TextView
+                    android:layout_toRightOf="@+id/image_guanli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/res_23dp"
+                    android:text="教学管理"
+                    android:textColor="@color/text_4e4e4e"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/res_9dp"
+                    android:layout_height="@dimen/res_17dp"
+                    android:layout_marginRight="@dimen/res_24dp"
+                    android:src="@mipmap/person_more_2" />
+            </RelativeLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/res_0.5dp"
+            android:background="@color/text_eeeeee"/>
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/res_10dp"
