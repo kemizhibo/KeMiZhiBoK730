@@ -35,8 +35,27 @@ import okhttp3.Response;
  */
 
 public class PreparingDetailPlanAdapter extends BaseAdapter {
+    @Override
+    public int getCount() {
+        return 0;
+    }
 
-    private final List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList;
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    /*private final List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList;
     private Handler mHandler;
 
     private Context context;
@@ -176,8 +195,8 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     deletePPT(7, position);
                 }
             });
-          /*  moduleId = planBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);*/
+          *//*  moduleId = planBeanList.get(position).getModuleId();
+            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);*//*
         }
         return convertView;
     }
@@ -214,5 +233,5 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         });
     }
 
-
+*/
 }

@@ -62,8 +62,27 @@ import okhttp3.Response;
  */
 
 public class PreparingDetailAdapter extends BaseAdapter {
+    @Override
+    public int getCount() {
+        return 0;
+    }
 
-    private Handler mHandler;
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    /*private Handler mHandler;
     private List<PreparingPackageDetailBean.ContentBean.MaterialBean> material;
     private List<String> picurls = new ArrayList<>();
     private Context context;
@@ -146,23 +165,23 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     convertView.setTag(holder);
                     break;
-               /* case TYPE_PUPIAN://图片
+               *//* case TYPE_PUPIAN://图片
                     convertView = View.inflate(context, R.layout.sucai_tupian_item, null);
                     holder.mviewPager = (ViewPager) convertView.findViewById(R.id.viewpager);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
-                    break;*/
-                /*case TYPE_SHIPIN://视频
+                    break;*//*
+                *//*case TYPE_SHIPIN://视频
                     convertView = View.inflate(context, R.layout.sucai_shipin_item, null);
                     holder.jcVideoPlayer = (JZVideoPlayerStandard) convertView.findViewById(R.id.jc);
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
-                    break;*/
-               /* case TYPE_MAKE://在线制作
+                    break;*//*
+               *//* case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     convertView.setTag(holder);
-                    break;*/
+                    break;*//*
                 default:
                     break;
             }
@@ -194,13 +213,13 @@ public class PreparingDetailAdapter extends BaseAdapter {
             moduleId = material.get(position).getModuleId();
             RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
         }
-       /* else if (itemViewType == TYPE_MAKE) {
+       *//* else if (itemViewType == TYPE_MAKE) {
        +
             moduleId = material.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
-        }*/
+        }*//*
 
         return convertView;
     }
-
+*/
 }

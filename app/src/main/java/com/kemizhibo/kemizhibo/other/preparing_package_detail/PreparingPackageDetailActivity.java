@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidkun.xtablayout.XTabLayout;
 import com.kemizhibo.kemizhibo.BuildConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
@@ -28,7 +29,10 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingDeta
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingDetailOtherAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingDetailPlanAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingPackageDetailView;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
 import java.util.List;
 
@@ -39,8 +43,8 @@ import cn.jzvd.JZVideoPlayerStandard;
 
 
 public class PreparingPackageDetailActivity extends BaseActivity implements PreparingPackageDetailView {
-    @BindView(R.id.back_img)
-    ImageView back;
+    @BindView(R.id.public_title_bar_root)
+    TapBarLayout publicTitleBarRoot;
     @BindView(R.id.list_view_one)
     ListView listViewone;
     @BindView(R.id.list_view_su)
@@ -65,10 +69,11 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
     @Override
     protected void initData() {
+        bindTitleBar();
         detailPresenter = new PreparingPackageDetailPresenterImp(this);
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        //courseId = 2832;
+        courseId = 2832;
         detailPresenter.getPreparingPackageDetailData();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -76,9 +81,15 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
     }
 
-    @OnClick(R.id.back_img)
-    public void onClick(View view) {
-        finish();
+    private void bindTitleBar() {
+        publicTitleBarRoot.setLeftImageResouse(R.drawable.ic_back).setLeftLinearLayoutListener(new TapBarLayout.LeftOnClickListener() {
+            @Override
+            public void onClick() {
+                finish();
+            }
+        });
+        publicTitleBarRoot.changeTitleBar("备课包");
+        publicTitleBarRoot.buildFinish();
     }
 
     @Override
@@ -91,9 +102,17 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         return this;
     }
 
+    @OnClick(R.id.make_img)
+    public void make(View view){
+        Intent intent = new Intent(this, CommonWebActivity.class);
+        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
+        intent.putExtra(Constants.COURSE_ID, courseId);
+        startActivity(intent);
+    }
+
     @Override
     public void getPreparingPackageDetailDataSuccess(final PreparingPackageDetailBean bean) {
-        Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());
+        /*Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());
         if (bean.getCode() == 0) {
             runOnUiThread(new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -142,7 +161,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
                 }
             });
-        }
+        }*/
     }
 
     @Override

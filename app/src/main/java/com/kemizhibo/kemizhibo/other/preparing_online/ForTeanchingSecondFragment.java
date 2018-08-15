@@ -230,8 +230,8 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
                 }
             }
         });
-        planPop.setWidth(400);
         planPop.setContentView(view);
+        planPop.setWidth(733);
         planPop.setFocusable(true);
         planPop.setOutsideTouchable(true);
         planPop.setBackgroundDrawable(new BitmapDrawable());

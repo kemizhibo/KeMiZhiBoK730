@@ -41,6 +41,26 @@ import okhttp3.Response;
  */
 
 public class PreparingDetailNewAdapter extends BaseAdapter {
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+/*
 
     private PreparingPackageDetailBean.ContentBean contentBean;
     private Handler mHandler;
@@ -52,11 +72,13 @@ public class PreparingDetailNewAdapter extends BaseAdapter {
     private int courseId;
 
 
+*/
 /*    public PreparingDetailNewAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.MaterialBean> material, Handler mHandler) {
         this.context = context;
         this.material = material;
         this.mHandler = mHandler;
-    }*/
+    }*//*
+
 
     public PreparingDetailNewAdapter(Context context, PreparingPackageDetailBean.ContentBean contentBean, Handler mHandler) {
         this.context = context;
@@ -142,9 +164,11 @@ public class PreparingDetailNewAdapter extends BaseAdapter {
             holder.mtitle.setBackgroundColor(Color.YELLOW);
             holder.mtitle.setText("其他");
             holder.mnone.setVisibility(View.VISIBLE);
-           /* holder.jcVideoPlayer.setVisibility(View.GONE);
+           */
+/* holder.jcVideoPlayer.setVisibility(View.GONE);
             holder.rimage.setVisibility(View.GONE);
-            holder.rppt.setVisibility(View.GONE);*/
+            holder.rppt.setVisibility(View.GONE);*//*
+
         }
 
 
@@ -192,7 +216,8 @@ public class PreparingDetailNewAdapter extends BaseAdapter {
 
                 // final PreparingPPTBean bean = GsonUtils.getBean(response.body().string(), PreparingPPTBean.class);
                 //   Log.i("-code---", bean.getCode() + "");
-             /*   if (null != bean && 0 == bean.getCode()) {
+             */
+/*   if (null != bean && 0 == bean.getCode()) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -203,7 +228,8 @@ public class PreparingDetailNewAdapter extends BaseAdapter {
 
                         }
                     });
-                }*/
+                }*//*
+
 
 
             }
@@ -338,6 +364,7 @@ public class PreparingDetailNewAdapter extends BaseAdapter {
         public ImageView miv;
         public RelativeLayout rimage, rppt, rword;
     }
+*/
 
 
 }

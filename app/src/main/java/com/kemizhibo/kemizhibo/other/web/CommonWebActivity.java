@@ -59,7 +59,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     url = Constants.H5_MAKE.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.COURSE_ID, 0)));
                     int moduleId = intent.getIntExtra(Constants.MODULE_ID, 0);
                     if(0 != moduleId){
-                        url = url.concat("?courseId=" + moduleId);
+                        url = url.concat("?module=" + moduleId);
                     }
                     break;
                 case PREVIEW:

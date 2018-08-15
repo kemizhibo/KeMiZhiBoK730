@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/x8"
     android:paddingBottom="@dimen/x8"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/x81"
+    android:paddingRight="@dimen/x81">
 
     <CheckBox
         android:id="@+id/check_box"

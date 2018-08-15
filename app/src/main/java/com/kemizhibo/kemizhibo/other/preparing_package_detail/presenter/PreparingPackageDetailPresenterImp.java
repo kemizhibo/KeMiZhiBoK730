@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.other.preparing_package_detail.presenter;
 
+import android.util.Log;
+
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
@@ -33,6 +35,7 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
         }
         Map map = new HashMap();
         map.put(Constants.COURSE_ID, detailView.getCourseId());
+        map.put("dataFrom", "app");
         OkHttpRequest.doGet(detailView.getCustomContext(), OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DETAIL_URL, map), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -41,12 +44,13 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
+                Log.d("PreparingPackageDetailP", response.body().string());
+                /*PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     detailView.getPreparingPackageDetailDataSuccess(bean);
                 }else{
 
-                }
+                }*/
             }
         });
     }
