@@ -209,7 +209,7 @@ public class TapBarLayout extends RelativeLayout {
             rightImageView.setImageResource(rightResId);
             mRightLinearLayout2.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(60, 15);
+            LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(55, 10);
             rl.gravity = Gravity.CENTER;
             mRightLinearLayout2.addView(rightImageView, rl);
         }

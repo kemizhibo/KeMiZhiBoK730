@@ -4,12 +4,11 @@
     android:layout_width="@dimen/x733"
     android:layout_height="@dimen/x400"
     android:orientation="vertical"
-    android:padding="@dimen/x20"
     android:background="@drawable/bg_plan_pop">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x100">
+        android:layout_height="@dimen/x57">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,7 +20,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x200">
+        android:layout_height="@dimen/x150">
 
         <ListView
             android:id="@+id/plan_list"
@@ -41,7 +40,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x99"
+        android:layout_height="@dimen/x59"
         android:id="@+id/go_teach_rl">
 
         <TextView

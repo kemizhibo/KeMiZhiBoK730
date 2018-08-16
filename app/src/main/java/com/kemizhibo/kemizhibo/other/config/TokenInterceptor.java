@@ -30,27 +30,13 @@ public class TokenInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
-        Response response = chain.proceed(request);
-
-        String responseStr = response.body().string();
-        int code = 0;
-        try {
-            JSONObject jsonObject = new JSONObject(responseStr);
-            code = jsonObject.optInt("code");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (code != 0 && code == 401){
-            getNewToken();
-            Request newRequest = chain.request()
-                    .newBuilder()
-                    .header("Authorization", "Bearer " + PreferencesUtils.getLoginInfo("token", mContext))
-                    .build();
-            //重新请求
-            return chain.proceed(newRequest);
-        }
-        return response;
+        getNewToken();
+        Request newRequest = chain.request()
+                .newBuilder()
+                .header("Authorization", "Bearer " + PreferencesUtils.getLoginInfo("token", mContext))
+                .build();
+        //重新请求
+        return chain.proceed(newRequest);
     }
 
     public synchronized void getNewToken(){

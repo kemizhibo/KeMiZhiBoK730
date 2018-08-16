@@ -16,7 +16,9 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.PersonCenterBeiShouKeJiLuActivity;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
@@ -166,9 +168,11 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
                 break;*/
             case R.id.jilu_layout:
                 startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
+                PreferencesUtils.saveIntValue(Constants.ROLE_ID, Constants.CHILD_ROLE_ID, getActivity());
                 break;
             case R.id.guanli_layout:
-                startActivity(new Intent(getActivity(), PersonCenterGuanLiActivity.class));
+                startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
+                PreferencesUtils.saveIntValue(Constants.ROLE_ID, Constants.MANAGER_ROLE_ID, getActivity());
                 break;
             case R.id.fankui_layout:
                 startActivity(new Intent(getActivity(), PersonCenterFanKuiActivity.class));

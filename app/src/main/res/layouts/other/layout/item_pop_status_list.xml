@@ -7,15 +7,15 @@
     android:paddingBottom="@dimen/x4">
 
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/status"
         android:paddingTop="@dimen/x16"
         android:paddingBottom="@dimen/x8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" />
+        android:gravity="center_horizontal" />
 
     <View
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x1"
         android:background="#dcdcdc"

@@ -95,9 +95,11 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
 
     @Override
     protected void initData() {
-        bindTitleBar();
         commonPresenter = new CommonPresenterImp(this);
-        commonPresenter.getUserInfo();
+        //commonPresenter.getUserInfo();
+        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, this);
+        bindTitleBar();
+        initializeData();
     }
 
     private void bindTitleBar() {
@@ -108,7 +110,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
             }
         });
         publicTitleBarRoot.setRightImageResouse(R.mipmap.person_filter_icon);
-        publicTitleBarRoot.changeTitleBar("备授课记录");
+        publicTitleBarRoot.changeTitleBar(roleId == Constants.MANAGER_ROLE_ID ? "教学管理" : "备授课记录");
         publicTitleBarRoot.buildFinish();
         rightImageView = publicTitleBarRoot.getRightImageView();
     }
@@ -296,12 +298,12 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
             }
         });
         statusFilterPop = new PopupWindow(this);
-        statusFilterPop.setWidth(240);
+        statusFilterPop.setWidth(200);
         statusFilterPop.setContentView(view);
         statusFilterPop.setFocusable(true);
         statusFilterPop.setOutsideTouchable(true);
         statusFilterPop.setBackgroundDrawable(new BitmapDrawable());
-        statusFilterPop.showAsDropDown(rightImageView, 0, 0, Gravity.BOTTOM);
+        statusFilterPop.showAsDropDown(rightImageView, -100, 0, Gravity.BOTTOM);
     }
 
     /*private void showManagerFilterPop() {

@@ -210,9 +210,9 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         goTeach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                planPop.dismiss();
                 boolean isChecked = isChecked();
                 if(isChecked){
+                    planPop.dismiss();
                     int docType = planBeanList.get(selectIndex).getDocType();
                     if(docType == 5){
                         //视频
@@ -232,12 +232,13 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         });
         planPop.setContentView(view);
         planPop.setWidth(733);
+        planPop.setHeight(400);
         planPop.setFocusable(true);
         planPop.setOutsideTouchable(true);
         planPop.setBackgroundDrawable(new BitmapDrawable());
-        backgroundAlpha(0.8f);
-        parent = getActivity().getWindow().getDecorView();
-        planPop.showAtLocation(parent, Gravity.CENTER, 0, 0);
+        /*backgroundAlpha(0.8f);
+        parent = getActivity().getWindow().getDecorView();*/
+        planPop.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
     }
     /**
      * 设置添加屏幕的背景透明度
