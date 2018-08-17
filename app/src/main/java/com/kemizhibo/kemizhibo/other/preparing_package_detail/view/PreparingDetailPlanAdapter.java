@@ -35,41 +35,19 @@ import okhttp3.Response;
  */
 
 public class PreparingDetailPlanAdapter extends BaseAdapter {
-    @Override
-    public int getCount() {
-        return 0;
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
-
-    /*private final List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList;
+    private final List<PreparingPackageDetailBean.ContentBean.DataBean> planBeanList;
     private Handler mHandler;
 
     private Context context;
 
     //定义样式常量，注意常量值要从0开始
-    private static final int TYPE_WENDANG = 1;//文档
-    private static final int TYPE_PPT = 2;//ppt
-    private static final int TYPE_SHIPIN = 0;//视频
-    private static final int TYPE_PUPIAN = 3;//图片
-    private int courseId;
+    private static final int TYPE_PPT = 0;//ppt
+    private int  courseId;
     private int moduleId;
-    private static final int TYPE_MAKE = 4;//在线制作
+    private static final int TYPE_MAKE = 1;//在线制作
 
-    public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList,Handler mHandler) {
+    public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> planBeanList, Handler mHandler) {
         this.context = context;
         this.planBeanList = planBeanList;
         this.mHandler=mHandler;
@@ -99,17 +77,10 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         Log.i("---yyyy--", planBeanList.get(position).getDocType() + "");
-        if (planBeanList.get(position).getDocType() == 1) {
-            return TYPE_WENDANG;
-        } else if (planBeanList.get(position).getDocType() == 3) {
+        if (planBeanList.get(position).getDocType() == 3) {
             return TYPE_PPT;
-        } else if (planBeanList.get(position).getDocType() == 5) {
-            return TYPE_SHIPIN;
-        } else if (planBeanList.get(position).getDocType() == 7) {
-            return TYPE_MAKE;
         }
-
-        return TYPE_PUPIAN;
+        return TYPE_MAKE;
     }
 
 
@@ -123,28 +94,10 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new MyViewHolder();
             switch (itemViewType) {
-                case TYPE_WENDANG://文档
-                    convertView = View.inflate(context, R.layout.wendang_plan_item, null);
-                    holder.mwendang = (TextView) convertView.findViewById(R.id.mword);
-                    holder.mdeleteword = (TextView) convertView.findViewById(R.id.mdeleteword);
-                    convertView.setTag(holder);
-                    break;
                 case TYPE_PPT://ppt
                     convertView = View.inflate(context, R.layout.ppt_plan_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mdeleteppt = (TextView) convertView.findViewById(R.id.mdeleteppt);
-                    convertView.setTag(holder);
-                    break;
-                case TYPE_PUPIAN://图片
-                    convertView = View.inflate(context, R.layout.tupian_item, null);
-                   // holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
-                    holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
-                    convertView.setTag(holder);
-                    break;
-                case TYPE_SHIPIN://视频
-                    convertView = View.inflate(context, R.layout.shipin_item, null);
-                    holder.jcVideoPlayer = (JZVideoPlayerStandard) convertView.findViewById(R.id.jc);
-                    holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
                 case TYPE_MAKE://在线制作
@@ -161,11 +114,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             holder = (MyViewHolder) convertView.getTag();
         }
         Log.i("---itemViewType--", "" + itemViewType);
-        if (itemViewType == TYPE_SHIPIN) {
-            courseId = planBeanList.get(position).getCourseId();
-            moduleId = planBeanList.get(position).getModuleId();
-            RequestUtil.requestVideo((Activity) context, position, holder, courseId);
-        } else if (itemViewType == TYPE_PPT) {
+        if (itemViewType == TYPE_PPT) {
             moduleId = planBeanList.get(position).getModuleId();
             holder.mdeleteppt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -173,20 +122,8 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     deletePPT(3, position);
                 }
             });
-            RequestUtil.requestPPT((Activity) context, holder, itemViewType, moduleId);
-        } else if (itemViewType == TYPE_WENDANG) {
-            moduleId = planBeanList.get(position).getModuleId();
-            holder.mdeleteword.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deletePPT(1, position);
-                }
-            });
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
-        } else if (itemViewType == TYPE_PUPIAN) {
-            moduleId = planBeanList.get(position).getModuleId();
-          //  RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
-        } else if (itemViewType == TYPE_MAKE) {
+            RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId,3);
+        } if (itemViewType == TYPE_MAKE) {
             moduleId = planBeanList.get(position).getModuleId();
             holder.mmake.setText(planBeanList.get(position).getDocName());
             holder.mdeleteonline.setOnClickListener(new View.OnClickListener() {
@@ -195,8 +132,6 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     deletePPT(7, position);
                 }
             });
-          *//*  moduleId = planBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);*//*
         }
         return convertView;
     }
@@ -233,5 +168,5 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         });
     }
 
-*/
+
 }

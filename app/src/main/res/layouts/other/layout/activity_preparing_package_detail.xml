@@ -38,7 +38,7 @@
                 </LinearLayout>
 
 
-                <com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyListView
+                <ListView
                     android:id="@+id/list_view_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,11 +57,11 @@
                 </LinearLayout>
 
 
-                <com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyListView
+                <ListView
                     android:id="@+id/list_view_su"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@null"></com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyListView>
+                    android:divider="@null"></ListView>
                 <LinearLayout
                     android:background="#f05"
                     android:layout_width="match_parent"

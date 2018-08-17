@@ -2,32 +2,34 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.bean;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.baidu.bdocreader.BDocInfo;
 import com.baidu.bdocreader.downloader.DocDownloadManager;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyFragment;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyViewpagerAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.SampleObserver;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.WordShowActivity;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
-import com.kemizhibo.kemizhibo.yhr.MyApplication;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.jzvd.JZVideoPlayerStandard;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -43,8 +45,10 @@ public class RequestUtil {
     private static TextView id;
     private static int type;
     private static MyViewpagerAdapter adapter;
+    private static MyViewpagerAdapter myViewpagerAdapter;
 
-    public static void requestPPT(final Activity context, final MyViewHolder holder, final int doctype, int moduleId) {
+
+    public static void requestPPT(final Activity context, final TextView mppt, final TextView mcheck, final TextView mdownppt, final int doctype, int moduleId) {
         Map map = new HashMap();
         Log.i("-pptmoduleId---", moduleId + "");
         map.put("moduleId", String.valueOf(moduleId));
@@ -66,19 +70,19 @@ public class RequestUtil {
                         public void run() {
                             String docName = bean.getContent().getFileName();
                             Log.i("-pptdocName---", docName + "");
-                            holder.mppt.setText(docName);
+                            mppt.setText(docName);
 
-                            holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
+                            mcheck.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     isjump = true;
-                                    getDocMessage(context, bean.getContent().getDocId(), holder, 3);
+                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, 3);
                                 }
                             });
-                            holder.mdownppt.setOnClickListener(new View.OnClickListener() {
+                            mdownppt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    getDocMessage(context, bean.getContent().getDocId(), holder, 3);
+                                    getDocMessage(context, bean.getContent().getDocId(), mdownppt, 3);
 
                                 }
                             });
@@ -92,8 +96,36 @@ public class RequestUtil {
             }
         });
     }
+    public static void requestOtherPPT(final Activity context, final TextView mppt, int moduleId,final int doctype) {
+        Map map = new HashMap();
+        map.put("moduleId", String.valueOf(moduleId));
+        map.put(Constants.DOCTYPE, String.valueOf(doctype));
+        OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DOC_URL, map), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
 
-    public static void requestDoc(final Activity context, final MyViewHolder holder, final int itemViewType, int moduleId, final int type) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final PreparingPPTBean bean = GsonUtils.getBean(response.body().string(), PreparingPPTBean.class);
+                if (null != bean && 0 == bean.getCode()) {
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String docName = bean.getContent().getFileName();
+                            Log.i("-pptdocName---", docName + "");
+                            mppt.setText(docName);
+                        }
+                    });
+                }
+
+
+            }
+        });
+    }
+
+    public static void requestDoc(final Activity context, final TextView mwendang, final TextView mdown, final TextView mcheck, final int itemViewType, int moduleId, final int type) {
         Map map = new HashMap();
         Log.i("-moduleId---", moduleId + "");
         map.put("moduleId", String.valueOf(moduleId));
@@ -119,24 +151,25 @@ public class RequestUtil {
                             final String url = bean.getContent().getUrl();
                             Log.i("-code---", bean.getCode() + "");
                             Log.i("-docurl---", bean.getContent().getUrl() + "");
-                            if (type == 4) {
+                           /* if (type == 4) {
                                 holder.mmake.setText(docName);
                             } else if (type == 1) {
                                 holder.mwendang.setText(docName);
-                            }
-                            holder.mdown.setOnClickListener(new View.OnClickListener() {
+                            }*/
+                            mwendang.setText(docName);
+                            mdown.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     if (url != null) {
-                                        getDocMessage(context, bean.getContent().getDocId(), holder, 1);
+                                        getDocMessage(context, bean.getContent().getDocId(), mdown, 1);
                                     }
                                 }
                             });
-                            holder.mcheck.setOnClickListener(new View.OnClickListener() {
+                            mcheck.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     isjump = true;
-                                    getDocMessage(context, bean.getContent().getDocId(), holder, 1);
+                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, 1);
                                 }
                             });
                         }
@@ -148,7 +181,7 @@ public class RequestUtil {
         });
     }
 
-    public static void getDocMessage(final Activity context, String docId, final MyViewHolder holder, final int i) {
+    public static void getDocMessage(final Activity context, String docId, final TextView holder, final int i) {
         Map map = new HashMap();
         //  map.put("docId", docId);
         map.put("docId", "doc-ifrmt6px98u387u");
@@ -173,11 +206,11 @@ public class RequestUtil {
                     String docs = "";
                     if (i == 1) {
                         docs = "doc";
-                        id = holder.mdown;
+                        id = holder;
                         type = 1;
                     } else if (i == 3) {
                         docs = "pptx";
-                        id = holder.mdownppt;
+                        id = holder;
                         type = 3;
                     }
                     docInfo = new BDocInfo(host, documentId, docs, token)
@@ -239,7 +272,7 @@ public class RequestUtil {
                             picurls.add(Constants.TEST_IMAGE_URL);
                             Log.i("-picurls---", picurls.size() + "");
                             if (null == adapter) {
-                                adapter = new MyViewpagerAdapter(MyApplication.getContext(), picurls);
+                                // adapter = new MyViewpagerAdapter(MyApplication.getContext(), picurls);
                                 holder.mviewPager.setAdapter(adapter);
                             } else {
                                 adapter.notifyDataSetChanged();
@@ -257,24 +290,35 @@ public class RequestUtil {
         });
     }
 
-    //加载图片
-    public static Bitmap getURLimage(String url) {
-        Bitmap bmp = null;
-        try {
-            URL myurl = new URL(url);
-            // 获得连接
-            HttpURLConnection conn = (HttpURLConnection) myurl.openConnection();
-            conn.setConnectTimeout(6000);//设置超时
-            conn.setDoInput(true);
-            conn.setUseCaches(false);//不缓存
-            conn.connect();
-            InputStream is = conn.getInputStream();//获得图片的数据流
-            bmp = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bmp;
+    public static List<String> mpicurls = new ArrayList<>();
+    public static List<String> mvideourls = new ArrayList<>();
+
+    public static void requestSuCaiPic(final Activity context, final int moduleId, final int itemViewType, final SimpleDraweeView simpleDraweeView) {
+        Map map = new HashMap();
+        map.put("moduleId", String.valueOf(moduleId));
+        map.put(Constants.DOCTYPE, String.valueOf(itemViewType));
+        OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DOC_URL, map), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final PreparingPicBean picbean = GsonUtils.getBean(response.body().string(), PreparingPicBean.class);
+                if (null != picbean && 0 == picbean.getCode()) {
+                    final String url = picbean.getContent().getUrl();
+                    // final Uri parse = Uri.parse(url);
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Uri parse = Uri.parse(Constants.TEST_IMAGE_URL);
+                            simpleDraweeView.setImageURI(parse);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public static void requestVideo(final Activity context, int position, final MyViewHolder holder, int courseId) {
@@ -310,5 +354,34 @@ public class RequestUtil {
             }
         });
     }
+
+    public static void requestSuCaiVideo(final Activity context, int courseId, final JZVideoPlayerStandard jzVideoPlayerStandard) {
+        Map map = new HashMap();
+        map.put(Constants.COURSE_ID, String.valueOf(courseId));
+        map.put(Constants.ENCRYPTION, "true");
+        map.put(Constants.VIDEOTYPE, "HLS");
+        map.put(Constants.VIDEOCLARITY, "HD");
+        OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_VIDEO_URL, map), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final PreparingBean bean = GsonUtils.getBean(response.body().string(), PreparingBean.class);
+                 context.runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+                         jzVideoPlayerStandard.setUp(Constants.TEST_VIDEO_URL
+                                 , 1, "");
+                         jzVideoPlayerStandard.thumbImageView.setImageResource(R.drawable.ic_launcher);
+                     }
+                 });
+
+            }
+        });
+    }
+
 
 }

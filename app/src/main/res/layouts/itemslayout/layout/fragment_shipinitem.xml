@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#333333">
+
+    <cn.jzvd.JZVideoPlayerStandard
+        android:id="@+id/jcVideoPlayer_video"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></cn.jzvd.JZVideoPlayerStandard>
+
+    <TextView
+        android:id="@+id/adj"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jc"
+        android:layout_marginTop="@dimen/res_40dp"
+        android:layout_toLeftOf="@+id/btn"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/x10"
+        android:text="kkkkkk"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/jc"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/btn_border"
+        android:text="选用素材" />
+</RelativeLayout>

@@ -51,7 +51,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     @BindView(R.id.list_view_one)
     ListView listViewone;
     @BindView(R.id.list_view_su)
-    MyListView listViewsu;
+    ListView listViewsu;
     @BindView(R.id.list_view_shou)
     ListView listViewshou;
     @BindView(R.id.list_view_qi)
@@ -69,6 +69,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     protected int getLayoutId() {
         return R.layout.activity_preparing_package_detail;
     }
+
     @Override
     protected void initData() {
         bindTitleBar();
@@ -105,7 +106,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     }
 
     @OnClick(R.id.make_img)
-    public void make(View view){
+    public void make(View view) {
         Intent intent = new Intent(this, CommonWebActivity.class);
         intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
         intent.putExtra(Constants.COURSE_ID, courseId);
@@ -115,7 +116,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     @Override
     public void getPreparingPackageDetailDataSuccess(final PreparingPackageDetailBean bean) {
         LogUtils.i("detail log", "name" + bean.getContent().getAppMaterial().getKemiPic().get(0).getDocName());
-        /*Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());
+        Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());
         if (bean.getCode() == 0) {
             runOnUiThread(new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -125,47 +126,23 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
                     Log.i("---getMaterial-", bean.getContent().getMaterial().size() + "");
-                    PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getMaterial());
+                    PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(),getSupportFragmentManager());
                     listViewsu.setAdapter(preparingDetailAdapter);
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
-                    List<PreparingPackageDetailBean.ContentBean.OtherBean> other = bean.getContent().getOther();
+                    List<PreparingPackageDetailBean.ContentBean.DataBean> other= bean.getContent().getOther();
                     if (other.size() > 0) {
                         mnone.setVisibility(View.GONE);
                         listViewqi.setAdapter(new PreparingDetailOtherAdapter(PreparingPackageDetailActivity.this, other));
                     }
-                    listViewone.setOnTouchListener(new View.OnTouchListener() {
 
-                        public boolean onTouch(View v, MotionEvent event) {
-                            // TODO Auto-generated method stub
-                            listViewone.getParent().requestDisallowInterceptTouchEvent(true);
-                            return false;
-                        }
-                    });
-                    listViewone.setOnScrollListener(new AbsListView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-                        }
-
-                        @Override
-                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                            listViewone.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mlastPosition = listViewone.getLastVisiblePosition();
-                                }
-                            });
-                            Log.i("positionfist==", firstVisibleItem + "");
-                            Log.i("positionlast==", listViewone.getLastVisiblePosition() + "");
-                        }
-                    });
 
                 }
             });
-        }*/
+        }
     }
+
 
     @Override
     public void error(String operate, String errorCode) {
@@ -187,3 +164,4 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     }
 
 }
+

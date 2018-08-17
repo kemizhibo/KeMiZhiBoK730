@@ -19,46 +19,28 @@ import java.util.List;
 
 import cn.jzvd.JZVideoPlayerStandard;
 
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mcheck;
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mdown;
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mwendang;
+
 /**
  * Created by asus on 2018/8/1.
  */
 
 public class PreparingDetailOtherAdapter extends BaseAdapter {
-    @Override
-    public int getCount() {
-        return 0;
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
-
-    /*private final List<PreparingPackageDetailBean.ContentBean.OtherBean> otherBeanList;
+    private final List<PreparingPackageDetailBean.ContentBean.DataBean> otherBeanList;
     private Handler mHandler;
 
     private Context context;
 
     //定义样式常量，注意常量值要从0开始
-    private static final int TYPE_WENDANG = 1;//文档
-    private static final int TYPE_PPT = 2;//ppt
-    private static final int TYPE_SHIPIN = 0;//视频
-    private static final int TYPE_PUPIAN = 3;//图片
+    private static final int TYPE_PPT = 1;//ppt
+    private static final int TYPE_excel = 0;//excal
     private int courseId;
     private int moduleId;
-    private static final int TYPE_MAKE = 4;//在线制作
 
-    public PreparingDetailOtherAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.OtherBean> otherBeanList) {
+    public PreparingDetailOtherAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> otherBeanList) {
         this.context = context;
         this.otherBeanList = otherBeanList;
     }
@@ -87,17 +69,11 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         Log.i("-----", otherBeanList.get(position).getDocType() + "");
-        if (otherBeanList.get(position).getDocType() == 1) {
-            return TYPE_WENDANG;
-        } else if (otherBeanList.get(position).getDocType() == 3) {
+        if (otherBeanList.get(position).getDocType() == 3) {
             return TYPE_PPT;
-        } else if (otherBeanList.get(position).getDocType() == 5) {
-            return TYPE_SHIPIN;
-        } else if (otherBeanList.get(position).getDocType() == 7) {
-            return TYPE_MAKE;
         }
 
-        return TYPE_PUPIAN;
+        return TYPE_excel;
     }
 
 
@@ -111,7 +87,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new MyViewHolder();
             switch (itemViewType) {
-                case TYPE_WENDANG://文档
+                case TYPE_excel://表格
                     convertView = View.inflate(context, R.layout.wendang_item, null);
                     holder.mwendang = (TextView) convertView.findViewById(R.id.mword);
                     convertView.setTag(holder);
@@ -123,23 +99,6 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     holder.mdownppt = (TextView) convertView.findViewById(R.id.mdownppt);
                     convertView.setTag(holder);
                     break;
-                case TYPE_PUPIAN://图片
-                    convertView = View.inflate(context, R.layout.tupian_item, null);
-                  //  holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
-                    holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
-                    convertView.setTag(holder);
-                    break;
-                case TYPE_SHIPIN://视频
-                    convertView = View.inflate(context, R.layout.shipin_item, null);
-                    holder.jcVideoPlayer = (JZVideoPlayerStandard) convertView.findViewById(R.id.jc);
-                    holder.madj = (TextView) convertView.findViewById(R.id.adj);
-                    convertView.setTag(holder);
-                    break;
-              *//*  case TYPE_MAKE://在线制作
-                    convertView = View.inflate(context, R.layout.make_item, null);
-                    holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
-                    convertView.setTag(holder);
-                    break;*//*
                 default:
                     break;
             }
@@ -147,25 +106,14 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder = (MyViewHolder) convertView.getTag();
         }
         Log.i("---itemViewType--", "" + itemViewType);
-        if (itemViewType == TYPE_SHIPIN) {
-            courseId = otherBeanList.get(position).getCourseId();
+        if (itemViewType == TYPE_PPT) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestVideo((Activity) context, position, holder, courseId);
-        } else if (itemViewType == TYPE_PPT) {
+            RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
+        } else if (itemViewType == TYPE_excel) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestPPT((Activity) context, holder, itemViewType, moduleId);
-        } else if (itemViewType == TYPE_WENDANG) {
-            moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
-        } else if (itemViewType == TYPE_PUPIAN) {
-            moduleId = otherBeanList.get(position).getModuleId();
-           // RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
+            RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, itemViewType, moduleId, 1);
         }
-       *//* else if (itemViewType == TYPE_MAKE) {
-            moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
-        }*//*
         return convertView;
     }
-*/
+
 }

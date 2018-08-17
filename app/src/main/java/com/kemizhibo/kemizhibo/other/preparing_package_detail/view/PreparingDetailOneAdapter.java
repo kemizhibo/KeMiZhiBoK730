@@ -19,32 +19,17 @@ import java.util.List;
 
 import cn.jzvd.JZVideoPlayerStandard;
 
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mcheck;
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mdown;
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mwendang;
+
 /**
  * Created by asus on 2018/8/1.
  */
 
 public class PreparingDetailOneAdapter extends BaseAdapter {
-    @Override
-    public int getCount() {
-        return 0;
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
-
-    /*private final List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList;
+    private final List<PreparingPackageDetailBean.ContentBean.DataBean> oneKeyBeanList;
     private Handler mHandler;
 
     private Context context;
@@ -58,7 +43,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
     private int moduleId;
     private static final int TYPE_MAKE = 4;//在线制作
 
-    public PreparingDetailOneAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList) {
+    public PreparingDetailOneAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> oneKeyBeanList) {
         this.context = context;
         this.oneKeyBeanList = oneKeyBeanList;
     }
@@ -113,12 +98,14 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             switch (itemViewType) {
                 case TYPE_WENDANG://文档
                     convertView = View.inflate(context, R.layout.wendang_item, null);
-                    holder.mwendang = (TextView) convertView.findViewById(R.id.mword);
+                    mwendang = (TextView) convertView.findViewById(R.id.mword);
                     convertView.setTag(holder);
                     break;
                 case TYPE_PPT://ppt
                     convertView = View.inflate(context, R.layout.ppt_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
+                    holder.mcheckppt = (TextView) convertView.findViewById(R.id.mcheckppt);
+                    holder.mdownppt = (TextView) convertView.findViewById(R.id.mdownppt);
                     convertView.setTag(holder);
                     break;
                 case TYPE_PUPIAN://图片
@@ -133,11 +120,11 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     convertView.setTag(holder);
                     break;
-               *//* case TYPE_MAKE://在线制作
+               /* case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     convertView.setTag(holder);
-                    break;*//*
+                    break;*/
                 default:
                     break;
             }
@@ -151,25 +138,25 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             RequestUtil.requestVideo((Activity) context, position, holder, courseId);
         } else if (itemViewType == TYPE_PPT) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestPPT((Activity) context, holder, itemViewType, moduleId);
+            RequestUtil.requestPPT((Activity) context, holder.mppt,holder. mcheckppt,holder. mdownppt, itemViewType, moduleId);
         } else if (itemViewType == TYPE_WENDANG) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_WENDANG);
+            RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, itemViewType, moduleId, TYPE_WENDANG);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-           *//* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
+           /* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
             holder.jcVideoPlayer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i("positionclick==", "" + position);
                 }
-            });*//*
+            });*/
         }
-       *//* else if (itemViewType == TYPE_MAKE) {
+       /* else if (itemViewType == TYPE_MAKE) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder, itemViewType, moduleId, TYPE_MAKE);
-        }*//*
+        }*/
         return convertView;
-    }*/
+    }
 
 }

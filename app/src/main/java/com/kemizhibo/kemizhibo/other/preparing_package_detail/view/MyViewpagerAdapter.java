@@ -3,6 +3,9 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +24,16 @@ import java.util.List;
  * Created by asus on 2018/8/12.
  */
 
-public class MyViewpagerAdapter extends PagerAdapter {
+public class MyViewpagerAdapter extends FragmentPagerAdapter {
     private List<String> picurls;
     private Context context;
 
-    public MyViewpagerAdapter(Context context, List<String> picurls) {
-        this.context = context;
-        this.picurls = picurls;
+    public MyViewpagerAdapter(FragmentManager fm,List<String> picurls) {
+        super(fm);
     }
+
+
+
 
     @Override
     public int getCount() {
@@ -44,6 +49,11 @@ public class MyViewpagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position,
                             Object object) {
         container.removeView((View) object);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return null;
     }
 
     @NonNull
