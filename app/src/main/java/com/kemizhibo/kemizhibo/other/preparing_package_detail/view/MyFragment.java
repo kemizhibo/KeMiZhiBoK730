@@ -50,13 +50,12 @@ public class MyFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        JZVideoPlayer.releaseAllVideos();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        JZVideoPlayer.releaseAllVideos();
     }
 
 }

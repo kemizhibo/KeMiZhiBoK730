@@ -39,11 +39,10 @@
 
     <TextView
         android:id="@+id/mcheck"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/logodown"
-        android:paddingRight="20dp"
         android:text="查看" />
 
     <RelativeLayout
@@ -65,7 +64,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="20dp"
         android:text="下载" />
 
     <View

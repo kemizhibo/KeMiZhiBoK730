@@ -42,11 +42,10 @@
 
     <TextView
         android:id="@+id/mcheckonline"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/picdelete"
-        android:paddingRight="20dp"
         android:text="修改" />
 
     <RelativeLayout

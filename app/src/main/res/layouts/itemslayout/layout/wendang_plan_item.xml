@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/picdeleteword"
-        android:paddingRight="20dp"
         android:text="修改" />
 
     <ImageView

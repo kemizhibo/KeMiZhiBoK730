@@ -139,9 +139,6 @@ public class RequestUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //  Log.i("-json---", response.body().string() + "");
-                //  final PreparingDocBean bean = GsonUtils.getBean(response.body().string(), PreparingDocBean.class);
-
                 final PreparingWordBen bean = GsonUtils.getBean(response.body().string(), PreparingWordBen.class);
                 Log.i("-code---", bean.getCode() + "");
                 if (null != bean && 0 == bean.getCode()) {
@@ -152,26 +149,21 @@ public class RequestUtil {
                             final String url = bean.getContent().getUrl();
                             Log.i("-code---", bean.getCode() + "");
                             Log.i("-docurl---", bean.getContent().getUrl() + "");
-                           /* if (type == 4) {
-                                holder.mmake.setText(docName);
-                            } else if (type == 1) {
-                                holder.mwendang.setText(docName);
-                            }*/
                             mwendang.setText(docName);
                             mdown.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (url != null) {
-                                        ToastUtils.showToast("开始下载");
-                                        getDocMessage(context, bean.getContent().getDocId(), mdown, 1);
-                                    }
+                                    ToastUtils.showToast("开始下载");
+                                 //   if (url != null) {
+                                        getDocMessage(context, bean.getContent().getDocId(), mdown, itemViewType);
+                                  //  }
                                 }
                             });
                             mcheck.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     isjump = true;
-                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, 1);
+                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, itemViewType);
                                 }
                             });
                         }
@@ -210,7 +202,11 @@ public class RequestUtil {
                         docs = "doc";
                         id = holder;
                         type = 1;
-                    } else if (i == 3) {
+                    } else if (i == 2) {
+                        docs = "doc";
+                        id = holder;
+                        type = 2;
+                    }else if (i == 3) {
                         docs = "pptx";
                         id = holder;
                         type = 3;

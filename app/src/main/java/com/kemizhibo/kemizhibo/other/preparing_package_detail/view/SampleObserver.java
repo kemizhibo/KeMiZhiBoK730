@@ -56,7 +56,7 @@ public class SampleObserver extends DocDownloadObserver {
                 MyViewHolder myViewHolder = new MyViewHolder();
                 Log.i("=======",type+"");
                 if (progress == 100) {
-                    if (type==1) {
+                    if (type==1||type==2) {
                         tv.setText("已下载");
                     } else if (type==3) {
                         tv.setText("已加入授课");
