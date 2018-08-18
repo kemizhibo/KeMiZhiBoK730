@@ -12,12 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.other.config.Constants;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
-import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
-import butterknife.BindView;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
@@ -25,7 +21,7 @@ import cn.jzvd.JZVideoPlayerStandard;
  * Created by asus on 2018/8/16.
  */
 
-public class MyFragment extends Fragment {
+public class MyUserVideoFragment extends Fragment {
 
     JZVideoPlayerStandard jzVideoPlayerStandard;
     private TextView adjshipin;
@@ -43,8 +39,11 @@ public class MyFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle arguments = getArguments();
-        int courseid = arguments.getInt("courseid");
-        RequestUtil.requestSuCaiVideo((Activity) getContext(), courseid,jzVideoPlayerStandard);
+        int usercourseid = arguments.getInt("usercourseid",0);
+        if (usercourseid!=0){
+            RequestUtil.requestSuCaiVideo((Activity) getContext(), usercourseid,jzVideoPlayerStandard);
+        }
+        Log.i("===usercourseid",usercourseid+"");
     }
 
     @Override

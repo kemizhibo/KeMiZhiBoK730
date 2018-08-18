@@ -2,53 +2,69 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:padding="10dp">
+    >
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/piconline"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/online" />
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/online" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/makeadj"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_toLeftOf="@+id/picxiugai"
         android:layout_toRightOf="@+id/piconline"
         android:text="这是文件名称（在线制作）" />
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/picxiugai"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/mcheckonline"
-        android:src="@drawable/xiugai" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
+        android:layout_toLeftOf="@+id/mcheckonline">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/xiugai" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/mcheckonline"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/picdelete"
         android:paddingRight="20dp"
         android:text="修改" />
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/picdelete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/mdeleteonline"
-        android:src="@drawable/delete" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@+id/mdeleteonline">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+            android:src="@drawable/delete" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/mdeleteonline"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

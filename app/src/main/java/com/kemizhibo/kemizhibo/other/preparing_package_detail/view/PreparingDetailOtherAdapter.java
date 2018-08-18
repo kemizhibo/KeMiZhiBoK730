@@ -83,13 +83,14 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         // 获取当前条目的类型
         int itemViewType = getItemViewType(position);
         MyViewHolder holder;
-        // PreparingPackageDetailBean.ContentBean.MaterialBean materialBean = material.get(position);
         if (convertView == null) {
             holder = new MyViewHolder();
             switch (itemViewType) {
                 case TYPE_excel://表格
                     convertView = View.inflate(context, R.layout.wendang_item, null);
                     holder.mwendang = (TextView) convertView.findViewById(R.id.mword);
+                    holder.mcheck = (TextView) convertView.findViewById(R.id.mcheck);
+                    holder.mdown = (TextView) convertView.findViewById(R.id.mdown);
                     convertView.setTag(holder);
                     break;
                 case TYPE_PPT://ppt
@@ -111,7 +112,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
         } else if (itemViewType == TYPE_excel) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, itemViewType, moduleId, 1);
+            RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);
         }
         return convertView;
     }

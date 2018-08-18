@@ -42,11 +42,8 @@ public class MyPicFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle arguments = getArguments();
-        String url = arguments.getString("picurl");
         int moduleId = arguments.getInt("moduleId");
         RequestUtil.requestSuCaiPic((Activity) getContext(), moduleId,6,simpleDraweeView);
-
-
     }
 
     @Override

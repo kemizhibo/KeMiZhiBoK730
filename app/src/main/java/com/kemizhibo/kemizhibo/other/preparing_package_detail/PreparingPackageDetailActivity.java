@@ -49,9 +49,9 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
     @BindView(R.id.list_view_one)
-    ListView listViewone;
+    MyListView listViewone;
     @BindView(R.id.list_view_su)
-    ListView listViewsu;
+    MyListView listViewsu;
     @BindView(R.id.list_view_shou)
     ListView listViewshou;
     @BindView(R.id.list_view_qi)
@@ -125,13 +125,13 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     PreparingDetailOneAdapter preparingDetailOneAdapter = new PreparingDetailOneAdapter(PreparingPackageDetailActivity.this, bean.getContent().getOneKey());
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
-                    Log.i("---getMaterial-", bean.getContent().getMaterial().size() + "");
-                    PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(),getSupportFragmentManager());
+                    Log.i("---getMaterial-", bean.getContent().getAppMaterial().getKemiPic().size() + "");
+                    PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
                     listViewsu.setAdapter(preparingDetailAdapter);
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
-                    List<PreparingPackageDetailBean.ContentBean.DataBean> other= bean.getContent().getOther();
+                    List<PreparingPackageDetailBean.ContentBean.DataBean> other = bean.getContent().getOther();
                     if (other.size() > 0) {
                         mnone.setVisibility(View.GONE);
                         listViewqi.setAdapter(new PreparingDetailOtherAdapter(PreparingPackageDetailActivity.this, other));

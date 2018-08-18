@@ -11,8 +11,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:src="@drawable/ppt" />
     </RelativeLayout>
 
@@ -39,7 +38,7 @@
 
     <TextView
         android:id="@+id/mcheckppt"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/logodown"
@@ -54,14 +53,14 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@drawable/download" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/mdownppt"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

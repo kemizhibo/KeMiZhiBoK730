@@ -22,6 +22,7 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyViewpagerAd
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.SampleObserver;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.WordShowActivity;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public class RequestUtil {
         });
     }
 
-    public static void requestDoc(final Activity context, final TextView mwendang, final TextView mdown, final TextView mcheck, final int itemViewType, int moduleId, final int type) {
+    public static void requestDoc(final Activity context, final TextView mwendang, final TextView mdown, final TextView mcheck, final int itemViewType, int moduleId) {
         Map map = new HashMap();
         Log.i("-moduleId---", moduleId + "");
         map.put("moduleId", String.valueOf(moduleId));
@@ -161,6 +162,7 @@ public class RequestUtil {
                                 @Override
                                 public void onClick(View v) {
                                     if (url != null) {
+                                        ToastUtils.showToast("开始下载");
                                         getDocMessage(context, bean.getContent().getDocId(), mdown, 1);
                                     }
                                 }

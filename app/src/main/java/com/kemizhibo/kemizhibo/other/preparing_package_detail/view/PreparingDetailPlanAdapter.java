@@ -43,14 +43,14 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
 
     //定义样式常量，注意常量值要从0开始
     private static final int TYPE_PPT = 0;//ppt
-    private int  courseId;
+    private int courseId;
     private int moduleId;
     private static final int TYPE_MAKE = 1;//在线制作
 
     public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> planBeanList, Handler mHandler) {
         this.context = context;
         this.planBeanList = planBeanList;
-        this.mHandler=mHandler;
+        this.mHandler = mHandler;
     }
 
 
@@ -97,14 +97,14 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                 case TYPE_PPT://ppt
                     convertView = View.inflate(context, R.layout.ppt_plan_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
-                    holder.mdeleteppt = (TextView) convertView.findViewById(R.id.mdeleteppt);
+                    holder.mdeleteppt = convertView.findViewById(R.id.mdeleteppt);
                     convertView.setTag(holder);
                     break;
                 case TYPE_MAKE://在线制作
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
-                    holder.mdeleteonline = (TextView) convertView.findViewById(R.id.mdeleteonline);
-                    holder.mcheckonline = (TextView) convertView.findViewById(R.id.mcheckonline);
+                    holder.mdeleteonline = convertView.findViewById(R.id.mdeleteonline);
+                    holder.mcheckonline = convertView.findViewById(R.id.mcheckonline);
                     convertView.setTag(holder);
                     break;
                 default:
@@ -122,8 +122,9 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     deletePPT(3, position);
                 }
             });
-            RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId,3);
-        } if (itemViewType == TYPE_MAKE) {
+            RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId, 3);
+        }
+        if (itemViewType == TYPE_MAKE) {
             moduleId = planBeanList.get(position).getModuleId();
             holder.mmake.setText(planBeanList.get(position).getDocName());
             holder.mdeleteonline.setOnClickListener(new View.OnClickListener() {

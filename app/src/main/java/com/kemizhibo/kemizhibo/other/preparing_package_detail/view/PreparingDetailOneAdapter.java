@@ -71,7 +71,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.i("-----", oneKeyBeanList.get(position).getDocType() + "");
+        Log.i("---oneKeyBeanList--", oneKeyBeanList.get(position).getDocType() + "");
         if (oneKeyBeanList.get(position).getDocType() == 1) {
             return TYPE_WENDANG;
         } else if (oneKeyBeanList.get(position).getDocType() == 3) {
@@ -80,9 +80,11 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             return TYPE_SHIPIN;
         } else if (oneKeyBeanList.get(position).getDocType() == 7) {
             return TYPE_MAKE;
+        }else if (oneKeyBeanList.get(position).getDocType() == 6) {
+            return TYPE_PUPIAN;
         }
 
-        return TYPE_PUPIAN;
+        return 10;
     }
 
 
@@ -98,7 +100,9 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             switch (itemViewType) {
                 case TYPE_WENDANG://文档
                     convertView = View.inflate(context, R.layout.wendang_item, null);
-                    mwendang = (TextView) convertView.findViewById(R.id.mword);
+                    holder.mwendang = (TextView) convertView.findViewById(R.id.mword);
+                    holder.mcheck = (TextView) convertView.findViewById(R.id.mcheck);
+                    holder.mdown = (TextView) convertView.findViewById(R.id.mdown);
                     convertView.setTag(holder);
                     break;
                 case TYPE_PPT://ppt
@@ -138,10 +142,10 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             RequestUtil.requestVideo((Activity) context, position, holder, courseId);
         } else if (itemViewType == TYPE_PPT) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestPPT((Activity) context, holder.mppt,holder. mcheckppt,holder. mdownppt, itemViewType, moduleId);
+            RequestUtil.requestPPT((Activity) context, holder.mppt, holder.mcheckppt, holder.mdownppt, 3, moduleId);
         } else if (itemViewType == TYPE_WENDANG) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, itemViewType, moduleId, TYPE_WENDANG);
+            RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
            /* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);
