@@ -2,8 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="30dp">
+    <RelativeLayout
+        android:id="@+id/logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ppt" />
+    </RelativeLayout>
     <TextView
+        android:layout_toRightOf="@+id/logo"
         android:layout_toLeftOf="@+id/picdelete"
         android:layout_centerVertical="true"
         android:id="@+id/mppt"
@@ -11,20 +22,24 @@
         android:layout_height="wrap_content"
         android:text="这是上传的PPT版文档" />
 
-    <ImageView
-        android:id="@+id/picdelete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/mdeleteppt"
-        android:src="@drawable/delete" />
+    <RelativeLayout
+        android:id="@+id/logodown"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@+id/mdeleteppt">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/delete" />
+    </RelativeLayout>
 
     <TextView
         android:layout_centerVertical="true"
         android:id="@+id/mdeleteppt"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:paddingRight="20dp"
         android:text="删除" />
 </RelativeLayout>

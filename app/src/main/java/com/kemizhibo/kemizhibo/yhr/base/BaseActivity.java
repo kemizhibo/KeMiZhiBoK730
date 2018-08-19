@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
@@ -62,6 +63,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseVi
         setContentView(getLayoutId());
         ButterKnife.bind(this) ;
         initData();
+        MyApplication.verifyStoragePermissions(this);
     }
     /**
      * 布局ID

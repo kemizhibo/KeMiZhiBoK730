@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,12 +10,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 
 import butterknife.BindView;
 import cn.jzvd.JZVideoPlayer;
@@ -28,6 +31,9 @@ public class MyPicFragment extends Fragment {
 
     SimpleDraweeView simpleDraweeView;
     private TextView adjPic;
+    private Button btn;
+    private int moduleId;
+    private int courseid;
 
     @Nullable
     @Override
@@ -35,6 +41,7 @@ public class MyPicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_picitem, container, false);
         simpleDraweeView = view.findViewById(R.id.simpledraweeview_pic);
         adjPic = view.findViewById(R.id.adj);
+        btn = view.findViewById(R.id.btn);
         return view;
     }
 
@@ -42,8 +49,19 @@ public class MyPicFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle arguments = getArguments();
-        int moduleId = arguments.getInt("moduleId");
+        moduleId = arguments.getInt("moduleid");
+        courseid = arguments.getInt("courseid");
         RequestUtil.requestSuCaiPic((Activity) getContext(), moduleId,6,simpleDraweeView);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(getContext(), CommonWebActivity.class);
+                intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
+                intent.putExtra(Constants.COURSE_ID, courseid);
+                intent.putExtra(Constants.MODULE_ID, moduleId);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -55,8 +55,12 @@ public class Constants {
     public static final String PREPARING_PACKAGE_DOC_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/previewDoc";
     public static final String PREPARING_PACKAGE_DEL_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/delDoc";
     public static final String PREPARING_PACKAGE_DOCMESSAGE_URL = "http://39.155.221.165:8080/kemiapi/upload/getBydocId";
+    public static final String PREPARING_PACKAGE_ADDCLASS_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/addPlan";
     public static final String VIDEOTYPE = "videoType";
     public static final String DOCTYPE = "docType";
+    public static final String DOCNAME= "docName";
+    public static final String DATASOURCE= "dataSource";
+    public static final String CONTENTIDS= "contentIds";
     public static final String ENCRYPTION = "encryption";
     public static final String VIDEOCLARITY = "videoClarity";
 

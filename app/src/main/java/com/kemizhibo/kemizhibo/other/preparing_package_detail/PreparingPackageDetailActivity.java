@@ -63,7 +63,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     private PreparingPackageDetailPresenter detailPresenter;
     private int courseId;
     Handler mHandler = new Handler();
-    private int mlastPosition;
+    private PreparingDetailAdapter preparingDetailAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -77,7 +77,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
         courseId = 2832;
-        detailPresenter.getPreparingPackageDetailData();
+       // detailPresenter.getPreparingPackageDetailData();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
@@ -126,8 +126,12 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
                     Log.i("---getMaterial-", bean.getContent().getAppMaterial().getKemiPic().size() + "");
-                    PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
-                    listViewsu.setAdapter(preparingDetailAdapter);
+                    if (null==preparingDetailAdapter){
+                        preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
+                        listViewsu.setAdapter(preparingDetailAdapter);
+                    }else {
+                        preparingDetailAdapter.notifyDataSetChanged();
+                    }
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
@@ -163,5 +167,10 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         JZVideoPlayer.releaseAllVideos();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        detailPresenter.getPreparingPackageDetailData();
+    }
 }
 

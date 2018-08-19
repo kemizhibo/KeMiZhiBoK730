@@ -14,6 +14,7 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
 import java.util.List;
 
@@ -78,11 +79,11 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Log.i("---otherBeanListsize--", otherBeanList.size() + "");
         // 获取当前条目的类型
         int itemViewType = getItemViewType(position);
-        MyViewHolder holder;
+        final MyViewHolder holder;
         if (convertView == null) {
             holder = new MyViewHolder();
             switch (itemViewType) {
@@ -97,7 +98,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     convertView = View.inflate(context, R.layout.ppt_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mcheckppt = (TextView) convertView.findViewById(R.id.mcheckppt);
-                    holder.mdownppt = (TextView) convertView.findViewById(R.id.mdownppt);
+                    holder.mdownppt1 = (TextView) convertView.findViewById(R.id.mdownppt);
                     convertView.setTag(holder);
                     break;
                 default:
@@ -110,6 +111,16 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         if (itemViewType == TYPE_PPT) {
             moduleId = otherBeanList.get(position).getModuleId();
             RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
+            holder.mdownppt1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("----====finalCourseId",otherBeanList.get(position).getCourseId()+"");
+                    Log.i("----====finalDocName",otherBeanList.get(position).getDocName()+"");
+                    Log.i("----====finalContentIds",otherBeanList.get(position).getContentIds()+"");
+                    ToastUtils.showToast("开始加入授课");
+                    RequestUtil.requestSuCaiAdd((Activity)context, otherBeanList.get(position).getCourseId(), otherBeanList.get(position).getDocName(),3,otherBeanList.get(position).getContentIds(),holder.mdownppt1);
+                }
+            });
         } else if (itemViewType == TYPE_excel) {
             moduleId = otherBeanList.get(position).getModuleId();
             RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import com.kemizhibo.kemizhibo.other.config.TokenInterceptor;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
@@ -36,6 +37,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public String getToken(){
+        new TokenInterceptor(mActivity).getNewToken();
         String token = PreferencesUtils.getLoginInfo("token", mActivity);
         return token;
     }

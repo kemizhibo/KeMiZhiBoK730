@@ -3,10 +3,6 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.bean;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +13,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyFragment;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyViewpagerAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.SampleObserver;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.WordShowActivity;
@@ -80,13 +75,6 @@ public class RequestUtil {
                                     getDocMessage(context, bean.getContent().getDocId(), mcheck, 3);
                                 }
                             });
-                            mdownppt.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    getDocMessage(context, bean.getContent().getDocId(), mdownppt, 3);
-
-                                }
-                            });
 
 
                         }
@@ -97,7 +85,8 @@ public class RequestUtil {
             }
         });
     }
-    public static void requestOtherPPT(final Activity context, final TextView mppt, int moduleId,final int doctype) {
+
+    public static void requestOtherPPT(final Activity context, final TextView mppt, int moduleId, final int doctype) {
         Map map = new HashMap();
         map.put("moduleId", String.valueOf(moduleId));
         map.put(Constants.DOCTYPE, String.valueOf(doctype));
@@ -154,9 +143,9 @@ public class RequestUtil {
                                 @Override
                                 public void onClick(View v) {
                                     ToastUtils.showToast("开始下载");
-                                 //   if (url != null) {
-                                        getDocMessage(context, bean.getContent().getDocId(), mdown, itemViewType);
-                                  //  }
+                                    //   if (url != null) {
+                                    getDocMessage(context, bean.getContent().getDocId(), mdown, itemViewType);
+                                    //  }
                                 }
                             });
                             mcheck.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +195,7 @@ public class RequestUtil {
                         docs = "doc";
                         id = holder;
                         type = 2;
-                    }else if (i == 3) {
+                    } else if (i == 3) {
                         docs = "pptx";
                         id = holder;
                         type = 3;
@@ -368,18 +357,50 @@ public class RequestUtil {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final PreparingBean bean = GsonUtils.getBean(response.body().string(), PreparingBean.class);
-                 context.runOnUiThread(new Runnable() {
-                     @Override
-                     public void run() {
-                         jzVideoPlayerStandard.setUp(Constants.TEST_VIDEO_URL
-                                 , 1, "");
-                         jzVideoPlayerStandard.thumbImageView.setImageResource(R.drawable.ic_launcher);
-                     }
-                 });
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        jzVideoPlayerStandard.setUp(Constants.TEST_VIDEO_URL
+                                , 1, "");
+                        jzVideoPlayerStandard.thumbImageView.setImageResource(R.drawable.ic_launcher);
+                    }
+                });
 
             }
         });
     }
 
 
+    public static void requestSuCaiAdd(final Activity context, int finalCourseId, String finalDocName, int i, String contentIds, final TextView mdownppt1) {
+        Map map = new HashMap();
+        map.put(Constants.COURSE_ID, String.valueOf(finalCourseId));
+        map.put(Constants.DOCNAME, finalDocName);
+        map.put(Constants.DOCTYPE, String.valueOf(i));
+        map.put(Constants.DATASOURCE, "1");
+        map.put(Constants.CONTENTIDS, contentIds);
+        OkHttpRequest.doPost(context, Constants.PREPARING_PACKAGE_ADDCLASS_URL, map, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+                Log.i("----====", string);
+                final PrviewAddBean bean = GsonUtils.getBean(string, PrviewAddBean.class);
+                if (0 == bean.getCode()) {
+                    Log.i("----====", "success");
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showToast("添加成功");
+                            mdownppt1.setText("已加入授课");
+                        }
+                    });
+                }
+
+            }
+        });
+    }
 }

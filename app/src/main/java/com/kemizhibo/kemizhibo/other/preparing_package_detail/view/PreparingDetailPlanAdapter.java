@@ -2,6 +2,7 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPPTB
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -123,14 +125,23 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                 }
             });
             RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId, 3);
-        }
-        if (itemViewType == TYPE_MAKE) {
+        }else if (itemViewType == TYPE_MAKE) {
             moduleId = planBeanList.get(position).getModuleId();
+            final int courseId = planBeanList.get(position).getCourseId();
             holder.mmake.setText(planBeanList.get(position).getDocName());
             holder.mdeleteonline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     deletePPT(7, position);
+                }
+            });
+            holder.mcheckonline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent= new Intent(context, CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
+                    intent.putExtra(Constants.COURSE_ID,courseId);
+                    context.startActivity(intent);
                 }
             });
         }
