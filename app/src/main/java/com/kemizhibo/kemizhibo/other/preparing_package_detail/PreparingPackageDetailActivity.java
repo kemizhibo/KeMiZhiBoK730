@@ -126,12 +126,12 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
                     Log.i("---getMaterial-", bean.getContent().getAppMaterial().getKemiPic().size() + "");
-                    if (null==preparingDetailAdapter){
+                    //if (null==preparingDetailAdapter){
                         preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
                         listViewsu.setAdapter(preparingDetailAdapter);
-                    }else {
+                    /*}else {
                         preparingDetailAdapter.notifyDataSetChanged();
-                    }
+                    }*/
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);

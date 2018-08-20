@@ -59,7 +59,7 @@ public class OkHttpRequest {
                             .connectTimeout(15, TimeUnit.SECONDS)//连接超时
                             .writeTimeout(20, TimeUnit.SECONDS)//写入超时
                             .readTimeout(20, TimeUnit.SECONDS)//读取超时
-                           // .addInterceptor(new TokenInterceptor(context))
+                            .addInterceptor(new TokenInterceptor(context))
                             .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize))//设置缓存
                             .build();
                 }

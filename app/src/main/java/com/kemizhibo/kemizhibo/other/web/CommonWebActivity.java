@@ -59,7 +59,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     url = Constants.H5_MAKE.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.COURSE_ID, 0)));
                     int moduleId = intent.getIntExtra(Constants.MODULE_ID, 0);
                     if(0 != moduleId){
-                        url = url.concat("?module=" + moduleId);
+                        url = url.concat("?moduleId=" + moduleId);
                     }
                     break;
                 case PREVIEW:
@@ -219,8 +219,8 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()){
-            webView.goBack();
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            webView.loadUrl("javascript:onBackPressed()");
             return true;
         }
         return super.onKeyDown(keyCode, event);

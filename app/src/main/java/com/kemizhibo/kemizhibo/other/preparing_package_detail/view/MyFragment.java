@@ -35,15 +35,25 @@ public class MyFragment extends Fragment {
     private Button btn;
     private int courseid;
     private int moduleid;
+    private View convertView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shipinitem, container, false);
-        jzVideoPlayerStandard = view.findViewById(R.id.jcVideoPlayer_video);
-        adjshipin = view.findViewById(R.id.adj);
-        btn = view.findViewById(R.id.btn);
-        return view;
+        if(convertView != null){
+            ViewGroup parent = (ViewGroup) convertView.getParent();
+            if (parent != null) {
+                parent.removeView(convertView);
+            }
+            return convertView;
+        }else{
+            convertView = inflater.inflate(R.layout.fragment_shipinitem, container, false);
+            jzVideoPlayerStandard = convertView.findViewById(R.id.jcVideoPlayer_video);
+            adjshipin = convertView.findViewById(R.id.adj);
+            btn = convertView.findViewById(R.id.btn);
+        }
+
+        return convertView;
     }
 
     @Override

@@ -166,12 +166,12 @@ public class PreparingDetailAdapter extends BaseAdapter {
             case 3://文档
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiWord = material.getKemiWord();
                 if (null != kemiWord && kemiWord.size() > 0) {
-                    View view3 = View.inflate(context, R.layout.wendang_item, null);
-                    TextView mwendang = (TextView) view3.findViewById(R.id.mword);
-                    TextView mdown = (TextView) view3.findViewById(R.id.mdown);
-                    TextView mcheck = (TextView) view3.findViewById(R.id.mcheck);
-                    mlinearLayout.addView(view3);
                     for (PreparingPackageDetailBean.ContentBean.DataBean kwd : kemiWord) {
+                        View view3 = View.inflate(context, R.layout.wendang_item, null);
+                        TextView mwendang = (TextView) view3.findViewById(R.id.mword);
+                        TextView mdown = (TextView) view3.findViewById(R.id.mdown);
+                        TextView mcheck = (TextView) view3.findViewById(R.id.mcheck);
+                        mlinearLayout.addView(view3);
                         int moduleId1 = kwd.getModuleId();
                         RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, 1, moduleId1);
                     }
