@@ -24,6 +24,7 @@ import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mdownppt;
 import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mlinearLayout;
 
 /**
@@ -92,23 +93,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 ViewPager mviewPager = (ViewPager) view.findViewById(R.id.kemi_shipinviewpager);
                 mlinearLayout.addView(view);
                 kemiVideo = material.getKemiVideo();
-               /* if (null == myInnerAdapter) {
-                    myInnerAdapter = new MyInnerAdapter(supportFragmentManager, kemiVideo);
-                    mviewPager.setAdapter(myInnerAdapter);
-                } else {
-                    myInnerAdapter.notifyDataSetChanged();
-                }*/
                 mviewPager.setAdapter(new FragmentPagerAdapter(supportFragmentManager) {
                     @Override
                     public Fragment getItem(int position) {
                         Fragment myFragment = new MyFragment();
                         Bundle bundle = new Bundle();
-                        Log.i("====加载视频====","加载视频");
-                        for (PreparingPackageDetailBean.ContentBean.DataBean dataBean: kemiVideo) {
-                            bundle.putInt("courseid", dataBean.getCourseId());
-                            bundle.putInt("moduleid", dataBean.getModuleId());
-                            myFragment.setArguments(bundle);
-                        }
+                        Log.i("====加载视频====", "加载视频");
+                        bundle.putInt("courseid", kemiVideo.get(position).getCourseId());
+                        bundle.putInt("moduleid", kemiVideo.get(position).getModuleId());
+                        myFragment.setArguments(bundle);
                         return myFragment;
                     }
 
@@ -137,11 +130,9 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     public Fragment getItem(int position) {
                         Fragment myFragment = new MyPicFragment();
                         Bundle bundle = new Bundle();
-                        for (PreparingPackageDetailBean.ContentBean.DataBean dataBean : kemiPic) {
-                            bundle.putInt("courseid", dataBean.getCourseId());
-                            bundle.putInt("moduleid", dataBean.getModuleId());
-                            myFragment.setArguments(bundle);
-                        }
+                        bundle.putInt("courseid", kemiPic.get(position).getCourseId());
+                        bundle.putInt("moduleid", kemiPic.get(position).getModuleId());
+                        myFragment.setArguments(bundle);
                         return myFragment;
 
                     }
@@ -150,36 +141,27 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 break;
             case 2://KEMIppt
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiPpt = material.getKemiPpt();
-                int courseId = 0;
-                int moduleId;
-                String docName = null;
-                String contentIds=null;
-                TextView mdownppt = null;
-                for (PreparingPackageDetailBean.ContentBean.DataBean kpt : kemiPpt) {
-                    View view2 = View.inflate(context, R.layout.ppt_item, null);
-                    TextView mppt = (TextView) view2.findViewById(R.id.mppt);
-                    TextView mcheckppt = (TextView) view2.findViewById(R.id.mcheckppt);
-                    mdownppt = (TextView) view2.findViewById(R.id.mdownppt);
-                    mlinearLayout.addView(view2);
-                    courseId = kpt.getCourseId();
-                    moduleId = kpt.getModuleId();
-                     docName= kpt.getDocName();
-                     contentIds = kpt.getContentIds();
-                    RequestUtil.requestPPT((Activity) context, mppt, mcheckppt, mdownppt, 3, moduleId);
-                }
-                final int finalCourseId = courseId;
-                final String finalDocName = docName;
-                final String finalContentIds = contentIds;
-                final TextView finalMdownppt = mdownppt;
-                mdownppt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.i("----====finalCourseId",finalCourseId+"");
-                        Log.i("----====finalDocName",finalDocName+"");
-                        Log.i("----====finalContentIds",finalContentIds+"");
-                        RequestUtil.requestSuCaiAdd((Activity)context, finalCourseId, finalDocName,3, finalContentIds, finalMdownppt);
+                if (null != kemiPpt && kemiPpt.size() > 0) {
+                    for (PreparingPackageDetailBean.ContentBean.DataBean kpt : kemiPpt) {
+                        View view2 = View.inflate(context, R.layout.ppt_item, null);
+                        TextView mppt = (TextView) view2.findViewById(R.id.mppt);
+                        TextView mcheckppt = (TextView) view2.findViewById(R.id.mcheckppt);
+                        final TextView mdownppt = (TextView) view2.findViewById(R.id.mdownppt);
+                        mlinearLayout.addView(view2);
+                        final int courseId = kpt.getCourseId();
+                        int moduleId = kpt.getModuleId();
+                        final String docName = kpt.getDocName();
+                        final String contentIds = kpt.getContentIds();
+                        RequestUtil.requestPPT((Activity) context, mppt, mcheckppt, mdownppt, 3, moduleId);
+                        mdownppt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                RequestUtil.requestSuCaiAdd((Activity) context, courseId, docName, 3, contentIds, mdownppt);
+                            }
+                        });
                     }
-                });
+                }
+
                 break;
             case 3://文档
                 View view3 = View.inflate(context, R.layout.wendang_item, null);
@@ -189,10 +171,13 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 mlinearLayout.addView(view3);
 
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiWord = material.getKemiWord();
-                for (PreparingPackageDetailBean.ContentBean.DataBean kwd : kemiWord) {
-                    int moduleId1 = kwd.getModuleId();
-                    RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, 1, moduleId1);
+                if (null != kemiWord && kemiWord.size() > 0) {
+                    for (PreparingPackageDetailBean.ContentBean.DataBean kwd : kemiWord) {
+                        int moduleId1 = kwd.getModuleId();
+                        RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, 1, moduleId1);
+                    }
                 }
+
 
                 break;
             case 4://表格
@@ -202,10 +187,13 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 TextView mexcalcheck = (TextView) view4.findViewById(R.id.mcheck);
                 mlinearLayout.addView(view4);
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiExcel = material.getKemiExcel();
-                for (PreparingPackageDetailBean.ContentBean.DataBean kel : kemiExcel) {
-                    int moduleId2 = kel.getModuleId();
-                    RequestUtil.requestDoc((Activity) context, mexcal, mexcaldown, mexcalcheck, 2, moduleId2);
+                if (null != kemiExcel && kemiExcel.size() > 0) {
+                    for (PreparingPackageDetailBean.ContentBean.DataBean kel : kemiExcel) {
+                        int moduleId2 = kel.getModuleId();
+                        RequestUtil.requestDoc((Activity) context, mexcal, mexcaldown, mexcalcheck, 2, moduleId2);
+                    }
                 }
+
                 break;
             case 5://用户视频
                 View view5 = View.inflate(context, R.layout.sucai_shipin_item, null);
@@ -218,12 +206,9 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     public Fragment getItem(int position) {
                         MyUserVideoFragment myUserVideoFragment = new MyUserVideoFragment();
                         Bundle bundle = new Bundle();
-                        for (PreparingPackageDetailBean.ContentBean.DataBean dataBean : userVideo) {
-                            bundle.putInt("usermoduleid", dataBean.getModuleId());
-                            bundle.putInt("usercourseid", dataBean.getCourseId());
-                            myUserVideoFragment.setArguments(bundle);
-                        }
-
+                        bundle.putInt("usermoduleid", userVideo.get(position).getModuleId());
+                        bundle.putInt("usercourseid", userVideo.get(position).getCourseId());
+                        myUserVideoFragment.setArguments(bundle);
                         return myUserVideoFragment;
                     }
 
@@ -249,12 +234,9 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     public Fragment getItem(int position) {
                         Fragment myFragment = new MyUserPicFragment();
                         Bundle bundle = new Bundle();
-                        for (PreparingPackageDetailBean.ContentBean.DataBean dataBean : userPic) {
-                            bundle.putInt("courseid", dataBean.getCourseId());
-                            bundle.putInt("moduleid", dataBean.getModuleId());
-                            myFragment.setArguments(bundle);
-                        }
-
+                        bundle.putInt("courseid", userPic.get(position).getCourseId());
+                        bundle.putInt("moduleid", userPic.get(position).getModuleId());
+                        myFragment.setArguments(bundle);
                         return myFragment;
 
                     }
@@ -263,58 +245,61 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 break;
             case 7://用户ppt
                 List<PreparingPackageDetailBean.ContentBean.DataBean> userPpt = material.getUserPpt();
-                int courseId1= 0;
-                int moduleId1;
-                String docName1 = null;
-                String contentIds1=null;
                 TextView mdownppt1 = null;
+                final TextView finalMdownppt1 = mdownppt1;
+                if (null != userPpt && userPpt.size() > 0) {
+
+                }
                 for (PreparingPackageDetailBean.ContentBean.DataBean upt : userPpt) {
                     View view7 = View.inflate(context, R.layout.ppt_item, null);
                     TextView mPpt = (TextView) view7.findViewById(R.id.mppt);
                     TextView mCheckppt = (TextView) view7.findViewById(R.id.mcheckppt);
                     mdownppt1 = (TextView) view7.findViewById(R.id.mdownppt);
                     mlinearLayout.addView(view7);
-                    courseId1 = upt.getCourseId();
-                    moduleId1 = upt.getModuleId();
-                    docName1= upt.getDocName();
-                    contentIds1 = upt.getContentIds();
-                    moduleId1 = upt.getModuleId();
+                    final int courseId1 = upt.getCourseId();
+                    final int moduleId1 = upt.getModuleId();
+                    final String docName1 = upt.getDocName();
+                    final String contentIds1 = upt.getContentIds();
                     RequestUtil.requestPPT((Activity) context, mPpt, mCheckppt, mdownppt1, 3, moduleId1);
+                    mdownppt1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            RequestUtil.requestSuCaiAdd((Activity) context, courseId1, docName1, 3, contentIds1, finalMdownppt1);
+                        }
+                    });
                 }
-                final int finalCourseId1 = courseId1;
-                final String finalDocName1 = docName1;
-                final String finalContentIds1 = contentIds1;
-                final TextView finalMdownppt1 = mdownppt1;
-                mdownppt1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RequestUtil.requestSuCaiAdd((Activity)context, finalCourseId1, finalDocName1,3, finalContentIds1, finalMdownppt1);
-                    }
-                });
+
+
                 break;
             case 8://用户文档
                 List<PreparingPackageDetailBean.ContentBean.DataBean> userWord = material.getUserWord();
-                for (PreparingPackageDetailBean.ContentBean.DataBean uwd : userWord) {
-                    View view8 = View.inflate(context, R.layout.wendang_item, null);
-                    TextView muserwendang = (TextView) view8.findViewById(R.id.mword);
-                    TextView muserdown = (TextView) view8.findViewById(R.id.mdown);
-                    TextView musercheck = (TextView) view8.findViewById(R.id.mcheck);
-                    mlinearLayout.addView(view8);
-                    int moduleId3 = uwd.getModuleId();
-                    RequestUtil.requestDoc((Activity) context, muserwendang, muserdown, musercheck, 1, moduleId3);
+                if (null != userWord && userWord.size() > 0) {
+                    for (PreparingPackageDetailBean.ContentBean.DataBean uwd : userWord) {
+                        View view8 = View.inflate(context, R.layout.wendang_item, null);
+                        TextView muserwendang = (TextView) view8.findViewById(R.id.mword);
+                        TextView muserdown = (TextView) view8.findViewById(R.id.mdown);
+                        TextView musercheck = (TextView) view8.findViewById(R.id.mcheck);
+                        mlinearLayout.addView(view8);
+                        int moduleId3 = uwd.getModuleId();
+                        RequestUtil.requestDoc((Activity) context, muserwendang, muserdown, musercheck, 1, moduleId3);
+                    }
                 }
+
                 break;
             case 9://用户表格
                 List<PreparingPackageDetailBean.ContentBean.DataBean> userExcel = material.getUserExcel();
-                for (PreparingPackageDetailBean.ContentBean.DataBean uel : userExcel) {
-                    View view9 = View.inflate(context, R.layout.wendang_item, null);
-                    TextView muserexcalword = (TextView) view9.findViewById(R.id.mword);
-                    TextView muserexcalmdown = (TextView) view9.findViewById(R.id.mdown);
-                    TextView muserexcalcheck = (TextView) view9.findViewById(R.id.mcheck);
-                    mlinearLayout.addView(view9);
-                    int moduleId4 = uel.getModuleId();
-                    RequestUtil.requestDoc((Activity) context, muserexcalword, muserexcalmdown, muserexcalcheck, 2, moduleId4);
+                if (null != userExcel && userExcel.size() > 0) {
+                    for (PreparingPackageDetailBean.ContentBean.DataBean uel : userExcel) {
+                        View view9 = View.inflate(context, R.layout.wendang_item, null);
+                        TextView muserexcalword = (TextView) view9.findViewById(R.id.mword);
+                        TextView muserexcalmdown = (TextView) view9.findViewById(R.id.mdown);
+                        TextView muserexcalcheck = (TextView) view9.findViewById(R.id.mcheck);
+                        mlinearLayout.addView(view9);
+                        int moduleId4 = uel.getModuleId();
+                        RequestUtil.requestDoc((Activity) context, muserexcalword, muserexcalmdown, muserexcalcheck, 2, moduleId4);
+                    }
                 }
+
                 break;
             default:
                 break;
