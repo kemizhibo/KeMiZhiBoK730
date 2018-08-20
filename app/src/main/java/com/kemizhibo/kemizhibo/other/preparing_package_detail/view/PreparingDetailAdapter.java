@@ -164,14 +164,13 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
                 break;
             case 3://文档
-                View view3 = View.inflate(context, R.layout.wendang_item, null);
-                TextView mwendang = (TextView) view3.findViewById(R.id.mword);
-                TextView mdown = (TextView) view3.findViewById(R.id.mdown);
-                TextView mcheck = (TextView) view3.findViewById(R.id.mcheck);
-                mlinearLayout.addView(view3);
-
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiWord = material.getKemiWord();
                 if (null != kemiWord && kemiWord.size() > 0) {
+                    View view3 = View.inflate(context, R.layout.wendang_item, null);
+                    TextView mwendang = (TextView) view3.findViewById(R.id.mword);
+                    TextView mdown = (TextView) view3.findViewById(R.id.mdown);
+                    TextView mcheck = (TextView) view3.findViewById(R.id.mcheck);
+                    mlinearLayout.addView(view3);
                     for (PreparingPackageDetailBean.ContentBean.DataBean kwd : kemiWord) {
                         int moduleId1 = kwd.getModuleId();
                         RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, 1, moduleId1);
@@ -181,14 +180,14 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
                 break;
             case 4://表格
-                View view4 = View.inflate(context, R.layout.wendang_item, null);
-                TextView mexcal = (TextView) view4.findViewById(R.id.mword);
-                TextView mexcaldown = (TextView) view4.findViewById(R.id.mdown);
-                TextView mexcalcheck = (TextView) view4.findViewById(R.id.mcheck);
-                mlinearLayout.addView(view4);
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiExcel = material.getKemiExcel();
                 if (null != kemiExcel && kemiExcel.size() > 0) {
                     for (PreparingPackageDetailBean.ContentBean.DataBean kel : kemiExcel) {
+                        View view4 = View.inflate(context, R.layout.wendang_item, null);
+                        TextView mexcal = (TextView) view4.findViewById(R.id.mword);
+                        TextView mexcaldown = (TextView) view4.findViewById(R.id.mdown);
+                        TextView mexcalcheck = (TextView) view4.findViewById(R.id.mcheck);
+                        mlinearLayout.addView(view4);
                         int moduleId2 = kel.getModuleId();
                         RequestUtil.requestDoc((Activity) context, mexcal, mexcaldown, mexcalcheck, 2, moduleId2);
                     }
@@ -245,28 +244,26 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 break;
             case 7://用户ppt
                 List<PreparingPackageDetailBean.ContentBean.DataBean> userPpt = material.getUserPpt();
-                TextView mdownppt1 = null;
-                final TextView finalMdownppt1 = mdownppt1;
-                if (null != userPpt && userPpt.size() > 0) {
 
-                }
-                for (PreparingPackageDetailBean.ContentBean.DataBean upt : userPpt) {
-                    View view7 = View.inflate(context, R.layout.ppt_item, null);
-                    TextView mPpt = (TextView) view7.findViewById(R.id.mppt);
-                    TextView mCheckppt = (TextView) view7.findViewById(R.id.mcheckppt);
-                    mdownppt1 = (TextView) view7.findViewById(R.id.mdownppt);
-                    mlinearLayout.addView(view7);
-                    final int courseId1 = upt.getCourseId();
-                    final int moduleId1 = upt.getModuleId();
-                    final String docName1 = upt.getDocName();
-                    final String contentIds1 = upt.getContentIds();
-                    RequestUtil.requestPPT((Activity) context, mPpt, mCheckppt, mdownppt1, 3, moduleId1);
-                    mdownppt1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            RequestUtil.requestSuCaiAdd((Activity) context, courseId1, docName1, 3, contentIds1, finalMdownppt1);
-                        }
-                    });
+                if (null != userPpt && userPpt.size() > 0) {
+                    for (PreparingPackageDetailBean.ContentBean.DataBean upt : userPpt) {
+                        View view7 = View.inflate(context, R.layout.ppt_item, null);
+                        TextView mPpt = (TextView) view7.findViewById(R.id.mppt);
+                        TextView mCheckppt = (TextView) view7.findViewById(R.id.mcheckppt);
+                        final TextView mdownppt1 = (TextView) view7.findViewById(R.id.mdownppt);
+                        mlinearLayout.addView(view7);
+                        final int courseId1 = upt.getCourseId();
+                        final int moduleId1 = upt.getModuleId();
+                        final String docName1 = upt.getDocName();
+                        final String contentIds1 = upt.getContentIds();
+                        RequestUtil.requestPPT((Activity) context, mPpt, mCheckppt, mdownppt1, 3, moduleId1);
+                        mdownppt1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                RequestUtil.requestSuCaiAdd((Activity) context, courseId1, docName1, 3, contentIds1, mdownppt1);
+                            }
+                        });
+                    }
                 }
 
 
@@ -299,7 +296,6 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         RequestUtil.requestDoc((Activity) context, muserexcalword, muserexcalmdown, muserexcalcheck, 2, moduleId4);
                     }
                 }
-
                 break;
             default:
                 break;
