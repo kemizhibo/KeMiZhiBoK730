@@ -6,9 +6,7 @@ import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.SearchBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.SearchIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.resourcescenterpresenter.SearchPresenter;
-import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.FilterView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.SearchIView;
-
 import javax.inject.Inject;
 
 /**
@@ -25,7 +23,7 @@ public class SearchPresenterImpl extends BasePresenterImpl<SearchIView> implemen
     public SearchPresenterImpl() {}
 
     @Override
-    public void getSearchData(BaseActivity activity, String sellType, String currentPage, String pageSize, String courseName) {
+    public void getSearchData(BaseActivity activity,String token, String sellType, String currentPage, String pageSize, String courseName) {
         searchIteractor.loadSearchData(activity, new IGetDataDelegate<SearchBean>() {
             @Override
             public void getDataSuccess(SearchBean searchBean) {
@@ -36,6 +34,6 @@ public class SearchPresenterImpl extends BasePresenterImpl<SearchIView> implemen
             public void getDataError(String errmsg) {
                 mPresenterView.onSearchError(errmsg);
             }
-        },sellType,currentPage,pageSize,courseName);
+        },token,sellType,currentPage,pageSize,courseName);
     }
 }

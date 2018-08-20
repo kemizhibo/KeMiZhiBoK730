@@ -14,5 +14,5 @@ public interface TeacherTrainingPresenter extends BasePresenter<TeacherTrainingV
      * 获取教师培训页数据
      */
     void getFilterData(BaseActivity activity);
-    void getTeacherTrainingData(BaseActivity activity, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester,String courseType, String knowledgeId);
+    void getTeacherTrainingData(BaseActivity activity,String token, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester,String courseType, String knowledgeId);
 }

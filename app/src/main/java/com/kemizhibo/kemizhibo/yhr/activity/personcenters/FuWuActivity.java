@@ -1,14 +1,10 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.os.Bundle;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class FuWuActivity extends BaseActivity {
 

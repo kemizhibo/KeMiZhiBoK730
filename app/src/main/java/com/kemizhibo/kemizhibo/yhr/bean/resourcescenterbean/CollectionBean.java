@@ -8,17 +8,18 @@ package com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean;
 
 public class CollectionBean {
 
+
     /**
      * code : 0
-     * message : 收藏成功
+     * message : 添加收藏成功
      * content : null
      * otherData : null
      */
 
     private int code;
     private String message;
-    private String content;
-    private String otherData;
+    private Object content;
+    private Object otherData;
 
     public int getCode() {
         return code;
@@ -36,30 +37,19 @@ public class CollectionBean {
         this.message = message;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 
-    public String getOtherData() {
+    public Object getOtherData() {
         return otherData;
     }
 
-    public void setOtherData(String otherData) {
+    public void setOtherData(Object otherData) {
         this.otherData = otherData;
-    }
-
-
-    @Override
-    public String toString() {
-        return "CollectionBean{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", content=" + content +
-                ", otherData=" + otherData +
-                '}';
     }
 }

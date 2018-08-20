@@ -12,4 +12,6 @@ import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 public interface GetLoginPresenter extends BasePresenter<LoginView> {
     //登录的
     void getLoginData(BaseActivity activity, String account, String password);
+    //获取用户信息
+    void getUserData(BaseActivity activity,String token);
 }

@@ -22,7 +22,6 @@ import javax.inject.Inject;
 public class ReplyCommentIteractor {
 
     private IGetDataDelegate<ReplyCommentBean> mDelegate;
-    private Context context;
 
     @Inject
     public ReplyCommentIteractor() {}
@@ -41,7 +40,6 @@ public class ReplyCommentIteractor {
         @Override
         public void onNext(ReplyCommentBean replyCommentBean) {
             mDelegate.getDataSuccess(replyCommentBean);
-            LogUtils.e(replyCommentBean.toString());
         }
 
         @Override

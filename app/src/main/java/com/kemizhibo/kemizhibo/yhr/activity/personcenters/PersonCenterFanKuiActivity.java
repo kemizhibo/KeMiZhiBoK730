@@ -60,8 +60,12 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
     private BottomSheetDialog dialog;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            if(msg.what==0)
+            if(msg.what==0){
                 finish();
+            }else if (msg.what==1){
+                Intent intent = new Intent(PersonCenterFanKuiActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
         };
     };
 
@@ -142,7 +146,6 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
 
     @Override
     public void onFeedBackSuccess(FeedBackBean feedBackBean) {
-        LogUtils.i("000000000000000000000",feedBackBean.getCode()+"");
         if (feedBackBean.getCode()==0){
             Transparent.showSuccessMessage(this,"提交成功!");
             new Thread(new Runnable() {
@@ -157,29 +160,22 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
                 }
             }).start();
          }else {
-             showCollectionDialog();
+            //token失效，重新登录
+            Transparent.showErrorMessage(this,"登录失效请重新登录");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
          }
     }
 
-    private void showCollectionDialog() {
-        dialog = new BottomSheetDialog(this);
-        View collectiondialogview = LayoutInflater.from(this).inflate(R.layout.collection_dialog_layout, null);
-        Button toLoginButn = (Button) collectiondialogview.findViewById(R.id.tologin_butn);
-        dialog.setContentView(collectiondialogview);
-        View parent = (View) collectiondialogview.getParent();
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
-        collectiondialogview.measure(0, 0);
-        behavior.setPeekHeight(collectiondialogview.getMeasuredHeight());
-        toLoginButn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PersonCenterFanKuiActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        dialog.show();
-    }
 
     @Override
     public void onFeedBackError(String msg) {

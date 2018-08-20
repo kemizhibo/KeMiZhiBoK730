@@ -20,18 +20,18 @@ import rx.Observable;
 
 public class ClearOneOrMoreLiuLanApi extends BaseApi<ClearLiuLanBean> {
     String token;
-    List ids;
-    public ClearOneOrMoreLiuLanApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, List ids) {
+    String[] array;
+    public ClearOneOrMoreLiuLanApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, String[] array) {
         super(listener, rxAppCompatActivity);
         this.token = token;
-        this.ids = ids;
+        this.array = array;
     }
 
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getClearOneOrMoreLiuLanData(token,ids);
+        return httpGetService.getClearOneOrMoreLiuLanData(token,array);
     }
 
     @Override

@@ -20,7 +20,6 @@ import javax.inject.Inject;
 public class YingXiangDetailsVideoCommentIteractor {
 
     private IGetDataDelegate<CommentBean> mDelegate;
-    private Context context;
 
     @Inject
     public YingXiangDetailsVideoCommentIteractor() {}

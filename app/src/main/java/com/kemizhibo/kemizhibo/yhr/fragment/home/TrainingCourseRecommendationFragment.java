@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.TrainingCourseRecommendationAdapter;
@@ -22,6 +24,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
 import com.liaoinstan.springview.container.AliFooter;
@@ -59,7 +62,7 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     private boolean isFlag;
 
     //申明presenterImpl对象,我的备课列表
-    private List<HomePageBean.ContentBean.ReturnTrainBean> trainBean;
+    private List<HomePageBean.ContentBean.ReturnTrainBean> trainBean = new ArrayList<>();
     TrainingCourseRecommendationAdapter trainingCourseRecommendationAdapter;
     private SharedPreferences sp;
     private String token;
@@ -134,7 +137,11 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
             }
         });
         trainingCourseRecommendationSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), true));
+        if (trainBean==null){
+            trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), R.drawable.ali,false));
+        }else {
+            trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), true));
+        }
     }
 
     @Override
@@ -146,9 +153,17 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
 
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
-        setState(LoadingPager.LoadResult.success);
-        trainBean = new ArrayList<>();
-        trainBean.addAll(searchBean.getContent().getReturnTrain());
+        if (searchBean.getCode()==0){
+            trainBean.clear();
+            trainBean.addAll(searchBean.getContent().getReturnTrain());
+            if (trainBean==null){
+                setState(LoadingPager.LoadResult.empty);
+            }else {
+                setState(LoadingPager.LoadResult.success);
+            }
+        }else {
+            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
+        }
     }
 
     @Override

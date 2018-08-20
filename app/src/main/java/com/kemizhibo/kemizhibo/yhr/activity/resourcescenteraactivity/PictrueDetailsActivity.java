@@ -3,36 +3,36 @@ package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.BottomSheetBehavior;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.BottomSheetDialog;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.zhouwei.library.CustomPopWindow;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.PictureBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.PicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.PictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Map;
 
@@ -58,8 +58,12 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Inject
     public PicturePresenterImpl picturePresenter;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
+    @BindView(R.id.linear_layout)
+    LinearLayout linearLayout;
     //图文详情信息
-    private PictureBean.ContentBean picBean;
+    private PictureBean.ContentBean content;
     //初始化popwindow
     private CustomPopWindow mCustomPopWindow;
     //json解析出来的标题和图片集合
@@ -70,9 +74,25 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     private BottomSheetDialog dialog;
     //图文详情收藏
     private CollectionBean collectionBeans;
-    private PictureBean.ContentBean content;
     private SharedPreferences sp;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0: {
+                    startActivity(new Intent(PictrueDetailsActivity.this, LoginActivity.class));
+                    break;
+                }
+                case 1: {
 
+                    break;
+                }
+                default: {
+
+                    break;
+                }
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -84,7 +104,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         super.getData();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        picturePresenter.getPictureData(this,"Bearer "+token, courseId);
+        picturePresenter.getPictureData(this, "Bearer " + token, courseId);
     }
 
     @Override
@@ -108,84 +128,114 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onPictureSuccess(PictureBean pictureBean) {
-        content = pictureBean.getContent();
-        //判断是否收藏过
-        if (content.getFavouriteHistory() == 1) {
-            pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
-        } else {
-            pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
+        LogUtils.i("456789",pictureBean.getContent().getImageText());
+        if (pictureBean.getCode() == 0) {
+            content = pictureBean.getContent();
+            //判断是否收藏过
+            if (content.getFavouriteHistory() == 1) {
+                pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
+            } else {
+                pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
+            }
+            if (TextUtils.isEmpty(content.getImageText().toString())) {
+                //切换控件
+                frameLayout.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentEmpty()).commit();
+            } else {
+                //切换控件
+                frameLayout.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
+                //解析数据
+                initJsonData();
+                //填充数据
+                initPicture();
+            }
+        }else {
+            Transparent.showErrorMessage(this, "登录失效请重新登录");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
-        //解析json串
-        picBean = pictureBean.getContent();
-        List<Map> list = JSON.parseArray(picBean.getImageText(),Map.class);
+    }
 
-        Map map = list.get(0);
-        text = (String)map.get("text");
-        l = (List)map.get("imgList");
-        for (String s:l  ) {
-            LogUtils.i("1========================================="+s);
-        }
-
+    private void initPicture() {
+        //切换控件
+        frameLayout.setVisibility(View.GONE);
+        linearLayout.setVisibility(View.VISIBLE);
         //图片标题
-        pictrueDetailsTitle.setText(picBean.getContext());
+        pictrueDetailsTitle.setText(content.getContext());
         //图片介绍
         pictrueDetailsTxt.setText(text);
-
-        LogUtils.i("6666666666666666666666",l.toString());
-        //设置内置样式，共有六种可以点入方法内逐一体验使用。
+        //设置内置样式
         pictrueDetailsViewpager.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 //设置指示器的位置，小点点，左中右。
                 .setIndicatorGravity(BannerConfig.CENTER);
         //设置图片加载器，图片加载器在下方
-        pictrueDetailsViewpager.setImageLoader(new PictrueDetailsActivity.MyLoader());
+        pictrueDetailsViewpager.setImageLoader(new MyLoader());
         //设置图片网址或地址的集合
         pictrueDetailsViewpager.setImages(l);
         pictrueDetailsViewpager.setBannerAnimation(Transformer.Accordion);
         pictrueDetailsViewpager.isAutoPlay(false).start();
     }
 
+    private void initJsonData() {
+        List<Map> list = JSON.parseArray(content.getImageText(), Map.class);
+        Map map = list.get(0);
+        text = (String) map.get("text");
+        l = (List) map.get("imgList");
+        for (String s : l) {
+            LogUtils.i("1=========================================" + s);
+        }
+    }
+
     @Override
     public void onPictureError(String msg) {
-        LogUtils.i("=========================================",msg);
+        frameLayout.setVisibility(View.VISIBLE);
+        linearLayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentError()).commit();
     }
 
     @Override
     public void onGetCollectionSuccess(CollectionBean collectionBean) {
-        collectionBeans = collectionBean;
-        if (collectionBean.getMessage().equals("收藏成功")){
-            pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
-            ToastUtils.showToast(collectionBean.getMessage());
-        }else if (collectionBean.getMessage().equals("取消收藏成功")){
-            pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
-            ToastUtils.showToast(collectionBean.getMessage());
-        }else {
-            showCollectionDialog();
+        if (collectionBean.getCode()==0){
+            collectionBeans = collectionBean;
+            if (collectionBean.getMessage().equals("添加收藏成功")) {
+                pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
+                Transparent.showSuccessMessage(this, "添加收藏成功");
+            } else if (collectionBean.getMessage().equals("取消收藏成功")) {
+                pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
+                Transparent.showInfoMessage(this, "已取消收藏");
+            }
+        }
+       else {
+            Transparent.showErrorMessage(this, "登录失效请重新登录");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 
-    private void showCollectionDialog() {
-        dialog = new BottomSheetDialog(this);
-        View collectiondialogview = LayoutInflater.from(this).inflate(R.layout.collection_dialog_layout, null);
-        Button toLoginButn = (Button) collectiondialogview.findViewById(R.id.tologin_butn);
-        dialog.setContentView(collectiondialogview);
-        View parent = (View) collectiondialogview.getParent();
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
-        collectiondialogview.measure(0, 0);
-        behavior.setPeekHeight(collectiondialogview.getMeasuredHeight());
-        toLoginButn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PictrueDetailsActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        dialog.show();
-    }
 
     @Override
     public void onGetCollectionError(String msg) {
-
+        Transparent.showErrorMessage(this, "收藏失败请重试");
     }
 
     @Override
@@ -193,6 +243,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         activityComponent.inject(this);
         return picturePresenter;
     }
+
 
     //自定义的图片加载器
     private class MyLoader extends ImageLoader {
@@ -208,10 +259,8 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @OnClick(R.id.pictrue_details_collection)
     public void onViewClicked() {
-        //点击收藏判断是否登录，登录成功改变图片，失败弹出popwindow
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        picturePresenter.getCollectionData(this, "Bearer " + token,courseId);
-        //如果成功拿到数据，就正常收藏，否则就弹框
+        picturePresenter.getCollectionData(this, "Bearer " + token, courseId);
     }
 }

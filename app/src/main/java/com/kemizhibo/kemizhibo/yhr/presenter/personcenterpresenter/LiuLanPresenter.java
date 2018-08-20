@@ -20,6 +20,6 @@ public interface LiuLanPresenter extends BasePresenter<LiuLanView> {
     void getClearLiuLanData(BaseActivity activity, String token);
 
     //删除一个或者多个浏览记录
-    void getClearOneOrMoreLiuLanData(BaseActivity activity, String token, List ids);
+    void getClearOneOrMoreLiuLanData(BaseActivity activity, String token, String[] array);
 
 }

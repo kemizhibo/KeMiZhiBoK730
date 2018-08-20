@@ -38,6 +38,9 @@
                 android:id="@+id/person_touxiang_touming"
                 android:layout_width="@dimen/res_88.5dp"
                 android:layout_height="@dimen/res_88.5dp"
+                fresco:placeholderImageScaleType="fitCenter"
+                fresco:failureImage="@mipmap/milier"
+                fresco:failureImageScaleType="centerInside"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 fresco:roundAsCircle="true"
@@ -48,8 +51,7 @@
                 android:layout_height="@dimen/res_77.5dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                fresco:roundAsCircle="true"
-                fresco:placeholderImage="@drawable/ic_launcher_background" />
+                fresco:roundAsCircle="true" />
 
             <TextView
                 android:id="@+id/person_school_name"

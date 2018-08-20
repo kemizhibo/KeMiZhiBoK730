@@ -63,6 +63,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     private String filepath;
     private String url;
     private File outputFile;
+    private String photo;
 
     @Override
     protected int getLayoutId() {
@@ -72,7 +73,9 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     @Override
     protected void getData() {
         super.getData();
-
+        Intent intent = getIntent();
+        photo = intent.getStringExtra("photo");
+        Glide.with(TakePhotoActivity.this).load(photo).into(ivPic);
     }
 
     @Override
@@ -219,6 +222,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //返回的图片地址
+                //LogUtils.i("返回图片",response.body().string());
                 TakePhotoBean takePhotoBean = GsonUtils.getBean(response.body().string(), TakePhotoBean.class);
                 if(takePhotoBean != null && 0 == (takePhotoBean.getCode())){
                     String picImg = takePhotoBean.getContent().toString();
@@ -226,7 +230,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                     token = sp.getString("token", "");
                     preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
                 }else{
-                    ToastUtils.showToast(takePhotoBean.getMessage());
+                    ToastUtils.showToast("返回失败");
                 }
             }
         });

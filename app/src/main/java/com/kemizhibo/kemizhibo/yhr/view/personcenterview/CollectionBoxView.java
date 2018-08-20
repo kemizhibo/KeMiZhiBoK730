@@ -5,6 +5,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearCollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 
 /**
  * Created by 17600 on 2018/5/18.
@@ -18,5 +19,9 @@ public interface CollectionBoxView extends BaseView {
     //清空收藏架
     void onClearCollectionBoxSuccess(ClearCollectionBoxBean clearCollectionBoxBean);
     void onClearCollectionBoxError(String msg);
+
+    //收藏视频
+    void onGetCollectionSuccess(CollectionBean collectionBean);
+    void onGetCollectionError(String msg);
 
 }

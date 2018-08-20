@@ -1,8 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,6 +16,7 @@ import com.androidkun.xtablayout.XTabLayout;
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.SowingMapBean;
@@ -22,6 +26,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.home.MyClassFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.FourFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.TrainingCourseRecommendationFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.SowingMapPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.SowingMapView;
 import com.youth.banner.Banner;
@@ -69,7 +74,7 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
         View view = UIUtils.inflate(mActivity, R.layout.fragment_homepage);
         ButterKnife.bind(this, view);
         homeBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-        .setIndicatorGravity(BannerConfig.CENTER);
+                .setIndicatorGravity(BannerConfig.CENTER);
         homeBanner.setImageLoader(new MyLoader());
         for(int i = 0;i < sowingData.size(); i ++){
             imageList.add(sowingData.get(i).getImagesUrl());
@@ -172,8 +177,13 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
             //imageView.setScaleType(ImageView.ScaleType.CENTER);
-            Glide.with(context).load((String) path).into(imageView);
+            Glide.with(context).load((String) path)
+                    .placeholder(R.mipmap.milier)
+                    .error(R.mipmap.milier)
+                    .fallback(R.mipmap.milier)
+                    .into(imageView);
         }
     }
 
 }
+

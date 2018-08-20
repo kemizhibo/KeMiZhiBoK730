@@ -1,8 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.activity.web;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -10,18 +8,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.other.config.Constants;
-import com.kemizhibo.kemizhibo.other.web.JavaScriptInterface;
-import com.kemizhibo.kemizhibo.other.web.WebSetting;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MyLiveRoomWebActivity extends BaseActivity {
-
 
     @BindView(R.id.prog)
     ProgressBar prog;
@@ -46,9 +37,10 @@ public class MyLiveRoomWebActivity extends BaseActivity {
     private void initview() {
         Intent intent = getIntent();
         String courseId = intent.getStringExtra("courseId");
-        wed.loadUrl("http://192.168.1.101:8080/kmzb/ng/#/roomDetail/releVideo?courseId="+courseId);
+        //http://192.168.1.101:8080/ng/my-app/#/roomDetail
+        //wed.loadUrl("http://192.168.1.101:8080/ng/#/roomDetail/releVideo?courseId="+courseId);
+        wed.loadUrl("http://192.168.1.101:8080/ng/my-app/#/roomDetail?courseId="+courseId);
     }
-
 
     private void SettingsP() {
         WebSettings seting = wed.getSettings();
@@ -76,9 +68,7 @@ public class MyLiveRoomWebActivity extends BaseActivity {
                     prog.setVisibility(View.VISIBLE);//开始加载网页时显示进度条
                     prog.setProgress(newProgress);//设置进度值
                 }
-
             }
         });
     }
-
 }

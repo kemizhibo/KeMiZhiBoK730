@@ -2871,6 +2871,98 @@ public class HomePageBean {
             public void setRecordId(Object recordId) {
                 this.recordId = recordId;
             }
+
+            @Override
+            public String toString() {
+                return "ReturnPrepareBean{" +
+                        "courseId=" + courseId +
+                        ", courseName='" + courseName + '\'' +
+                        ", isavaliable=" + isavaliable +
+                        ", subjectId=" + subjectId +
+                        ", addTime=" + addTime +
+                        ", sourcePrice=" + sourcePrice +
+                        ", currentPrice=" + currentPrice +
+                        ", title=" + title +
+                        ", context=" + context +
+                        ", courseKpoint=" + courseKpoint +
+                        ", lessionNum=" + lessionNum +
+                        ", logo='" + logo + '\'' +
+                        ", updateTime=" + updateTime +
+                        ", limitCount=" + limitCount +
+                        ", bogusBuycount=" + bogusBuycount +
+                        ", pageBuycount=" + pageBuycount +
+                        ", commentNum=" + commentNum +
+                        ", whetherToPay=" + whetherToPay +
+                        ", pageViewcount=" + pageViewcount +
+                        ", endTime=" + endTime +
+                        ", loseType=" + loseType +
+                        ", loseTime=" + loseTime +
+                        ", sellType=" + sellType +
+                        ", liveStatus=" + liveStatus +
+                        ", liveBeginTime=" + liveBeginTime +
+                        ", liveEndTime=" + liveEndTime +
+                        ", nearestLiveBeginTime=" + nearestLiveBeginTime +
+                        ", nearestLiveEndTime=" + nearestLiveEndTime +
+                        ", playTime=" + playTime +
+                        ", videoUrl=" + videoUrl +
+                        ", videoType=" + videoType +
+                        ", studyPercent=" + studyPercent +
+                        ", teacherList=" + teacherList +
+                        ", courseList=" + courseList +
+                        ", courseKpointList=" + courseKpointList +
+                        ", courseStudyhistory=" + courseStudyhistory +
+                        ", memberCourseId=" + memberCourseId +
+                        ", location=" + location +
+                        ", kpointLiveStatus=" + kpointLiveStatus +
+                        ", knowledgeId=" + knowledgeId +
+                        ", knowledgeName=" + knowledgeName +
+                        ", praiseCount=" + praiseCount +
+                        ", isApproval=" + isApproval +
+                        ", addLoginName=" + addLoginName +
+                        ", procInstId=" + procInstId +
+                        ", imageText=" + imageText +
+                        ", isImageText=" + isImageText +
+                        ", imageTextList=" + imageTextList +
+                        ", semester=" + semester +
+                        ", chapter=" + chapter +
+                        ", isRecommend=" + isRecommend +
+                        ", courseSource=" + courseSource +
+                        ", courseEdition=" + courseEdition +
+                        ", materialEdition=" + materialEdition +
+                        ", watchType=" + watchType +
+                        ", courseType=" + courseType +
+                        ", sequence=" + sequence +
+                        ", startTime=" + startTime +
+                        ", roomEnvironment=" + roomEnvironment +
+                        ", roomEnvironmentList=" + roomEnvironmentList +
+                        ", moduleId=" + moduleId +
+                        ", docName=" + docName +
+                        ", docType=" + docType +
+                        ", dataSource=" + dataSource +
+                        ", userVideoLogo=" + userVideoLogo +
+                        ", userUrl=" + userUrl +
+                        ", teacherName=" + teacherName +
+                        ", fileType=" + fileType +
+                        ", docId=" + docId +
+                        ", kpointId=" + kpointId +
+                        ", prepareStatus=" + prepareStatus +
+                        ", prepareName=" + prepareName +
+                        ", prepareRealName=" + prepareRealName +
+                        ", userId=" + userId +
+                        ", isManagerData=" + isManagerData +
+                        ", subjectSort=" + subjectSort +
+                        ", introduce=" + introduce +
+                        ", createTime=" + createTime +
+                        ", prepareUpdateTime=" + prepareUpdateTime +
+                        ", gradeName='" + gradeName + '\'' +
+                        ", materialName=" + materialName +
+                        ", semesterName=" + semesterName +
+                        ", chapterName=" + chapterName +
+                        ", planFinishTime=" + planFinishTime +
+                        ", planIsFinish=" + planIsFinish +
+                        ", recordId=" + recordId +
+                        '}';
+            }
         }
     }
 }

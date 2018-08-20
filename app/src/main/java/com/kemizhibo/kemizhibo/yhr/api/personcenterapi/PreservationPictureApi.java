@@ -2,6 +2,7 @@ package com.kemizhibo.kemizhibo.yhr.api.personcenterapi;
 
 import com.alibaba.fastjson.JSON;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetPreservationPictureService;
+import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetUserService;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
@@ -33,8 +34,8 @@ public class PreservationPictureApi extends BaseApi<PreservationPictureBean> {
 
     @Override
     public Observable getObservable(Retrofit retrofit) {
-        HttpGetPreservationPictureService httpGetPreservationPictureService = retrofit.create(HttpGetPreservationPictureService.class);
-        return httpGetPreservationPictureService.getPreservationPictureData(token,picImgl);
+        HttpGetService httpGetService = retrofit.create(HttpGetService.class);
+        return httpGetService.getPreservationPhotoData(token,picImgl);
     }
 
     @Override

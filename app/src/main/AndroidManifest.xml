@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".yhr.MyApplication"
         android:allowBackup="true"
@@ -22,7 +22,9 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity android:name=".yhr.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +34,9 @@
         </activity>
         <activity android:name=".yhr.activity.ShowImageActivity" />
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
-        <activity android:name=".yhr.activity.logins.LoginActivity"></activity>
+        <activity android:name=".yhr.activity.logins.LoginActivity" >
+
+        </activity>
         <activity android:name=".yhr.activity.logins.FinishActivity" />
         <activity android:name=".yhr.activity.logins.WangJiActivity" />
         <activity android:name=".yhr.activity.logins.XiuGaiActivity" />
@@ -65,15 +69,18 @@
             android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MediaPickerTheme" />
-        <activity android:name=".other.preparing_package_detail.view.WordShowActivity"></activity>
-        <activity android:name=".other.web.CommonWebActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".other.preparing_package_detail.view.WordShowActivity" />
+        <activity
+            android:name=".other.web.CommonWebActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
         <activity android:name=".yhr.activity.personcenters.FuWuActivity" />
-        <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity"></activity>
-        <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity"></activity>
+        <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity" />
+        <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity" />
+        <activity android:name=".yhr.activity.personcenters.LectureActivity"></activity>
     </application>
 
 </manifest>

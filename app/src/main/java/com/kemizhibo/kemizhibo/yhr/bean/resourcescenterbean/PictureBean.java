@@ -347,5 +347,40 @@ public class PictureBean {
         public void setMaterialEdition(String materialEdition) {
             this.materialEdition = materialEdition;
         }
+
+        @Override
+        public String toString() {
+            return "ContentBean{" +
+                    "courseId=" + courseId +
+                    ", courseName='" + courseName + '\'' +
+                    ", subjectId=" + subjectId +
+                    ", context='" + context + '\'' +
+                    ", title=" + title +
+                    ", logo='" + logo + '\'' +
+                    ", pageViewcount=" + pageViewcount +
+                    ", playCount=" + playCount +
+                    ", commentnum=" + commentnum +
+                    ", courseType='" + courseType + '\'' +
+                    ", knowledge=" + knowledge +
+                    ", liveStartDuration=" + liveStartDuration +
+                    ", videoDuration=" + videoDuration +
+                    ", liveStatus='" + liveStatus + '\'' +
+                    ", teacherName=" + teacherName +
+                    ", liveBeginTime=" + liveBeginTime +
+                    ", liveEndTime=" + liveEndTime +
+                    ", praiseHistory=" + praiseHistory +
+                    ", favouriteHistory=" + favouriteHistory +
+                    ", praiseCount=" + praiseCount +
+                    ", imageText='" + imageText + '\'' +
+                    ", isImageText=" + isImageText +
+                    ", addTime=" + addTime +
+                    ", teacher=" + teacher +
+                    ", startTime=" + startTime +
+                    ", courseSource=" + courseSource +
+                    ", courseEdition=" + courseEdition +
+                    ", videoUrl=" + videoUrl +
+                    ", materialEdition='" + materialEdition + '\'' +
+                    '}';
+        }
     }
 }

@@ -28,12 +28,6 @@ public interface HttpGetPreservationPictureService {
     Observable<ResponseBody> getPreservationPictureData(@Header("Authorization") String token,
                                                         @Field("picImg") String picImg);
 
-    /*//上传头像
-    @Multipart
-    @POST("kemiapi/ketang/user/uploadImg")
-    //@POST("image/upload")
-    Observable<ResponseBody> getTakePhotoData(@Part ("file") File file);*/
-    //上传头像@Part("description") RequestBody description
     @Multipart
     @POST("file/upload")
     //@POST("image/upload")

@@ -1,6 +1,5 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
-import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.SearchApi;
@@ -18,7 +17,6 @@ import javax.inject.Inject;
 public class SearchIteractor {
 
     private IGetDataDelegate<SearchBean> mDelegate;
-    private Context context;
 
     @Inject
     public SearchIteractor() {}
@@ -26,9 +24,9 @@ public class SearchIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadSearchData(BaseActivity activity, IGetDataDelegate<SearchBean> mDelegate,String sellType,String currentPage,String pageSize,String courseName){
+    public void loadSearchData(BaseActivity activity, IGetDataDelegate<SearchBean> mDelegate,String token,String sellType,String currentPage,String pageSize,String courseName){
         this.mDelegate = mDelegate;
-        SearchApi searchApi = new SearchApi(listener,activity,sellType,currentPage,pageSize,courseName);
+        SearchApi searchApi = new SearchApi(listener,activity,token,sellType,currentPage,pageSize,courseName);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(searchApi);
     }

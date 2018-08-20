@@ -14,5 +14,5 @@ public interface FilterPresenter extends BasePresenter<FilterView> {
     void getFilterData(BaseActivity activity);
 
 
-    void getYingXiangFragmentData(BaseActivity activity,String sellType,String currentPage,String pageSize,String materialEdition,String subjectId,String semester,String knowledgeId);
+    void getYingXiangFragmentData(BaseActivity activity,String token,String sellType,String currentPage,String pageSize,String materialEdition,String subjectId,String semester,String knowledgeId);
 }

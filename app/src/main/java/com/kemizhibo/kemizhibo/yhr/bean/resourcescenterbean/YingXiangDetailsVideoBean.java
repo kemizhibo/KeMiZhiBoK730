@@ -431,6 +431,55 @@ public class YingXiangDetailsVideoBean {
             public void setId(int id) {
                 this.id = id;
             }
+
+            @Override
+            public String toString() {
+                return "TeacherBean{" +
+                        "picPath='" + picPath + '\'' +
+                        ", career='" + career + '\'' +
+                        ", education='" + education + '\'' +
+                        ", isStar=" + isStar +
+                        ", name='" + name + '\'' +
+                        ", id=" + id +
+                        '}';
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "ContentBean{" +
+                    "courseId=" + courseId +
+                    ", courseName='" + courseName + '\'' +
+                    ", subjectId=" + subjectId +
+                    ", context='" + context + '\'' +
+                    ", title='" + title + '\'' +
+                    ", logo='" + logo + '\'' +
+                    ", pageViewcount=" + pageViewcount +
+                    ", playCount=" + playCount +
+                    ", commentnum=" + commentnum +
+                    ", courseType='" + courseType + '\'' +
+                    ", knowledge='" + knowledge + '\'' +
+                    ", liveStartDuration=" + liveStartDuration +
+                    ", videoDuration=" + videoDuration +
+                    ", liveStatus='" + liveStatus + '\'' +
+                    ", teacherName='" + teacherName + '\'' +
+                    ", liveBeginTime=" + liveBeginTime +
+                    ", liveEndTime=" + liveEndTime +
+                    ", praiseHistory=" + praiseHistory +
+                    ", favouriteHistory=" + favouriteHistory +
+                    ", praiseCount=" + praiseCount +
+                    ", imageText=" + imageText +
+                    ", isImageText=" + isImageText +
+                    ", addTime=" + addTime +
+                    ", teacher=" + teacher +
+                    ", startTime=" + startTime +
+                    ", courseSource='" + courseSource + '\'' +
+                    ", courseEdition='" + courseEdition + '\'' +
+                    ", videoUrl='" + videoUrl + '\'' +
+                    ", materialEdition='" + materialEdition + '\'' +
+                    ", watchTime=" + watchTime +
+                    ", isEnd=" + isEnd +
+                    '}';
         }
     }
 }

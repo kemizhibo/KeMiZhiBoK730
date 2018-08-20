@@ -44,7 +44,8 @@ public interface HttpGetService {
 
     //影像素材列表页
     @GET("kemiapi/course/focusing/getSimpleCourseForB")
-    Observable<ResponseBody> getYingXinagFragmentData(@Query("sellType") String sellType,
+    Observable<ResponseBody> getYingXinagFragmentData(@Header("Authorization") String token,
+                                                      @Query("sellType") String sellType,
                                                       @Query("currentPage") String currentPage,
                                                       @Query("pageSize") String pageSize,
                                                       @Query("materialEdition") String materialEdition,
@@ -145,16 +146,16 @@ public interface HttpGetService {
     //删除一个或者多个浏览记录
     @GET("kemiapi/user/watchHistory/deleteForB")
     Observable<ResponseBody> getClearOneOrMoreLiuLanData(@Header("Authorization") String token,
-                                                         @Query("ids") List ids);
+                                                         @Query("ids") String[] array);
 
     //清空收藏夹
-    @FormUrlEncoded
     @POST("kemiapi/course/shortvideo/clearFavoritesForB")
     Observable<ResponseBody> getClearCollectionBoxData(@Header("Authorization") String token);
 
     //教师培训列表页
     @GET("kemiapi/course/focusing/getSimpleCourseForB")
-    Observable<ResponseBody> getTeacherTrainingData(@Query("sellType") String sellType,
+    Observable<ResponseBody> getTeacherTrainingData(@Header("Authorization") String token,
+                                                    @Query("sellType") String sellType,
                                                    @Query("currentPage") String currentPage,
                                                    @Query("pageSize") String pageSize,
                                                    @Query("materialEdition") String materialEdition,
@@ -170,7 +171,8 @@ public interface HttpGetService {
                                                                 @Query("pageSize") String pageSize);
     //资源中心搜索总列表接口
     @GET("kemiapi/course/focusing/getSimpleCourse")
-    Observable<ResponseBody> getSearchData(@Query("sellType") String sellType,
+    Observable<ResponseBody> getSearchData(@Header("Authorization") String token,
+                                           @Query("sellType") String sellType,
                                            @Query("currentPage") String currentPage,
                                            @Query("pageSize") String pageSize,
                                            @Query("courseName") String courseName);
@@ -191,6 +193,12 @@ public interface HttpGetService {
     //获取版本信息
     @GET("kemiapi/version/getLatestVersion")
     Observable<ResponseBody> getVersionInformationData();
+
+    //完成授课保存授课记录
+    @GET("kemiapi/prepare/record/startTeaching")
+    Observable<ResponseBody> getLectureData(@Header("Authorization") String token,
+                                            @Query("moduleId") String moduleId,
+                                            @Query("kemiVideoPlan") String kemiVideoPlan);
 
     @GET("kemiapi/recommend")
     Observable<ResponseBody> getRecommendData();

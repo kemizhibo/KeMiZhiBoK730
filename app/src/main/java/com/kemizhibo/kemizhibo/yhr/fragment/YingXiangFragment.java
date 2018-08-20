@@ -1,22 +1,22 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
@@ -31,21 +31,18 @@ import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.FilterPres
 import com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.FilterView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> implements FilterView {
 
@@ -93,6 +90,8 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     int isUp = 1;
     //刷新适配器的判断
     private boolean isFlag;
+    private SharedPreferences sp;
+    private String token;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -152,7 +151,9 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     public void run() {
                         isUp = 1;
                         currentPage = 1;
-                        filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", currentPage + "", "10", "", "", "", "");
+                        sp = getContext().getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                         yinxiangSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -165,7 +166,9 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     public void run() {
                         isUp = 2;
                         currentPage++;
-                        filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", currentPage + "", "10", "", "", "", "");
+                        sp = getContext().getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                         yinxiangSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -173,11 +176,14 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         });
         yinxiangSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
         yinxiangSpring.setFooter(new AliFooter(getContext(), true));
+
     }
 
     @Override
     public void load() {
-        filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+        sp = getContext().getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
     }
 
     @OnClick(R.id.yingxiang_shaixuan_butn)
@@ -209,18 +215,23 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         filterImgScienceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                knowledgeId = String.valueOf(filterImgSciencedata.get(position).getSubjectId());
-                LogUtils.i("00000000000000000000",knowledgeId);
-                //改变单选状态，并且刷新数据
-                for (int i=0;i<filterImgSciencedata.size();i++){
-                    filterImgSciencedata.get(i).setFlage(false);
-                    filterImgSciencedata.set(i, filterImgSciencedata.get(i));
+                if (NoFastClickUtils.isFastClick()){
+                }else {
+                    knowledgeId = String.valueOf(filterImgSciencedata.get(position).getSubjectId());
+                    //改变单选状态，并且刷新数据
+                    for (int i=0;i<filterImgSciencedata.size();i++){
+                        filterImgSciencedata.get(i).setFlage(false);
+                        filterImgSciencedata.set(i, filterImgSciencedata.get(i));
+                    }
+                    filterImgSciencedata.get(position).setFlage(true);
+                    filterImgSciencedata.set(position, filterImgSciencedata.get(position));
+                    filterImgScienceAdapter.notifyDataSetChanged();
+                    sp = getContext().getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    yingXiangFragmentdata.clear();
+                    filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                    isFlag = true;
                 }
-                filterImgSciencedata.get(position).setFlage(true);
-                filterImgSciencedata.set(position, filterImgSciencedata.get(position));
-                filterImgScienceAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                isFlag = true;
             }
         });
         yingxiangShaixuanFenleiRecyclerview.setAdapter(filterImgScienceAdapter);
@@ -237,17 +248,23 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         filterSemesterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                semester = String.valueOf(filterSemesterdata.get(position).getSubjectId());
-                //改变单选状态，并且刷新数据
-                for (int i=0;i<filterSemesterdata.size();i++){
-                    filterSemesterdata.get(i).setFlage(false);
-                    filterSemesterdata.set(i, filterSemesterdata.get(i));
+                if (NoFastClickUtils.isFastClick()){
+                }else {
+                    semester = String.valueOf(filterSemesterdata.get(position).getSubjectId());
+                    //改变单选状态，并且刷新数据
+                    for (int i=0;i<filterSemesterdata.size();i++){
+                        filterSemesterdata.get(i).setFlage(false);
+                        filterSemesterdata.set(i, filterSemesterdata.get(i));
+                    }
+                    filterSemesterdata.get(position).setFlage(true);
+                    filterSemesterdata.set(position, filterSemesterdata.get(position));
+                    filterSemesterAdapter.notifyDataSetChanged();
+                    sp = getContext().getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    yingXiangFragmentdata.clear();
+                    filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                    isFlag = true;
                 }
-                filterSemesterdata.get(position).setFlage(true);
-                filterSemesterdata.set(position, filterSemesterdata.get(position));
-                filterSemesterAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                isFlag = true;
             }
         });
         yingxiangShaixuanXueqiRecyclerview.setAdapter(filterSemesterAdapter);
@@ -264,17 +281,23 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         filterGradeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                subjectId = String.valueOf(filterGradedata.get(position).getSubjectId());
-                //改变单选状态，并且刷新数据
-                for (int i=0;i<filterGradedata.size();i++){
-                    filterGradedata.get(i).setFlage(false);
-                    filterGradedata.set(i, filterGradedata.get(i));
+                if (NoFastClickUtils.isFastClick()){
+                }else {
+                    subjectId = String.valueOf(filterGradedata.get(position).getSubjectId());
+                    //改变单选状态，并且刷新数据
+                    for (int i=0;i<filterGradedata.size();i++){
+                        filterGradedata.get(i).setFlage(false);
+                        filterGradedata.set(i, filterGradedata.get(i));
+                    }
+                    filterGradedata.get(position).setFlage(true);
+                    filterGradedata.set(position, filterGradedata.get(position));
+                    filterGradeAdapter.notifyDataSetChanged();
+                    sp = getContext().getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    yingXiangFragmentdata.clear();
+                    filterPresenter.getYingXiangFragmentData(mActivity,"Bearer "+token, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                    isFlag = true;
                 }
-                filterGradedata.get(position).setFlage(true);
-                filterGradedata.set(position, filterGradedata.get(position));
-                filterGradeAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                isFlag = true;
             }
         });
         yingxiangShaixuanNianjiRecyclerview.setAdapter(filterGradeAdapter);
@@ -291,18 +314,23 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         filterMaterialAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                materialEdition = String.valueOf(filterMaterialdata.get(position).getSubjectId());
-               //改变单选状态，并且刷新数据
-                for (int i=0;i<filterMaterialdata.size();i++){
-                    filterMaterialdata.get(i).setFlage(false);
-                    filterMaterialdata.set(i, filterMaterialdata.get(i));
+                if (NoFastClickUtils.isFastClick()){
+                }else {
+                    materialEdition = String.valueOf(filterMaterialdata.get(position).getSubjectId());
+                    //改变单选状态，并且刷新数据
+                    for (int i=0;i<filterMaterialdata.size();i++){
+                        filterMaterialdata.get(i).setFlage(false);
+                        filterMaterialdata.set(i, filterMaterialdata.get(i));
+                    }
+                    filterMaterialdata.get(position).setFlage(true);
+                    filterMaterialdata.set(position, filterMaterialdata.get(position));
+                    filterMaterialAdapter.notifyDataSetChanged();
+                    sp = getContext().getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    yingXiangFragmentdata.clear();
+                    filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
+                    isFlag = true;
                 }
-                filterMaterialdata.get(position).setFlage(true);
-                filterMaterialdata.set(position, filterMaterialdata.get(position));
-                filterMaterialAdapter.notifyDataSetChanged();
-                filterPresenter.getYingXiangFragmentData(mActivity, "YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                isFlag = true;
-
             }
         });
         yingxiangShaixuanJiaocaiRecyclerview.setAdapter(filterMaterialAdapter);
@@ -328,27 +356,39 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
 
     @Override
     public void onFilterError(String msg) {
-        setState(LoadingPager.LoadResult.error);
+        //setState(LoadingPager.LoadResult.error);
     }
 
     @Override
     public void onYingXiangFragmentSuccess(YingXiangFragmentBean yingXiangFragmentBean) {
-        //成功的状态显示UI操作,添加数据
-        setState(LoadingPager.LoadResult.success);
-
-        if (isUp == 1) {
-            yingXiangFragmentdata.clear();
-            yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
-            if (isFlag) {
-                yingXiangFragmentAdapter.notifyDataSetChanged();
+        if (yingXiangFragmentBean.getCode()==0){
+            if (isUp == 1) {
+                yingXiangFragmentdata.clear();
+                yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
+                if (yingXiangFragmentdata==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        yingXiangFragmentAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if (isUp == 2) {
+                //yingXiangFragmentdata.clear();
+                yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
+                if (yingXiangFragmentdata==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        yingXiangFragmentAdapter.notifyDataSetChanged();
+                    }
+                }
             }
-        } else if (isUp == 2) {
-            yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
-            if (isFlag) {
-                yingXiangFragmentAdapter.notifyDataSetChanged();
-            }
+        }else {
+            setState(LoadingPager.LoadResult.error);
+            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
         }
-
     }
 
     @Override

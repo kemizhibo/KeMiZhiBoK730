@@ -11,5 +11,5 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.LiveRoomView;
  */
 public interface LiveRoomPresenter extends BasePresenter<LiveRoomView> {
     void getFilterData(BaseActivity activity);
-    void getLiveRoomData(BaseActivity activity, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester, String knowledgeId);
+    void getLiveRoomData(BaseActivity activity,String token, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester, String knowledgeId);
 }

@@ -19,6 +19,7 @@ import rx.Observable;
 
 public class LiveRoomApi extends BaseApi<LiveRoomBean> {
     //声明参数
+    private String token;
     private String sellType;
     private String page;
     private String pageSize;
@@ -26,8 +27,9 @@ public class LiveRoomApi extends BaseApi<LiveRoomBean> {
     private String subjectId;
     private String semester;
     private String knowledgeId;
-    public LiveRoomApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String sellType, String page, String pageSize, String materialEdition, String subjectId, String semester, String knowledgeId) {
+    public LiveRoomApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,String token, String sellType, String page, String pageSize, String materialEdition, String subjectId, String semester, String knowledgeId) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.sellType = sellType ;
         this.page = page ;
         this.pageSize = pageSize ;
@@ -41,7 +43,7 @@ public class LiveRoomApi extends BaseApi<LiveRoomBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getYingXinagFragmentData(sellType,page,pageSize,materialEdition,subjectId,semester,knowledgeId);
+        return httpGetService.getYingXinagFragmentData(token,sellType,page,pageSize,materialEdition,subjectId,semester,knowledgeId);
     }
 
     @Override

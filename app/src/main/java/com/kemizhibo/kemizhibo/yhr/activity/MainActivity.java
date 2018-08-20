@@ -14,6 +14,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.DemoFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
@@ -202,6 +203,17 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
 
     @Override
     public void onLoginError(String msg) {
+
+    }
+
+    @Override
+    public void onUserSuccess(GetUserBean getUserBean) {
+
+
+    }
+
+    @Override
+    public void onUserError(String msg) {
 
     }
 

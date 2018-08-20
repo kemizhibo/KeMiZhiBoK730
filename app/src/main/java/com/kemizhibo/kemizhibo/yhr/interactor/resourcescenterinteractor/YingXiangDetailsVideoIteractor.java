@@ -21,7 +21,6 @@ import javax.inject.Inject;
 public class YingXiangDetailsVideoIteractor {
 
     private IGetDataDelegate<YingXiangDetailsVideoBean> mDelegate;
-    private Context context;
 
     @Inject
     public YingXiangDetailsVideoIteractor() {}

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MaterialRecommendedAdapter;
@@ -24,6 +26,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
 import com.liaoinstan.springview.container.AliFooter;
@@ -61,7 +64,7 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
     private boolean isFlag;
 
     //申明presenterImpl对象,推荐素材列表
-    private List<HomePageBean.ContentBean.ReturnMaterialBean> materialBean;
+    private List<HomePageBean.ContentBean.ReturnMaterialBean> materialBean = new ArrayList<>();;
     @Inject
     public HomePagePresenterImpl homePagePresenter;
     MaterialRecommendedAdapter materialRecommendedAdapter;
@@ -149,7 +152,11 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
             }
         });
         materialRecommendedSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        materialRecommendedSpring.setFooter(new AliFooter(getContext(), true));
+        if (materialBean==null){
+            materialRecommendedSpring.setFooter(new AliFooter(getContext(), R.drawable.ali,false));
+        }else {
+            materialRecommendedSpring.setFooter(new AliFooter(getContext(), true));
+        }
     }
 
     @Override
@@ -162,9 +169,18 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         //成功的状态显示UI操作,添加数据
-        setState(LoadingPager.LoadResult.success);
-        materialBean = new ArrayList<>();
-        materialBean.addAll(searchBean.getContent().getReturnMaterial());
+        if (searchBean.getCode()==0){
+            materialBean.clear();
+            materialBean.addAll(searchBean.getContent().getReturnMaterial());
+            if (materialBean==null){
+                setState(LoadingPager.LoadResult.empty);
+            }else {
+                setState(LoadingPager.LoadResult.success);
+            }
+        }else {
+            //token失效，重新登录
+            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
+        }
     }
 
     @Override

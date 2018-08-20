@@ -20,6 +20,8 @@ import com.dueeeke.videoplayer.player.IjkVideoView;
 import com.dueeeke.videoplayer.util.L;
 import com.dueeeke.videoplayer.util.WindowUtil;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -117,6 +119,7 @@ public class DefinitionController extends StandardVideoController {
                 Map.Entry<String, String> entry = iterator.previous();
                 mRateStr.add(entry.getKey());
                 TextView rateItem = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.layout_rate_item, null);
+
                 rateItem.setText(entry.getKey());
                 rateItem.setTag(index);
                 rateItem.setOnClickListener(rateOnClickListener);
@@ -136,6 +139,8 @@ public class DefinitionController extends StandardVideoController {
         @Override
         public void onClick(View v) {
             int index = (int) v.getTag();
+            TextView textView= (TextView) v;
+            //LogUtils.i("jiba","TextView===="+textView.getText().toString());
             if (currentIndex == index) return;
             mRateItems.get(currentIndex).setTextColor(Color.BLACK);
             mRateItems.get(index).setTextColor(ContextCompat.getColor(getContext(), R.color.theme_color));

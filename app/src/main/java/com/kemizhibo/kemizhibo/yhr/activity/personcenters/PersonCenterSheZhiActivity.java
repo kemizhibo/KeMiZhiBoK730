@@ -123,6 +123,9 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
     @Override
     public void onSignOutSuccess(SignOutBean signOutBean) {
           if (signOutBean.getCode()==0){
+              if(sp!=null){
+                  sp.edit().clear().commit();
+              }
               intent = new Intent(PersonCenterSheZhiActivity.this, LoginActivity.class);
               startActivity(intent);
               finish();

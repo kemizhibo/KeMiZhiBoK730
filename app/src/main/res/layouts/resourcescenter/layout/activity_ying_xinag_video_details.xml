@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
+    </FrameLayout>
     <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
         android:layout_alignParentTop="true"
         android:id="@+id/player"
@@ -191,7 +198,13 @@
                 </RelativeLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
-
+            <FrameLayout
+                android:id="@+id/comment_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/res_530.0dp"
+                android:visibility="gone"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </FrameLayout>
             <com.liaoinstan.springview.widget.SpringView
                 android:id="@+id/comment_springview"
                 android:background="#ffffff"

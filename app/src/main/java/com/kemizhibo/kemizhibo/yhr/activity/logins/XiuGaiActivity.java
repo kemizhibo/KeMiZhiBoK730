@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.activity.logins;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -69,6 +70,10 @@ public class XiuGaiActivity extends BaseActivity implements UpdataPwdView {
 
     @Override
     public void success(UpdataPwdBean updataPwdBean) {
+        //更改sp中的密码
+        SharedPreferences sp = getSharedPreferences("logintoken", 0);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("pwd",xiugaiPwd.getText().toString()).commit();
         startActivity(new Intent(XiuGaiActivity.this, FinishActivity.class));
         XiuGaiActivity.this.finish();
     }

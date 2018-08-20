@@ -44,7 +44,7 @@ public class LiveRoomPresenterImpl extends BasePresenterImpl<LiveRoomView> imple
     }
 
     @Override
-    public void getLiveRoomData(BaseActivity activity, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester, String knowledgeId) {
+    public void getLiveRoomData(BaseActivity activity,String token, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester, String knowledgeId) {
         liveRoomIteractor.loadLiveRoomData(activity, new IGetDataDelegate<LiveRoomBean>() {
             @Override
             public void getDataSuccess(LiveRoomBean liveRoomBean) {
@@ -55,6 +55,6 @@ public class LiveRoomPresenterImpl extends BasePresenterImpl<LiveRoomView> imple
             public void getDataError(String errmsg) {
                 mPresenterView.onLiveRoomError(errmsg);
             }
-        },sellType,currentPage,pageSize,materialEdition,subjectId,semester,knowledgeId);
+        },token,sellType,currentPage,pageSize,materialEdition,subjectId,semester,knowledgeId);
     }
 }

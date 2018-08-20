@@ -14,6 +14,13 @@
         app:searchBlockHeight="150"
         app:searchBlockColor="#ffffff"
         />
+    <FrameLayout
+        android:layout_below="@+id/search_view_box"
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
     <com.liaoinstan.springview.widget.SpringView
         android:layout_below="@+id/search_view_box"
         android:id="@+id/search_springview"

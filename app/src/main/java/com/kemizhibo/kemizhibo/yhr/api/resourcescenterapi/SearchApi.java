@@ -19,13 +19,15 @@ import rx.Observable;
 
 public class SearchApi extends BaseApi<SearchBean> {
     //声明参数
+    private String token;
     private String sellType;
     private String currentPage;
     private String pageSize;
     private String courseName;
 
-    public SearchApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String sellType, String currentPage,String pageSize,String courseName) {
+    public SearchApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String sellType, String currentPage,String pageSize,String courseName) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.sellType = sellType ;
         this.currentPage = currentPage ;
         this.pageSize = pageSize ;
@@ -36,7 +38,7 @@ public class SearchApi extends BaseApi<SearchBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getSearchData(sellType,currentPage,pageSize,courseName);
+        return httpGetService.getSearchData(token,sellType,currentPage,pageSize,courseName);
     }
 
     @Override
@@ -48,7 +50,6 @@ public class SearchApi extends BaseApi<SearchBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //LogUtils.e(string+"1111111111111111111111111111111");
         return JSON.parseObject(string, SearchBean.class);
     }
 }

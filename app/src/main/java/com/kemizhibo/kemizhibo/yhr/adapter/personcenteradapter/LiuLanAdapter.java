@@ -74,7 +74,6 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
         return mMyLiveList.size();
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final LiuLanBean.ContentBean.DataBean myLive = mMyLiveList.get(holder.getAdapterPosition());
@@ -82,17 +81,23 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
         Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into( holder.itemLiulanPhoto);
         holder.itemLiulanTitle.setText(myLive.getCourse().getCourseName());
         holder.itemLiulanTime.setText(myLive.getWatchTime());
-        if (myLive.getCourse().getIsEnd()==0){
-            holder.itemLiulanButn.setText("继续观看");
-            holder.itemLiulanButn.setTextColor(R.color.white);
-            holder.itemLiulanButn.setBackgroundResource(R.mipmap.green_state);
-            holder.itemLiulanState.setText("上次观看至"+ TimeH.formatTime(Long.valueOf(myLive.getPlayPosition()))+"处");
+        if (myLive.getCourse().getIsImageText()==1){
+            holder.itemLiulanButn.setText("查看");
+            holder.itemLiulanButn.setTextColor(0xFF67c58c);
+            holder.itemLiulanButn.setBackgroundResource(R.mipmap.touming_lvse_state);
         }else {
-            //helper.setTextColor(R.id.item_liulan_butn,R.color.text_999999);
-            holder.itemLiulanButn.setText("重新观看");
-            holder.itemLiulanButn.setTextColor(R.color.text_999999);
-            holder.itemLiulanButn.setBackgroundResource(R.mipmap.touming_huise_state);
-            holder.itemLiulanState.setText("已看完");
+            if (myLive.getCourse().getIsEnd()==0){
+                holder.itemLiulanButn.setText("继续观看");
+                holder.itemLiulanButn.setTextColor(0xFFffffff);
+                holder.itemLiulanButn.setBackgroundResource(R.mipmap.green_state);
+                holder.itemLiulanState.setText("上次观看至"+ TimeH.formatTime(Long.valueOf(myLive.getPlayPosition()))+"处");
+            }else {
+                //helper.setTextColor(R.id.item_liulan_butn,R.color.text_999999);
+                holder.itemLiulanButn.setText("重新观看");
+                holder.itemLiulanButn.setTextColor(0xFF999999);
+                holder.itemLiulanButn.setBackgroundResource(R.mipmap.touming_huise_state);
+                holder.itemLiulanState.setText("已看完");
+            }
         }
         //按钮点击
         holder.itemLiulanButn.setOnClickListener(new View.OnClickListener() {

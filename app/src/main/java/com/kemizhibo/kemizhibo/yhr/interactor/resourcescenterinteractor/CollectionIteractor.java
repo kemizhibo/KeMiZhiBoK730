@@ -19,7 +19,6 @@ import javax.inject.Inject;
 public class CollectionIteractor {
 
     private IGetDataDelegate<CollectionBean> mDelegate;
-    private Context context;
 
     @Inject
     public CollectionIteractor() {}

@@ -2,6 +2,8 @@ package com.kemizhibo.kemizhibo.yhr.activity.logins;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,9 +17,11 @@ import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 
 import java.io.Serializable;
@@ -37,6 +41,13 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
     TextView loginWangji;
     @BindView(R.id.login_butn)
     Button loginButn;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0)
+                startActivity(intent);
+                finish();
+        };
+    };
 
 
     @Inject
@@ -46,6 +57,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
     private LoginBean loginContentBean;
     private String name;
     private String pwd;
+    private Intent intent;
 
 
     @Override
@@ -81,25 +93,52 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
 
     @Override
     public void onLoginSuccess(LoginBean loginBean) {
-
         if(loginBean.getCode()==0){
             SharedPreferences sp = getSharedPreferences("logintoken", 0);
             SharedPreferences.Editor edit = sp.edit();
             LogUtils.i("LoginActivity", "token" + loginBean.getContent());
             edit.putString("token",loginBean.getContent()).
                     putString("name",name).putString("pwd",pwd).commit();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            getTokenPresenter.getUserData(this,"Bearer "+loginBean.getContent().toString());
         }else {
-            ToastUtils.showToast("账号或用户名错误");
+            ToastUtils.showToast("账号或密码错误");
         }
 
     }
 
     @Override
     public void onLoginError(String msg) {
-       ToastUtils.showToast("用户名或者密码错误" + msg);
+        Transparent.showErrorMessage(this,"无网络!");
+    }
+
+    //获取用户信息
+    @Override
+    public void onUserSuccess(GetUserBean getUserBean) {
+        if (getUserBean.getCode()==0){
+            GetUserBean.ContentBean content = getUserBean.getContent();
+            //存用户ID
+            SharedPreferences sp = getSharedPreferences("logintoken", 0);
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putInt("userId", content.getUserId()).commit();
+            intent = new Intent(LoginActivity.this, MainActivity.class);
+            Transparent.showSuccessMessage(this,"登录成功!");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+    }
+
+    @Override
+    public void onUserError(String msg) {
+
     }
 
     @Override

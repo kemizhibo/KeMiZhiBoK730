@@ -45,7 +45,6 @@ public class TakePhotoApi extends BaseApi<TakePhotoBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtils.e("111111111111111111111111111","解析陈宫"+string);
         return JSON.parseObject(string, TakePhotoBean.class);
     }
 }

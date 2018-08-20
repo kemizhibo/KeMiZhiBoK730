@@ -57,7 +57,7 @@ public class TeacherTrainingPresenterImpl extends BasePresenterImpl<TeacherTrain
     }
 
     @Override
-    public void getTeacherTrainingData(BaseActivity activity, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester, String courseType, String knowledgeId) {
+    public void getTeacherTrainingData(BaseActivity activity,String token, String sellType, String currentPage, String pageSize, String materialEdition, String subjectId, String semester, String courseType, String knowledgeId) {
         teacherTrainingIteractor.loadTeacherTrainingData(activity, new IGetDataDelegate<TeacherTrainingBean>() {
             @Override
             public void getDataSuccess(TeacherTrainingBean teacherTrainingBean) {
@@ -68,6 +68,6 @@ public class TeacherTrainingPresenterImpl extends BasePresenterImpl<TeacherTrain
             public void getDataError(String errmsg) {
                 mPresenterView.onTeacherTrainingError(errmsg);
             }
-        },sellType,currentPage,pageSize,materialEdition,subjectId,semester,courseType,knowledgeId);
+        },token,sellType,currentPage,pageSize,materialEdition,subjectId,semester,courseType,knowledgeId);
     }
 }

@@ -19,7 +19,6 @@ import javax.inject.Inject;
 public class DeleteCommentIteractor {
 
     private IGetDataDelegate<DeleteCommentBean> mDelegate;
-    private Context context;
 
     @Inject
     public DeleteCommentIteractor() {}

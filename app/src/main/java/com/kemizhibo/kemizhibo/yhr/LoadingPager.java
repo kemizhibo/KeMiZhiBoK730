@@ -8,10 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
-
 
 /**
  * Author: yhr
@@ -121,13 +119,13 @@ public abstract class LoadingPager extends FrameLayout {
     /** 创建加载错误界面 */
     private View createErrorView() {
         View view = UIUtils.inflate(R.layout.loading_error_page) ;
-        Button settingBtn = (Button) view.findViewById(R.id.setting);
+        /*Button settingBtn = (Button) view.findViewById(R.id.setting);
         settingBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //进入手机中的设置界面
             }
-        });
+        });*/
         //点击刷新界面
         view.setOnClickListener(new OnClickListener() {
             @Override
@@ -139,7 +137,15 @@ public abstract class LoadingPager extends FrameLayout {
     }
     /** 创建空界面 */
     private View createEmptyView() {
-        return null ;
+        View view = UIUtils.inflate(R.layout.loading_empty_page) ;
+        //点击刷新界面
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show();
+            }
+        });
+        return view ;
     }
 
     /**

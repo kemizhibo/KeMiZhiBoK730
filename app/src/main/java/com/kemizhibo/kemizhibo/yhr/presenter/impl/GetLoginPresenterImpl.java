@@ -4,8 +4,10 @@ import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.GetLoginIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.LoginIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetUserIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.GetLoginPresenter;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 
@@ -21,7 +23,8 @@ public class GetLoginPresenterImpl extends BasePresenterImpl<LoginView> implemen
     //注意public全局
     @Inject
     public GetLoginIteractor getLoginIteractor;
-
+    @Inject
+    public GetUserIteractor getUserIteractor ;
 
     @Inject
     public GetLoginPresenterImpl() {}
@@ -40,6 +43,21 @@ public class GetLoginPresenterImpl extends BasePresenterImpl<LoginView> implemen
                 mPresenterView.onLoginError(errmsg);
             }
         },account,password);
+    }
+
+    @Override
+    public void getUserData(BaseActivity activity, String token) {
+        getUserIteractor.loadGetUserData(activity, new IGetDataDelegate<GetUserBean>() {
+            @Override
+            public void getDataSuccess(GetUserBean getUserBean) {
+                mPresenterView.onUserSuccess(getUserBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onUserError(errmsg);
+            }
+        },token);
     }
 
 }

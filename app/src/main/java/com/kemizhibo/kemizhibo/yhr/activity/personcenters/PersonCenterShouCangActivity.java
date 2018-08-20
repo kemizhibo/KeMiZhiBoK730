@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
@@ -22,25 +25,35 @@ import com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter.CollectionBoxAdap
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearCollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.CollectionBoxPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.CollectionBoxView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
-import butterknife.BindView;
 
-public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxPresenterImpl> implements CollectionBoxView,View.OnClickListener, CollectionBoxAdapter.OnItemClickListener{
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxPresenterImpl> implements CollectionBoxView, View.OnClickListener, CollectionBoxAdapter.OnItemClickListener {
 
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
     @Inject
     public CollectionBoxPresenterImpl collectionBoxPresenter;
+    @BindView(R.id.shoucang_frame_layout)
+    FrameLayout shoucangFrameLayout;
     private CollectionBoxAdapter collectionBoxAdapter = null;
     @BindView(R.id.collection_box_recyclerview)
     RecyclerView collectionBoxRecyclerview;
@@ -55,6 +68,8 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     private int page;
     //上或者下拉的状态判断
     int isUp = 1;
+    //多选下标集合
+    List<String> arr = new ArrayList<>();
     private SharedPreferences sp;
     private String token;
     //多选删除
@@ -66,8 +81,15 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     private boolean editorStatus = false;
     private int index = 0;
     private AlertDialog builder;
-    //多选下标集合
-    Number array[] = new Number[5];
+    private String stringshoucang;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what == 0)
+                startActivity(new Intent(PersonCenterShouCangActivity.this, LoginActivity.class));
+        }
+
+        ;
+    };
 
     @Override
     protected int getLayoutId() {
@@ -84,7 +106,13 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         super.getData();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        collectionBoxPresenter.getCollectionBoxData(this, "Bearer " + token, "1", "12");
+        collectionBoxPresenter.getCollectionBoxData(this, "Bearer " + token, "1", "10");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
     }
 
     private void bindTitleBar() {
@@ -146,11 +174,52 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
 
     @Override
     public void onCollectionBoxSuccess(CollectionBoxBean collectionBoxBean) {
-        mList.clear();
-        mList.addAll(collectionBoxBean.getContent().getData());
+        if (collectionBoxBean.getCode() == 0) {
+            mList.clear();
+            //切换控件
+            shoucangFrameLayout.setVisibility(View.GONE);
+            collectionBoxSpringview.setVisibility(View.VISIBLE);
+            mList.addAll(collectionBoxBean.getContent().getData());
+            if (mList.size()>0){
+                initCollectionData();
+            }else {
+                //切换控件
+                shoucangFrameLayout.setVisibility(View.VISIBLE);
+                collectionBoxSpringview.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout,new FramgmentEmpty()).commit();
+            }
+        }else {
+            //token失效，重新登录
+            Transparent.showErrorMessage(this, "登录失效请重新登录");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+    }
+
+    private void initCollectionData() {
+        //改变数据源之后，多选框状态与数据源做比对
+        for (int i = 0; i < arr.size(); i++) {
+            for (int j = 0; j < mList.size(); j++) {
+                if (arr.get(i).equals(mList.get(j).getId())) {
+                    mList.get(j).setSelect(true);
+                    //更改数据源,
+                    mList.set(j, mList.get(j));
+                }
+            }
+        }
         collectionBoxAdapter = new CollectionBoxAdapter(this);
         initListener();
-        GridLayoutManager layoutManage = new GridLayoutManager(this,2);
+        GridLayoutManager layoutManage = new GridLayoutManager(this, 2);
         collectionBoxRecyclerview.setLayoutManager(layoutManage);
         //上拉下拉动画效果
         collectionBoxRecyclerview.setItemAnimator(new DefaultItemAnimator());
@@ -190,8 +259,8 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         });
         collectionBoxSpringview.setHeader(new AliHeader(this, R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
         collectionBoxSpringview.setFooter(new AliFooter(this, true));
-
     }
+
     //点击事件
     private void initListener() {
         collectionBoxAdapter.setOnItemClickListener(this);
@@ -203,14 +272,58 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     public void onCollectionBoxError(String msg) {
 
     }
+
     //清空收藏夹
     @Override
     public void onClearCollectionBoxSuccess(ClearCollectionBoxBean clearCollectionBoxBean) {
-
+        if (clearCollectionBoxBean.getCode() == 0) {
+            for (int i = collectionBoxAdapter.getMyLiveList().size(), j = 0; i > j; i--) {
+                CollectionBoxBean.ContentBean.DataBean dataBean = collectionBoxAdapter.getMyLiveList().get(i - 1);
+                if (dataBean.isSelect()) {
+                    collectionBoxAdapter.getMyLiveList().remove(dataBean);
+                    index--;
+                }
+            }
+            index = 0;
+            setBtnBackground(index);
+            if (collectionBoxAdapter.getMyLiveList().size() == 0) {
+                frameLayout.setVisibility(View.GONE);
+            }
+            collectionBoxPresenter.getCollectionBoxData(this, "Bearer " + token, "1", "10");
+            collectionBoxAdapter.notifyDataSetChanged();
+            builder.dismiss();
+        }
     }
 
     @Override
     public void onClearCollectionBoxError(String msg) {
+
+    }
+
+    //取消一个或者多个回调
+    @Override
+    public void onGetCollectionSuccess(CollectionBean collectionBean) {
+        LogUtils.i("123456", collectionBean.getCode() + "");
+        if (collectionBean.getCode() == 0) {
+            for (int i = collectionBoxAdapter.getMyLiveList().size(), j = 0; i > j; i--) {
+                CollectionBoxBean.ContentBean.DataBean dataBean = collectionBoxAdapter.getMyLiveList().get(i - 1);
+                if (dataBean.isSelect()) {
+                    collectionBoxAdapter.getMyLiveList().remove(dataBean);
+                    index--;
+                }
+            }
+            index = 0;
+            setBtnBackground(index);
+            if (collectionBoxAdapter.getMyLiveList().size() == 0) {
+                frameLayout.setVisibility(View.GONE);
+            }
+            collectionBoxAdapter.notifyDataSetChanged();
+            builder.dismiss();
+        }
+    }
+
+    @Override
+    public void onGetCollectionError(String msg) {
 
     }
 
@@ -252,7 +365,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
      * 删除逻辑
      */
     private void deleteVideo() {
-        if (index == 0){
+        if (index == 0) {
             deleteButn.setEnabled(false);
             return;
         }
@@ -281,16 +394,17 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             @Override
             public void onClick(View v) {
                 //删除接口
-                if (selectAllButn.getText().equals("取消全选")){
-                    //请求取消全部浏览记录
-
-                }else {
-                    //否则存数组删除多个
-                    //liuLanPresenter.getClearOneOrMoreLiuLanData(PersonCenterLiuLanActivity.this,"Bearer "+token,);
+                if (selectAllButn.getText().equals("取消全选")) {
+                    //请求取消全部收藏
+                    collectionBoxPresenter.getClearCollectionBoxData(PersonCenterShouCangActivity.this, "Bearer " + token);
+                } else {
+                    //否则取消一个或多个收藏
+                    collectionBoxPresenter.getCollectionData(PersonCenterShouCangActivity.this, "Bearer " + token, stringshoucang);
                 }
             }
         });
     }
+
     //111
     @Override
     public void onClick(View view) {
@@ -303,13 +417,14 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 break;
         }
     }
+
     //111
     @Override
     public void onItemClickListener(int pos, List<CollectionBoxBean.ContentBean.DataBean> myLiveList) {
         CollectionBoxBean.ContentBean.DataBean myLive = myLiveList.get(pos);
         if (editorStatus) {
             if (NoFastClickUtils.isFastClick()) {
-            }else {
+            } else {
                 boolean isSelect = myLive.isSelect();
                 if (!isSelect) {
                     index++;
@@ -324,11 +439,15 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     isSelectAll = false;
                     selectAllButn.setText("全选");
                 }
+                stringshoucang = "";
+                for (int i = 0; i < arr.size(); i++) {
+                    stringshoucang = stringshoucang + arr.get(i) + ",";
+                }
                 setBtnBackground(index);
                 collectionBoxAdapter.notifyDataSetChanged();
             }
             //展示的时候只多选生效否则子条目点击生效
-        }else {
+        } else {
             if (NoFastClickUtils.isFastClick()) {
             } else {
                 if (myLive.getCourse().getCourseType().equals("SCIENCEROOM")) {
@@ -338,14 +457,14 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     intent.putExtras(bundle);
                     //这里一定要获取到所在Activity再startActivity()；
                     this.startActivity(intent);
-                }else if (myLive.getCourse().getIsImageText() == 1) {
+                } else if (myLive.getCourse().getIsImageText() == 1) {
                     Intent intent = new Intent(this, PictrueDetailsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
                     intent.putExtras(bundle);
                     //这里一定要获取到所在Activity再startActivity()；
                     this.startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(this, YingXinagVideoDetailsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
@@ -356,4 +475,5 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             }
         }
     }
+
 }

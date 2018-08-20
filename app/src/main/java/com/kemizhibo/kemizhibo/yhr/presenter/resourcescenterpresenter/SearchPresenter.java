@@ -12,5 +12,5 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.SearchIView;
  */
 public interface SearchPresenter extends BasePresenter<SearchIView> {
 
-    void getSearchData(BaseActivity activity, String sellType, String currentPage, String pageSize, String courseName);
+    void getSearchData(BaseActivity activity, String token,String sellType, String currentPage, String pageSize, String courseName);
 }

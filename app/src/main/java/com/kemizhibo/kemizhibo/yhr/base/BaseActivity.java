@@ -10,14 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-
 import java.lang.reflect.Field;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 

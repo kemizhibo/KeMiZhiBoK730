@@ -20,7 +20,6 @@ import javax.inject.Inject;
 public class PutCommentIteractor {
 
     private IGetDataDelegate<CommentDetailBean> mDelegate;
-    private Context context;
 
     @Inject
     public PutCommentIteractor() {}
@@ -39,7 +38,6 @@ public class PutCommentIteractor {
         @Override
         public void onNext(CommentDetailBean commentDetailBean) {
             mDelegate.getDataSuccess(commentDetailBean);
-            LogUtils.e(commentDetailBean.toString());
         }
 
         @Override

@@ -9,7 +9,7 @@ package com.kemizhibo.kemizhibo.yhr.utils;
 public class NoFastClickUtils {
     private  static long lastClickTime=0;//上次点击的时间
 
-    private  static int spaceTime = 500;//时间间隔
+    private  static int spaceTime = 1000;//时间间隔
 
     public  static boolean isFastClick() {
 

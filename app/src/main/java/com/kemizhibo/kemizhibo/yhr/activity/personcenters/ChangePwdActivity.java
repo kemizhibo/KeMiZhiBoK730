@@ -96,6 +96,10 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
     @Override
     public void onChangePwdSuccess(ChangePwdBean changePwdBean) {
          if (changePwdBean.getCode()==0){
+             //更改sp中的密码
+             SharedPreferences sp = getSharedPreferences("logintoken", 0);
+             SharedPreferences.Editor edit = sp.edit();
+             edit.putString("pwd",newpwd).commit();
              Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
              startActivity(intent);
              finish();

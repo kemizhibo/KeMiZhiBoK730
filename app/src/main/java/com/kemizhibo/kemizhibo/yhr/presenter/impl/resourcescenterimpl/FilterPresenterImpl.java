@@ -46,7 +46,7 @@ public class FilterPresenterImpl extends BasePresenterImpl<FilterView> implement
     }
 
     @Override
-    public void getYingXiangFragmentData(BaseActivity activity,String sellType, String currentPage,String pageSize, String materialEdition,String subjectId, String semester,String knowledgeId) {
+    public void getYingXiangFragmentData(BaseActivity activity,String token,String sellType, String currentPage,String pageSize, String materialEdition,String subjectId, String semester,String knowledgeId) {
         yingXiangFragmentIteractor.loadYingXiangFragmentData(activity, new IGetDataDelegate<YingXiangFragmentBean>() {
             @Override
             public void getDataSuccess(YingXiangFragmentBean yingXiangFragmentBean) {
@@ -57,7 +57,7 @@ public class FilterPresenterImpl extends BasePresenterImpl<FilterView> implement
             public void getDataError(String errmsg) {
                 mPresenterView.onYingXiangFragmentError(errmsg);
             }
-        },sellType,currentPage,pageSize,materialEdition,subjectId,semester,knowledgeId);
+        },token,sellType,currentPage,pageSize,materialEdition,subjectId,semester,knowledgeId);
     }
 
 }

@@ -8,6 +8,12 @@
     tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity">
     <include layout="@layout/pubic_title_bar"/>
     <include layout="@layout/line"/>
+    <FrameLayout
+        android:id="@+id/liulan_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
     <com.liaoinstan.springview.widget.SpringView
         android:layout_gravity="center_horizontal"
         android:id="@+id/liulan_springview"

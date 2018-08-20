@@ -60,4 +60,9 @@ public class DefinitionIjkVideoView extends IjkVideoView implements DefinitionMe
         return null;
     }
 
+   /* @Override
+    protected void startPrepare(boolean needReset) {
+        super.startPrepare(needReset);
+        setPlayerState();
+    }*/
 }

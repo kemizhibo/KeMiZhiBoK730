@@ -44,7 +44,6 @@ public class YingXiangDetailsVideoApi extends BaseApi<YingXiangDetailsVideoBean>
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtils.e(string);
         return JSON.parseObject(string, YingXiangDetailsVideoBean.class);
     }
 }

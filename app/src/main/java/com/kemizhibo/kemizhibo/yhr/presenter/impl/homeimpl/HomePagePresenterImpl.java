@@ -28,7 +28,6 @@ public class HomePagePresenterImpl extends BasePresenterImpl<HomePageView> imple
     @Inject
     public HomePageIteractor homePageIteractor ;
 
-
     @Inject
     public HomePagePresenterImpl() {}
 

@@ -20,6 +20,7 @@ import rx.Observable;
 
 public class TeacherTrainingApi extends BaseApi<TeacherTrainingBean> {
     //声明参数
+    private String token;
     private String sellType;
     private String page;
     private String pageSize;
@@ -28,8 +29,9 @@ public class TeacherTrainingApi extends BaseApi<TeacherTrainingBean> {
     private String semester;
     private String courseType;
     private String knowledgeId;
-    public TeacherTrainingApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String sellType, String page, String pageSize, String materialEdition, String subjectId, String semester,String courseType, String knowledgeId) {
+    public TeacherTrainingApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token,String sellType, String page, String pageSize, String materialEdition, String subjectId, String semester,String courseType, String knowledgeId) {
         super(listener, rxAppCompatActivity);
+        this.token = token ;
         this.sellType = sellType ;
         this.page = page ;
         this.pageSize = pageSize ;
@@ -44,7 +46,7 @@ public class TeacherTrainingApi extends BaseApi<TeacherTrainingBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         HttpGetService httpGetService = retrofit.create(HttpGetService.class);
-        return httpGetService.getTeacherTrainingData(sellType,page,pageSize,materialEdition,subjectId,semester,courseType,knowledgeId);
+        return httpGetService.getTeacherTrainingData(token,sellType,page,pageSize,materialEdition,subjectId,semester,courseType,knowledgeId);
     }
 
     @Override
@@ -56,7 +58,6 @@ public class TeacherTrainingApi extends BaseApi<TeacherTrainingBean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtils.e(string);
         return JSON.parseObject(string, TeacherTrainingBean.class);
     }
 }

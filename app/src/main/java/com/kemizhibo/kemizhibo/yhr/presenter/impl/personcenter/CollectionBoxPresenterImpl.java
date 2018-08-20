@@ -7,10 +7,12 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearCollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ClearCollectionBoxIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.CollectionBoxIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetChangeUserIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetUserIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.CollectionIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.CollectionBoxPresenter;
 import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.GetUserPresenter;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.CollectionBoxView;
@@ -30,6 +32,9 @@ public class CollectionBoxPresenterImpl extends BasePresenterImpl<CollectionBoxV
 
     @Inject
     public ClearCollectionBoxIteractor clearCollectionBoxIteractor ;
+
+    @Inject
+    public CollectionIteractor collectionIteractor ;
 
     @Inject
     public CollectionBoxPresenterImpl() {}
@@ -62,5 +67,19 @@ public class CollectionBoxPresenterImpl extends BasePresenterImpl<CollectionBoxV
                 mPresenterView.onClearCollectionBoxError(errmsg);
             }
         },token);
+    }
+
+    @Override
+    public void getCollectionData(BaseActivity activity, String token,String courseId ) {
+        collectionIteractor.loadCollectionData(activity, new IGetDataDelegate<CollectionBean>() {
+            @Override
+            public void getDataSuccess(CollectionBean collectionBean) {
+                mPresenterView.onGetCollectionSuccess(collectionBean);
+            }
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onGetCollectionError(errmsg);
+            }
+        },token,courseId);
     }
 }

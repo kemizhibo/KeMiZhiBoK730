@@ -3,20 +3,13 @@ package com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter;
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearLiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
-import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ChangePwdIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ClearLiuLanIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.ClearOneOrMoreLiuLanIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.LiuLanIteractor;
-import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.ChangePwdPresenter;
 import com.kemizhibo.kemizhibo.yhr.presenter.personcenterpresenter.LiuLanPresenter;
-import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.LiuLanView;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
 /**
@@ -68,7 +61,7 @@ public class LiuLanPresenterImpl extends BasePresenterImpl<LiuLanView> implement
     }
 
     @Override
-    public void getClearOneOrMoreLiuLanData(BaseActivity activity, String token, List ids) {
+    public void getClearOneOrMoreLiuLanData(BaseActivity activity, String token, String[] array) {
         clearOneOrMoreLiuLanIteractor.loadClearOneOrMoreLiuLanData(activity, new IGetDataDelegate<ClearLiuLanBean>() {
             @Override
             public void getDataSuccess(ClearLiuLanBean clearLiuLanBean) {
@@ -79,6 +72,6 @@ public class LiuLanPresenterImpl extends BasePresenterImpl<LiuLanView> implement
             public void getDataError(String errmsg) {
                 mPresenterView.onClearOneOrMoreLiuLanError(errmsg);
             }
-        },token,ids);
+        },token,array);
     }
 }

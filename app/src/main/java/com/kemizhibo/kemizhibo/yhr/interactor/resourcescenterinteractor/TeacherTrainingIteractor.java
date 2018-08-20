@@ -1,14 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor;
 
-import android.content.Context;
-
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.resourcescenterapi.TeacherTrainingApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
-
 import javax.inject.Inject;
 
 /**
@@ -19,7 +16,6 @@ import javax.inject.Inject;
 public class TeacherTrainingIteractor {
 
     private IGetDataDelegate<TeacherTrainingBean> mDelegate;
-    private Context context;
 
     @Inject
     public TeacherTrainingIteractor() {}
@@ -27,9 +23,9 @@ public class TeacherTrainingIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadTeacherTrainingData(BaseActivity activity, IGetDataDelegate<TeacherTrainingBean> mDelegate,String sellType,String currentPage,String pageSize,String materialEdition,String subjectId,String semester,String courseType,String knowledgeId){
+    public void loadTeacherTrainingData(BaseActivity activity, IGetDataDelegate<TeacherTrainingBean> mDelegate,String token,String sellType,String currentPage,String pageSize,String materialEdition,String subjectId,String semester,String courseType,String knowledgeId){
         this.mDelegate = mDelegate;
-        TeacherTrainingApi teacherTrainingApi = new TeacherTrainingApi(listener,activity,sellType,currentPage,pageSize,materialEdition,subjectId,semester,courseType,knowledgeId);
+        TeacherTrainingApi teacherTrainingApi = new TeacherTrainingApi(listener,activity,token,sellType,currentPage,pageSize,materialEdition,subjectId,semester,courseType,knowledgeId);
         HttpManager manager = HttpManager.getInstance();
         manager.doHttpDeal(teacherTrainingApi);
     }

@@ -10,6 +10,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
+import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
@@ -66,11 +67,25 @@ public class SplashActivity extends BaseMvpActivity<GetLoginPresenterImpl> imple
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
+        }else {
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
     @Override
     public void onLoginError(String msg) {
+
+    }
+
+    @Override
+    public void onUserSuccess(GetUserBean getUserBean) {
+
+    }
+
+    @Override
+    public void onUserError(String msg) {
 
     }
 

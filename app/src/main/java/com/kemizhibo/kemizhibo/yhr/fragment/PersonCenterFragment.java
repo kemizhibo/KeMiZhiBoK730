@@ -3,6 +3,8 @@ package com.kemizhibo.kemizhibo.yhr.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
@@ -20,6 +23,7 @@ import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.PersonCenterBeiShouKeJiLuActivity;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterGuanLiActivity;
@@ -27,11 +31,13 @@ import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActi
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSheZhiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.TakePhotoActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 
@@ -52,7 +58,6 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     public GetUserPresenterImpl getUserPresenter;
     @BindView(R.id.guanli_layout)
     LinearLayout guanliLayout;
-    Unbinder unbinder;
     private BottomSheetDialog dialog;
     @BindView(R.id.person_bianji_butn)
     ImageView personBianjiButn;
@@ -74,7 +79,12 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     private String token;
     private GetUserBean.ContentBean userData;
     private TextView qingchuhuancun_txt;
-
+    private TextView school;
+    private TextView grade;
+    private TextView typr;
+    private SimpleDraweeView simpleDraweeView;
+    private Intent intent;
+    private Bundle bundle;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -88,17 +98,16 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         sp = getContext().getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         getUserPresenter.getUserData(mActivity, "Bearer " + token);
-        LogUtils.i("123456", token);
     }
 
     @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity, R.layout.fragment_personcenter);
         ButterKnife.bind(this, view);
-        TextView school = view.findViewById(R.id.person_school_name);
-        TextView grade = view.findViewById(R.id.person_student_grade);
-        TextView typr = view.findViewById(R.id.person_student_type);
-        SimpleDraweeView simpleDraweeView = view.findViewById(R.id.person_touxiang);
+        school = view.findViewById(R.id.person_school_name);
+        grade = view.findViewById(R.id.person_student_grade);
+        typr = view.findViewById(R.id.person_student_type);
+        simpleDraweeView = view.findViewById(R.id.person_touxiang);
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(userData.getPicImg())
                 .setAutoPlayAnimations(true)
@@ -121,8 +130,29 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
 
     @Override
     public void onUserSuccess(GetUserBean getUserBean) {
-        setState(LoadingPager.LoadResult.success);
-        userData = getUserBean.getContent();
+        if (getUserBean.getCode()==0){
+            userData = getUserBean.getContent();
+            if (userData==null){
+                setState(LoadingPager.LoadResult.empty);
+            }else {
+                setState(LoadingPager.LoadResult.success);
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setUri(userData.getPicImg())
+                        .setAutoPlayAnimations(true)
+                        .build();
+                if (simpleDraweeView!=null){
+                    simpleDraweeView.setController(controller);
+                    school.setText(userData.getSchool());
+                    grade.setText(userData.getGrade());
+                    typr.setText(userData.getSubject());
+                }
+            }
+
+        }else {
+            //token失效，重新登录
+            setState(LoadingPager.LoadResult.error);
+            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
+        }
     }
 
     @Override
@@ -155,7 +185,12 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
                 break;
             case R.id.person_touxiang:
                 //点击跳转
-                startActivity(new Intent(getActivity(), TakePhotoActivity.class));
+                intent = new Intent(getActivity().getApplicationContext(), TakePhotoActivity.class);
+                bundle = new Bundle();
+                bundle.putString("photo", String.valueOf(userData.getPicImg()));
+                intent.putExtras(bundle);
+                //这里一定要获取到所在Activity再startActivity()；
+                getActivity().startActivity(intent);
                 break;
             case R.id.shoucang_layout:
                 startActivity(new Intent(getActivity(), PersonCenterShouCangActivity.class));

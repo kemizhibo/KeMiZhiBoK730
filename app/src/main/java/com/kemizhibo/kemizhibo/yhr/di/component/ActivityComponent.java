@@ -6,6 +6,7 @@ import android.content.Context;
 import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePwdActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.LectureActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActivity;
@@ -60,4 +61,5 @@ public interface ActivityComponent {
     void inject(ChangePwdActivity activity);
     void inject(PersonCenterSheZhiActivity activity);
     void inject(PersonCenterLiuLanActivity activity);
+    void inject(LectureActivity activity);
 }
