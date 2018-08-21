@@ -20,6 +20,8 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
+import java.util.List;
+
 import butterknife.BindView;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
@@ -62,8 +64,7 @@ public class MyFragment extends Fragment {
         Bundle arguments = getArguments();
         courseid = arguments.getInt("courseid");
         moduleid = arguments.getInt("moduleid");
-       // RequestUtil.requestSuCaiVideo((Activity) getContext(), courseid,jzVideoPlayerStandard);
-        adjshipin.setText("ANR");
+        RequestUtil.requestSuCaiVideo((Activity) getContext(), courseid,jzVideoPlayerStandard);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,4 +88,9 @@ public class MyFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 }

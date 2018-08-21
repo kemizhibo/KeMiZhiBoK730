@@ -38,6 +38,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
     //定义样式常量，注意常量值要从0开始
     private static final int TYPE_PPT = 1;//ppt
     private static final int TYPE_excel = 0;//excal
+    private static final int TYPE_WORD = 2;//excal
     private int courseId;
     private int moduleId;
 
@@ -64,7 +65,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 5;
+        return 3;
     }
 
     @Override
@@ -72,6 +73,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         Log.i("-----", otherBeanList.get(position).getDocType() + "");
         if (otherBeanList.get(position).getDocType() == 3) {
             return TYPE_PPT;
+        }else  if (otherBeanList.get(position).getDocType() == 1) {
+            return TYPE_WORD;
         }
 
         return TYPE_excel;
@@ -101,13 +104,20 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     holder.mdownppt1 = (TextView) convertView.findViewById(R.id.mdownppt);
                     convertView.setTag(holder);
                     break;
+                case TYPE_WORD://文档
+                    convertView = View.inflate(context, R.layout.wendang_item, null);
+                    holder.mwendangother = (TextView) convertView.findViewById(R.id.mword);
+                    holder.mcheck = (TextView) convertView.findViewById(R.id.mcheck);
+                    holder.mdown = (TextView) convertView.findViewById(R.id.mdown);
+                    convertView.setTag(holder);
+                    break;
                 default:
                     break;
             }
         } else {
             holder = (MyViewHolder) convertView.getTag();
         }
-        Log.i("---itemViewType--", "" + itemViewType);
+        Log.i("---otheritemViewType--", "" + itemViewType);
         if (itemViewType == TYPE_PPT) {
             moduleId = otherBeanList.get(position).getModuleId();
             RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
@@ -123,7 +133,10 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             });
         } else if (itemViewType == TYPE_excel) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);
+            RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 2, moduleId);
+        }else if (itemViewType == TYPE_WORD) {
+            moduleId = otherBeanList.get(position).getModuleId();
+            RequestUtil.requestDoc((Activity) context, holder.mwendangother, holder.mdown, holder.mcheck, 1, moduleId);
         }
         return convertView;
     }

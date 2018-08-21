@@ -14,7 +14,7 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 
 public  class MyViewHolder {
-    public static TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline,mdownppt1;
+    public static TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline,mdownppt1,mwendangother;
     public static JZVideoPlayerStandard jcVideoPlayer,jcVideoPlayer_video;
     public static TextView mwendang;
     public static Button mbtn;

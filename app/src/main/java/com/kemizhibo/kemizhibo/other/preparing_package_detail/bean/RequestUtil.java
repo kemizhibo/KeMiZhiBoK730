@@ -136,7 +136,7 @@ public class RequestUtil {
                         public void run() {
                             String docName = bean.getContent().getFileName();
                             final String url = bean.getContent().getUrl();
-                            Log.i("-code---", bean.getCode() + "");
+                            Log.i("-docName---", docName+ "");
                             Log.i("-docurl---", bean.getContent().getUrl() + "");
                             mwendang.setText(docName);
                             mdown.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +163,6 @@ public class RequestUtil {
             }
         });
     }
-
     public static void getDocMessage(final Activity context, String docId, final TextView holder, final int i) {
         Map map = new HashMap();
         //  map.put("docId", docId);
@@ -276,9 +275,6 @@ public class RequestUtil {
             }
         });
     }
-
-    public static List<String> mpicurls = new ArrayList<>();
-    public static List<String> mvideourls = new ArrayList<>();
 
     public static void requestSuCaiPic(final Activity context, final int moduleId, final int itemViewType, final SimpleDraweeView simpleDraweeView) {
         Map map = new HashMap();
