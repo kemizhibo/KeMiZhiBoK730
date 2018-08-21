@@ -125,7 +125,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         filterPop = FilterPopUtils.show(getActivity(), materials, grades, semesters, materialSelectI, gradeSelectI, semesterSelectI, new FilterPopUtils.OnPopIndicatorClickListener() {
             @Override
             public void onClick(String category, int position) {
-                filterPop.dismiss();
+                //filterPop.dismiss();
                 switch (category) {
                     case FilterPopUtils.CATEGORY_MATERIAL:
                         materialId = String.valueOf(filterBean.getContent().getMaterial().get(position).getSubjectId());
