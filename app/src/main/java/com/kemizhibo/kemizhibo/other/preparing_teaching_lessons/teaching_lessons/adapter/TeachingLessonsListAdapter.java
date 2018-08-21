@@ -15,6 +15,9 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.CommonViewHolder
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.bean.TeachingLessonsBean;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -88,7 +91,17 @@ public class TeachingLessonsListAdapter extends BaseAdapter {
             holder.childAccount.setText(dataBean.getPrepareName());
         holder.desc.setText(dataBean.getMaterialName() + " " + "(" + dataBean.getGradeName() + ("1".equals(dataBean.getSemester()) ? "上" : "下") + ")");
         holder.name.setText(dataBean.getCourseName());
-        holder.time.setText(dataBean.getCreateTime());
+        String time = dataBean.getCreateTime();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = dateFormat.parse(dataBean.getCreateTime());
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String format = dateFormat2.format(date);
+            time = format;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.time.setText(time);
         holder.docName.setText(dataBean.getDocName());
         if(holder.statusText != null)
             holder.statusText.setVisibility(View.GONE);

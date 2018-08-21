@@ -63,7 +63,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     private PreparingPackageDetailPresenter detailPresenter;
     private int courseId;
     Handler mHandler = new Handler();
-    private PreparingDetailAdapter preparingDetailAdapter;
+    //private PreparingDetailAdapter preparingDetailAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -127,8 +127,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     listViewone.setAdapter(preparingDetailOneAdapter);
                     Log.i("---getMaterial-", bean.getContent().getAppMaterial().getKemiPic().size() + "");
                     //if (null==preparingDetailAdapter){
-                        preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
-                        listViewsu.setAdapter(preparingDetailAdapter);
+                     PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
+                    listViewsu.setAdapter(preparingDetailAdapter);
                     /*}else {
                         preparingDetailAdapter.notifyDataSetChanged();
                     }*/

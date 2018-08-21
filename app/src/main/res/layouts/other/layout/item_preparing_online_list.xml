@@ -49,9 +49,9 @@
                 android:text="去授课"/>
 
             <ImageView
-                android:layout_width="@dimen/x30"
-                android:layout_height="@dimen/x30"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_width="@dimen/x20"
+                android:layout_height="@dimen/x20"
+                android:src="@drawable/right_img"/>
 
         </LinearLayout>
 

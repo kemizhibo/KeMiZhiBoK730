@@ -101,7 +101,7 @@
 
                     <ImageView
                         android:layout_marginLeft="@dimen/x10"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/right_img"
                         android:layout_width="@dimen/x15"
                         android:layout_height="@dimen/x15"
                         android:scaleType="fitXY"/>

@@ -16,6 +16,9 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.CommonViewHolder
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.bean.PreparingLessonsBean;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,12 +92,24 @@ public class PreparingLessonsListAdapter extends BaseAdapter {
             holder.childAccount.setText(dataBean.getPrepareName());
         holder.desc.setText(dataBean.getMaterialName() + " "  + "(" + dataBean.getGradeName() + ("1".equals(dataBean.getSemester()) ? "上" : "下") + ")");
         holder.name.setText((String) dataBean.getCourseName());
-        holder.time.setText(dataBean.getCreateTime());
+        String time = dataBean.getCreateTime();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = dateFormat.parse(dataBean.getCreateTime());
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String format = dateFormat2.format(date);
+            time = format;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.time.setText(time);
         holder.docName.setText(dataBean.getDocName());
         if(null != holder.statusText)
             holder.statusText.setText(dataBean.getPlanIsFinish() == 1 ? "未授课" : "已授课");
         if(null != holder.statusText)
-            holder.statusText.setTextColor(dataBean.getPlanIsFinish() == 1 ? context.getResources().getColor(R.color.filter_text_select) : Color.GRAY);
+            holder.statusText.setTextColor(dataBean.getPlanIsFinish() == 1 ? Color.GRAY : context.getResources().getColor(R.color.filter_text_select));
+        if(null != holder.statusImg)
+            holder.statusImg.setImageResource(dataBean.getPlanIsFinish() == 1 ? R.drawable.no_teach : R.drawable.already_teach);
 
         return convertView;
     }
