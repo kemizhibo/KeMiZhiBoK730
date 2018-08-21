@@ -61,7 +61,7 @@ public class LiuLanPresenterImpl extends BasePresenterImpl<LiuLanView> implement
     }
 
     @Override
-    public void getClearOneOrMoreLiuLanData(BaseActivity activity, String token, String[] array) {
+    public void getClearOneOrMoreLiuLanData(BaseActivity activity, String token, String array) {
         clearOneOrMoreLiuLanIteractor.loadClearOneOrMoreLiuLanData(activity, new IGetDataDelegate<ClearLiuLanBean>() {
             @Override
             public void getDataSuccess(ClearLiuLanBean clearLiuLanBean) {

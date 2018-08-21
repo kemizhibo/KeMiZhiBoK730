@@ -27,7 +27,7 @@ public class ClearOneOrMoreLiuLanIteractor {
     /**
      * 执行网络操作，获取数据
      */
-    public void loadClearOneOrMoreLiuLanData(BaseActivity activity, IGetDataDelegate<ClearLiuLanBean> mDelegate, String token,  String[] array){
+    public void loadClearOneOrMoreLiuLanData(BaseActivity activity, IGetDataDelegate<ClearLiuLanBean> mDelegate, String token,  String array){
         this.mDelegate = mDelegate;
         ClearOneOrMoreLiuLanApi clearOneOrMoreLiuLanApi = new ClearOneOrMoreLiuLanApi(listener,activity,token,array);
         HttpManager manager = HttpManager.getInstance();

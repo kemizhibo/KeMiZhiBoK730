@@ -8,5 +8,5 @@ package com.kemizhibo.kemizhibo.yhr.base.mvpbase;
 
 public interface BaseView {
 
-    void shotToast(String msg) ;
+    //void shotToast(String msg) ;
 }

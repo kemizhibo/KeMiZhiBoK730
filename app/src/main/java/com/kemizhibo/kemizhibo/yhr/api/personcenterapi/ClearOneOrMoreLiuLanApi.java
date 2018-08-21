@@ -20,8 +20,8 @@ import rx.Observable;
 
 public class ClearOneOrMoreLiuLanApi extends BaseApi<ClearLiuLanBean> {
     String token;
-    String[] array;
-    public ClearOneOrMoreLiuLanApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, String[] array) {
+    String array;
+    public ClearOneOrMoreLiuLanApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity, String token, String array) {
         super(listener, rxAppCompatActivity);
         this.token = token;
         this.array = array;

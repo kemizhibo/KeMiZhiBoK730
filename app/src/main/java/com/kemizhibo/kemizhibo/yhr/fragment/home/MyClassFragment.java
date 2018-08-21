@@ -189,27 +189,31 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         if (searchBean.getCode()==0){
-            myclassBean.clear();
-            myclassBean.addAll(searchBean.getContent().getReturnPrepare());
-            if (myclassBean==null){
-                setState(LoadingPager.LoadResult.empty);
-            }else {
-                setState(LoadingPager.LoadResult.success);
+            if (isUp == 1) {
+                myclassBean.clear();
+                myclassBean.addAll(searchBean.getContent().getReturnPrepare());
+                if (myclassBean==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        myClassAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if (isUp == 2) {
+                myclassBean.addAll(searchBean.getContent().getReturnPrepare());
+                if (myclassBean==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        myClassAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }else {
             setState(LoadingPager.LoadResult.error);
             Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
         }
     }
 

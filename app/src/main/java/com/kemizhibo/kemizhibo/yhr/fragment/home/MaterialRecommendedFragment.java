@@ -168,17 +168,31 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
 
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
-        //成功的状态显示UI操作,添加数据
         if (searchBean.getCode()==0){
-            materialBean.clear();
-            materialBean.addAll(searchBean.getContent().getReturnMaterial());
-            if (materialBean==null){
-                setState(LoadingPager.LoadResult.empty);
-            }else {
-                setState(LoadingPager.LoadResult.success);
+            if (isUp == 1) {
+                materialBean.clear();
+                materialBean.addAll(searchBean.getContent().getReturnMaterial());
+                if (materialBean==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        materialRecommendedAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if (isUp == 2) {
+                materialBean.addAll(searchBean.getContent().getReturnMaterial());
+                if (materialBean==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        materialRecommendedAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }else {
-            //token失效，重新登录
+            setState(LoadingPager.LoadResult.error);
             Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
         }
     }

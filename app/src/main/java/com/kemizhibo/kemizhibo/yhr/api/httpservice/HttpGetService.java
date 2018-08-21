@@ -146,7 +146,7 @@ public interface HttpGetService {
     //删除一个或者多个浏览记录
     @GET("kemiapi/user/watchHistory/deleteForB")
     Observable<ResponseBody> getClearOneOrMoreLiuLanData(@Header("Authorization") String token,
-                                                         @Query("ids") String[] array);
+                                                         @Query("ids") String array);
 
     //清空收藏夹
     @POST("kemiapi/course/shortvideo/clearFavoritesForB")

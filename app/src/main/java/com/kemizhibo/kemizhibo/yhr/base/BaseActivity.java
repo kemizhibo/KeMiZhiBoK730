@@ -91,10 +91,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseVi
         }
         startActivity(intent);
     }
-    @Override
+    /*@Override
     public void shotToast(String msg) {
         showToast(msg);
-    }
+    }*/
     /**
      * 设置沉浸式状态栏
      */

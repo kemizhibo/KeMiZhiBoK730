@@ -56,10 +56,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         }
     }
 
-    @Override
+    /*@Override
     public void shotToast(String msg) {
         mActivity.shotToast(msg);
-    }
+    }*/
 
     public abstract View createSuccessView() ;
     public abstract void load();

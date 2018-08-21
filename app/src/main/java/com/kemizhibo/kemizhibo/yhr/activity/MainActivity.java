@@ -21,6 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ResourceLibraryFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 
 import java.util.ArrayList;
@@ -190,7 +191,7 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
                 finish();
             } else {
                 TOUCH_TIME = System.currentTimeMillis();
-                shotToast("再按一次退出" + getString(R.string.app_name));
+                ToastUtils.showToast("再按一次退出" + getString(R.string.app_name));
             }
         }
         return true;

@@ -55,10 +55,10 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     LinearLayout liveRoomShaixuanButn;
     @BindView(R.id.live_room_shaixuan_jiaocai_recyclerview)
     RecyclerView liveRoomShaixuanJiaocaiRecyclerview;
-    @BindView(R.id.live_room_shaixuan_nianji_recyclerview)
+    /*@BindView(R.id.live_room_shaixuan_nianji_recyclerview)
     RecyclerView liveRoomShaixuanNianjiRecyclerview;
     @BindView(R.id.live_room_shaixuan_xueqi_recyclerview)
-    RecyclerView liveRoomShaixuanXueqiRecyclerview;
+    RecyclerView liveRoomShaixuanXueqiRecyclerview;*/
     @BindView(R.id.live_room_shaixuan_fenlei_recyclerview)
     RecyclerView liveRoomShaixuanFenleiRecyclerview;
     @BindView(R.id.live_room_xiala_dropDownMenu)
@@ -215,6 +215,10 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     public void onLiveRoomSuccess(LiveRoomBean liveRoomBean) {
         if (liveRoomBean.getCode()==0){
             if (isUp == 1) {
+                materialEdition="";
+                subjectId="";
+                semester="";
+                knowledgeId="";
                 liveDataBean.clear();
                 liveDataBean.addAll(liveRoomBean.getContent().getData());
                 if (liveDataBean==null){
@@ -268,8 +272,8 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     private void showPopTopWithDarkBg() {
         //处理popWindow 显示筛选内容
         setDataFilterMaterial();
-        setDataFilterGrade();
-        setDataFilterSemester();
+        /*setDataFilterGrade();
+        setDataFilterSemester();*/
         setDataFilterImgScience();
     }
 
@@ -305,7 +309,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
         liveRoomShaixuanFenleiRecyclerview.setAdapter(filterImgScienceAdapter);
     }
 
-    private void setDataFilterSemester() {
+   /* private void setDataFilterSemester() {
         //RecyclerView yingxiangShaixuanXueqiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_xueqi_recyclerview);
         //设置适配器
         LinearLayoutManager semesterManage = new LinearLayoutManager(getContext());
@@ -367,7 +371,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
             }
         });
         liveRoomShaixuanNianjiRecyclerview.setAdapter(filterGradeAdapter);
-    }
+    }*/
 
     private void setDataFilterMaterial() {
         //设置适配器

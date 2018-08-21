@@ -27,6 +27,7 @@ import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.LiuLanPresenterIm
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.LiuLanView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -82,10 +83,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             if (msg.what == 0)
                 startActivity(new Intent(PersonCenterLiuLanActivity.this, LoginActivity.class));
         }
-
-        ;
     };
-    private String[] strings;
     private String stringshoucang;
 
     @Override
@@ -158,22 +156,39 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     @Override
     public void onLiuLanSuccess(LiuLanBean liuLanBean) {
         if (liuLanBean.getCode() == 0) {
-            mList.clear();
-            //切换控件
-            liulanFrameLayout.setVisibility(View.GONE);
-            liulanSpringview.setVisibility(View.VISIBLE);
-            mList.addAll(liuLanBean.getContent().getData());
-            if (mList.size()>0){
-                //加载数据
-                intiLiuLanData();
-            }else {
+            if (isUp==1){
+                mList.clear();
                 //切换控件
-                liulanFrameLayout.setVisibility(View.VISIBLE);
-                liulanSpringview.setVisibility(View.GONE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
+                liulanFrameLayout.setVisibility(View.GONE);
+                liulanSpringview.setVisibility(View.VISIBLE);
+                mList.addAll(liuLanBean.getContent().getData());
+                if (mList.size()>0){
+                    //加载数据
+                    intiLiuLanData();
+                }else {
+                    //切换控件
+                    liulanFrameLayout.setVisibility(View.VISIBLE);
+                    liulanSpringview.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
+                }
             }
-
-        } else {
+        } else if (isUp==2){
+            if (isUp==1){
+                //切换控件
+                liulanFrameLayout.setVisibility(View.GONE);
+                liulanSpringview.setVisibility(View.VISIBLE);
+                mList.addAll(liuLanBean.getContent().getData());
+                if (mList.size()>0){
+                    //加载数据
+                    intiLiuLanData();
+                }else {
+                    //切换控件
+                    liulanFrameLayout.setVisibility(View.VISIBLE);
+                    liulanSpringview.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
+                }
+            }
+        }else {
             //token失效，重新登录
             Transparent.showErrorMessage(this, "登录失效请重新登录");
             new Thread(new Runnable() {
@@ -349,7 +364,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
                     liuLanPresenter.getClearLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token);
                 } else {
                     //否则存数组删除多个
-                    liuLanPresenter.getClearOneOrMoreLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token, strings);
+                    liuLanPresenter.getClearOneOrMoreLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token, stringshoucang);
                 }
             }
         });
@@ -405,6 +420,8 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             }
             liuLanAdapter.notifyDataSetChanged();
             builder.dismiss();
+        }else {
+
         }
     }
 
@@ -445,14 +462,13 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
                 //适配器条目有选中有没选中的。根据适配器集合中选中长度确定数组长度。
                 for (int i = 0; i < myLiveList.size(); i++) {
                     if (myLiveList.get(i).isSelect() == true) {
-                        arr.add(myLiveList.get(i).getId());
+                        arr.add(String.valueOf(myLiveList.get(i).getCourse().getCourseId()));
                     }
                 }
-                strings = new String[arr.size()];
+                stringshoucang = "";
                 for (int i = 0; i < arr.size(); i++) {
-                    strings[i] = arr.get(i);
+                    stringshoucang = stringshoucang + arr.get(i) + ",";
                 }
-
                 setBtnBackground(index);
                 liuLanAdapter.notifyDataSetChanged();
             }

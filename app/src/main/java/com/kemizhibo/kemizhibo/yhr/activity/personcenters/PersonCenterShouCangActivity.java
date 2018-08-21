@@ -39,7 +39,9 @@ import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -69,7 +71,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     //上或者下拉的状态判断
     int isUp = 1;
     //多选下标集合
-    List<String> arr = new ArrayList<>();
+    private List<String> arr = new ArrayList<>();
     private SharedPreferences sp;
     private String token;
     //多选删除
@@ -82,14 +84,6 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     private int index = 0;
     private AlertDialog builder;
     private String stringshoucang;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            if (msg.what == 0)
-                startActivity(new Intent(PersonCenterShouCangActivity.this, LoginActivity.class));
-        }
-
-        ;
-    };
 
     @Override
     protected int getLayoutId() {
@@ -112,7 +106,6 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeMessages(0);
     }
 
     private void bindTitleBar() {
@@ -175,33 +168,40 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     @Override
     public void onCollectionBoxSuccess(CollectionBoxBean collectionBoxBean) {
         if (collectionBoxBean.getCode() == 0) {
-            mList.clear();
-            //切换控件
-            shoucangFrameLayout.setVisibility(View.GONE);
-            collectionBoxSpringview.setVisibility(View.VISIBLE);
-            mList.addAll(collectionBoxBean.getContent().getData());
-            if (mList.size()>0){
-                initCollectionData();
-            }else {
+            if (isUp==1){
+                mList.clear();
                 //切换控件
-                shoucangFrameLayout.setVisibility(View.VISIBLE);
-                collectionBoxSpringview.setVisibility(View.GONE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout,new FramgmentEmpty()).commit();
+                shoucangFrameLayout.setVisibility(View.GONE);
+                collectionBoxSpringview.setVisibility(View.VISIBLE);
+                mList.addAll(collectionBoxBean.getContent().getData());
+                if (mList.size() > 0) {
+                    initCollectionData();
+                } else {
+                    //切换控件
+                    shoucangFrameLayout.setVisibility(View.VISIBLE);
+                    collectionBoxSpringview.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
+                }
+            }
+        } else if (isUp==2){
+            if (isUp==1){
+                mList.clear();
+                //切换控件
+                shoucangFrameLayout.setVisibility(View.GONE);
+                collectionBoxSpringview.setVisibility(View.VISIBLE);
+                mList.addAll(collectionBoxBean.getContent().getData());
+                if (mList.size() > 0) {
+                    initCollectionData();
+                } else {
+                    //切换控件
+                    shoucangFrameLayout.setVisibility(View.VISIBLE);
+                    collectionBoxSpringview.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
+                }
             }
         }else {
             //token失效，重新登录
             Transparent.showErrorMessage(this, "登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
         }
 
     }
@@ -400,6 +400,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 } else {
                     //否则取消一个或多个收藏
                     collectionBoxPresenter.getCollectionData(PersonCenterShouCangActivity.this, "Bearer " + token, stringshoucang);
+                    LogUtils.i("多选", stringshoucang);
                 }
             }
         });
@@ -438,6 +439,15 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     index--;
                     isSelectAll = false;
                     selectAllButn.setText("全选");
+                }
+
+                //适配器条目有选中有没选中的。根据适配器集合中选中长度确定数组长度。
+                arr.clear();
+                for (int i = 0; i < myLiveList.size(); i++) {
+                    if (myLiveList.get(i).isSelect() == true) {
+                        arr.add(String.valueOf(myLiveList.get(i).getCourse().getCourseId()));
+                        //去重
+                    }
                 }
                 stringshoucang = "";
                 for (int i = 0; i < arr.size(); i++) {

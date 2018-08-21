@@ -154,14 +154,30 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         if (searchBean.getCode()==0){
-            trainBean.clear();
-            trainBean.addAll(searchBean.getContent().getReturnTrain());
-            if (trainBean==null){
-                setState(LoadingPager.LoadResult.empty);
-            }else {
-                setState(LoadingPager.LoadResult.success);
+            if (isUp == 1) {
+                trainBean.clear();
+                trainBean.addAll(searchBean.getContent().getReturnTrain());
+                if (trainBean==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        trainingCourseRecommendationAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if (isUp == 2) {
+                trainBean.addAll(searchBean.getContent().getReturnTrain());
+                if (trainBean==null){
+                    setState(LoadingPager.LoadResult.empty);
+                }else {
+                    setState(LoadingPager.LoadResult.success);
+                    if (isFlag) {
+                        trainingCourseRecommendationAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }else {
+            setState(LoadingPager.LoadResult.error);
             Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
         }
     }

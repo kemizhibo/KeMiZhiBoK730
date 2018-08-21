@@ -206,6 +206,10 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     public void onTeacherTrainingSuccess(TeacherTrainingBean teacherTrainingBean) {
         if (teacherTrainingBean.getCode()==0){
             if (isUp == 1) {
+                materialEdition="";
+                subjectId="";
+                semester="";
+                knowledgeId="";
                 teacherTrainingData.clear();
                 teacherTrainingData.addAll(teacherTrainingBean.getContent().getData());
                 if (teacherTrainingData==null){

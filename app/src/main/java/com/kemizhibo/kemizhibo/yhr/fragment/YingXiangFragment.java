@@ -363,6 +363,10 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     public void onYingXiangFragmentSuccess(YingXiangFragmentBean yingXiangFragmentBean) {
         if (yingXiangFragmentBean.getCode()==0){
             if (isUp == 1) {
+                materialEdition="";
+                subjectId="";
+                semester="";
+                knowledgeId="";
                 yingXiangFragmentdata.clear();
                 yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
                 if (yingXiangFragmentdata==null){
