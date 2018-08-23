@@ -37,7 +37,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public String getToken(){
-        new TokenInterceptor(mActivity).getNewToken();
+        //new TokenInterceptor(mActivity).getNewToken();
         String token = PreferencesUtils.getLoginInfo("token", mActivity);
         return token;
     }

@@ -68,7 +68,8 @@
         <activity android:name=".other.preparing_package_detail.view.WordShowActivity" />
         <activity
             android:name=".other.web.CommonWebActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />

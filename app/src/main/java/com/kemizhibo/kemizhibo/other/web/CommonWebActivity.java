@@ -1,24 +1,29 @@
 package com.kemizhibo.kemizhibo.other.web;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -33,14 +38,15 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
     public static final String PREVIEW = "preview";
     public static final String TEACH = "teach";
 
-    @BindView(R.id.web_view)
-    WebView webView;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
     @BindView(R.id.loading_page)
     LinearLayout loading_page;
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private ValueCallback<Uri> mUploadCallbackBelow;
     private ArrayList<MediaItem> mediaItemSelectedList;
     private String url;
+    private WebView webView;
 
     @Override
     protected int getLayoutId() {
@@ -49,6 +55,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
 
     @Override
     protected void initData() {
+        setConfigCallback((WindowManager)getApplicationContext().getSystemService(Context.WINDOW_SERVICE));
         Intent intent = getIntent();
         String operate = intent.getStringExtra(OPERATE_KEY);
         if(TextUtils.isEmpty(operate)){
@@ -72,6 +79,8 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     break;
             }
         }
+        webView = new WebView(getApplicationContext());
+        frameLayout.addView(webView);
         WebSetting.getInstance().setWebViewSetting(webView.getSettings());
         webView.addJavascriptInterface(new JavaScriptInterface(this, this), "android");
         webView.setWebChromeClient(new WebChromeClient() {
@@ -79,13 +88,13 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
             public void onProgressChanged(WebView view, int newProgress) {
                 if(newProgress==100){
                     loading_page.setVisibility(View.GONE);
-                    webView.setVisibility(View.VISIBLE);
+                    frameLayout.setVisibility(View.VISIBLE);
                 }
                 super.onProgressChanged(view, newProgress);
             }
 
             /**
-             * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
+             * 8(Android 2.2) <= API <= 10(Android 2.3)回git调此方法
              */
             private void openFileChooser(android.webkit.ValueCallback<Uri> uploadMsg) {
                 Log.e("CommonWebActivity", "运行方法 openFileChooser-1");
@@ -224,5 +233,36 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (frameLayout != null) {
+            frameLayout.removeAllViews();
+            frameLayout.removeView(webView);
+            webView.destroy();
+        }
+            setConfigCallback(null);
+            super.onDestroy();
+
+    }
+
+    public void setConfigCallback(WindowManager windowManager) {
+        try {
+            Field field = WebView.class.getDeclaredField("mWebViewCore");
+            field = field.getType().getDeclaredField("mBrowserFrame");
+            field = field.getType().getDeclaredField("sConfigCallback");
+            field.setAccessible(true);
+            Object configCallback = field.get(null);
+
+            if (null == configCallback) {
+                return;
+            }
+
+            field = field.getType().getDeclaredField("mWindowManager");
+            field.setAccessible(true);
+            field.set(configCallback, windowManager);
+        } catch(Exception e) {
+        }
     }
 }

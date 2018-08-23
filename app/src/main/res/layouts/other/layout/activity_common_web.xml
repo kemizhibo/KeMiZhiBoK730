@@ -10,12 +10,12 @@
 
     <include layout="@layout/loading_page"/>
 
-    <WebView
-        android:id="@+id/web_view"
+    <FrameLayout
+        android:id="@+id/frame_layout"
         android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </WebView>
+    </FrameLayout>
 
 </RelativeLayout>
