@@ -33,6 +33,14 @@ public class WordShowActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         MyPreviewBean myPreviewBean = (MyPreviewBean) intent.getSerializableExtra("word");
+        String host = myPreviewBean.getHost();
+        String docId = myPreviewBean.getDocId();
+        String docType = myPreviewBean.getDocType();
+        String token = myPreviewBean.getToken();
+        String thisDocDir = myPreviewBean.getThisDocDir();
+        int totalPage = myPreviewBean.getTotalPage();
+        String docTitle = myPreviewBean.getDocTitle();
+        int startPage = myPreviewBean.getStartPage();
         BDocInfo docInfo = new BDocInfo(myPreviewBean.getHost(), myPreviewBean.getDocId(), myPreviewBean.getDocType(), myPreviewBean.getToken())
                 .setLocalFileDir(myPreviewBean.getThisDocDir())
                 .setTotalPage(myPreviewBean.getTotalPage())
@@ -61,4 +69,5 @@ public class WordShowActivity extends BaseActivity {
         mdvdoc.loadDoc(docInfo);
 
     }
+
 }

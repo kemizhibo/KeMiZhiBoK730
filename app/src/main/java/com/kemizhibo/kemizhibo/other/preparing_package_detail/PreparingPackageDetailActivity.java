@@ -74,9 +74,6 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     protected void initData() {
         bindTitleBar();
         detailPresenter = new PreparingPackageDetailPresenterImp(this);
-        Intent intent = getIntent();
-        courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        courseId = 2832;
        // detailPresenter.getPreparingPackageDetailData();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -126,12 +123,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
                     Log.i("---getMaterial-", bean.getContent().getAppMaterial().getKemiPic().size() + "");
-                    //if (null==preparingDetailAdapter){
                      PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
                     listViewsu.setAdapter(preparingDetailAdapter);
-                    /*}else {
-                        preparingDetailAdapter.notifyDataSetChanged();
-                    }*/
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
@@ -170,6 +163,10 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("--hhhhh--", "====hhhhhh");
+        Intent intent = getIntent();
+        courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
+        courseId = 2832;
         detailPresenter.getPreparingPackageDetailData();
     }
 }

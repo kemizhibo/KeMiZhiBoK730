@@ -22,9 +22,7 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".yhr.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,9 +32,7 @@
         </activity>
         <activity android:name=".yhr.activity.ShowImageActivity" />
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
-        <activity android:name=".yhr.activity.logins.LoginActivity" >
-
-        </activity>
+        <activity android:name=".yhr.activity.logins.LoginActivity"></activity>
         <activity android:name=".yhr.activity.logins.FinishActivity" />
         <activity android:name=".yhr.activity.logins.WangJiActivity" />
         <activity android:name=".yhr.activity.logins.XiuGaiActivity" />
@@ -80,7 +76,7 @@
         <activity android:name=".yhr.activity.personcenters.FuWuActivity" />
         <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity" />
-        <activity android:name=".yhr.activity.personcenters.LectureActivity"></activity>
+        <activity android:name=".yhr.activity.personcenters.LectureActivity" />
     </application>
 
 </manifest>

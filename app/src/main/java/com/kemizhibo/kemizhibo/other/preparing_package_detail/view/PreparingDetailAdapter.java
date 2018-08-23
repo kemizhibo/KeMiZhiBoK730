@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +38,6 @@ public class PreparingDetailAdapter extends BaseAdapter {
     private FragmentManager supportFragmentManager;
     private PreparingPackageDetailBean.ContentBean.AppMaterialBean material;
     private Context context;
-    private MyInnerAdapter myInnerAdapter;
 
 
     public PreparingDetailAdapter(Context context, PreparingPackageDetailBean.ContentBean.AppMaterialBean material, FragmentManager supportFragmentManager) {
@@ -52,31 +54,12 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        Log.i("========pppp", position + "");
-        if (position == 0) {
-            return material.getKemiVideo();
-        } else if (position == 1) {
-            return material.getKemiPic();
-        } else if (position == 2) {
-            return material.getKemiPpt();
-        } else if (position == 3) {
-            return material.getKemiWord();
-        } else if (position == 4) {
-            return material.getKemiExcel();
-        } else if (position == 5) {
-            return material.getUserVideo();
-        } else if (position == 6) {
-            return material.getUserPic();
-        } else if (position == 7) {
-            return material.getUserPpt();
-        } else if (position == 8) {
-            return material.getUserWord();
-        }
-        return material.getUserExcel();
+        return null;
     }
 
     @Override
     public long getItemId(int position) {
+        Log.i("========pppp", position + "");
         return position;
     }
 
@@ -86,10 +69,6 @@ public class PreparingDetailAdapter extends BaseAdapter {
         //视频 图片 ppt  word excel
         convertView = View.inflate(context, R.layout.base_item, null);
         LinearLayout mlinearLayout = convertView.findViewById(R.id.base);
-      /*  List<Fragment> fragments =supportFragmentManager.getFragments();
-        for (int i = fragments.size() - 1; i >= 0; i--) {
-            supportFragmentManager.beginTransaction().remove(fragments.get(0));
-        }*/
         switch (position) {
             case 0://视频
                 final List<PreparingPackageDetailBean.ContentBean.DataBean> kemiVideo = material.getKemiVideo();
@@ -98,10 +77,10 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     ViewPager mviewPager = (ViewPager) view.findViewById(R.id.kemi_shipinviewpager);
                     mlinearLayout.addView(view);
                     Log.i("====sucaiposition====", "pppppp");
-                    mviewPager.setAdapter(new FragmentPagerAdapter(supportFragmentManager) {
+                    mviewPager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
                         @Override
-                        public Fragment getItem(int position) {
-                            Fragment myFragment = new MyFragment();
+                        public Object instantiateItem(ViewGroup container, int position) {
+                            MyFragment myFragment = (MyFragment) super.instantiateItem(container, position);;
                             Bundle bundle = new Bundle();
                             Log.i("====sucaiposition====", "加载视频");
                             bundle.putInt("courseid", kemiVideo.get(position).getCourseId());
@@ -111,8 +90,24 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         }
 
                         @Override
+                        public Fragment getItem(int position) {
+                            Fragment myFragment = new MyFragment();
+                          /*  Bundle bundle = new Bundle();
+                            Log.i("====sucaiposition====", "加载视频");
+                            bundle.putInt("courseid", kemiVideo.get(position).getCourseId());
+                            bundle.putInt("moduleid", kemiVideo.get(position).getModuleId());
+                            myFragment.setArguments(bundle);*/
+                            return myFragment;
+                        }
+
+                        @Override
                         public int getCount() {
                             return kemiVideo.size();
+                        }
+
+                        @Override
+                        public int getItemPosition(@NonNull Object object) {
+                            return PagerAdapter.POSITION_NONE;
                         }
                     });
 
@@ -128,7 +123,20 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     TextView madjsucai = (TextView) view1.findViewById(R.id.adj);
                     mlinearLayout.addView(view1);
                     Log.i("pppppp", kemiPic.size() + "");
-                    mPicviewPager.setAdapter(new FragmentPagerAdapter(supportFragmentManager) {
+                    mPicviewPager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
+                        @Override
+                        public Object instantiateItem(ViewGroup container, int position) {
+                            MyPicFragment myFragment = (MyPicFragment) super.instantiateItem(container, position);;
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("courseid", kemiPic.get(position).getCourseId());
+                            bundle.putInt("moduleid", kemiPic.get(position).getModuleId());
+                            myFragment.setArguments(bundle);
+                            return myFragment;
+                        }
+                        @Override
+                        public int getItemPosition(@NonNull Object object) {
+                            return PagerAdapter.POSITION_NONE;
+                        }
                         @Override
                         public int getCount() {
                             return kemiPic.size();
@@ -137,10 +145,10 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         @Override
                         public Fragment getItem(int position) {
                             Fragment myFragment = new MyPicFragment();
-                            Bundle bundle = new Bundle();
+                          /*  Bundle bundle = new Bundle();
                             bundle.putInt("courseid", kemiPic.get(position).getCourseId());
                             bundle.putInt("moduleid", kemiPic.get(position).getModuleId());
-                            myFragment.setArguments(bundle);
+                            myFragment.setArguments(bundle);*/
                             return myFragment;
 
                         }
@@ -209,14 +217,27 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     ViewPager musershipinviewpager = (ViewPager) view5.findViewById(R.id.shipinviewpager);
                     mlinearLayout.addView(view5);
                     Log.i("ppppppzzzz", userVideo.size() + "");
-                    musershipinviewpager.setAdapter(new FragmentPagerAdapter(supportFragmentManager) {
+                    musershipinviewpager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
                         @Override
-                        public Fragment getItem(int position) {
-                            MyUserVideoFragment myUserVideoFragment = new MyUserVideoFragment();
+                        public Object instantiateItem(ViewGroup container, int position) {
+                            MyUserVideoFragment myFragment = (MyUserVideoFragment) super.instantiateItem(container, position);;
                             Bundle bundle = new Bundle();
                             bundle.putInt("usermoduleid", userVideo.get(position).getModuleId());
                             bundle.putInt("usercourseid", userVideo.get(position).getCourseId());
-                            myUserVideoFragment.setArguments(bundle);
+                            myFragment.setArguments(bundle);
+                            return myFragment;
+                        }
+                        @Override
+                        public int getItemPosition(@NonNull Object object) {
+                            return PagerAdapter.POSITION_NONE;
+                        }
+                        @Override
+                        public Fragment getItem(int position) {
+                            MyUserVideoFragment myUserVideoFragment = new MyUserVideoFragment();
+                           /* Bundle bundle = new Bundle();
+                            bundle.putInt("usermoduleid", userVideo.get(position).getModuleId());
+                            bundle.putInt("usercourseid", userVideo.get(position).getCourseId());
+                            myUserVideoFragment.setArguments(bundle);*/
                             return myUserVideoFragment;
                         }
 
@@ -235,7 +256,20 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     View view6 = View.inflate(context, R.layout.sucai_tupian_item, null);
                     ViewPager mUserviewPager = (ViewPager) view6.findViewById(R.id.user_viewpager);
                     mlinearLayout.addView(view6);
-                    mUserviewPager.setAdapter(new FragmentPagerAdapter(supportFragmentManager) {
+                    mUserviewPager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
+                        @Override
+                        public Object instantiateItem(ViewGroup container, int position) {
+                            MyUserPicFragment myFragment = (MyUserPicFragment) super.instantiateItem(container, position);;
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("courseid", userPic.get(position).getCourseId());
+                            bundle.putInt("moduleid", userPic.get(position).getModuleId());
+                            myFragment.setArguments(bundle);
+                            return myFragment;
+                        }
+                        @Override
+                        public int getItemPosition(@NonNull Object object) {
+                            return PagerAdapter.POSITION_NONE;
+                        }
                         @Override
                         public int getCount() {
                             return userPic.size();
@@ -244,10 +278,10 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         @Override
                         public Fragment getItem(int position) {
                             Fragment myFragment = new MyUserPicFragment();
-                            Bundle bundle = new Bundle();
+                          /*  Bundle bundle = new Bundle();
                             bundle.putInt("courseid", userPic.get(position).getCourseId());
                             bundle.putInt("moduleid", userPic.get(position).getModuleId());
-                            myFragment.setArguments(bundle);
+                            myFragment.setArguments(bundle);*/
                             return myFragment;
 
                         }
@@ -315,32 +349,5 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
 
         return convertView;
-    }
-
-    class MyInnerAdapter extends FragmentPagerAdapter {
-        private List<PreparingPackageDetailBean.ContentBean.DataBean> kemiVideos;
-
-        public MyInnerAdapter(FragmentManager fm, List<PreparingPackageDetailBean.ContentBean.DataBean> ko) {
-            super(fm);
-            kemiVideos = ko;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment myFragment = new MyFragment();
-            Bundle bundle = new Bundle();
-            Log.i("====加载视频====", "加载视频");
-            for (PreparingPackageDetailBean.ContentBean.DataBean dataBean : kemiVideos) {
-                bundle.putInt("courseid", dataBean.getCourseId());
-                bundle.putInt("moduleid", dataBean.getModuleId());
-                myFragment.setArguments(bundle);
-            }
-            return myFragment;
-        }
-
-        @Override
-        public int getCount() {
-            return kemiVideos.size();
-        }
     }
 }

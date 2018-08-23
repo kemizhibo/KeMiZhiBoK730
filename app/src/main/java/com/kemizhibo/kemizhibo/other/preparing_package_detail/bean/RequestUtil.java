@@ -20,7 +20,6 @@ import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,17 +184,17 @@ public class RequestUtil {
                     int pageCount = previewBean.getPageCount();
                     String title = previewBean.getTitle();
                     String documentId = previewBean.getDocumentId();
-                    String docs = "";
+                    String docs = previewBean.getFormat();
                     if (i == 1) {
-                        docs = "doc";
+                     //   docs = "doc";
                         id = holder;
                         type = 1;
                     } else if (i == 2) {
-                        docs = "doc";
+                     //   docs = "doc";
                         id = holder;
                         type = 2;
                     } else if (i == 3) {
-                        docs = "pptx";
+                      //  docs = "ppt";
                         id = holder;
                         type = 3;
                     }
@@ -209,7 +208,7 @@ public class RequestUtil {
                     MyPreviewBean doc = new MyPreviewBean(host, documentId, docs, token, "", pageCount, title, 1);
 
                     if (isjump) {
-                        Intent intent = new Intent(context, WordShowActivity.class);
+                       Intent intent = new Intent(context, WordShowActivity.class);
                         intent.putExtra("word", doc);
                         Log.i("----", "zhanshi");
                         context.startActivity(intent);
