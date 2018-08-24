@@ -1,29 +1,23 @@
 package com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
-import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Author: 闫浩然
@@ -78,6 +72,13 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         //填充值
         Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.collectionBoxRecyclerviewImageview);
         holder.collectionBoxItemTitle.setText(myLive.getCourse().getCourseName());
+        if (myLive.getCourse().getIsImageText() == 0) {
+            holder.collectionBoxPlayButn.setVisibility(View.VISIBLE);
+        }else {
+            if (myLive.getCourse().getIsImageText() == 1){
+                holder.collectionBoxTuji.setVisibility(View.VISIBLE);
+            }
+        }
         if (mEditMode == MYLIVE_MODE_CHECK) {
             holder.checkBox.setVisibility(View.GONE);
         } else {
@@ -116,6 +117,10 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         TextView collectionBoxItemTitle;
         @BindView(R.id.check_box)
         ImageView checkBox;
+        @BindView(R.id.collection_box_play_butn)
+        ImageView collectionBoxPlayButn;
+        @BindView(R.id.collection_box_tuji)
+        ImageView collectionBoxTuji;
 
         public ViewHolder(View itemView) {
             super(itemView);

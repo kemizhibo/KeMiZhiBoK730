@@ -90,7 +90,8 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
                 holder.itemLiulanButn.setText("继续观看");
                 holder.itemLiulanButn.setTextColor(0xFFffffff);
                 holder.itemLiulanButn.setBackgroundResource(R.mipmap.green_state);
-                holder.itemLiulanState.setText("上次观看至"+ TimeH.formatTime(Long.valueOf(myLive.getPlayPosition()))+"处");
+                holder.itemLiulanState.setText("上次观看至"+ TimeH.formatTime(Long.valueOf(myLive.getCourse().getWatchTime()))+"处");
+                LogUtils.i("播放判断浏览记录拿到的时间长度", String.valueOf((myLive.getCourse().getWatchTime())));
             }else {
                 //helper.setTextColor(R.id.item_liulan_butn,R.color.text_999999);
                 holder.itemLiulanButn.setText("重新观看");
@@ -105,6 +106,7 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
             public void onClick(View view) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
+                    LogUtils.i("播放判断点击继续播放传回去视频详情的毫秒值",myLive.getCourse().getWatchTime()+"");
                     if (myLive.getCourse().getIsImageText()==0) {
                         Intent intent = new Intent(context, YingXinagVideoDetailsActivity.class);
                         Bundle bundle = new Bundle();

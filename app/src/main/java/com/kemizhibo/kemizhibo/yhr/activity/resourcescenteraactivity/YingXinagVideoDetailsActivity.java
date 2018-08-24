@@ -3,6 +3,8 @@ package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +56,8 @@ import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.YingXiangDetailsVideoView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.widget.SpringView;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -93,7 +98,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
     @BindView(R.id.yingxiang_details_video_title)
     TextView yingxiangDetailsVideoTitle;
     @BindView(R.id.yingxiang_details_shoucang_butn)
-    TextView yingxiangDetailsShoucangButn;
+    LinearLayout yingxiangDetailsShoucangButn;
     @BindView(R.id.yingxiang_details_teacher_name)
     TextView yingxiangDetailsTeacherName;
     @BindView(R.id.yingxiang_details_teacher_type)
@@ -157,7 +162,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
     int isUp = 1;
     private int page;
     //是否播放完毕的状态判断
-    private String isEnd;
+    private int isEnd;
     private int p;
 
 
@@ -168,11 +173,14 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
 
     @Override
     protected void initData() {
-        initVideo();
+        //initVideo();
+        controller = new DefinitionController(this);
         //播放视频
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
         watchTime = intent.getStringExtra("watchTime");
+        //LogUtils.i("播放判断从浏览记录传回来的毫秒值",watchTime);
+
     }
 
 
@@ -180,20 +188,26 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
     public void onViewClicked() {
         finish();
     }
-
     private void initVideo() {
-        controller = new DefinitionController(this);
         ijkVideoView.setPlayerConfig(new PlayerConfig.Builder()
                 .setCustomMediaPlayer(new IjkPlayer(this) {
                     @Override
                     public void setOptions() {
                         //精准seek1
+                        LogUtils.i("播放视屏时常", String.valueOf(mMediaPlayer.getDuration()));
                         mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
-                        //拿到是否播放完的状态
+                        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                        mMediaPlayer.setOnSeekCompleteListener(new IMediaPlayer.OnSeekCompleteListener() {
+                            @Override
+                            public void onSeekComplete(IMediaPlayer iMediaPlayer) {
+                                iMediaPlayer.start();
+                            }
+                        });
+                        //拿到是否播放完的状态\
                         mMediaPlayer.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(IMediaPlayer iMediaPlayer) {
-                                isEnd = 1 + "";
+                                isEnd = 1;
                             }
                         });
                     }
@@ -497,6 +511,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
             contentUrlBean = yingXiangDetailsVideoUrlBean;
             //播放视频
             startVideo();
+            //ijkVideoView.setOnHierarchyChangeListener();
         }
     }
 
@@ -511,7 +526,11 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
         ijkVideoView.setDefinitionVideos(videos);
         ijkVideoView.setVideoController(controller);
         ijkVideoView.setTitle("视屏详情");
-
+        //initVideo();
+        ijkVideoView.seekTo(100000);
+        //ijkVideoView.onPrepared();
+        ijkVideoView.start();
+        //ijkVideoView.start();
         /*//高级设置
         PlayerConfig playerConfig = new PlayerConfig.Builder()
                 .enableCache() //启用边播边缓存功能
@@ -519,35 +538,49 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
                 .savingProgress() //保存播放进度
                 .build();
         ijkVideoView.setPlayerConfig(playerConfig);*/
-        //如果接受到的总时长为空说明重新播放，否则，根据时间节点续播
-        /*if(contentBean.getWatchTime()!=0){
-            ijkVideoView.seekTo(Long.parseLong(watchTime));
-            LogUtils.i("播放返回时续播",watchTime);
-        }else {
+        /*if (contentBean.getWatchTime()==0){
+            LogUtils.i("播放判断是否是从新开始播放的新视频",contentBean.getWatchTime()+"");
+            ijkVideoView.seekTo(0);
             ijkVideoView.start();
-        }*/
-        ijkVideoView.start();
-        yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "0");
-        // 初始化定时器
-        timer = new Timer();
-        //设置时间
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //获取视频当前播放时长
-                currentPosition = ijkVideoView.getCurrentPosition();
-                yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
-                LogUtils.i("播放已完成", String.valueOf(currentPosition) + "++" + isEnd);
-                /*if (isEnd == 1+""){
-                    yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), isEnd);
-                    LogUtils.i("播放已完成",String.valueOf(currentPosition)+"++"+isEnd);
-                }else {
-                   isEnd = 0+"";
-                    yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), isEnd);
-                    LogUtils.i("播放未完成",String.valueOf(currentPosition)+"++"+isEnd);
-                }*/
+            yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "0");
+            //设置时间
+            if (isEnd==1){
+                //currentPosition = ijkVideoView.getCurrentPosition();
+                yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "1");
+                LogUtils.i("播放判断如果播放完毕",contentBean.getWatchTime()+"");
+            }else {
+                // 初始化定时器
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        //获取视频当前播放时长
+                        currentPosition = ijkVideoView.getCurrentPosition();
+                        yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
+                        LogUtils.i("播放判断每五秒记录当前播放时间",currentPosition+"");
+                    }
+                }, 0, 5000);
             }
-        }, 0, 5000);
+
+        }else {
+            LogUtils.i("播放判断如果不是从头播放",contentBean.getWatchTime()+"");
+            ijkVideoView.seekTo(contentBean.getWatchTime());
+            ijkVideoView.start();
+            if (isEnd==1){
+                yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "1");
+            }else {
+                //设置时间
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        //获取视频当前播放时长
+                        currentPosition = ijkVideoView.getCurrentPosition();
+                        yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
+                        LogUtils.i("播放判断接着播放记录时间是否正确",currentPosition+"");
+                    }
+                }, 0, 5000);
+            }
+        }*/
     }
     //、、、、、、、、、、、视频播放的各种方法,第一次播放时记录位置，暂停时，看完时
 

@@ -50,7 +50,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     @BindView(R.id.pictrue_details_imageview)
     ImageView pictrueDetailsImageview;
     @BindView(R.id.pictrue_details_collection)
-    TextView pictrueDetailsCollection;
+    LinearLayout pictrueDetailsCollection;
     @BindView(R.id.pictrue_details_txt)
     TextView pictrueDetailsTxt;
     @BindView(R.id.pictrue_details_viewpager)
@@ -122,7 +122,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
                 finish();
             }
         });
-        publicTitleBarRoot.changeTitleBar("备课包");
+        publicTitleBarRoot.changeTitleBar("影像素材");
         publicTitleBarRoot.buildFinish();
     }
 

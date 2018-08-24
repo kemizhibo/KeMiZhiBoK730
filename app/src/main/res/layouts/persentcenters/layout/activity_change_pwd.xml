@@ -21,8 +21,11 @@
             android:text="旧密码"/>
         <EditText
             android:id="@+id/old_pwd_edittext"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
+            android:theme="@style/MyEditText"
+            android:inputType="textPassword"
             android:layout_marginLeft="@dimen/res_24dp"
             android:hint="请输入旧密码" />
     </LinearLayout>
@@ -41,10 +44,36 @@
             android:text="新密码"/>
         <EditText
             android:id="@+id/new_pwd_edittext"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
+            android:theme="@style/MyEditText"
+            android:inputType="textPassword"
             android:layout_marginLeft="@dimen/res_24dp"
             android:hint="请输入新密码" />
+    </LinearLayout>
+    <include layout="@layout/line"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/res_65dp">
+        <TextView
+            android:layout_marginLeft="@dimen/res_15dp"
+            android:textSize="@dimen/res_textsize_17sp"
+            android:textColor="@color/black_666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新密码"/>
+        <EditText
+            android:id="@+id/new_pwd_edittext_agin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:theme="@style/MyEditText"
+            android:inputType="textPassword"
+            android:layout_marginLeft="@dimen/res_24dp"
+            android:hint="请再次输入新密码" />
     </LinearLayout>
     <include layout="@layout/line"/>
     <LinearLayout

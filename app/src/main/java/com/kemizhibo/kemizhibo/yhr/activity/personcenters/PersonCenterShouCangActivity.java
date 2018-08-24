@@ -115,7 +115,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 finish();
             }
         });
-        publicTitleBarRoot.setRightImageResouse(R.drawable.pan_2).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
+        publicTitleBarRoot.setRightImageResouse(R.drawable.pan).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
             @Override
             public void onClick() {
                 updataEditMode();
@@ -133,7 +133,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             frameLayout.setVisibility(View.VISIBLE);
             editorStatus = true;
         } else {
-            publicTitleBarRoot.setRightImageResouse(R.drawable.pan_2);
+            publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
             frameLayout.setVisibility(View.GONE);
             editorStatus = false;
             clearAll();

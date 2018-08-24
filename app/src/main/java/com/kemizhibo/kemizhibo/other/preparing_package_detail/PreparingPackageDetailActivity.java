@@ -112,8 +112,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
     @Override
     public void getPreparingPackageDetailDataSuccess(final PreparingPackageDetailBean bean) {
-        LogUtils.i("detail log", "name" + bean.getContent().getAppMaterial().getKemiPic().get(0).getDocName());
-        Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());
+       /* LogUtils.i("detail log", "name" + bean.getContent().getAppMaterial().getKemiPic().get(0).getDocName());
+        Log.d("PreparingPackageDetailA", "bean.getCode():" + bean.getCode());*/
         if (bean.getCode() == 0) {
             runOnUiThread(new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -166,7 +166,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         Log.i("--hhhhh--", "====hhhhhh");
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        courseId = 2832;
+        //courseId = 2832;
         detailPresenter.getPreparingPackageDetailData();
     }
 }

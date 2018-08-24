@@ -65,7 +65,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     FrameLayout frameLayout;
     private SharedPreferences sp;
     private String token;
-
+    private boolean flag;
     //上或者下拉的状态判断
     int isUp = 1;
     private int page;
@@ -117,9 +117,15 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
                 finish();
             }
         });
-        publicTitleBarRoot.setRightImageResouse(R.drawable.pan_2).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
+        publicTitleBarRoot.setRightImageResouse(R.drawable.pan).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
             @Override
             public void onClick() {
+                if (flag){
+                    publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
+                }else{
+                    publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
+                }
+                flag =! flag;
                 updataEditMode();
             }
         });
@@ -131,12 +137,12 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     private void updataEditMode() {
         mEditMode = mEditMode == MYLIVE_MODE_CHECK ? MYLIVE_MODE_EDIT : MYLIVE_MODE_CHECK;
         if (mEditMode == MYLIVE_MODE_EDIT) {
-            publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
             frameLayout.setVisibility(View.VISIBLE);
             editorStatus = true;
+            //publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
         } else {
-            publicTitleBarRoot.setRightImageResouse(R.drawable.pan_2);
             frameLayout.setVisibility(View.GONE);
+            //publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
             editorStatus = false;
             clearAll();
         }
@@ -276,7 +282,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
         } else {
             deleteButn.setBackgroundResource(R.drawable.button_noclickable_shape);
             deleteButn.setEnabled(false);
-            deleteButn.setTextColor(ContextCompat.getColor(this, R.color.text_67c58c));
+            deleteButn.setTextColor(ContextCompat.getColor(this, R.color.text_bbbbbb));
         }
     }
 

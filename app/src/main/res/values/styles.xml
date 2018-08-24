@@ -100,6 +100,11 @@
         <item name="colorControlActivated">@color/green_tab</item>
     </style>
 
+    <style name="MyEditText2" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/huise_tab</item>
+        <item name="colorControlActivated">@color/huise_tab</item>
+    </style>
+
     <style name="TabLayoutTextSizeStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">@dimen/res_textsize_14sp</item>
     </style>

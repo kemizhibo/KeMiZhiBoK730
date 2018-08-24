@@ -26,9 +26,9 @@
         <EditText
             android:id="@+id/person_school_name_edittext"
             android:background="@null"
-            android:cursorVisible="false"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
+            android:theme="@style/MyEditText2"
             android:textColor="@color/black_dbdbdb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -54,7 +54,7 @@
         <EditText
             android:id="@+id/person_lianxiren_edittext"
             android:background="@null"
-            android:cursorVisible="false"
+            android:theme="@style/MyEditText2"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
             android:textColor="@color/black_dbdbdb"
@@ -82,7 +82,7 @@
         <EditText
             android:id="@+id/person_type_edittext"
             android:background="@null"
-            android:cursorVisible="false"
+            android:theme="@style/MyEditText2"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
             android:textColor="@color/black_dbdbdb"
@@ -110,7 +110,7 @@
         <EditText
             android:id="@+id/person_gradle_edittext"
             android:background="@null"
-            android:cursorVisible="false"
+            android:theme="@style/MyEditText2"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
             android:textColor="@color/black_dbdbdb"
@@ -137,7 +137,7 @@
         <EditText
             android:id="@+id/person_address_edittext"
             android:background="@null"
-            android:cursorVisible="false"
+            android:theme="@style/MyEditText2"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
             android:textColor="@color/black_dbdbdb"
@@ -164,7 +164,7 @@
         <EditText
             android:id="@+id/person_idcard_edittext"
             android:background="@null"
-            android:cursorVisible="false"
+            android:theme="@style/MyEditText2"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
             android:textColor="@color/black_dbdbdb"
@@ -192,13 +192,14 @@
         <EditText
             android:id="@+id/person_email_edittext"
             android:background="@null"
-            android:cursorVisible="false"
+            android:theme="@style/MyEditText2"
             android:layout_marginLeft="@dimen/res_77dp"
             android:textSize="@dimen/res_textsize_12sp"
             android:textColor="@color/black_dbdbdb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+    <include layout="@layout/line"/>
     <LinearLayout
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -238,5 +239,8 @@
         android:layout_marginTop="@dimen/res_109dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@mipmap/login_butn"
+        android:textColor="@color/white"
+        android:textSize="@dimen/res_textsize_20sp"
         android:text="完成"/>
 </LinearLayout>
