@@ -13,7 +13,7 @@
             android:id="@+id/material_recommended_imageview"
             android:layout_width="@dimen/res_287.5dp"
             android:layout_height="@dimen/res_160dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitXY"/>
         <TextView
             android:layout_marginLeft="@dimen/res_12dp"
             android:id="@+id/material_recommended_title"

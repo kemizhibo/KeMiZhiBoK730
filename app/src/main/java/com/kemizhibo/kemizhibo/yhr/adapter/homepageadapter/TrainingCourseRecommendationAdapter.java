@@ -24,7 +24,7 @@ public class TrainingCourseRecommendationAdapter extends BaseQuickAdapter<HomePa
 
     @Override
     protected void convert(BaseViewHolder helper, HomePageBean.ContentBean.ReturnTrainBean item) {
-        Glide.with(mContext).load(item.getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.training_course_recommendation_imageview));
+        Glide.with(mContext).load(item.getLogo()).override(287, 160).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.training_course_recommendation_imageview));
         helper.setText(R.id.training_course_recommendation_title,item.getCourseName());
     }
 }

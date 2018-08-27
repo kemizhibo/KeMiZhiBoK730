@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -117,7 +118,9 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         //上拉下拉动画效果
         yinxiangRecyclerview.setItemAnimator(new DefaultItemAnimator());
         yinxiangSpring.setType(SpringView.Type.FOLLOW);
+        // 这里的yingXiangFragmentdata 这个集合号线目前为止是空吧
         yingXiangFragmentAdapter = new YingXiangFragmentAdapter(R.layout.yingxiang_item, yingXiangFragmentdata);
+        LogUtils.i("集合",yingXiangFragmentdata.size()+"");
         itemCount = yingXiangFragmentAdapter.getItemCount();
         yingXiangFragmentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -152,6 +155,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        LogUtils.i("刚进来下拉没","下来了");
                         materialEdition="";
                         subjectId="";
                         semester="";
@@ -371,7 +375,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     public void onYingXiangFragmentSuccess(YingXiangFragmentBean yingXiangFragmentBean) {
         if (yingXiangFragmentBean.getCode()==0){
             if (isUp == 1) {
-                LogUtils.i("下拉刷新","下拉刷新");
+                LogUtils.i("刚进来下拉没","下拉请求成功了");
                 yingXiangFragmentdata.clear();
                 //yingXiangFragmentAdapter.addData(yingXiangFragmentBean.getContent().getData());
                 //yinxiangRecyclerview.setAdapter(null);
@@ -388,22 +392,19 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 }
             } else if (isUp == 2) {
                 LogUtils.i("下拉刷新,上拉加载","下拉刷新上拉加载");
-                //yingXiangFragmentdata.clear();
-                //yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
                 if (itemCount>=yingXiangFragmentBean.getContent().getTotal()){
-                    //yinxiangRecyclerview.canScrollVertically(-1);//的值表示是否能向上滚动，-1,false表示已经滚动到底部
-                    /*yinxiangRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                            super.onScrollStateChanged(recyclerView, newState);
-                            if (isUp==1){
-                                yinxiangSpring.setEnable(true);
-                            }else {
-                                yinxiangSpring.setEnable(false);
+                    /*yinxiangSpring.setOnTouchListener(
+                            new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    if (isUp==2) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
                             }
-                        }
-                    });*/
-                    //yinxiangSpring.setEnable(false);
+                    );*/
                     ToastUtils.showToast("没有更多数据");
                 }else {
                     //yingXiangFragmentAdapter.addData(yingXiangFragmentBean.getContent().getData());
