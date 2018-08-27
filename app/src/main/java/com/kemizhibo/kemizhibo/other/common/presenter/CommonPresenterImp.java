@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.other.common.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -11,6 +12,7 @@ import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.utils.NetUtils;
 
@@ -50,6 +52,8 @@ public class CommonPresenterImp implements CommonPresenter {
                 CommonFilterBean bean = GsonUtils.getBean(response.body().string(), CommonFilterBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonFilterSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
                 }else{
                     commonView.getCommonFilterError(Constants.REQUEST_ERROR_CODE);
                 }
@@ -82,6 +86,8 @@ public class CommonPresenterImp implements CommonPresenter {
                 CommonUserInfoBean bean = GsonUtils.getBean(response.body().string(), CommonUserInfoBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonUserInfoSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
                 }else{
                     commonView.getCommonUserInfoError(Constants.REQUEST_ERROR_CODE);
                 }
@@ -107,6 +113,8 @@ public class CommonPresenterImp implements CommonPresenter {
                 CommonTeacherBean bean = GsonUtils.getBean(response.body().string(), CommonTeacherBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonTeacherSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
                 }else{
                     commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
                 }
@@ -131,6 +139,8 @@ public class CommonPresenterImp implements CommonPresenter {
                 CommonUserTeachPlanBean bean = GsonUtils.getBean(response.body().string(), CommonUserTeachPlanBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonUserTeachPlanSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
                 }else{
                     commonView.getCommonUserTeachPlanError(Constants.REQUEST_ERROR_CODE);
                 }

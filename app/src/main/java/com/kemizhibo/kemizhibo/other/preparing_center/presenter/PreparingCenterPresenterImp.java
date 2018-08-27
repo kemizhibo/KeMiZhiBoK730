@@ -1,7 +1,10 @@
 package com.kemizhibo.kemizhibo.other.preparing_center.presenter;
 
+import android.app.Activity;
+
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
 import com.kemizhibo.kemizhibo.other.preparing_center.view.PreparingCenterView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
@@ -55,6 +58,8 @@ public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
                 if(bean != null && 0 == (bean.getCode())){
                     pageNum = DEFAULT_PAGE_NUM;
                     preparingCenterView.refreshSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) preparingCenterView.getCustomContext());
                 }else{
                     preparingCenterView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -83,6 +88,8 @@ public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
                 PreparingCenterBean bean = GsonUtils.getBean(response.body().string(), PreparingCenterBean.class);
                 if(bean != null && "0".equals(bean.getCode())){
                     preparingCenterView.refreshSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) preparingCenterView.getCustomContext());
                 }else{
                     preparingCenterView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

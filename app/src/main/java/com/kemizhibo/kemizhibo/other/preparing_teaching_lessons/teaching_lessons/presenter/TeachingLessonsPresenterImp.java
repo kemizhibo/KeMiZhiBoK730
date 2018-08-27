@@ -1,7 +1,10 @@
 package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.presenter;
 
+import android.app.Activity;
+
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.bean.TeachingLessonsBean;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.view.TeachingLessonsView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
@@ -53,6 +56,8 @@ public class TeachingLessonsPresenterImp implements TeachingLessonsPresenter {
                 if(bean != null && 0 == (bean.getCode())){
                     pageNum = DEFAULT_PAGE_NUM;
                     teachingLessonsView.refreshSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) teachingLessonsView.getCustomContext());
                 }else{
                     teachingLessonsView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -80,6 +85,8 @@ public class TeachingLessonsPresenterImp implements TeachingLessonsPresenter {
                 TeachingLessonsBean bean = GsonUtils.getBean(response.body().string(), TeachingLessonsBean.class);
                 if(bean != null && "0".equals(bean.getCode())){
                     teachingLessonsView.refreshSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) teachingLessonsView.getCustomContext());
                 }else{
                     teachingLessonsView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

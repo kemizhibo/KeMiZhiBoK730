@@ -2,6 +2,7 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
@@ -133,7 +135,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 3, true);
+                    goPreview(otherBeanList.get(position).getUrl());
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
         } else if (itemViewType == TYPE_excel) {
@@ -181,7 +184,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 2, true);
+                    goPreview(otherBeanList.get(position).getUrl());
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 2, true);
                 }
             });
         }else if (itemViewType == TYPE_WORD) {
@@ -228,12 +232,17 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    LogUtils.i("DocId", "mkel.getDocId():" + otherBeanList.get(position).getDocId());
-                    RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 1, true);
+                    goPreview(otherBeanList.get(position).getUrl());
+                    //LogUtils.i("DocId", "mkel.getDocId():" + otherBeanList.get(position).getDocId());
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 1, true);
                 }
             });
         }
         return convertView;
     }
-
+    private void goPreview(String url) {
+        Intent intent = new Intent(context, PreviewActivity.class);
+        intent.putExtra("url", url);
+        context.startActivity(intent);
+    }
 }

@@ -136,6 +136,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                initialize();
                 presenter.loadMore();
             }
         });
@@ -148,7 +149,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         semesterId = "";
         materialSelectI = -1;
         gradeSelectI = -1;
-        gradeSelectI = -1;
+        semesterSelectI = -1;
         if(null != filterPop && filterPop.isShowing()){
             filterPop.dismiss();
         }
@@ -187,6 +188,12 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
             }
         });
         filterPop.showAsDropDown(forteachingShaixuanButn, 0, 0, Gravity.BOTTOM);
+        filterPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                initialize();
+            }
+        });
     }
 
     @Override

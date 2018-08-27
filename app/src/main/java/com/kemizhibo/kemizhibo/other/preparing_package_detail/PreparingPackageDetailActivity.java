@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.other.preparing_package_detail;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -20,6 +22,7 @@ import com.androidkun.xtablayout.XTabLayout;
 import com.kemizhibo.kemizhibo.BuildConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.presenter.PreparingPackageDetailPresenter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.presenter.PreparingPackageDetailPresenterImp;
@@ -45,7 +48,7 @@ import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
-
+@SuppressLint("RestrictedApi")
 public class PreparingPackageDetailActivity extends BaseActivity implements PreparingPackageDetailView {
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
@@ -61,6 +64,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     TextView mnone;
     @BindView(R.id.detaile_scrollView)
     ScrollView mdetailescrollView;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
     private PreparingPackageDetailPresenter detailPresenter;
     private int courseId;
     Handler mHandler = new Handler();
@@ -81,7 +86,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         builder.detectFileUriExposure();
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        //courseId = 2832;
+        courseId = 2832;
     }
 
     private void bindTitleBar() {
@@ -122,6 +127,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void run() {
+                    frameLayout.setVisibility(View.GONE);
                     PreparingDetailOneAdapter preparingDetailOneAdapter = new PreparingDetailOneAdapter(PreparingPackageDetailActivity.this, bean.getContent().getOneKey());
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
@@ -144,7 +150,12 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
     @Override
     public void error(String operate, String errorCode) {
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
+            }
+        });
     }
 
     @Override
@@ -165,6 +176,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     protected void onResume() {
         super.onResume();
         Log.i("--hhhhh--", "====hhhhhh");
+        frameLayout.setVisibility(View.VISIBLE);
+        getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
         detailPresenter.getPreparingPackageDetailData();
     }
 }

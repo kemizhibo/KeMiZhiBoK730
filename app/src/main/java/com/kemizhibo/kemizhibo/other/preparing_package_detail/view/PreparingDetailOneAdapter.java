@@ -19,6 +19,8 @@ import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
+import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
@@ -167,7 +169,8 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 3, true);
+                    goPreview(oneKeyBeanList.get(position).getUrl());
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
             holder.mdownppt.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +188,29 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     ToastUtils.showToast("开始下载");
                     //   if (url != null) {
-                    RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mdown, 1, false);
+                    DownloadUtil.get().download(oneKeyBeanList.get(position).getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
+                        @Override
+                        public void onDownloadSuccess() {
+                            Activity activity = (Activity) context;
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.mdown.setText("已下载");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onDownloading(int progress) {
+
+                        }
+
+                        @Override
+                        public void onDownloadFailed() {
+
+                        }
+                    });
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mdown, 1, false);
                     //  }
                 }
             });
@@ -193,7 +218,8 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 1, true);
+                    goPreview(oneKeyBeanList.get(position).getUrl());
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 1, true);
                 }
             });
         } else if (itemViewType == TYPE_PUPIAN) {
@@ -212,5 +238,9 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         }*/
         return convertView;
     }
-
+    private void goPreview(String url) {
+        Intent intent = new Intent(context, PreviewActivity.class);
+        intent.putExtra("url", url);
+        context.startActivity(intent);
+    }
 }

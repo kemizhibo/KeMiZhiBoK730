@@ -22,7 +22,7 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".yhr.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
-        <activity android:name=".yhr.activity.logins.LoginActivity"></activity>
+        <activity android:name=".yhr.activity.logins.LoginActivity" />
         <activity android:name=".yhr.activity.logins.FinishActivity" />
         <activity android:name=".yhr.activity.logins.WangJiActivity" />
         <activity android:name=".yhr.activity.logins.XiuGaiActivity" />
@@ -67,17 +67,19 @@
         <activity android:name=".other.preparing_package_detail.view.WordShowActivity" />
         <activity
             android:name=".other.web.CommonWebActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
         <activity android:name=".yhr.activity.personcenters.FuWuActivity" />
-        <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity"
-            android:screenOrientation="landscape"  />
+        <activity
+            android:name=".yhr.activity.web.MyLiveRoomWebActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity" />
         <activity android:name=".yhr.activity.personcenters.LectureActivity" />
+        <activity android:name=".other.preparing_package_detail.preview.PreviewActivity"></activity>
     </application>
 
 </manifest>

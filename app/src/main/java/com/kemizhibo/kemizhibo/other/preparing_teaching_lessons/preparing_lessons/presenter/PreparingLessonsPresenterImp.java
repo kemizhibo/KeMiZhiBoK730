@@ -1,7 +1,10 @@
 package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter;
 
+import android.app.Activity;
+
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.bean.PreparingLessonsBean;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.view.PreparingLessonsView;
@@ -54,6 +57,8 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
                 if(bean != null && 0 == (bean.getCode())){
                     pageNum = DEFAULT_PAGE_NUM;
                     preparingLessonsView.refreshSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) preparingLessonsView.getCustomContext());
                 }else{
                     preparingLessonsView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -81,6 +86,8 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
                 PreparingLessonsBean bean = GsonUtils.getBean(response.body().string(), PreparingLessonsBean.class);
                 if(bean != null && "0".equals(bean.getCode())){
                     preparingLessonsView.refreshSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) preparingLessonsView.getCustomContext());
                 }else{
                     preparingLessonsView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

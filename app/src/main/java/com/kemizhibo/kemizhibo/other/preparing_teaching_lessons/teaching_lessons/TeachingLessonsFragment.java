@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadingEmptyFragment;
+import com.kemizhibo.kemizhibo.other.load.LoadingErrorFragment;
+import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.adapter.PreparingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.adapter.TeachingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.bean.TeachingLessonsBean;
@@ -40,14 +45,14 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2018/8/1.
  */
-
+@SuppressLint("RestrictedApi")
 public class TeachingLessonsFragment extends Fragment implements TeachingLessonsView{
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
     @BindView(R.id.list_view)
     ListView listView;
-    @BindView(R.id.loading_page)
-    LinearLayout loading_page;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
     private List<TeachingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private TeachingLessonsListAdapter adapter;
     private TeachingLessonsPresenter presenter;
@@ -89,6 +94,8 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
             }
         });
         presenter.refreshTeachingLessonsData();
+        frameLayout.setVisibility(View.VISIBLE);
+        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -117,9 +124,14 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
 
     @Override
     public void refreshSuccess(TeachingLessonsBean bean) {
-        dataBeanList.clear();
-        dataBeanList.addAll(bean.getContent().getData());
-        setAdapter(false);
+        if(bean.getContent().getData().size() > 0){
+            dataBeanList.clear();
+            dataBeanList.addAll(bean.getContent().getData());
+            setAdapter(false);
+        }else{
+            frameLayout.setVisibility(View.VISIBLE);
+            getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
+        }
     }
 
     private void setAdapter(final boolean isLoadMore) {
@@ -130,8 +142,8 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
                     refreshLayout.finishLoadMore();
                 }else{
                     refreshLayout.finishRefresh();
-                    if(loading_page.getVisibility() == View.VISIBLE){
-                        loading_page.setVisibility(View.GONE);
+                    if(frameLayout.getVisibility() == View.VISIBLE){
+                        frameLayout.setVisibility(View.GONE);
                         SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
                         smartRefreshLayout.setVisibility(View.VISIBLE);
                     }
@@ -162,6 +174,8 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
                 }else{
                     refreshLayout.finishRefresh();
                 }
+                frameLayout.setVisibility(View.VISIBLE);
+                getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
             }
         });
     }

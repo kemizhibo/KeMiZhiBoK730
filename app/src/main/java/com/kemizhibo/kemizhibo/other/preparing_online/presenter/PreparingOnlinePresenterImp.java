@@ -1,7 +1,10 @@
 package com.kemizhibo.kemizhibo.other.preparing_online.presenter;
 
+import android.app.Activity;
+
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_online.bean.PreparingOnlineBean;
 import com.kemizhibo.kemizhibo.other.preparing_online.view.PreparingOnlineView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
@@ -55,6 +58,8 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
                 if(bean != null && 0 == bean.getCode()){
                     preparingOnlineView.refreshSuccess(bean);
                     pageNum = DEFAULT_PAGE_NUM;
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) preparingOnlineView.getCustomContext());
                 }else{
                     preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -83,6 +88,8 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
                 PreparingOnlineBean bean = GsonUtils.getBean(response.body().string(), PreparingOnlineBean.class);
                 if(bean != null && 0 == bean.getCode()){
                     preparingOnlineView.loadMoreSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) preparingOnlineView.getCustomContext());
                 }else{
                     preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

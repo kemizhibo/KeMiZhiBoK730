@@ -115,7 +115,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         grade = view.findViewById(R.id.person_student_grade);
         typr = view.findViewById(R.id.person_student_type);
         simpleDraweeView = view.findViewById(R.id.person_touxiang);
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
+        /*DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(userData.getPicImg())
                 .setAutoPlayAnimations(true)
                 .build();
@@ -134,7 +134,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
             typr.setText("");
         }else {
             typr.setText(userData.getSubject().toString());
-        }
+        }*/
         return view;
     }
 

@@ -1,9 +1,11 @@
 package com.kemizhibo.kemizhibo.other.preparing_package_detail.presenter;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingPackageDetailView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
@@ -51,6 +53,8 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
                 PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     detailView.getPreparingPackageDetailDataSuccess(bean);
+                }else if(0 != bean.getCode()){
+                    LoadFailUtil.initDialogToLogin((Activity) detailView.getCustomContext());
                 }else{
                     detailView.error("", String.valueOf(Constants.REQUEST_ERROR_CODE));
                 }

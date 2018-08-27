@@ -110,4 +110,5 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:4.1.6'
     compile 'com.contrarywind:wheelview:4.0.8'
     implementation project(':mediapicker')
+    compile 'com.github.delight-im:Android-AdvancedWebView:v3.0.0'
 }

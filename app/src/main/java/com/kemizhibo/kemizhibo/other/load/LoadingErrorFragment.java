@@ -9,16 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 
 /**
  * Created by Administrator on 2018/8/27.
  */
 
-public class LoadingFragment extends Fragment {
+public class LoadingErrorFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return View.inflate(getActivity(), R.layout.loading_page, null);
+        return View.inflate(getActivity(), R.layout.loading_error_page, null);
     }
 }

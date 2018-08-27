@@ -240,6 +240,12 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         /*backgroundAlpha(0.8f);
         parent = getActivity().getWindow().getDecorView();*/
         planPop.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
+        planPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                initialize();
+            }
+        });
     }
     /**
      * 设置添加屏幕的背景透明度
@@ -266,7 +272,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         semesterId = "";
         materialSelectI = -1;
         gradeSelectI = -1;
-        gradeSelectI = -1;
+        semesterSelectI = -1;
         if(null != filterPop && filterPop.isShowing()){
             filterPop.dismiss();
         }

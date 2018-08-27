@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadingEmptyFragment;
+import com.kemizhibo.kemizhibo.other.load.LoadingErrorFragment;
+import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.adapter.PreparingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.bean.PreparingLessonsBean;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter.PreparingLessonsPresenter;
@@ -42,14 +47,14 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2018/8/1.
  */
-
+@SuppressLint("RestrictedApi")
 public class PreparingLessonsFragment extends Fragment implements PreparingLessonsView{
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
     @BindView(R.id.list_view)
     ListView listView;
-    @BindView(R.id.loading_page)
-    LinearLayout loading_page;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
     private int planStatus = 0;
     private List<PreparingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private PreparingLessonsListAdapter adapter;
@@ -94,6 +99,8 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
             }
         });
         presenter.refreshPreparingLessonsData();
+        frameLayout.setVisibility(View.VISIBLE);
+        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -135,9 +142,14 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
 
     @Override
     public void refreshSuccess(PreparingLessonsBean bean) {
-        dataBeanList.clear();
-        dataBeanList.addAll(bean.getContent().getData());
-        setAdapter(false);
+        if(bean.getContent().getData().size() > 0){
+            dataBeanList.clear();
+            dataBeanList.addAll(bean.getContent().getData());
+            setAdapter(false);
+        }else{
+            frameLayout.setVisibility(View.VISIBLE);
+            getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
+        }
     }
 
     private void setAdapter(final boolean isLoadMore) {
@@ -148,8 +160,8 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                     refreshLayout.finishLoadMore();
                 }else{
                     refreshLayout.finishRefresh();
-                    if(loading_page.getVisibility() == View.VISIBLE){
-                        loading_page.setVisibility(View.GONE);
+                    if(frameLayout.getVisibility() == View.VISIBLE){
+                        frameLayout.setVisibility(View.GONE);
                         SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
                         smartRefreshLayout.setVisibility(View.VISIBLE);
                     }
@@ -173,6 +185,7 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     @Override
     public void error(int errorCode, final boolean isLoadMore) {
         getActivity().runOnUiThread(new Runnable() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void run() {
                 if(isLoadMore){
@@ -180,6 +193,8 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 }else{
                     refreshLayout.finishRefresh();
                 }
+                frameLayout.setVisibility(View.VISIBLE);
+                getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
             }
         });
     }
