@@ -258,6 +258,51 @@ public class PreparingPackageDetailBean {
             private int isRepeatAdd;
             private Object docId;
             private int kpointId;
+            private String url;
+            private String videoLogo;
+            private String userVideoLogo;
+            private String introduce;
+            private String videoIntroduce;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getVideoLogo() {
+                return videoLogo;
+            }
+
+            public void setVideoLogo(String videoLogo) {
+                this.videoLogo = videoLogo;
+            }
+
+            public String getUserVideoLogo() {
+                return userVideoLogo;
+            }
+
+            public void setUserVideoLogo(String userVideoLogo) {
+                this.userVideoLogo = userVideoLogo;
+            }
+
+            public String getIntroduce() {
+                return introduce;
+            }
+
+            public void setIntroduce(String introduce) {
+                this.introduce = introduce;
+            }
+
+            public String getVideoIntroduce() {
+                return videoIntroduce;
+            }
+
+            public void setVideoIntroduce(String videoIntroduce) {
+                this.videoIntroduce = videoIntroduce;
+            }
 
             public int getModuleId() {
                 return moduleId;

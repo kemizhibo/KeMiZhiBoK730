@@ -2,10 +2,12 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,9 @@ public class MyUserVideoFragment extends Fragment {
     private Button btn;
     private int usercourseid;
     private int usermoduleid;
+    private String url;
+    private String logo;
+    private String introduce;
 
     @Nullable
     @Override
@@ -49,9 +54,17 @@ public class MyUserVideoFragment extends Fragment {
         Bundle arguments = getArguments();
         usercourseid = arguments.getInt("usercourseid",0);
         usermoduleid = arguments.getInt("usermoduleid",0);
-        if (usercourseid !=0){
+        url = arguments.getString("url");
+        //loadLogo();
+        logo = arguments.getString("logo");
+        introduce = arguments.getString("introduce");
+        /*if (usercourseid !=0){
             RequestUtil.requestSuCaiVideo((Activity) getContext(), usercourseid,jzVideoPlayerStandard);
-        }
+        }*/
+        jzVideoPlayerStandard.setUp(url
+                , 1, "");
+        jzVideoPlayerStandard.thumbImageView.setImageURI(Uri.parse(logo));
+        adjshipin.setText(TextUtils.isEmpty(introduce) ? "暂无" : introduce);
         Log.i("===usercourseid", usercourseid +"");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

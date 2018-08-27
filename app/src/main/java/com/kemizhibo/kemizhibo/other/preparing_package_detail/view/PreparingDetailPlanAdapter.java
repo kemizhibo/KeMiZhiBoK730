@@ -124,7 +124,8 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     deletePPT(3, position);
                 }
             });
-            RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId, 3);
+            //RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId, 3);
+            holder.mppt.setText(planBeanList.get(position).getDocName());
         }else if (itemViewType == TYPE_MAKE) {
             moduleId = planBeanList.get(position).getModuleId();
             final int courseId = planBeanList.get(position).getCourseId();

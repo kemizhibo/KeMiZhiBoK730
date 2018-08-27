@@ -14,11 +14,11 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 
 public  class MyViewHolder {
-    public static TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline,mdownppt1,mwendangother;
-    public static JZVideoPlayerStandard jcVideoPlayer,jcVideoPlayer_video;
-    public static TextView mwendang;
-    public static Button mbtn;
-    public static SimpleDraweeView miv,simpledraweeview_pic;
-    public static LinearLayout mlinearLayout;
-    public static ViewPager mviewPager,mshipinviewpager;
+    public  TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline,mdownppt1,mwendangother;
+    public  JZVideoPlayerStandard jcVideoPlayer,jcVideoPlayer_video;
+    public  TextView mwendang;
+    public  Button mbtn;
+    public  SimpleDraweeView miv,simpledraweeview_pic;
+    public  LinearLayout mlinearLayout;
+    public  ViewPager mviewPager,mshipinviewpager;
 }

@@ -35,7 +35,6 @@ import okhttp3.Response;
 
 public class RequestUtil {
 
-    private static boolean isjump = false;
     private static BDocInfo docInfo;
     private static TextView id;
     private static int type;
@@ -70,8 +69,8 @@ public class RequestUtil {
                             mcheck.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    isjump = true;
-                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, 3);
+                                    //isjump = true;
+                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, 3, true);
                                 }
                             });
 
@@ -143,15 +142,15 @@ public class RequestUtil {
                                 public void onClick(View v) {
                                     ToastUtils.showToast("开始下载");
                                     //   if (url != null) {
-                                    getDocMessage(context, bean.getContent().getDocId(), mdown, itemViewType);
+                                    getDocMessage(context, bean.getContent().getDocId(), mdown, itemViewType, false);
                                     //  }
                                 }
                             });
                             mcheck.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    isjump = true;
-                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, itemViewType);
+                                    //isjump = true;
+                                    getDocMessage(context, bean.getContent().getDocId(), mcheck, itemViewType, true);
                                 }
                             });
                         }
@@ -162,10 +161,10 @@ public class RequestUtil {
             }
         });
     }
-    public static void getDocMessage(final Activity context, String docId, final TextView holder, final int i) {
+    public static void getDocMessage(final Activity context, final String docId, final TextView holder, final int i, final boolean isjump) {
         Map map = new HashMap();
-        //  map.put("docId", docId);
-        map.put("docId", "doc-ifrmt6px98u387u");
+        map.put("docId", docId);
+        //map.put("docId", "doc-ifrmt6px98u387u");
         Log.i("==docid===", docId);
         OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DOCMESSAGE_URL, map), new Callback() {
             @Override
@@ -212,7 +211,6 @@ public class RequestUtil {
                         intent.putExtra("word", doc);
                         Log.i("----", "zhanshi");
                         context.startActivity(intent);
-                        isjump = false;
                     } else {
                         Log.i("----", "xiazai");
                         SampleObserver observer = new SampleObserver(id, docInfo, type);

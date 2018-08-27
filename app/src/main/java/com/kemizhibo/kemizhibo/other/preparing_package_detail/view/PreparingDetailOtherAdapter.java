@@ -14,15 +14,13 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
+import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
 import java.util.List;
 
 import cn.jzvd.JZVideoPlayerStandard;
-
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mcheck;
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mdown;
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mwendang;
 
 /**
  * Created by asus on 2018/8/1.
@@ -120,7 +118,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         Log.i("---otheritemViewType--", "" + itemViewType);
         if (itemViewType == TYPE_PPT) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
+            //RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
+            holder.mppt.setText(otherBeanList.get(position).getDocName());
             holder.mdownppt1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,12 +130,108 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     RequestUtil.requestSuCaiAdd((Activity)context, otherBeanList.get(position).getCourseId(), otherBeanList.get(position).getDocName(),3,otherBeanList.get(position).getContentIds(),holder.mdownppt1);
                 }
             });
+            holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 3, true);
+                }
+            });
         } else if (itemViewType == TYPE_excel) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 2, moduleId);
+            //RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 2, moduleId);
+            /*
+            holder.mwendang
+                    holder.mcheck
+                    holder.mdown
+             */
+            holder.mwendang.setText(otherBeanList.get(position).getDocName());
+            holder.mdown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.showToast("开始下载");
+                    //   if (url != null)
+                    // RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mdown, 2, false);
+                    //  }
+                    LogUtils.d("PreparingDetailOtherAda", "url:" + otherBeanList.get(position).getUrl());
+                    DownloadUtil.get().download(otherBeanList.get(position).getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
+                        @Override
+                        public void onDownloadSuccess() {
+                            Activity activity = (Activity) context;
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.mdown.setText("已下载");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onDownloading(int progress) {
+
+                        }
+
+                        @Override
+                        public void onDownloadFailed() {
+
+                        }
+                    });
+                }
+            });
+            holder.mcheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //isjump = true;
+                    RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 2, true);
+                }
+            });
         }else if (itemViewType == TYPE_WORD) {
             moduleId = otherBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder.mwendangother, holder.mdown, holder.mcheck, 1, moduleId);
+            //RequestUtil.requestDoc((Activity) context, holder.mwendangother, holder.mdown, holder.mcheck, 1, moduleId);
+            /*
+            holder.mwendangother
+                    holder.mcheck
+                    holder.mdown
+             */
+            holder.mwendangother.setText(otherBeanList.get(position).getDocName());
+            holder.mdown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.showToast("开始下载");
+                    //   if (url != null) {
+                    //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mdown, 1, false);
+                    //  }
+                    DownloadUtil.get().download(otherBeanList.get(position).getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
+                        @Override
+                        public void onDownloadSuccess() {
+                            Activity activity = (Activity) context;
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.mdown.setText("已下载");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onDownloading(int progress) {
+
+                        }
+
+                        @Override
+                        public void onDownloadFailed() {
+
+                        }
+                    });
+                }
+            });
+            holder.mcheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //isjump = true;
+                    LogUtils.i("DocId", "mkel.getDocId():" + otherBeanList.get(position).getDocId());
+                    RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 1, true);
+                }
+            });
         }
         return convertView;
     }

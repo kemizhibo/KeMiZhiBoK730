@@ -90,10 +90,6 @@ public class MediaPickerActivity extends AppCompatActivity implements
     private static final String KEY_PHOTOFILE_CAPTURE = "key_photofile_capture";
     private static final int REQUEST_CAMERA_PERMISSION = 300;
 
-    public static final String ANDROID_API = "android_api";
-    public static final String BELOW_API = "below_api";
-    public static final String ABOVE_API = "above_api";
-
     private MediaOptions mMediaOptions;
     private MenuItem mMediaSwitcher;
     private MenuItem mPhoto;
@@ -106,7 +102,6 @@ public class MediaPickerActivity extends AppCompatActivity implements
     private FileObserverTask mFileObserverTask;
     private boolean takePhotoPending;
     private boolean takeVideoPending;
-    private String api;
 
     /**
      * Start {@link MediaPickerActivity} in {@link Activity} to pick photo or
@@ -177,7 +172,6 @@ public class MediaPickerActivity extends AppCompatActivity implements
                     .getSerializable(KEY_PHOTOFILE_CAPTURE);
         } else {
             mMediaOptions = getIntent().getParcelableExtra(EXTRA_MEDIA_OPTIONS);
-            api = getIntent().getStringExtra(ANDROID_API);
             if (mMediaOptions == null) {
                 throw new IllegalArgumentException(
                         "MediaOptions must be not null, you should use MediaPickerActivity.open(Activity activity, int requestCode,MediaOptions options) method instead.");
@@ -341,7 +335,6 @@ public class MediaPickerActivity extends AppCompatActivity implements
         Intent data = new Intent();
         data.putParcelableArrayListExtra(EXTRA_MEDIA_SELECTED,
                 (ArrayList<MediaItem>) mediaSelectedList);
-        data.putExtra(ANDROID_API, api);
         setResult(Activity.RESULT_OK, data);
         finish();
     }

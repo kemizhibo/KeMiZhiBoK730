@@ -14,6 +14,7 @@ import com.baidu.bdocreader.BDocView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyPreviewBean;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 
 import java.io.Serializable;
 
@@ -41,11 +42,20 @@ public class WordShowActivity extends BaseActivity {
         int totalPage = myPreviewBean.getTotalPage();
         String docTitle = myPreviewBean.getDocTitle();
         int startPage = myPreviewBean.getStartPage();
-        BDocInfo docInfo = new BDocInfo(myPreviewBean.getHost(), myPreviewBean.getDocId(), myPreviewBean.getDocType(), myPreviewBean.getToken())
-                .setLocalFileDir(myPreviewBean.getThisDocDir())
-                .setTotalPage(myPreviewBean.getTotalPage())
-                .setDocTitle(myPreviewBean.getDocTitle())
-                .setStartPage(myPreviewBean.getStartPage());
+        BDocInfo docInfo = new BDocInfo(host, docId, docType, token)
+                .setLocalFileDir(thisDocDir)
+                .setTotalPage(totalPage)
+                .setDocTitle(docTitle)
+                .setStartPage(startPage);
+
+        Log.d("baidu", host);
+        Log.d("baidu", docId);
+        Log.d("baidu", docType);
+        Log.d("baidu", token);
+        Log.d("baidu", thisDocDir);
+        Log.d("baidu", totalPage + "");
+        Log.d("baidu", docTitle);
+        Log.d("baidu", startPage + "");
 
         mdvdoc.setOnDocLoadStateListener(new BDocView.OnDocLoadStateListener() {
             @Override

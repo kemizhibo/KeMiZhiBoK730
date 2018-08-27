@@ -32,6 +32,7 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingDeta
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.PreparingPackageDetailView;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
+import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -78,7 +79,9 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
-
+        Intent intent = getIntent();
+        courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
+        //courseId = 2832;
     }
 
     private void bindTitleBar() {
@@ -164,9 +167,6 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     protected void onResume() {
         super.onResume();
         Log.i("--hhhhh--", "====hhhhhh");
-        Intent intent = getIntent();
-        courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        //courseId = 2832;
         detailPresenter.getPreparingPackageDetailData();
     }
 }

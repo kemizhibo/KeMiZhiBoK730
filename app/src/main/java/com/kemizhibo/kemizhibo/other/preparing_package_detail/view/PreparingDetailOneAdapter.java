@@ -3,7 +3,9 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +20,11 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
 import java.util.List;
 
 import cn.jzvd.JZVideoPlayerStandard;
-
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mcheck;
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mdown;
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder.mwendang;
 
 /**
  * Created by asus on 2018/8/1.
@@ -144,7 +143,11 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         if (itemViewType == TYPE_SHIPIN) {
             courseId = oneKeyBeanList.get(position).getCourseId();
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestVideo((Activity) context, position, holder, courseId);
+            //RequestUtil.requestVideo((Activity) context, position, holder, courseId);
+            holder.madj.setText(TextUtils.isEmpty(oneKeyBeanList.get(position).getVideoIntroduce()) ? "暂无" : oneKeyBeanList.get(position).getVideoIntroduce());
+            holder.jcVideoPlayer.setUp(oneKeyBeanList.get(position).getUrl()
+                    , 1, "");
+            holder.jcVideoPlayer.thumbImageView.setImageURI(Uri.parse(oneKeyBeanList.get(position).getVideoLogo()));
             holder.mbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,7 +160,16 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             });
         } else if (itemViewType == TYPE_PPT) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestPPT((Activity) context, holder.mppt, holder.mcheckppt, holder.mdownppt, 3, moduleId);
+            //RequestUtil.requestPPT((Activity) context, holder.mppt, holder.mcheckppt, holder.mdownppt, 3, moduleId);
+            holder.mppt.setText(oneKeyBeanList.get(position).getDocName());
+
+            holder.mcheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //isjump = true;
+                    RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 3, true);
+                }
+            });
             holder.mdownppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -166,7 +178,24 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             });
         } else if (itemViewType == TYPE_WENDANG) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
-            RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);
+            //RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);
+            holder.mwendang.setText(oneKeyBeanList.get(position).getDocName());
+            holder.mdown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.showToast("开始下载");
+                    //   if (url != null) {
+                    RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mdown, 1, false);
+                    //  }
+                }
+            });
+            holder.mcheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //isjump = true;
+                    RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 1, true);
+                }
+            });
         } else if (itemViewType == TYPE_PUPIAN) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
            /* RequestUtil.requestPic((Activity) context, holder, itemViewType, moduleId, picurls);

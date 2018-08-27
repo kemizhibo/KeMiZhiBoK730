@@ -36,6 +36,7 @@ import com.kemizhibo.kemizhibo.other.preparing_online.view.PreparingOnlineView;
 import com.kemizhibo.kemizhibo.other.utils.FilterPopUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
@@ -216,7 +217,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
                     int docType = planBeanList.get(selectIndex).getDocType();
                     if(docType == 5){
                         //视频
-                        Intent intent = new Intent(getActivity(), YingXinagVideoDetailsActivity.class);
+                        Intent intent = new Intent(getActivity(), LiveRoomDetailsActivity.class);
                         intent.putExtra(Constants.COURSE_ID, String.valueOf(planBeanList.get(selectIndex).getCourseId()));
                         startActivity(intent);
                     }else{
@@ -288,15 +289,25 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
 
     @Override
     public void refreshSuccess(PreparingOnlineBean bean) {
-        dataBeanList.clear();
-        dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.finishRefresh();
-                setAdapter();
-            }
-        });
+        if(bean.getContent().getData().size() > 0){
+            dataBeanList.clear();
+            dataBeanList.addAll(bean.getContent().getData());
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setState(LoadingPager.LoadResult.success);
+                    refreshLayout.finishRefresh();
+                    setAdapter();
+                }
+            });
+        }else{
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setState(LoadingPager.LoadResult.empty);
+                }
+            });
+        }
     }
 
     private void setAdapter() {
@@ -321,12 +332,18 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     }
 
     @Override
-    public void error(int errorCode, boolean isLoadMore) {
-        if(isLoadMore){
-            refreshLayout.finishLoadMore();
-        }else{
-            refreshLayout.finishRefresh();
-        }
+    public void error(int errorCode, final boolean isLoadMore) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setState(LoadingPager.LoadResult.error);
+                if(isLoadMore){
+                    refreshLayout.finishLoadMore();
+                }else{
+                    refreshLayout.finishRefresh();
+                }
+            }
+        });
     }
 
     @Override

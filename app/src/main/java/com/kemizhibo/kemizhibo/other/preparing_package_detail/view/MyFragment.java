@@ -2,10 +2,15 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +25,15 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
+import retrofit2.http.Url;
 
 /**
  * Created by asus on 2018/8/16.
@@ -38,6 +47,9 @@ public class MyFragment extends Fragment {
     private int courseid;
     private int moduleid;
     private View convertView;
+    private String url;
+    private String logo;
+    private String introduce;
 
     @Nullable
     @Override
@@ -64,7 +76,20 @@ public class MyFragment extends Fragment {
         Bundle arguments = getArguments();
         courseid = arguments.getInt("courseid");
         moduleid = arguments.getInt("moduleid");
-        RequestUtil.requestSuCaiVideo((Activity) getContext(), courseid,jzVideoPlayerStandard);
+        /*
+        bundle.putString("url", kemiVideo.get(position).getUrl());
+                            bundle.putString("logo", kemiVideo.get(position).getVideoLogo());
+                            bundle.putString("introduce", kemiVideo.get(position).getVideoIntroduce());
+         */
+        url = arguments.getString("url");
+        loadLogo();
+        logo = arguments.getString("logo");
+        introduce = arguments.getString("introduce");
+        //RequestUtil.requestSuCaiVideo((Activity) getContext(), courseid,jzVideoPlayerStandard);
+        jzVideoPlayerStandard.setUp(url
+                , 1, "");
+        adjshipin.setText(TextUtils.isEmpty(introduce) ? "暂无" : introduce);
+        jzVideoPlayerStandard.thumbImageView.setImageURI(Uri.parse(logo));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +100,43 @@ public class MyFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+    }
+
+    private void loadLogo() {
+        if(null == url){
+            return;
+        }
+        new AsyncTask<Void, Void, Bitmap>(){
+
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                try {
+                    URL loadUrl = new URL(url);
+                    HttpURLConnection connection = (HttpURLConnection) loadUrl.openConnection();
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
+                    int responseCode = connection.getResponseCode();
+                    if(responseCode == 200){
+                        return BitmapFactory.decodeStream(connection.getInputStream());
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(final Bitmap bitmap) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }.execute();
     }
 
     @Override

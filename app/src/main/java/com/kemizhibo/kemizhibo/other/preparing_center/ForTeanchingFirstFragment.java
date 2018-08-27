@@ -205,15 +205,25 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
 
     @Override
     public void refreshSuccess(PreparingCenterBean bean) {
-        dataBeanList.clear();
-        dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.finishRefresh();
-                setAdapter();
-            }
-        });
+        if(bean.getContent().getData().size() > 0){
+            dataBeanList.clear();
+            dataBeanList.addAll(bean.getContent().getData());
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setState(LoadingPager.LoadResult.success);
+                    refreshLayout.finishRefresh();
+                    setAdapter();
+                }
+            });
+        }else{
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setState(LoadingPager.LoadResult.empty);
+                }
+            });
+        }
     }
 
     private void setAdapter() {
@@ -242,6 +252,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                setState(LoadingPager.LoadResult.error);
                 if(isLoadMore){
                     refreshLayout.finishLoadMore();
                 }else{

@@ -5,6 +5,7 @@ package com.kemizhibo.kemizhibo.other.config;
  */
 
 public class Constants {
+    //public static final String SERVER = "";
     public static final String SERVER = "http://39.155.221.165:8080/";
 
     public static final String PREPARING_CENTER_URL = SERVER + "kemiapi/prepare/module/prepareList";

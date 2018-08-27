@@ -2,10 +2,12 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,8 @@ public class MyUserPicFragment extends Fragment {
     private Button btn;
     private int moduleId;
     private int courseid;
+    private String url;
+    private String introduce;
 
     @Nullable
     @Override
@@ -49,8 +53,13 @@ public class MyUserPicFragment extends Fragment {
         Bundle arguments = getArguments();
         moduleId = arguments.getInt("moduleid");
         courseid = arguments.getInt("courseid");
+        url = arguments.getString("url");
+        introduce = arguments.getString("introduce");
+
         Log.i("userpiccouseid",courseid+"");
-        RequestUtil.requestSuCaiPic((Activity) getContext(), moduleId,6,simpleDraweeView);
+        adjPic.setText(TextUtils.isEmpty(introduce) ? "暂无" : introduce);
+        simpleDraweeView.setImageURI(Uri.parse(url));
+        //RequestUtil.requestSuCaiPic((Activity) getContext(), moduleId,6,simpleDraweeView);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

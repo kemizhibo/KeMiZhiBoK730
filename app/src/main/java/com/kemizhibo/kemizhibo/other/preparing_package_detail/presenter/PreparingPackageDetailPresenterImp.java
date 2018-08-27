@@ -32,6 +32,7 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
     @Override
     public void getPreparingPackageDetailData() {
         if(!NetUtils.isConnected(detailView.getCustomContext())){
+            detailView.error("", String.valueOf(Constants.NET_ERROR_CODE));
             return;
         }
         Map map = new HashMap();
@@ -40,16 +41,18 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
         OkHttpRequest.doGet(detailView.getCustomContext(), OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DETAIL_URL, map), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                LogUtils.i("PreparingPackageDetailP", e.getMessage());
+                detailView.error("", String.valueOf(Constants.REQUEST_ERROR_CODE));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                //LogUtils.i("PreparingPackageDetailP", response.body().string());
                 PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     detailView.getPreparingPackageDetailDataSuccess(bean);
                 }else{
-
+                    detailView.error("", String.valueOf(Constants.REQUEST_ERROR_CODE));
                 }
             }
         });
