@@ -7,9 +7,12 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Advanceable;
+import android.widget.LinearLayout;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.web.WebSetting;
@@ -19,15 +22,29 @@ import im.delight.android.webview.AdvancedWebView;
 public class PreviewActivity extends AppCompatActivity implements AdvancedWebView.Listener{
 
     private AdvancedWebView webView;
+    private LinearLayout loadingPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
+        loadingPage = findViewById(R.id.loading_page);
+
         String url = getIntent().getStringExtra("url");
         webView = findViewById(R.id.web_view);webView.setListener(this, this);
         //webView.loadUrl("https://docs.google.com/viewer?url=" + url);
         WebSetting.getInstance().setWebViewSetting(webView.getSettings());
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if(newProgress==100){
+                    loadingPage.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+                }
+                super.onProgressChanged(view, newProgress);
+            }
+        });
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
