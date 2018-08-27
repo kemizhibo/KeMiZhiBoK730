@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,9 +8,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +29,7 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.PersonCenterBeiS
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterGuanLiActivity;
@@ -85,6 +91,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     private SimpleDraweeView simpleDraweeView;
     private Intent intent;
     private Bundle bundle;
+    private int code;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -113,9 +120,21 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
                 .setAutoPlayAnimations(true)
                 .build();
         simpleDraweeView.setController(controller);
-        school.setText(userData.getSchool());
-        grade.setText(userData.getGrade());
-        typr.setText(userData.getSubject());
+        if (TextUtils.isEmpty(userData.getSchool().toString())){
+            school.setText("");
+        }else {
+            school.setText(userData.getSchool().toString());
+        }
+        if (TextUtils.isEmpty(userData.getGrade().toString())){
+            grade.setText("");
+        }else {
+            grade.setText(userData.getGrade().toString());
+        }
+        if (TextUtils.isEmpty(userData.getSubject().toString())){
+            typr.setText("");
+        }else {
+            typr.setText(userData.getSubject().toString());
+        }
         return view;
     }
 
@@ -130,29 +149,9 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
 
     @Override
     public void onUserSuccess(GetUserBean getUserBean) {
-        if (getUserBean.getCode()==0){
-            userData = getUserBean.getContent();
-            if (userData==null){
-                setState(LoadingPager.LoadResult.empty);
-            }else {
-                setState(LoadingPager.LoadResult.success);
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setUri(userData.getPicImg())
-                        .setAutoPlayAnimations(true)
-                        .build();
-                if (simpleDraweeView!=null){
-                    simpleDraweeView.setController(controller);
-                    school.setText(userData.getSchool());
-                    grade.setText(userData.getGrade());
-                    typr.setText(userData.getSubject());
-                }
-            }
-
-        }else {
-            //token失效，重新登录
-            setState(LoadingPager.LoadResult.error);
-            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
-        }
+        setState(LoadingPager.LoadResult.success);
+        code = getUserBean.getCode();
+        userData = getUserBean.getContent();
     }
 
     @Override
@@ -176,12 +175,36 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         return getUserPresenter;
     }
 
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
+    }
 
     @OnClick({R.id.person_bianji_butn, R.id.person_touxiang, R.id.shoucang_layout, R.id.liulan_layout, R.id.jilu_layout, R.id.fankui_layout, R.id.shehzi_layout,R.id.guanli_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_bianji_butn:
-                startActivity(new Intent(getActivity(), PersonCenterBianJiActivity.class));
+                if (code==0){
+                    startActivity(new Intent(getActivity(), PersonCenterBianJiActivity.class));
+                }else {
+                    initDialogToLogin();
+                }
                 break;
             case R.id.person_touxiang:
                 //点击跳转

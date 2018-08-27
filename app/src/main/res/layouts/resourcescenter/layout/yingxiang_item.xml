@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="@dimen/res_287.5dp"
+        android:layout_height="@dimen/res_160dp">
+        <ImageView
+            android:id="@+id/yinxiang_recyclerview_imageview"
+            android:layout_width="@dimen/res_287.5dp"
+            android:layout_height="@dimen/res_160dp"
+            android:scaleType="fitXY"/>
+        <ImageView
+            android:id="@+id/collection_box_play_butn"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/res_18dp"
+            android:layout_height="@dimen/res_18dp"
+            android:visibility="gone"
+            android:src="@mipmap/play_butn"/>
+        <ImageView
+            android:id="@+id/collection_box_tuji"
+            android:layout_width="@dimen/res_18dp"
+            android:layout_height="@dimen/res_15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:src="@mipmap/tuji"/>
+    </RelativeLayout>
+
 
     <ImageView
-        android:id="@+id/yinxiang_recyclerview_imageview"
-        android:layout_width="@dimen/res_287.5dp"
-        android:layout_height="@dimen/res_160dp"
-        android:scaleType="fitXY"/>
+        android:id="@+id/check_box"
+        android:layout_width="@dimen/res_17.5dp"
+        android:layout_height="@dimen/res_17.5dp"
+        android:layout_alignEnd="@+id/relativelayout"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/checkbox_null"
+        android:visibility="gone"/>
+
+
 
     <TextView
         android:id="@+id/yinxiang_item_title"
+        android:layout_below="@+id/relativelayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/res_15dp"
@@ -22,4 +55,5 @@
         android:textColor="@color/black"
         android:textSize="@dimen/res_textsize_15sp" />
 
-</LinearLayout>
+</RelativeLayout>
+

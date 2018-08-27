@@ -1,151 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/relativelayout_fragment"
+    android:id="@+id/relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/teacher_training_content"
+    <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
+        android:layout_alignParentTop="true"
+        android:id="@+id/player"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/teacher_training_appbar"
+        android:layout_height="@dimen/res_375dp" >
+        <ImageView
+            android:id="@+id/video_back_butn"
+            android:layout_marginTop="@dimen/res_20dp"
+            android:layout_marginLeft="@dimen/res_20dp"
+            android:layout_width="@dimen/res_20dp"
+            android:layout_height="@dimen/res_20dp"
+            android:src="@mipmap/fanhui"/>
+    </com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView>
+    <ScrollView
+        android:layout_below="@+id/player"
+        android:layout_above="@+id/pinglun_layout"
+        android:id="@+id/teacher_training_screview"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/jieshao_relativelayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/teacher_training_collapsing_toolbar"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/detail_page_above_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:collapsedTitleTextAppearance="@style/ZheDieVideoTitle"
-                app:expandedTitleGravity="right|bottom"
-                app:expandedTitleMarginEnd="@dimen/res_textsize_30sp"
-                app:expandedTitleMarginStart="@dimen/res_textsize_15sp"
-                app:expandedTitleTextAppearance="@style/OpenVideoTitle"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
-                    android:layout_alignParentTop="true"
-                    android:id="@+id/player"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/res_375dp" />
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/teacher_training_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <LinearLayout
-                    android:id="@+id/teacher_training_detail_page_above_container"
+                    android:layout_marginTop="@dimen/res_12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginLeft="@dimen/res_12dp"
+                        android:id="@+id/yingxiang_details_video_title"
+                        android:textSize="@dimen/res_textsize_13sp"
+                        android:textColor="@color/text_2a2a2a"
+                        android:layout_width="@dimen/res_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="视频的大标题"/>
                     <LinearLayout
-                        android:layout_marginTop="@dimen/res_12dp"
+                        android:id="@+id/yingxiang_details_shoucang_butn"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_marginLeft="@dimen/res_12dp"
-                            android:id="@+id/teacher_training_details_video_title"
-                            android:textSize="@dimen/res_textsize_13sp"
-                            android:textColor="@color/text_2a2a2a"
-                            android:layout_width="@dimen/res_0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="视频的大标题"/>
                         <ImageView
-                            android:id="@+id/collection_imageview"
+                            android:id="@+id/yingxiang_details_shoucang_imageview"
                             android:layout_marginRight="@dimen/res_12dp"
-                            android:layout_width="@dimen/res_13dp"
-                            android:layout_height="@dimen/res_13dp"
-                            android:src="@mipmap/shoucang_2"/>
+                            android:layout_width="@dimen/res_17.5dp"
+                            android:layout_height="@dimen/res_16dp"
+                            android:src="@mipmap/dianzan_kong"/>
                         <TextView
-                            android:id="@+id/teacher_training_details_shoucang_butn"
                             android:layout_marginRight="@dimen/res_12dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/res_textsize_10sp"
-                            android:textColor="@color/text_b4b4b4"
+                            android:textSize="@dimen/res_textsize_13sp"
+                            android:textColor="@color/text_67c58c"
                             android:text="收藏"/>
                     </LinearLayout>
-
-                    <View
-                        android:layout_marginTop="@dimen/res_12.5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/res_1dp"
-                        android:background="@color/dcdcdc"/>
-
-                    <TextView
-                        android:id="@+id/teacher_training_detail_page_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="视频介绍-"
-                        android:layout_marginLeft="@dimen/res_12dp"
-                        android:layout_marginTop="@dimen/res_15dp"
-                        android:layout_marginBottom="@dimen/res_12.5dp"
-                        android:textSize="@dimen/res_textsize_12sp"
-                        android:textColor="@color/black_353535"/>
-                    <TextView
-                        android:id="@+id/teacher_training_details_video_jieshao"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/res_11dp"
-                        android:text="水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡抹浓妆总相宜。"
-                        android:maxLines="10"
-                        android:ellipsize="end"
-                        android:layout_marginRight="10dp"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_8e8e8e"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginTop="@dimen/res_15dp"
-                        android:background="#e6e6e6"/>
-                    <com.androidkun.xtablayout.XTabLayout
-                        android:id="@+id/teacher_training_xTablayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="130px"
-                        app:xTabBackgroundColor="@color/fafafa"
-                        app:xTabDividerWidthWidthText="true"
-                        app:xTabMode="fixed"
-                        app:xTabIndicatorColor="@color/text_67c58c"
-                        app:xTabIndicatorHeight="@dimen/res_2dp"
-                        app:xTabIndicatorWidth="@dimen/res_2dp"
-                        app:xTabSelectedTextColor="@color/text_67c58c"
-                        app:xTabTextColor="@color/text_7f7e7e"
-                        app:xTabTextSize="@dimen/res_textsize_14sp"
-                        app:xTabDisplayNum="2"
-                        android:padding="@dimen/res_5dp"
-                        app:xTabSelectedTextSize="@dimen/res_textsize_14sp"
-                        app:xTabDividerWidth="2dp"
-                        app:xTabDividerHeight="15dp"
-                        app:xTabDividerColor="@color/text_7f7e7e" />
-
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/teacher_training_viewPager"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
                 </LinearLayout>
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.design.widget.CoordinatorLayout>
-</RelativeLayout>
 
+                <View
+                    android:layout_marginTop="@dimen/res_12.5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/res_1dp"
+                    android:background="@color/dcdcdc"/>
+
+                <TextView
+                    android:id="@+id/detail_page_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="视频介绍-"
+                    android:layout_marginLeft="@dimen/res_12dp"
+                    android:layout_marginTop="@dimen/res_15dp"
+                    android:layout_marginBottom="@dimen/res_12.5dp"
+                    android:textSize="@dimen/res_textsize_12sp"
+                    android:textColor="@color/black_353535"/>
+                <TextView
+                    android:id="@+id/yingxiang_details_video_jieshao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/res_11dp"
+                    android:text="水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡抹浓妆总相宜。"
+                    android:maxLines="10"
+                    android:ellipsize="end"
+                    android:layout_marginRight="10dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_8e8e8e"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/res_15dp"
+                    android:background="#e6e6e6"/>
+                <TextView
+                    android:id="@+id/yingxiang_details_comment_num_txt"
+                    android:layout_marginLeft="@dimen/res_12dp"
+                    android:layout_marginTop="@dimen/res_15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="评论数"/>
+            </LinearLayout>
+            <FrameLayout
+                android:id="@+id/comment_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/detail_page_above_container"
+                android:visibility="gone">
+            </FrameLayout>
+            <com.liaoinstan.springview.widget.SpringView
+                android:layout_below="@+id/detail_page_above_container"
+                android:id="@+id/comment_springview"
+                android:background="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comment_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </com.liaoinstan.springview.widget.SpringView>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/pinglun_layout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/detail_page_do_comment"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:textColor="#B6B6B6"
+            android:textSize="12sp"
+            android:text="说点什么吧..."
+            android:background="#dcdcdc"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="22dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="18dp"/>
+    </RelativeLayout>
+</RelativeLayout>

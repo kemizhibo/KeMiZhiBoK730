@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +13,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -78,12 +81,6 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     private AlertDialog builder;
     //多选下标集合
     List<String> arr = new ArrayList<>();
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            if (msg.what == 0)
-                startActivity(new Intent(PersonCenterLiuLanActivity.this, LoginActivity.class));
-        }
-    };
     private String stringshoucang;
 
     @Override
@@ -94,12 +91,6 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     @Override
     protected void initData() {
         bindTitleBar();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        handler.removeMessages(0);
     }
 
     @Override
@@ -177,39 +168,47 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
                     liulanSpringview.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
                 }
-            }
-        } else if (isUp==2){
-            if (isUp==1){
-                //切换控件
-                liulanFrameLayout.setVisibility(View.GONE);
-                liulanSpringview.setVisibility(View.VISIBLE);
-                mList.addAll(liuLanBean.getContent().getData());
-                if (mList.size()>0){
-                    //加载数据
-                    intiLiuLanData();
-                }else {
+            }else if (isUp==2){
                     //切换控件
-                    liulanFrameLayout.setVisibility(View.VISIBLE);
-                    liulanSpringview.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
-                }
-            }
-        }else {
-            //token失效，重新登录
-            Transparent.showErrorMessage(this, "登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    liulanFrameLayout.setVisibility(View.GONE);
+                    liulanSpringview.setVisibility(View.VISIBLE);
+                    mList.addAll(liuLanBean.getContent().getData());
+                    if (mList.size()>0){
+                        //加载数据
+                        intiLiuLanData();
+                    }else {
+                        //切换控件
+                        liulanFrameLayout.setVisibility(View.VISIBLE);
+                        liulanSpringview.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
                     }
-                }
-            }).start();
+            }
+        } else {
+            initDialogToLogin();
         }
     }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PersonCenterLiuLanActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
+    }
+
 
     private void intiLiuLanData() {
         //改变数据源之后，多选框状态与数据源做比对
@@ -400,12 +399,14 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             liuLanPresenter.getLiuLanData(this, "Bearer " + token, "1", "10");
             liuLanAdapter.notifyDataSetChanged();
             builder.dismiss();
+        }else {
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onClearLiuLanError(String msg) {
-
+          ToastUtils.showToast(msg);
     }
 
     //删除一个或者多个浏览记录
@@ -427,13 +428,13 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             liuLanAdapter.notifyDataSetChanged();
             builder.dismiss();
         }else {
-
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onClearOneOrMoreLiuLanError(String msg) {
-        LogUtils.i("123456", "123456789");
+        ToastUtils.showToast(msg);
     }
 
     @Override

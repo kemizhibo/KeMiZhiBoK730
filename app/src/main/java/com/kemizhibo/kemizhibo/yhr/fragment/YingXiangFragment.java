@@ -12,11 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.dueeeke.videoplayer.util.L;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
@@ -93,6 +93,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     private SharedPreferences sp;
     private String token;
     private int itemCount = 0;
+    private GridLayoutManager gridLayoutManager;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -111,8 +112,8 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
 
     private void initYingXiangFragmentData() {
         //设置适配器
-        GridLayoutManager layoutManage = new GridLayoutManager(getContext(), 2);
-        yinxiangRecyclerview.setLayoutManager(layoutManage);
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        yinxiangRecyclerview.setLayoutManager(gridLayoutManager);
         //上拉下拉动画效果
         yinxiangRecyclerview.setItemAnimator(new DefaultItemAnimator());
         yinxiangSpring.setType(SpringView.Type.FOLLOW);
@@ -125,7 +126,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 } else {
                     switch (yingXiangFragmentdata.get(position).getFileType()) {
                         case "VIDEO":
-                            intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
+                            intent = new Intent(getActivity().getApplicationContext(), TeacherTrainingDetailsActivity.class);
                             bundle = new Bundle();
                             bundle.putString("courseId", String.valueOf(yingXiangFragmentdata.get(position).getCourseId()));
                             intent.putExtras(bundle);
@@ -372,9 +373,11 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
             if (isUp == 1) {
                 LogUtils.i("下拉刷新","下拉刷新");
                 yingXiangFragmentdata.clear();
-                //yingXiangFragmentAdapter.getData().clear();
+                //yingXiangFragmentAdapter.addData(yingXiangFragmentBean.getContent().getData());
+                //yinxiangRecyclerview.setAdapter(null);
+                //yingXiangFragmentAdapter.
                 yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
-                LogUtils.i("123456", String.valueOf(yingXiangFragmentdata.size()));
+                //yinxiangSpring.setEnable(true);
                 if (yingXiangFragmentdata==null){
                     setState(LoadingPager.LoadResult.empty);
                 }else {
@@ -388,12 +391,25 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 //yingXiangFragmentdata.clear();
                 //yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
                 if (itemCount>=yingXiangFragmentBean.getContent().getTotal()){
-                    ToastUtils.showToast("已到达底部");
-                    yingXiangFragmentAdapter.loadMoreEnd();
+                    //yinxiangRecyclerview.canScrollVertically(-1);//的值表示是否能向上滚动，-1,false表示已经滚动到底部
+                    /*yinxiangRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+                            if (isUp==1){
+                                yinxiangSpring.setEnable(true);
+                            }else {
+                                yinxiangSpring.setEnable(false);
+                            }
+                        }
+                    });*/
+                    //yinxiangSpring.setEnable(false);
+                    ToastUtils.showToast("没有更多数据");
                 }else {
-                    yingXiangFragmentAdapter.addData(yingXiangFragmentBean.getContent().getData());
-                   itemCount = yingXiangFragmentAdapter.getItemCount();
-                    LogUtils.i("下拉刷新,上拉加载", String.valueOf(yingXiangFragmentdata.size()));
+                    //yingXiangFragmentAdapter.addData(yingXiangFragmentBean.getContent().getData());
+                    yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
+                    yingXiangFragmentAdapter.notifyDataSetChanged();
+                    itemCount = yingXiangFragmentAdapter.getItemCount();
                     if (yingXiangFragmentdata==null){
                         setState(LoadingPager.LoadResult.empty);
                     }else {

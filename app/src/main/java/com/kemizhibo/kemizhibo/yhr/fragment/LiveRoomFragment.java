@@ -55,10 +55,6 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     LinearLayout liveRoomShaixuanButn;
     @BindView(R.id.live_room_shaixuan_jiaocai_recyclerview)
     RecyclerView liveRoomShaixuanJiaocaiRecyclerview;
-    /*@BindView(R.id.live_room_shaixuan_nianji_recyclerview)
-    RecyclerView liveRoomShaixuanNianjiRecyclerview;
-    @BindView(R.id.live_room_shaixuan_xueqi_recyclerview)
-    RecyclerView liveRoomShaixuanXueqiRecyclerview;*/
     @BindView(R.id.live_room_shaixuan_fenlei_recyclerview)
     RecyclerView liveRoomShaixuanFenleiRecyclerview;
     @BindView(R.id.live_room_xiala_dropDownMenu)

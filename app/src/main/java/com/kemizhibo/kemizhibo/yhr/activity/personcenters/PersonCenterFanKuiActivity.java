@@ -1,16 +1,20 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -62,11 +66,8 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
         public void handleMessage(Message msg) {
             if(msg.what==0){
                 finish();
-            }else if (msg.what==1){
-                Intent intent = new Intent(PersonCenterFanKuiActivity.this,LoginActivity.class);
-                startActivity(intent);
             }
-        };
+        }
     };
 
     @Override
@@ -160,20 +161,29 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
                 }
             }).start();
          }else {
-            //token失效，重新登录
-            Transparent.showErrorMessage(this,"登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            initDialogToLogin();
          }
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PersonCenterFanKuiActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
 

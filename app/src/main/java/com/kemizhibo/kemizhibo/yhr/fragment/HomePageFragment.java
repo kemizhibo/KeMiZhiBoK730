@@ -105,7 +105,7 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
     public void load() {
         SharedPreferences sp = getContext().getSharedPreferences("logintoken", 0);
         String token = sp.getString("token", "");
-        sowingMapPresenter.getSowingMapData(mActivity,"Bearer "+token,"app");
+        sowingMapPresenter.getSowingMapData(mActivity,"Bearer "+token,"app-2");
         sowingMapPresenter.getVersionInformationData(mActivity);
     }
 

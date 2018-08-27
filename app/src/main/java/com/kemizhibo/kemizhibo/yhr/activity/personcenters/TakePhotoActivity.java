@@ -5,10 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
@@ -18,6 +22,7 @@ import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.TakePhotoBean;
@@ -25,6 +30,7 @@ import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPictu
 import com.kemizhibo.kemizhibo.yhr.utils.LQRPhotoSelectUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import java.io.File;
@@ -64,6 +70,13 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     private String url;
     private File outputFile;
     private String photo;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0){
+                finish();
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -86,6 +99,13 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
         //上传图片
         //intiPhoto();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
+    }
+
     private void bindTitleBar() {
         publicTitleBarRoot.setLeftImageResouse(R.drawable.ic_back).setLeftLinearLayoutListener(new TapBarLayout.LeftOnClickListener() {
             @Override
@@ -230,7 +250,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                     token = sp.getString("token", "");
                     preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
                 }else{
-                    ToastUtils.showToast("返回失败");
+                    //ToastUtils.showToast("返回失败");
                 }
             }
         });
@@ -244,16 +264,47 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     @Override
     public void onPreservationPictureSuccess(PreservationPictureBean preservationPictureBean) {
         if (preservationPictureBean.getCode()==0){
-            //保存chenggong
-            finish();
+            Transparent.showSuccessMessage(this,"修改头像成功!");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }else {
-            ToastUtils.showToast(preservationPictureBean.getMessage());
+            initDialogToLogin();
         }
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(TakePhotoActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override
     public void onPreservationPictureError(String msg) {
-
+        ToastUtils.showToast(msg);
     }
     //上传头像
     @Override

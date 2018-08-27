@@ -32,15 +32,7 @@ public class LiveRoomFragmentAdapter extends BaseQuickAdapter<LiveRoomBean.Conte
     protected void convert(BaseViewHolder helper, LiveRoomBean.ContentBean.DataBean item) {
         //设置值
         Glide.with(mContext).load(item.getLogo()).error(R.mipmap.milier).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.liveroom_recyclerview_imageview));
-        helper.setText(R.id.liveroom_item_title,item.getTitle());
-
-        /*helper.getView(R.id.liveroom_recyclerview_imageview).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Toast.makeText(mContext,"点击了。。。",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });*/
+        helper.setText(R.id.liveroom_item_title,item.getCourseName());
     }
 
 

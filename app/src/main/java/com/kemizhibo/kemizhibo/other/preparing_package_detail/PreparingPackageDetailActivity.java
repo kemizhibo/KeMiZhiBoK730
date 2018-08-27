@@ -136,8 +136,6 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                         mnone.setVisibility(View.GONE);
                         listViewqi.setAdapter(new PreparingDetailOtherAdapter(PreparingPackageDetailActivity.this, other));
                     }
-
-
                 }
             });
         }

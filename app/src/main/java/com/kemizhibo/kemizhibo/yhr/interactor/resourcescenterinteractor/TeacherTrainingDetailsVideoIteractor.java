@@ -21,7 +21,6 @@ import javax.inject.Inject;
 public class TeacherTrainingDetailsVideoIteractor {
 
     private IGetDataDelegate<TeacherTrainingDetailsVideoBean> mDelegate;
-    private Context context;
 
     @Inject
     public TeacherTrainingDetailsVideoIteractor() {}

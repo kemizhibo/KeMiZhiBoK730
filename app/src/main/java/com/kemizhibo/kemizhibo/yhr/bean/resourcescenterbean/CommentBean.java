@@ -10,10 +10,11 @@ import java.util.List;
 
 public class CommentBean {
 
+
     /**
      * code : 0
      * message : success
-     * content : {"page":1,"size":10,"total":4,"data":[{"commentId":5837261,"otherId":2222,"parentCommentId":0,"content":"反反复复","addtime":"2018-05-10 11:32:15","praiseCount":0,"replyCount":0,"replyList":[],"userId":2701,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"liuxuechao001","showName":"研发部3","flag":0},{"commentId":5664860,"otherId":2222,"parentCommentId":0,"content":"嘎嘎嘎","addtime":"2018-05-10 11:31:47","praiseCount":0,"replyCount":0,"replyList":[],"userId":2701,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"liuxuechao001","showName":"研发部3","flag":0},{"commentId":84059933,"otherId":2222,"parentCommentId":0,"content":"<img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/f9/hot_halfstar_thumb.png\" height=\"22\" width=\"22\" /><img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/70/88_thumb.gif\" height=\"22\" width=\"22\" /><img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/59/huba02_hubatan_thumb.png\" height=\"22\" width=\"22\" />","addtime":"2018-04-09 20:00:45","praiseCount":0,"replyCount":1,"replyList":[{"commentId":5510455,"otherId":2222,"parentCommentId":84059933,"content":"哈哈哈","addtime":"2018-05-10 11:31:41","praiseCount":0,"replyCount":0,"replyList":[],"userId":2701,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"liuxuechao001","showName":"研发部3","flag":0}],"userId":3462,"userHead":"http://192.168.1.101:8080/images/upload/inxedu/20180522/1526973658158.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":null,"showName":"135****0853","flag":0},{"commentId":84070882,"otherId":2222,"parentCommentId":0,"content":"<img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/e9/sk_thumb.gif\" height=\"22\" width=\"22\" />","addtime":"2018-04-09 19:58:23","praiseCount":0,"replyCount":0,"replyList":[],"userId":3462,"userHead":"http://192.168.1.101:8080/images/upload/inxedu/20180522/1526973658158.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":null,"showName":"135****0853","flag":0}]}
+     * content : {"page":1,"size":10,"total":3,"data":[{"commentId":81650370,"otherId":1005262,"parentCommentId":0,"content":"66565565","addtime":"2018-08-26 16:15:55","praiseCount":0,"replyCount":0,"replyList":[],"userId":27782,"userHead":"http://192.168.1.101:8080/static/inxweb/img/defaultUser.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"yanhaoran001","showName":"北京清华大学","flag":0},{"commentId":80003250,"otherId":1005262,"parentCommentId":0,"content":"大家分工及违法开始的覅哦hi","addtime":"2018-08-24 18:16:29","praiseCount":0,"replyCount":0,"replyList":[],"userId":3101,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180821/1534845800880.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"xueyutong001","showName":"测试","flag":0},{"commentId":79912133,"otherId":1005262,"parentCommentId":0,"content":"哥和我他问我GETTG","addtime":"2018-08-24 18:16:13","praiseCount":0,"replyCount":0,"replyList":[],"userId":3101,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180821/1534845800880.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"xueyutong001","showName":"测试","flag":0}]}
      * otherData : null
      */
 
@@ -58,8 +59,8 @@ public class CommentBean {
         /**
          * page : 1
          * size : 10
-         * total : 4
-         * data : [{"commentId":5837261,"otherId":2222,"parentCommentId":0,"content":"反反复复","addtime":"2018-05-10 11:32:15","praiseCount":0,"replyCount":0,"replyList":[],"userId":2701,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"liuxuechao001","showName":"研发部3","flag":0},{"commentId":5664860,"otherId":2222,"parentCommentId":0,"content":"嘎嘎嘎","addtime":"2018-05-10 11:31:47","praiseCount":0,"replyCount":0,"replyList":[],"userId":2701,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"liuxuechao001","showName":"研发部3","flag":0},{"commentId":84059933,"otherId":2222,"parentCommentId":0,"content":"<img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/f9/hot_halfstar_thumb.png\" height=\"22\" width=\"22\" /><img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/70/88_thumb.gif\" height=\"22\" width=\"22\" /><img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/59/huba02_hubatan_thumb.png\" height=\"22\" width=\"22\" />","addtime":"2018-04-09 20:00:45","praiseCount":0,"replyCount":1,"replyList":[{"commentId":5510455,"otherId":2222,"parentCommentId":84059933,"content":"哈哈哈","addtime":"2018-05-10 11:31:41","praiseCount":0,"replyCount":0,"replyList":[],"userId":2701,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"liuxuechao001","showName":"研发部3","flag":0}],"userId":3462,"userHead":"http://192.168.1.101:8080/images/upload/inxedu/20180522/1526973658158.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":null,"showName":"135****0853","flag":0},{"commentId":84070882,"otherId":2222,"parentCommentId":0,"content":"<img src=\"http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/e9/sk_thumb.gif\" height=\"22\" width=\"22\" />","addtime":"2018-04-09 19:58:23","praiseCount":0,"replyCount":0,"replyList":[],"userId":3462,"userHead":"http://192.168.1.101:8080/images/upload/inxedu/20180522/1526973658158.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":null,"showName":"135****0853","flag":0}]
+         * total : 3
+         * data : [{"commentId":81650370,"otherId":1005262,"parentCommentId":0,"content":"66565565","addtime":"2018-08-26 16:15:55","praiseCount":0,"replyCount":0,"replyList":[],"userId":27782,"userHead":"http://192.168.1.101:8080/static/inxweb/img/defaultUser.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"yanhaoran001","showName":"北京清华大学","flag":0},{"commentId":80003250,"otherId":1005262,"parentCommentId":0,"content":"大家分工及违法开始的覅哦hi","addtime":"2018-08-24 18:16:29","praiseCount":0,"replyCount":0,"replyList":[],"userId":3101,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180821/1534845800880.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"xueyutong001","showName":"测试","flag":0},{"commentId":79912133,"otherId":1005262,"parentCommentId":0,"content":"哥和我他问我GETTG","addtime":"2018-08-24 18:16:13","praiseCount":0,"replyCount":0,"replyList":[],"userId":3101,"userHead":"http://192.168.1.101:8080/images/upload/picImg/20180821/1534845800880.png","praiseHistory":0,"page":1,"size":10,"type":null,"userName":"xueyutong001","showName":"测试","flag":0}]
          */
 
         private int page;
@@ -101,24 +102,25 @@ public class CommentBean {
 
         public static class DataBean {
             /**
-             * commentId : 5837261
-             * otherId : 2222
+             * commentId : 81650370
+             * otherId : 1005262
              * parentCommentId : 0
-             * content : 反反复复
-             * addtime : 2018-05-10 11:32:15
+             * content : 66565565
+             * addtime : 2018-08-26 16:15:55
              * praiseCount : 0
              * replyCount : 0
              * replyList : []
-             * userId : 2701
-             * userHead : http://192.168.1.101:8080/images/upload/picImg/20180402/1522662157587.png
+             * userId : 27782
+             * userHead : http://192.168.1.101:8080/static/inxweb/img/defaultUser.png
              * praiseHistory : 0
              * page : 1
              * size : 10
              * type : null
-             * userName : liuxuechao001
-             * showName : 研发部3
+             * userName : yanhaoran001
+             * showName : 北京清华大学
              * flag : 0
              */
+
             private int commentId;
             private int otherId;
             private int parentCommentId;
@@ -271,6 +273,29 @@ public class CommentBean {
 
             public void setReplyList(List<?> replyList) {
                 this.replyList = replyList;
+            }
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "commentId=" + commentId +
+                        ", otherId=" + otherId +
+                        ", parentCommentId=" + parentCommentId +
+                        ", content='" + content + '\'' +
+                        ", addtime='" + addtime + '\'' +
+                        ", praiseCount=" + praiseCount +
+                        ", replyCount=" + replyCount +
+                        ", userId=" + userId +
+                        ", userHead='" + userHead + '\'' +
+                        ", praiseHistory=" + praiseHistory +
+                        ", page=" + page +
+                        ", size=" + size +
+                        ", type=" + type +
+                        ", userName='" + userName + '\'' +
+                        ", showName='" + showName + '\'' +
+                        ", flag=" + flag +
+                        ", replyList=" + replyList +
+                        '}';
             }
         }
     }

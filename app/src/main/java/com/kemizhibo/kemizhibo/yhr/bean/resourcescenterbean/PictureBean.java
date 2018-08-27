@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean;
 
+import java.util.List;
+
 /**
  * Author: 闫浩然
  * Date: on 2018/7/22.
@@ -8,11 +10,10 @@ package com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean;
 
 public class PictureBean {
 
-
     /**
      * code : 0
      * message : success
-     * content : {"courseId":1004722,"courseName":"哈哈哈哈","subjectId":404,"context":"哈哈哈哈","title":null,"logo":"http://192.168.1.101:8080/images/upload/course/20180716/1531711701149.jpg","pageViewcount":907,"playCount":null,"commentnum":null,"courseType":"YINGXIANGSUCAI","knowledge":null,"liveStartDuration":null,"videoDuration":null,"liveStatus":"UNKNOWN","teacherName":null,"liveBeginTime":null,"liveEndTime":null,"praiseHistory":0,"favouriteHistory":0,"praiseCount":317,"imageText":"[{\"text\":\"哈哈哈\",\"imgList\":[\"http://192.168.1.101:8080/images/upload/inxedu/20180716/1531711680498.gif\"]},{\"text\":\"哈哈哈哈\",\"imgList\":[\"http://192.168.1.101:8080/images/upload/inxedu/20180716/1531711686070.jpg\",\"http://192.168.1.101:8080/images/upload/inxedu/20180716/1531711692344.jpeg\"]}]","isImageText":1,"addTime":1531711741000,"teacher":null,"startTime":null,"courseSource":null,"courseEdition":null,"videoUrl":null,"materialEdition":"1581"}
+     * content : {"courseId":1005152,"courseName":"保险报告切勿注意部门保险报告切勿注意部门保险报告切勿注意部门","subjectId":404,"context":"错误基本总得左右·固定公告终将原则、哪些这里必须能力﹖异常条件不得工作¨平均部门切莫方面ˇ革命人物不必北京\u2026集体重点请勿数码\u2019投入声音不能不软件.性感中文可以软件﹑热点权限不由得广告¸理想意见将要一点＇特殊知识非得条件！地上精华理应利益\u2018男性本文不得已小时﹕治疗考虑理应政治﹕良好北京不由得本文，奇怪积分敢于次数：迅速利益可以父亲〝同样费用能否数据﹔无限市场不由得范围〞奇怪同时总得语言；完美今年不能不生活\u201d","title":null,"logo":"http://kemivideoupload.oss-cn-beijing.aliyuncs.com/courseimage/image/1534837932462.jpg???¶m=course","pageViewcount":2319,"playCount":null,"commentnum":null,"courseType":"YINGXIANGSUCAI","knowledge":null,"liveStartDuration":null,"videoDuration":null,"liveStatus":"UNKNOWN","teacherName":null,"liveBeginTime":null,"liveEndTime":null,"praiseHistory":0,"favouriteHistory":0,"praiseCount":331,"imageText":"[{\"text\":\"12312312\",\"imgList\":[\"http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837927626.jpg???\"]},{\"text\":\"23123\",\"imgList\":[\"http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837940069.jpg???\"]},{\"text\":\"12312312\",\"imgList\":[]}]","isImageText":1,"addTime":1535097245000,"teacher":null,"startTime":null,"courseSource":null,"courseEdition":null,"videoUrl":null,"materialEdition":"1581","watchTime":0,"isEnd":0,"knowledgeId":"651","knowledgeList":[],"imageTextList":[{"text":"12312312","imgList":["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837927626.jpg???"]},{"text":"23123","imgList":["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837940069.jpg???"]},{"text":"12312312","imgList":[]}]}
      * otherData : null
      */
 
@@ -55,13 +56,13 @@ public class PictureBean {
 
     public static class ContentBean {
         /**
-         * courseId : 1004722
-         * courseName : 哈哈哈哈
+         * courseId : 1005152
+         * courseName : 保险报告切勿注意部门保险报告切勿注意部门保险报告切勿注意部门
          * subjectId : 404
-         * context : 哈哈哈哈
+         * context : 错误基本总得左右·固定公告终将原则、哪些这里必须能力﹖异常条件不得工作¨平均部门切莫方面ˇ革命人物不必北京…集体重点请勿数码’投入声音不能不软件.性感中文可以软件﹑热点权限不由得广告¸理想意见将要一点＇特殊知识非得条件！地上精华理应利益‘男性本文不得已小时﹕治疗考虑理应政治﹕良好北京不由得本文，奇怪积分敢于次数：迅速利益可以父亲〝同样费用能否数据﹔无限市场不由得范围〞奇怪同时总得语言；完美今年不能不生活”
          * title : null
-         * logo : http://192.168.1.101:8080/images/upload/course/20180716/1531711701149.jpg
-         * pageViewcount : 907
+         * logo : http://kemivideoupload.oss-cn-beijing.aliyuncs.com/courseimage/image/1534837932462.jpg???¶m=course
+         * pageViewcount : 2319
          * playCount : null
          * commentnum : null
          * courseType : YINGXIANGSUCAI
@@ -74,16 +75,21 @@ public class PictureBean {
          * liveEndTime : null
          * praiseHistory : 0
          * favouriteHistory : 0
-         * praiseCount : 317
-         * imageText : [{"text":"哈哈哈","imgList":["http://192.168.1.101:8080/images/upload/inxedu/20180716/1531711680498.gif"]},{"text":"哈哈哈哈","imgList":["http://192.168.1.101:8080/images/upload/inxedu/20180716/1531711686070.jpg","http://192.168.1.101:8080/images/upload/inxedu/20180716/1531711692344.jpeg"]}]
+         * praiseCount : 331
+         * imageText : [{"text":"12312312","imgList":["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837927626.jpg???"]},{"text":"23123","imgList":["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837940069.jpg???"]},{"text":"12312312","imgList":[]}]
          * isImageText : 1
-         * addTime : 1531711741000
+         * addTime : 1535097245000
          * teacher : null
          * startTime : null
          * courseSource : null
          * courseEdition : null
          * videoUrl : null
          * materialEdition : 1581
+         * watchTime : 0
+         * isEnd : 0
+         * knowledgeId : 651
+         * knowledgeList : []
+         * imageTextList : [{"text":"12312312","imgList":["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837927626.jpg???"]},{"text":"23123","imgList":["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837940069.jpg???"]},{"text":"12312312","imgList":[]}]
          */
 
         private int courseId;
@@ -115,6 +121,11 @@ public class PictureBean {
         private Object courseEdition;
         private Object videoUrl;
         private String materialEdition;
+        private int watchTime;
+        private int isEnd;
+        private String knowledgeId;
+        private List<?> knowledgeList;
+        private List<ImageTextListBean> imageTextList;
 
         public int getCourseId() {
             return courseId;
@@ -348,39 +359,70 @@ public class PictureBean {
             this.materialEdition = materialEdition;
         }
 
-        @Override
-        public String toString() {
-            return "ContentBean{" +
-                    "courseId=" + courseId +
-                    ", courseName='" + courseName + '\'' +
-                    ", subjectId=" + subjectId +
-                    ", context='" + context + '\'' +
-                    ", title=" + title +
-                    ", logo='" + logo + '\'' +
-                    ", pageViewcount=" + pageViewcount +
-                    ", playCount=" + playCount +
-                    ", commentnum=" + commentnum +
-                    ", courseType='" + courseType + '\'' +
-                    ", knowledge=" + knowledge +
-                    ", liveStartDuration=" + liveStartDuration +
-                    ", videoDuration=" + videoDuration +
-                    ", liveStatus='" + liveStatus + '\'' +
-                    ", teacherName=" + teacherName +
-                    ", liveBeginTime=" + liveBeginTime +
-                    ", liveEndTime=" + liveEndTime +
-                    ", praiseHistory=" + praiseHistory +
-                    ", favouriteHistory=" + favouriteHistory +
-                    ", praiseCount=" + praiseCount +
-                    ", imageText='" + imageText + '\'' +
-                    ", isImageText=" + isImageText +
-                    ", addTime=" + addTime +
-                    ", teacher=" + teacher +
-                    ", startTime=" + startTime +
-                    ", courseSource=" + courseSource +
-                    ", courseEdition=" + courseEdition +
-                    ", videoUrl=" + videoUrl +
-                    ", materialEdition='" + materialEdition + '\'' +
-                    '}';
+        public int getWatchTime() {
+            return watchTime;
+        }
+
+        public void setWatchTime(int watchTime) {
+            this.watchTime = watchTime;
+        }
+
+        public int getIsEnd() {
+            return isEnd;
+        }
+
+        public void setIsEnd(int isEnd) {
+            this.isEnd = isEnd;
+        }
+
+        public String getKnowledgeId() {
+            return knowledgeId;
+        }
+
+        public void setKnowledgeId(String knowledgeId) {
+            this.knowledgeId = knowledgeId;
+        }
+
+        public List<?> getKnowledgeList() {
+            return knowledgeList;
+        }
+
+        public void setKnowledgeList(List<?> knowledgeList) {
+            this.knowledgeList = knowledgeList;
+        }
+
+        public List<ImageTextListBean> getImageTextList() {
+            return imageTextList;
+        }
+
+        public void setImageTextList(List<ImageTextListBean> imageTextList) {
+            this.imageTextList = imageTextList;
+        }
+
+        public static class ImageTextListBean {
+            /**
+             * text : 12312312
+             * imgList : ["http://kemivideoupload.oss-cn-beijing.aliyuncs.com/scienceroom/image/1534837927626.jpg???"]
+             */
+
+            private String text;
+            private List<String> imgList;
+
+            public String getText() {
+                return text;
+            }
+
+            public void setText(String text) {
+                this.text = text;
+            }
+
+            public List<String> getImgList() {
+                return imgList;
+            }
+
+            public void setImgList(List<String> imgList) {
+                this.imgList = imgList;
+            }
         }
     }
 }

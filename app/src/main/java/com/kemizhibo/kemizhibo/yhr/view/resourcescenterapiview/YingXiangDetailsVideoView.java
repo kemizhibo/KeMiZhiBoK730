@@ -25,6 +25,10 @@ public interface YingXiangDetailsVideoView extends BaseView{
     void onYingXiangDetailsVideoUrlSuccess(YingXiangDetailsVideoUrlBean yingXiangDetailsVideoUrlBean);
     void onYingXiangDetailsVideoUrlError(String msg);
 
+    //收藏视频
+    void onGetCollectionSuccess(CollectionBean collectionBean);
+    void onGetCollectionError(String msg);
+
     //获取视频详情评论列表
     void onYingXiangDetailsVideoCommentSuccess(CommentBean commentBean);
     void onYingXiangDetailsVideoCommentError(String msg);
@@ -40,9 +44,6 @@ public interface YingXiangDetailsVideoView extends BaseView{
     void onDeleteCommentSuccess(DeleteCommentBean deleteCommentBean);
     void onDeleteCommentError(String msg);
 
-    //收藏视频
-    void onGetCollectionSuccess(CollectionBean collectionBean);
-    void onGetCollectionError(String msg);
     //点赞评论
     void onGetLikeSuccess(GetLikeBean getLikeBean);
     void onGetLikeError(String msg);

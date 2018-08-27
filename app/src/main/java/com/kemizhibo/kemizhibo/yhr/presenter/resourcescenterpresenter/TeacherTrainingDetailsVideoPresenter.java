@@ -17,4 +17,15 @@ public interface TeacherTrainingDetailsVideoPresenter extends BasePresenter<Teac
     void getTeacherTrainingDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
     //收藏
     void getCollectionData(BaseActivity activity, String courseId,String token);
+
+    void getYingXiangDetailsVideoCommentData(BaseActivity activity,String token,String otherId,String page,String size,String type);
+    //发表评论
+    void getPutCommentData(BaseActivity activity,String token,String courseId,String content,String pCommentId);
+
+    //删除评论
+    void getDeleteCommentData(BaseActivity activity,String token, String commentId,String type);
+    //点赞评论
+    void getLikeData(BaseActivity activity,String token, String targetId,String type);
+    //记录第一次播放位置
+    void getOneLookData(BaseActivity activity,String token, String playPosition,String keyId,String courseId,String watchTime,String isEnd);
 }

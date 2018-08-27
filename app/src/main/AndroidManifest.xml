@@ -30,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".yhr.activity.ShowImageActivity" />
         <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
         <activity android:name=".yhr.activity.logins.LoginActivity"></activity>
         <activity android:name=".yhr.activity.logins.FinishActivity" />
@@ -75,7 +74,8 @@
         <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
         <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
         <activity android:name=".yhr.activity.personcenters.FuWuActivity" />
-        <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity" />
+        <activity android:name=".yhr.activity.web.MyLiveRoomWebActivity"
+            android:screenOrientation="landscape"  />
         <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity" />
         <activity android:name=".yhr.activity.personcenters.LectureActivity" />
     </application>

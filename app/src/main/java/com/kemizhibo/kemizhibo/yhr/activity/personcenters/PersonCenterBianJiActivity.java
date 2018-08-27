@@ -1,21 +1,31 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
+import com.kemizhibo.kemizhibo.yhr.utils.Validator;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
@@ -66,6 +76,14 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     private String email;
     private SharedPreferences sp;
     private String mobile;
+    private boolean isemail;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0){
+                PersonCenterBianJiActivity.this.finish();
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -75,6 +93,12 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     @Override
     protected void initData() {
         bindTitleBar();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
     }
 
     @Override
@@ -163,19 +187,47 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     @Override
     public void onChangeUserSuccess(ChangeUserBean changeUserBean) {
         if (changeUserBean.getCode() == 0) {
-            /*sp = getSharedPreferences("logintoken", 0);
-            token = sp.getString("token", "");
-            getUserPresenter.getUserData(this, "Bearer " + token);
-            LogUtils.i("123456",token);*/
-            PersonCenterBianJiActivity.this.finish();
+            Transparent.showSuccessMessage(this,"修改成功!");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        handler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         } else {
-            ToastUtils.showToast(changeUserBean.getMessage());
+            initDialogToLogin();
         }
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PersonCenterBianJiActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override
     public void onChangeUserError(String msg) {
-
+        ToastUtils.showToast(msg);
     }
 
     @Override
@@ -184,72 +236,6 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
         return getUserPresenter;
     }
 
-    /*@OnFocusChange({R.id.person_school_name_edittext, R.id.person_lianxiren_edittext, R.id.person_type_edittext, R.id.person_gradle_edittext, R.id.person_address_edittext, R.id.person_idcard_edittext, R.id.person_email_edittext, R.id.person_phone_edittext, R.id.person_change_phone})
-    public void onViewClicked(View view, boolean hasFocus) {
-        switch (view.getId()) {
-            case R.id.person_school_name_edittext:
-                if (hasFocus) {
-                    personSchoolNameEdittext.setHint("");
-                    personSchoolNameEdittext.setCursorVisible(true);
-                } else {
-                    personSchoolNameEdittext.setHint(school);
-                }
-                break;
-            case R.id.person_lianxiren_edittext:
-                if (hasFocus) {
-                    personLianxirenEdittext.setHint("");
-                    personLianxirenEdittext.setCursorVisible(true);
-                    personLianxirenEdittextHint = realname;
-                } else {
-                    personLianxirenEdittext.setHint(realname);
-                }
-                break;
-            case R.id.person_type_edittext:
-                if (hasFocus) {
-                    personTypeEdittext.setHint("");
-                    personTypeEdittext.setCursorVisible(true);
-                    personTypeEdittextHint = subject;
-                } else {
-                    personTypeEdittext.setHint(subject);
-                }
-                break;
-            case R.id.person_gradle_edittext:
-                if (hasFocus) {
-                    personGradleEdittext.setHint("");
-                    personGradleEdittext.setCursorVisible(true);
-                    personGradleEdittextHint = grade;
-                } else {
-                    personGradleEdittext.setHint(grade);
-                }
-                break;
-            case R.id.person_address_edittext:
-                if (hasFocus) {
-                    personAddressEdittext.setHint("");
-                    personAddressEdittext.setCursorVisible(true);
-                    personAddressEdittextHint = address;
-                } else {
-                    personAddressEdittext.setHint(address);
-                }
-                break;
-            case R.id.person_idcard_edittext:
-                if (hasFocus) {
-                    personIdcardEdittext.setHint("");
-                    personIdcardEdittext.setCursorVisible(true);
-                    personIdcardEdittextHint = idcard;
-                } else {
-                    personIdcardEdittext.setHint(idcard);
-                }
-                break;
-            case R.id.person_email_edittext:
-                if (hasFocus) {
-                    personEmailEdittext.setHint("");
-                    personEmailEdittext.setCursorVisible(true);
-                } else {
-                    personEmailEdittext.setHint(email);
-                }
-                break;
-        }
-    }*/
 
     @OnClick({R.id.person_change_phone, R.id.finish_butn})
     public void onViewClicked(View view) {
@@ -263,41 +249,6 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 //startActivity(new Intent(this, ChangePhoneActivity.class));
                 break;
             case R.id.finish_butn:
-                /*if (personSchoolNameEdittextHint==null){
-                    personSchoolNameEdittextHint = school;
-                }else {
-                    personSchoolNameEdittextHint = personSchoolNameEdittext.getText().toString();
-                }
-                if (personLianxirenEdittextHint==null){
-                    personLianxirenEdittextHint = realname;
-                }else {
-                    personLianxirenEdittextHint = personLianxirenEdittext.getText().toString();
-                }
-                if (personTypeEdittextHint==null){
-                    personTypeEdittextHint = subject;
-                }else {
-                    personTypeEdittextHint = personTypeEdittext.getText().toString();
-                }
-                if (personGradleEdittextHint==null){
-                    personGradleEdittextHint = grade;
-                }else {
-                    personGradleEdittextHint = personGradleEdittext.getHint().toString();
-                }
-                if (personAddressEdittextHint==null){
-                    personAddressEdittextHint = address;
-                }else {
-                    personAddressEdittextHint = personAddressEdittext.getText().toString();
-                }
-                if (personIdcardEdittextHint==null){
-                    personIdcardEdittextHint = idcard;
-                }else {
-                    personIdcardEdittextHint = personIdcardEdittext.getText().toString();
-                }
-                if (personEmailEdittextHint==null){
-                    personEmailEdittextHint = email;
-                }else {
-                    personEmailEdittextHint = personEmailEdittext.getText().toString();
-                }*/
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
                 school = personSchoolNameEdittext.getText().toString();
@@ -305,10 +256,30 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 subject = personTypeEdittext.getText().toString();
                 grade = personGradleEdittext.getText().toString();
                 address = personAddressEdittext.getText().toString();
-                idcard = personIdcardEdittext.getText().toString();
-                email = personEmailEdittext.getText().toString();
-                //getUserPresenter.getChangeUserData(this, "Bearer " + token, personSchoolNameEdittextHint, personLianxirenEdittextHint, personGradleEdittextHint, personTypeEdittextHint, personIdcardEdittextHint, personEmailEdittextHint, personAddressEdittextHint);
-                getUserPresenter.getChangeUserData(this, "Bearer " + token, school, realname, grade,subject, idcard, email, address);
+                boolean idCard = Validator.isIDCard(personIdcardEdittext.getText().toString().trim());
+                if (TextUtils.isEmpty(personIdcardEdittext.getText().toString().trim())){
+                    personIdcardEdittext.setError("请输入身份证号码");
+                    personIdcardEdittext.requestFocus();
+                }else if (idCard==false){
+                    personIdcardEdittext.setError("请输入正确的身份证号码");
+                    personIdcardEdittext.requestFocus();
+                }else {
+                    idcard = personIdcardEdittext.getText().toString().trim();
+                    isemail = Validator.isEmail(personEmailEdittext.getText().toString().trim());
+                    if (TextUtils.isEmpty(personEmailEdittext.getText().toString().trim())){
+                        personEmailEdittext.setError("请输入邮箱");
+                        personEmailEdittext.requestFocus();
+                    }else if (isemail ==false){
+                        personEmailEdittext.setError("请输入正确的邮箱");
+                        personEmailEdittext.requestFocus();
+                    }else {
+                        this.email = personEmailEdittext.getText().toString().trim();
+                    }
+                }
+
+                if (idCard==true&&isemail==true){
+                    getUserPresenter.getChangeUserData(this, "Bearer " + token, school, realname, grade,subject, idcard, this.email, address);
+                }
                 break;
         }
     }

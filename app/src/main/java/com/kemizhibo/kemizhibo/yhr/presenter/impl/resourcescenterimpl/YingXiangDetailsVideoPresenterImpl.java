@@ -40,13 +40,15 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
     @Inject
     public YingXiangDetailsVideoUrlIteractor yingXiangDetailsVideoUrlIteractor ;
     @Inject
+    public CollectionIteractor collectionIteractor ;
+
+    @Inject
     public YingXiangDetailsVideoCommentIteractor yingXiangDetailsVideoCommentIteractor ;
     @Inject
     public PutCommentIteractor putCommentIteractor ;
     @Inject
     public ReplyCommentIteractor replyCommentIteractor ;
-    @Inject
-    public CollectionIteractor collectionIteractor ;
+
     @Inject
     public DeleteCommentIteractor deleteCommentIteractor ;
     @Inject
@@ -116,22 +118,6 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
             @Override
             public void getDataError(String errmsg) {
                 mPresenterView.onPutCommentError(errmsg);
-            }
-        },token,courseId,content,pCommentId);
-    }
-
-    @Override
-    public void getReplyCommentData(BaseActivity activity, String token, String courseId, String content, String pCommentId) {
-        replyCommentIteractor.loadReplyCommentData(activity, new IGetDataDelegate<ReplyCommentBean>() {
-            @Override
-            public void getDataSuccess(ReplyCommentBean replyCommentBean) {
-                mPresenterView.onReplyCommentSuccess(replyCommentBean);
-
-            }
-
-            @Override
-            public void getDataError(String errmsg) {
-                mPresenterView.onReplyCommentError(errmsg);
             }
         },token,courseId,content,pCommentId);
     }

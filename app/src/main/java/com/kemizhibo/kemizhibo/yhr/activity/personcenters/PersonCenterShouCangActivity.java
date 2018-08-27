@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +13,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -27,10 +30,12 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ClearCollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.CollectionBoxPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.CollectionBoxView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -171,39 +176,59 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             if (isUp==1){
                 mList.clear();
                 //切换控件
-                shoucangFrameLayout.setVisibility(View.GONE);
-                collectionBoxSpringview.setVisibility(View.VISIBLE);
                 mList.addAll(collectionBoxBean.getContent().getData());
-                if (mList.size() > 0) {
+                if (mList.size()>0){
+                    shoucangFrameLayout.setVisibility(View.GONE);
+                    collectionBoxSpringview.setVisibility(View.VISIBLE);
                     initCollectionData();
-                } else {
+                }
+                else {
                     //切换控件
                     shoucangFrameLayout.setVisibility(View.VISIBLE);
                     collectionBoxSpringview.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
                 }
-            }
-        } else if (isUp==2){
-            if (isUp==1){
-                mList.clear();
-                //切换控件
-                shoucangFrameLayout.setVisibility(View.GONE);
-                collectionBoxSpringview.setVisibility(View.VISIBLE);
-                mList.addAll(collectionBoxBean.getContent().getData());
-                if (mList.size() > 0) {
-                    initCollectionData();
-                } else {
+            }else if (isUp==2){
+                    mList.clear();
                     //切换控件
-                    shoucangFrameLayout.setVisibility(View.VISIBLE);
-                    collectionBoxSpringview.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
-                }
+                    shoucangFrameLayout.setVisibility(View.GONE);
+                    collectionBoxSpringview.setVisibility(View.VISIBLE);
+                    mList.addAll(collectionBoxBean.getContent().getData());
+                    if (mList.size() > 0) {
+                        initCollectionData();
+                    } else {
+                        //切换控件
+                        shoucangFrameLayout.setVisibility(View.VISIBLE);
+                        collectionBoxSpringview.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
+                    }
             }
-        }else {
+        } else {
             //token失效，重新登录
-            Transparent.showErrorMessage(this, "登录失效请重新登录");
+            initDialogToLogin();
         }
 
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PersonCenterShouCangActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     private void initCollectionData() {
@@ -270,7 +295,9 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
 
     @Override
     public void onCollectionBoxError(String msg) {
-
+        shoucangFrameLayout.setVisibility(View.VISIBLE);
+        collectionBoxSpringview.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout,new FramgmentError()).commit();
     }
 
     //清空收藏夹
@@ -292,12 +319,16 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             collectionBoxPresenter.getCollectionBoxData(this, "Bearer " + token, "1", "10");
             collectionBoxAdapter.notifyDataSetChanged();
             builder.dismiss();
+        }else {
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onClearCollectionBoxError(String msg) {
-
+        shoucangFrameLayout.setVisibility(View.VISIBLE);
+        collectionBoxSpringview.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout,new FramgmentError()).commit();
     }
 
     //取消一个或者多个回调
@@ -319,12 +350,16 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
             }
             collectionBoxAdapter.notifyDataSetChanged();
             builder.dismiss();
+        }else {
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onGetCollectionError(String msg) {
-
+        shoucangFrameLayout.setVisibility(View.VISIBLE);
+        collectionBoxSpringview.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout,new FramgmentError()).commit();
     }
 
     @Override

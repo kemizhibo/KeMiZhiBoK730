@@ -1,16 +1,20 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.BottomSheetDialog;
-import android.text.TextUtils;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -18,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.zhouwei.library.CustomPopWindow;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.adapter.ViewPagerAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.PictureBean;
@@ -28,11 +33,8 @@ import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.PictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.loader.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,30 +47,31 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
-    @BindView(R.id.pictrue_details_title)
-    TextView pictrueDetailsTitle;
     @BindView(R.id.pictrue_details_imageview)
     ImageView pictrueDetailsImageview;
     @BindView(R.id.pictrue_details_collection)
     LinearLayout pictrueDetailsCollection;
-    @BindView(R.id.pictrue_details_txt)
-    TextView pictrueDetailsTxt;
-    @BindView(R.id.pictrue_details_viewpager)
-    Banner pictrueDetailsViewpager;
 
     @Inject
     public PicturePresenterImpl picturePresenter;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
-    @BindView(R.id.linear_layout)
-    LinearLayout linearLayout;
+    /*@BindView(R.id.linear_layout)
+    LinearLayout linearLayout;*/
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
+    @BindView(R.id.pictrue_details_title)
+    TextView pictrueDetailsTitle;
+    @BindView(R.id.relativelayout)
+    RelativeLayout relativelayout;
     //图文详情信息
     private PictureBean.ContentBean content;
+    private List<PictureBean.ContentBean.ImageTextListBean> listBeanArrayList = new ArrayList<>();
     //初始化popwindow
     private CustomPopWindow mCustomPopWindow;
     //json解析出来的标题和图片集合
     private String text;
-    private List<String> l;
+    private String l;
     private String courseId;
     private String token;
     private BottomSheetDialog dialog;
@@ -80,10 +83,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
             switch (msg.what) {
                 case 0: {
                     startActivity(new Intent(PictrueDetailsActivity.this, LoginActivity.class));
-                    break;
-                }
-                case 1: {
-
                     break;
                 }
                 default: {
@@ -105,6 +104,9 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         picturePresenter.getPictureData(this, "Bearer " + token, courseId);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this, listBeanArrayList);
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -114,6 +116,17 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         courseId = intent.getStringExtra("courseId");
 
     }
+
+    /*private void initJsonData() {
+        List<Map> list = JSON.parseArray(content.getImageText(), Map.class);
+        for (int i = 0; i < list.size(); i++) {
+            Map map = list.get(i);
+            pictureAndTextList.add((PictureAndText) map.get("text"));
+            pictureAndTextList.add((PictureAndText) map.get("imgList"));
+        }
+        LogUtils.i("几何中",pictureAndTextList.toString());
+    }*/
+
 
     private void bindTitleBar() {
         publicTitleBarRoot.setLeftImageResouse(R.drawable.ic_back).setLeftLinearLayoutListener(new TapBarLayout.LeftOnClickListener() {
@@ -128,54 +141,55 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onPictureSuccess(PictureBean pictureBean) {
-        LogUtils.i("456789",pictureBean.getContent().getImageText());
+        LogUtils.i("456789", pictureBean.getContent().getImageText());
         if (pictureBean.getCode() == 0) {
             content = pictureBean.getContent();
+            listBeanArrayList.addAll(pictureBean.getContent().getImageTextList());
             //判断是否收藏过
             if (content.getFavouriteHistory() == 1) {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
             } else {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
             }
-            if (TextUtils.isEmpty(content.getImageText().toString())) {
+            if (listBeanArrayList == null) {
                 //切换控件
                 frameLayout.setVisibility(View.VISIBLE);
-                linearLayout.setVisibility(View.GONE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentEmpty()).commit();
+                relativelayout.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentEmpty()).commit();
             } else {
                 //切换控件
                 frameLayout.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
-                //解析数据
-                initJsonData();
+                relativelayout.setVisibility(View.VISIBLE);
                 //填充数据
                 initPicture();
             }
-        }else {
-            Transparent.showErrorMessage(this, "登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+        } else {
+            initDialogToLogin();
         }
     }
 
     private void initPicture() {
         //切换控件
         frameLayout.setVisibility(View.GONE);
-        linearLayout.setVisibility(View.VISIBLE);
+        relativelayout.setVisibility(View.VISIBLE);
         //图片标题
-        pictrueDetailsTitle.setText(content.getContext());
-        //图片介绍
-        pictrueDetailsTxt.setText(text);
-        //设置内置样式
+        for (int i = 0;i<listBeanArrayList.size();i++){
+            String text = listBeanArrayList.get(i).getText();
+            pictrueDetailsTitle.setText(text);
+            LogUtils.i("图文详情介绍",text);
+            List<String> imgList = listBeanArrayList.get(i).getImgList();
+            for (int j = 0;j<imgList.size();j++){
+                String s = imgList.get(j).toString();
+                LogUtils.i("图文详情图片地址",s);
+                Glide.with(this).load(s)
+                        .error(R.mipmap.milier)
+                        .placeholder(R.mipmap.milier)
+                        .into(pictrueDetailsImageview);
+            }
+        }
+
+
+        /*//设置内置样式
         pictrueDetailsViewpager.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 //设置指示器的位置，小点点，左中右。
                 .setIndicatorGravity(BannerConfig.CENTER);
@@ -184,29 +198,19 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         //设置图片网址或地址的集合
         pictrueDetailsViewpager.setImages(l);
         pictrueDetailsViewpager.setBannerAnimation(Transformer.Accordion);
-        pictrueDetailsViewpager.isAutoPlay(false).start();
-    }
-
-    private void initJsonData() {
-        List<Map> list = JSON.parseArray(content.getImageText(), Map.class);
-        Map map = list.get(0);
-        text = (String) map.get("text");
-        l = (List) map.get("imgList");
-        for (String s : l) {
-            LogUtils.i("1=========================================" + s);
-        }
+        pictrueDetailsViewpager.isAutoPlay(false).start();*/
     }
 
     @Override
     public void onPictureError(String msg) {
         frameLayout.setVisibility(View.VISIBLE);
-        linearLayout.setVisibility(View.GONE);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentError()).commit();
+        relativelayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentError()).commit();
     }
 
     @Override
     public void onGetCollectionSuccess(CollectionBean collectionBean) {
-        if (collectionBean.getCode()==0){
+        if (collectionBean.getCode() == 0) {
             collectionBeans = collectionBean;
             if (collectionBean.getMessage().equals("添加收藏成功")) {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
@@ -215,23 +219,31 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
                 Transparent.showInfoMessage(this, "已取消收藏");
             }
-        }
-       else {
-            Transparent.showErrorMessage(this, "登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+        } else {
+            initDialogToLogin();
         }
     }
 
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog dialog = builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PictrueDetailsActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
+    }
 
     @Override
     public void onGetCollectionError(String msg) {
@@ -246,7 +258,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
 
     //自定义的图片加载器
-    private class MyLoader extends ImageLoader {
+   /* private class MyLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
             Glide.with(context).load((String) path)
@@ -254,7 +266,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
                     .placeholder(R.mipmap.milier)
                     .into(imageView);
         }
-    }
+    }*/
 
 
     @OnClick(R.id.pictrue_details_collection)
@@ -263,4 +275,5 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         token = sp.getString("token", "");
         picturePresenter.getCollectionData(this, "Bearer " + token, courseId);
     }
+
 }

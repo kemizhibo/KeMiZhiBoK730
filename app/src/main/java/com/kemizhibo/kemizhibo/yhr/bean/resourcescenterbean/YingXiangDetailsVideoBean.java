@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean;
 
+import java.util.List;
+
 /**
  * Author: yhr
  * Date: on 2018/7/3.
@@ -11,7 +13,7 @@ public class YingXiangDetailsVideoBean {
     /**
      * code : 0
      * message : success
-     * content : {"courseId":1003162,"courseName":"郁波讲堂","subjectId":407,"context":"我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介","title":"","logo":"http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg","pageViewcount":84230,"playCount":15901,"commentnum":null,"courseType":"TEACHERCOURSE","knowledge":"新建知识点","liveStartDuration":null,"videoDuration":null,"liveStatus":"UNKNOWN","teacherName":"郁波","liveBeginTime":null,"liveEndTime":null,"praiseHistory":0,"favouriteHistory":0,"praiseCount":416,"imageText":null,"isImageText":0,"addTime":1524192412000,"teacher":{"picPath":"/images/upload/teacher/20150915/1442297919077.jpg","career":"为中国科学教育的振兴而努力","education":"科学讲师","isStar":true,"name":"郁波","id":171},"startTime":null,"courseSource":"1672","courseEdition":"1652","videoUrl":"","materialEdition":"1591","watchTime":0,"isEnd":0}
+     * content : {"courseId":2782,"courseName":"治疗类别不由得了解精华","subjectId":404,"context":"彻底电视该当颜色¸规模专业不得规范〝疯狂会员务必女孩〞不少当前总得社会¨常用行业非得速度﹔连续制度不必科学\u2026巨大人们总得文章ˆ保密规定请勿头衔。预防经济才能以后\u2026好多系统切勿决定\u201d相当开始不由得电视\u201d中间决定能否山东﹑最终小时不能不联系;寂寞部门不会情况\u2019紧张教育应当学生﹔认真阶段不得社会.不行连接总得英语，充分基本只得之前ˇ主动基本切莫商务\u2019各自故事该当特点¸二手面前理应工程！丰富过程不会山东ˇ","title":"","logo":"http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg","pageViewcount":3231,"playCount":517,"commentnum":null,"courseType":"TEACHERCOURSE","knowledge":"新建知识点","liveStartDuration":null,"videoDuration":null,"liveStatus":"UNKNOWN","teacherName":"喻佰军","liveBeginTime":null,"liveEndTime":null,"praiseHistory":0,"favouriteHistory":1,"praiseCount":0,"imageText":null,"isImageText":0,"addTime":1535075217000,"teacher":{"picPath":"/images/upload/teacher/20150915/1442298121626.jpg","career":"为中国科学教育的振兴而努力","education":"科学讲师","isStar":true,"name":"喻佰军","id":101},"startTime":null,"courseSource":"1672","courseEdition":"1652","videoUrl":"","materialEdition":"1581","watchTime":null,"isEnd":0,"knowledgeId":"651","knowledgeList":[]}
      * otherData : null
      */
 
@@ -54,37 +56,39 @@ public class YingXiangDetailsVideoBean {
 
     public static class ContentBean {
         /**
-         * courseId : 1003162
-         * courseName : 郁波讲堂
-         * subjectId : 407
-         * context : 我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介我看你文档写的title是简介
+         * courseId : 2782
+         * courseName : 治疗类别不由得了解精华
+         * subjectId : 404
+         * context : 彻底电视该当颜色¸规模专业不得规范〝疯狂会员务必女孩〞不少当前总得社会¨常用行业非得速度﹔连续制度不必科学…巨大人们总得文章ˆ保密规定请勿头衔。预防经济才能以后…好多系统切勿决定”相当开始不由得电视”中间决定能否山东﹑最终小时不能不联系;寂寞部门不会情况’紧张教育应当学生﹔认真阶段不得社会.不行连接总得英语，充分基本只得之前ˇ主动基本切莫商务’各自故事该当特点¸二手面前理应工程！丰富过程不会山东ˇ
          * title :
-         * logo : http://192.168.1.101:8080/images/upload/course/20180720/1532051533875.jpg
-         * pageViewcount : 84230
-         * playCount : 15901
+         * logo : http://39.155.221.165:8080/images/upload/course/20180720/1532051402801.jpg
+         * pageViewcount : 3231
+         * playCount : 517
          * commentnum : null
          * courseType : TEACHERCOURSE
          * knowledge : 新建知识点
          * liveStartDuration : null
          * videoDuration : null
          * liveStatus : UNKNOWN
-         * teacherName : 郁波
+         * teacherName : 喻佰军
          * liveBeginTime : null
          * liveEndTime : null
          * praiseHistory : 0
-         * favouriteHistory : 0
-         * praiseCount : 416
+         * favouriteHistory : 1
+         * praiseCount : 0
          * imageText : null
          * isImageText : 0
-         * addTime : 1524192412000
-         * teacher : {"picPath":"/images/upload/teacher/20150915/1442297919077.jpg","career":"为中国科学教育的振兴而努力","education":"科学讲师","isStar":true,"name":"郁波","id":171}
+         * addTime : 1535075217000
+         * teacher : {"picPath":"/images/upload/teacher/20150915/1442298121626.jpg","career":"为中国科学教育的振兴而努力","education":"科学讲师","isStar":true,"name":"喻佰军","id":101}
          * startTime : null
          * courseSource : 1672
          * courseEdition : 1652
          * videoUrl :
-         * materialEdition : 1591
-         * watchTime : 0
+         * materialEdition : 1581
+         * watchTime : null
          * isEnd : 0
+         * knowledgeId : 651
+         * knowledgeList : []
          */
 
         private int courseId;
@@ -116,8 +120,10 @@ public class YingXiangDetailsVideoBean {
         private String courseEdition;
         private String videoUrl;
         private String materialEdition;
-        private int watchTime;
+        private Object watchTime;
         private int isEnd;
+        private String knowledgeId;
+        private List<?> knowledgeList;
 
         public int getCourseId() {
             return courseId;
@@ -351,11 +357,11 @@ public class YingXiangDetailsVideoBean {
             this.materialEdition = materialEdition;
         }
 
-        public int getWatchTime() {
+        public Object getWatchTime() {
             return watchTime;
         }
 
-        public void setWatchTime(int watchTime) {
+        public void setWatchTime(Object watchTime) {
             this.watchTime = watchTime;
         }
 
@@ -367,14 +373,30 @@ public class YingXiangDetailsVideoBean {
             this.isEnd = isEnd;
         }
 
+        public String getKnowledgeId() {
+            return knowledgeId;
+        }
+
+        public void setKnowledgeId(String knowledgeId) {
+            this.knowledgeId = knowledgeId;
+        }
+
+        public List<?> getKnowledgeList() {
+            return knowledgeList;
+        }
+
+        public void setKnowledgeList(List<?> knowledgeList) {
+            this.knowledgeList = knowledgeList;
+        }
+
         public static class TeacherBean {
             /**
-             * picPath : /images/upload/teacher/20150915/1442297919077.jpg
+             * picPath : /images/upload/teacher/20150915/1442298121626.jpg
              * career : 为中国科学教育的振兴而努力
              * education : 科学讲师
              * isStar : true
-             * name : 郁波
-             * id : 171
+             * name : 喻佰军
+             * id : 101
              */
 
             private String picPath;
@@ -479,6 +501,8 @@ public class YingXiangDetailsVideoBean {
                     ", materialEdition='" + materialEdition + '\'' +
                     ", watchTime=" + watchTime +
                     ", isEnd=" + isEnd +
+                    ", knowledgeId='" + knowledgeId + '\'' +
+                    ", knowledgeList=" + knowledgeList +
                     '}';
         }
     }

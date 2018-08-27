@@ -18,6 +18,7 @@ import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MaterialRecommendedAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
@@ -97,24 +98,12 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    switch (materialBean.get(position).getFileType()) {
-                        case "VIDEO":
-                            intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
-                            intent.putExtras(bundle);
-                            //这里一定要获取到所在Activity再startActivity()；
-                            getActivity().startActivity(intent);
-                            break;
-                        default:
-                            intent = new Intent(getActivity().getApplicationContext(), PictrueDetailsActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
-                            intent.putExtras(bundle);
-                            //这里一定要获取到所在Activity再startActivity()；
-                            getActivity().startActivityForResult(intent, MyApplication.YINGXIANG_TO_PICK_req);
-                            break;
-                    }
+                    Intent intent = new Intent(getActivity().getApplicationContext(), TeacherTrainingDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    getActivity().startActivity(intent);
                 }
             }
         });

@@ -14,13 +14,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.ChangePwdPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -100,6 +100,8 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
         oldpwd = oldPwdEdittext.getText().toString();
         newpwd = newPwdEdittext.getText().toString();
         aginpwd = newPwdEdittextAgin.getText().toString();
+        sp = getSharedPreferences("logintoken", 0);
+        String pwd = sp.getString("pwd", "");
         if (TextUtils.isEmpty(oldpwd)) {
             oldPwdEdittext.setError("请输入旧密码");
             oldPwdEdittext.requestFocus();
@@ -115,7 +117,11 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
         } else if (!newpwd.equals(aginpwd)){
             newPwdEdittextAgin.setError("两次密码不一致，请重新输入");
             newPwdEdittextAgin.requestFocus();
-        }else {
+        }else if (!oldpwd.equals(pwd)){
+            oldPwdEdittext.setError("旧密码错误");
+            oldPwdEdittext.requestFocus();
+        }
+        else {
             sp = getSharedPreferences("logintoken", 0);
             token = sp.getString("token", "");
             changePwdPresenter.getChangePwdData(this, "Bearer " + token, oldpwd, newpwd);
@@ -153,12 +159,33 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
                 }
             }).start();
         } else {
-            oldPwdEdittext.setError("旧密码错误");
+            initDialogToLogin();
         }
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override
     public void onChangePwdError(String msg) {
-
+        ToastUtils.showToast(msg);
     }
 }

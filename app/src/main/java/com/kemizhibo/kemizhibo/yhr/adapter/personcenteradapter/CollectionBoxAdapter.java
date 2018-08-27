@@ -73,9 +73,11 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.collectionBoxRecyclerviewImageview);
         holder.collectionBoxItemTitle.setText(myLive.getCourse().getCourseName());
         if (myLive.getCourse().getIsImageText() == 0) {
+            holder.collectionBoxTuji.setVisibility(View.GONE);
             holder.collectionBoxPlayButn.setVisibility(View.VISIBLE);
         }else {
             if (myLive.getCourse().getIsImageText() == 1){
+                holder.collectionBoxPlayButn.setVisibility(View.GONE);
                 holder.collectionBoxTuji.setVisibility(View.VISIBLE);
             }
         }

@@ -1,32 +1,35 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.activity.logins.WangJiActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.logins.XiuGaiActivity;
-import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
-import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.FeedBackPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SendYanZhengMaPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.PhoneFormatCheckUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.view.personcenterview.FeedBackView;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SendYanZhengMaView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenterImpl> implements SendYanZhengMaView {
@@ -69,7 +72,7 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     @Override
     protected void getData() {
         super.getData();
-        personChangeOldPhone.setText("您绑定的手机号码是"+mobile+"，请点击获取验证码");
+        personChangeOldPhone.setText("您绑定的手机号码是" + mobile + "，请点击获取验证码");
     }
 
     private void bindTitleBar() {
@@ -89,15 +92,15 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
             case R.id.person_change_send_yanzhengma:
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
-                sendYanZhengMaPresenter.getSendYanZhengMaData(this,"1","Bearer "+ token,mobile);
+                sendYanZhengMaPresenter.getSendYanZhengMaData(this, "1", "Bearer " + token, mobile);
                 break;
             case R.id.person_change_next_butn:
-                if (TextUtils.isEmpty(personChangeEdittext.getText().toString().trim())){
-                    ToastUtils.showToast("验证码不能为空");
-                }else{
+                if (TextUtils.isEmpty(personChangeEdittext.getText().toString().trim())) {
+                    ToastUtils.showToast("请输入验证码");
+                } else {
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
-                    sendYanZhengMaPresenter.getOldPhoneData(this,"Bearer "+token,mobile,personChangeEdittext.getText().toString());
+                    sendYanZhengMaPresenter.getOldPhoneData(this, "Bearer " + token, mobile, personChangeEdittext.getText().toString());
                 }
                 break;
         }
@@ -105,34 +108,57 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
 
     @Override
     public void onSendYanZhengMaSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
-        if (sendYanZhengMaBean.getCode()==0){
-            timerUtils = new TimerUtils(personChangeSendYanzhengma,60000,1000);
+        LogUtils.i("验证码",sendYanZhengMaBean.getCode()+"");
+        if (sendYanZhengMaBean.getCode() == 0) {
+            timerUtils = new TimerUtils(personChangeSendYanzhengma, 60000, 1000);
             timerUtils.start();
-        }else {
-            ToastUtils.showToast("短信发送失败，请重试");
+        } else {
+            initDialogToLogin();
         }
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(ChangePhoneActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override
     public void onSendYanZhengMaError(String msg) {
-
+        ToastUtils.showToast("短信发送失败，请重试");
     }
 
     //验证旧手机号
     @Override
     public void onOldPhoneSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
-        if (sendYanZhengMaBean.getCode()==0){
-            Intent intent=new Intent(ChangePhoneActivity.this, SetNewPhoneActivity.class);
+        if (sendYanZhengMaBean.getCode() == 0) {
+            Intent intent = new Intent(ChangePhoneActivity.this, SetNewPhoneActivity.class);
             startActivity(intent);
-        }else {
-            ToastUtils.showToast("验证码错误，请重新输入");
+        } else {
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onOldPhoneError(String msg) {
-
+        ToastUtils.showToast("验证码错误，请重新输入");
     }
+
     //验证新手机号
     @Override
     public void onNewPhoneSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
@@ -149,4 +175,5 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         activityComponent.inject(this);
         return sendYanZhengMaPresenter;
     }
+
 }

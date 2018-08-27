@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <LinearLayout
+            android:id="@+id/linear_layout"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/pictrue_details_viewpager"
+                android:layout_marginTop="@dimen/res_20dp"
+                android:layout_width="@dimen/res_530.0dp"
+                android:layout_height="@dimen/res_565.5dp">
+            </ImageView>
+
+            <TextView
+                android:layout_marginTop="@dimen/res_47dp"
+                android:id="@+id/pictrue_details_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="图片的详情介绍"/>
+        </LinearLayout>
+</LinearLayout>
