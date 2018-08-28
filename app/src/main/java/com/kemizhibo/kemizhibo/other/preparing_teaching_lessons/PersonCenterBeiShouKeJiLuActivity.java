@@ -216,7 +216,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 String time = dateFormat.format(date);
                 Log.d("PersonCenterBeiShouKeJi", time);
                 if(currentIndex == 1){
-                    selectCalendar.setTime(date);
+                    //selectCalendar.setTime(date);
                     teachingLessonsFragment.onDateFilterSelect(time);
                 }
             }
@@ -230,7 +230,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 .setCancelColor(Color.BLACK)//取消按钮文字颜色
                 .setTitleBgColor(getResources().getColor(R.color.line_f1f1f1))//标题背景颜色 Night mode
                 .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
-                .setDate(selectCalendar)// 如果不设置的话，默认是系统时间*/
+                .setDate(endDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate,endDate)//起始终止年月日设定
                 .setLabel("","","日","时","分","秒")//默认设置为年月日时分秒
                 .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
