@@ -91,6 +91,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             bundle.putInt("courseid", kemiVideo.get(position).getCourseId());
                             bundle.putInt("moduleid", kemiVideo.get(position).getModuleId());
                             bundle.putString("url", kemiVideo.get(position).getUrl());
+                            bundle.putInt("kpointId", kemiVideo.get(position).getKpointId());
                             bundle.putString("logo", kemiVideo.get(position).getVideoLogo());
                             bundle.putString("introduce", kemiVideo.get(position).getVideoIntroduce());
                             myFragment.setArguments(bundle);

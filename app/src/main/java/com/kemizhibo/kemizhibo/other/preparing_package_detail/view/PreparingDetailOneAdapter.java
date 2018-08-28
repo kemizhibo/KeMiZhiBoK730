@@ -3,7 +3,10 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
@@ -23,10 +29,22 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewAct
 import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.jzvd.JZVideoPlayerStandard;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by asus on 2018/8/1.
@@ -147,9 +165,11 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             moduleId = oneKeyBeanList.get(position).getModuleId();
             //RequestUtil.requestVideo((Activity) context, position, holder, courseId);
             holder.madj.setText(TextUtils.isEmpty(oneKeyBeanList.get(position).getVideoIntroduce()) ? "暂无" : oneKeyBeanList.get(position).getVideoIntroduce());
-            holder.jcVideoPlayer.setUp(oneKeyBeanList.get(position).getUrl()
-                    , 1, "");
-            holder.jcVideoPlayer.thumbImageView.setImageURI(Uri.parse(oneKeyBeanList.get(position).getVideoLogo()));
+            /*holder.jcVideoPlayer.setUp(oneKeyBeanList.get(position).getUrl()
+                    , 1, "");*/
+            getPlayUrl(context, holder.jcVideoPlayer, courseId, oneKeyBeanList.get(position).getKpointId());
+            //holder.jcVideoPlayer.thumbImageView.setImageURI(Uri.parse(oneKeyBeanList.get(position).getVideoLogo()));
+            loadLogo(oneKeyBeanList.get(position).getVideoLogo(), holder.jcVideoPlayer);
             holder.mbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -165,7 +185,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             //RequestUtil.requestPPT((Activity) context, holder.mppt, holder.mcheckppt, holder.mdownppt, 3, moduleId);
             holder.mppt.setText(oneKeyBeanList.get(position).getDocName());
 
-            holder.mcheck.setOnClickListener(new View.OnClickListener() {
+            holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
@@ -238,6 +258,103 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         }*/
         return convertView;
     }
+
+    private void getPlayUrl(final Context context, final JZVideoPlayerStandard jcVideoPlayer, int courseId, int kpointId) {
+        Map params = new HashMap();
+        params.put(Constants.COURSE_ID, String.valueOf(courseId));
+        params.put("videoType", "HLS");
+        params.put("encryption", String.valueOf(true));
+        params.put("videoClarity", "HD");
+        params.put(Constants.KPOINT_ID, String.valueOf(kpointId));
+        String s = OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_VIDEO_URL, params);
+        OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_VIDEO_URL, params), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                UIUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                /*String string = response.body().string();
+                Log.d("PreparingDetailOneAdapt", string);*/
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    int code = jsonObject.optInt("code");
+                    if(0 == code){
+                        final String url = jsonObject.optString("content");
+                        if(null != url){
+                            UIUtils.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    jcVideoPlayer.setUp(url, 1, "");
+                                }
+                            });
+                        }else{
+                            UIUtils.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }else{
+                        UIUtils.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void loadLogo(final String logo, final JZVideoPlayerStandard jzVideoPlayerStandard) {
+        if(null == logo){
+            return;
+        }
+        new AsyncTask<Void, Void, Bitmap>(){
+
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                try {
+                    URL loadUrl = new URL(logo);
+                    HttpURLConnection connection = (HttpURLConnection) loadUrl.openConnection();
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
+                    int responseCode = connection.getResponseCode();
+                    if(responseCode == 200){
+                        return BitmapFactory.decodeStream(connection.getInputStream());
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(final Bitmap bitmap) {
+                UIUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        jzVideoPlayerStandard.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }.execute();
+    }
+
     private void goPreview(String url) {
         Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);

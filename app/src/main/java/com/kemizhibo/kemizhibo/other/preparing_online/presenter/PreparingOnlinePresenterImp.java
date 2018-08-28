@@ -86,9 +86,9 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 PreparingOnlineBean bean = GsonUtils.getBean(response.body().string(), PreparingOnlineBean.class);
-                if(bean != null && 0 == bean.getCode()){
+                if(null != bean && 0 == bean.getCode()){
                     preparingOnlineView.loadMoreSuccess(bean);
-                }else if(0 != bean.getCode()){
+                }else if(null != bean && 0 != bean.getCode()){
                     LoadFailUtil.initDialogToLogin((Activity) preparingOnlineView.getCustomContext());
                 }else{
                     preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, true);

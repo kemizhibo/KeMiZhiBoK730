@@ -106,7 +106,7 @@ public class PreparingCenterBean {
 
             private int courseId;
             private String courseName;
-            private String backImg;
+            private String logo;
 
             public int getCourseId() {
                 return courseId;
@@ -124,12 +124,12 @@ public class PreparingCenterBean {
                 this.courseName = courseName;
             }
 
-            public String getBackImg() {
-                return backImg;
+            public String getLogo() {
+                return logo;
             }
 
-            public void setBackImg(String backImg) {
-                this.backImg = backImg;
+            public void setLogo(String logo) {
+                this.logo = logo;
             }
         }
     }

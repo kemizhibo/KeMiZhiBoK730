@@ -124,14 +124,9 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
 
     @Override
     public void refreshSuccess(TeachingLessonsBean bean) {
-        if(bean.getContent().getData().size() > 0){
-            dataBeanList.clear();
-            dataBeanList.addAll(bean.getContent().getData());
-            setAdapter(false);
-        }else{
-            frameLayout.setVisibility(View.VISIBLE);
-            getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
-        }
+        dataBeanList.clear();
+        dataBeanList.addAll(bean.getContent().getData());
+        setAdapter(false);
     }
 
     private void setAdapter(final boolean isLoadMore) {
@@ -148,11 +143,18 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
                         smartRefreshLayout.setVisibility(View.VISIBLE);
                     }
                 }
-                if(adapter == null){
-                    adapter = new TeachingLessonsListAdapter(getActivity(), dataBeanList);
-                    listView.setAdapter(adapter);
+                if(dataBeanList.size() > 0){
+                    if(adapter == null){
+                        adapter = new TeachingLessonsListAdapter(getActivity(), dataBeanList);
+                        listView.setAdapter(adapter);
+                    }else{
+                        adapter.notifyDataSetChanged();
+                    }
                 }else{
-                    adapter.notifyDataSetChanged();
+                    SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
+                    smartRefreshLayout.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
                 }
             }
         });
@@ -174,6 +176,8 @@ public class TeachingLessonsFragment extends Fragment implements TeachingLessons
                 }else{
                     refreshLayout.finishRefresh();
                 }
+                SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
+                smartRefreshLayout.setVisibility(View.GONE);
                 frameLayout.setVisibility(View.VISIBLE);
                 getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
             }

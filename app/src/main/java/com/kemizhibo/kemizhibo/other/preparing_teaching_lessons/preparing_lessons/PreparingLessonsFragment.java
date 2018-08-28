@@ -142,14 +142,9 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
 
     @Override
     public void refreshSuccess(PreparingLessonsBean bean) {
-        if(bean.getContent().getData().size() > 0){
-            dataBeanList.clear();
-            dataBeanList.addAll(bean.getContent().getData());
-            setAdapter(false);
-        }else{
-            frameLayout.setVisibility(View.VISIBLE);
-            getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
-        }
+        dataBeanList.clear();
+        dataBeanList.addAll(bean.getContent().getData());
+        setAdapter(false);
     }
 
     private void setAdapter(final boolean isLoadMore) {
@@ -166,11 +161,18 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                         smartRefreshLayout.setVisibility(View.VISIBLE);
                     }
                 }
-                if(adapter == null){
-                    adapter = new PreparingLessonsListAdapter(getActivity(), dataBeanList);
-                    listView.setAdapter(adapter);
+                if(dataBeanList.size() > 0){
+                    if(adapter == null){
+                        adapter = new PreparingLessonsListAdapter(getActivity(), dataBeanList);
+                        listView.setAdapter(adapter);
+                    }else{
+                        adapter.notifyDataSetChanged();
+                    }
                 }else{
-                    adapter.notifyDataSetChanged();
+                    SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
+                    smartRefreshLayout.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
                 }
             }
         });
@@ -193,6 +195,8 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 }else{
                     refreshLayout.finishRefresh();
                 }
+                SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
+                smartRefreshLayout.setVisibility(View.GONE);
                 frameLayout.setVisibility(View.VISIBLE);
                 getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
             }

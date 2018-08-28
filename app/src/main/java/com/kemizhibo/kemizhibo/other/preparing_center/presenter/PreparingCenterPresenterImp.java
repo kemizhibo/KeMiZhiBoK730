@@ -86,9 +86,9 @@ public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 PreparingCenterBean bean = GsonUtils.getBean(response.body().string(), PreparingCenterBean.class);
-                if(bean != null && "0".equals(bean.getCode())){
+                if(null != bean && "0".equals(bean.getCode())){
                     preparingCenterView.refreshSuccess(bean);
-                }else if(0 != bean.getCode()){
+                }else if(null != bean && 0 != bean.getCode()){
                     LoadFailUtil.initDialogToLogin((Activity) preparingCenterView.getCustomContext());
                 }else{
                     preparingCenterView.error(Constants.REQUEST_ERROR_CODE, true);
