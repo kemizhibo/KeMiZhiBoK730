@@ -20,7 +20,6 @@ import javax.inject.Inject;
 public class OldPhoneIteractor {
 
     private IGetDataDelegate<SendYanZhengMaBean> mDelegate;
-    private Context context;
 
     @Inject
     public OldPhoneIteractor() {}

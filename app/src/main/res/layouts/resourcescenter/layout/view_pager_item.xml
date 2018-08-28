@@ -14,7 +14,8 @@
                 android:id="@+id/pictrue_details_viewpager"
                 android:layout_marginTop="@dimen/res_20dp"
                 android:layout_width="@dimen/res_530.0dp"
-                android:layout_height="@dimen/res_565.5dp">
+                android:layout_height="@dimen/res_565.5dp"
+                android:scaleType="fitXY">
             </ImageView>
 
             <TextView

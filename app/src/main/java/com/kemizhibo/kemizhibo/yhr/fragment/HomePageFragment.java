@@ -120,14 +120,14 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
         mTitleList.add("我的备课");
         mTitleList.add("素材推荐");
         mTitleList.add("培训课推荐");
-        mTitleList.add("科学观察室");
+        //mTitleList.add("科学观察室");
         /*mTitleList.add("探秘科学馆");
         mTitleList.add("科学进校园");*/
 
         homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(0)));
         homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(1)));
         homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(2)));
-        homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(3)));
+        //homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(3)));
        /* homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(4)));
         homeTablayout.addTab(homeTablayout.newTab().setText(mTitleList.get(5)));*/
     }
@@ -137,7 +137,7 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
         mFragmentList.add(new MyClassFragment());
         mFragmentList.add(new MaterialRecommendedFragment());
         mFragmentList.add(new TrainingCourseRecommendationFragment());
-        mFragmentList.add(new FourFragment());
+        //mFragmentList.add(new FourFragment());
         /*mFragmentList.add(new FiveFragment());
         mFragmentList.add(new SixFragment());*/
     }

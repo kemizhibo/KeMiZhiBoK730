@@ -92,6 +92,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
             }
         }
     };
+    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -104,9 +105,8 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         picturePresenter.getPictureData(this, "Bearer " + token, courseId);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this, listBeanArrayList);
+        viewPagerAdapter = new ViewPagerAdapter(this, listBeanArrayList);
         viewPager.setAdapter(viewPagerAdapter);
-        viewPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -114,7 +114,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         bindTitleBar();
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
-
     }
 
     /*private void initJsonData() {
@@ -173,20 +172,20 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         frameLayout.setVisibility(View.GONE);
         relativelayout.setVisibility(View.VISIBLE);
         //图片标题
-        for (int i = 0;i<listBeanArrayList.size();i++){
+        /*for (int i = 0;i<listBeanArrayList.size();i++){
             String text = listBeanArrayList.get(i).getText();
             pictrueDetailsTitle.setText(text);
-            LogUtils.i("图文详情介绍",text);
             List<String> imgList = listBeanArrayList.get(i).getImgList();
             for (int j = 0;j<imgList.size();j++){
                 String s = imgList.get(j).toString();
-                LogUtils.i("图文详情图片地址",s);
                 Glide.with(this).load(s)
                         .error(R.mipmap.milier)
                         .placeholder(R.mipmap.milier)
                         .into(pictrueDetailsImageview);
             }
-        }
+        }*/
+        viewPagerAdapter.notifyDataSetChanged();
+
 
 
         /*//设置内置样式

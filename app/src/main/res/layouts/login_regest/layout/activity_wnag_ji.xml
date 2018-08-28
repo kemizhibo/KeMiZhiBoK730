@@ -6,25 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".yhr.activity.logins.WangJiActivity">
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/yanzheng_back"
-            android:layout_margin="@dimen/res_24dp"
-            android:src="@mipmap/fanhui"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="找回密码"
-            android:textColor="#7f7e7e"
-            android:textSize="@dimen/res_textsize_18sp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+    <include layout="@layout/pubic_title_bar"/>
+    <include layout="@layout/line"/>
     <View
         android:background="#dcdcdc"
         android:layout_width="match_parent"
@@ -99,5 +82,12 @@
         android:textColor="#ffffff"
         android:text="下一步"/>
 
+    <TextView
+        android:layout_marginTop="@dimen/res_30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="客服电话:010-80456778/010-80456803"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_12sp"/>
 
 </LinearLayout>

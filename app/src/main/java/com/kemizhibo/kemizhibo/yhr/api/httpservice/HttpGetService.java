@@ -117,16 +117,27 @@ public interface HttpGetService {
     Observable<ResponseBody> getSendYanZhengMaData(@Path("flag") String flag,
                                                    @Header("Authorization") String token,
                                                    @Query("mobile") String mobile);
-    //验证旧手机号
+    //登录之前找回密码发送验证码
+    @GET("kemiapi/ketang/user/{flag}/sendMsg")
+    Observable<ResponseBody> getSendValidateBeforLogin(@Path("flag") String flag,
+                                                   @Query("mobile") String mobile);
+
+    //登录前找回密码验证手机号
     @FormUrlEncoded
-    @POST("kemiapi/ketang/user/info/validate/old")
-    Observable<ResponseBody> getOldPhoneData(@Header("Authorization") String token,
-                                             @Field("mobile") String mobile,
+    @POST("kemiapi/ketang/user/validate/code")
+    Observable<ResponseBody> getBeforLoginValiDatePhone(@Field("mobile") String mobile,
                                              @Field("code") String code);
     //验证新手机号
     @FormUrlEncoded
     @POST("kemiapi/ketang/user/info/validate/new")
     Observable<ResponseBody> getNewPhoneData(@Header("Authorization") String token,
+                                             @Field("mobile") String mobile,
+                                             @Field("code") String code);
+
+    //验证旧手机号
+    @FormUrlEncoded
+    @POST("kemiapi/ketang/user/info/validate/old")
+    Observable<ResponseBody> getOldPhoneData(@Header("Authorization") String token,
                                              @Field("mobile") String mobile,
                                              @Field("code") String code);
     //修改密码
