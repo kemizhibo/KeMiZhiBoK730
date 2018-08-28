@@ -53,7 +53,7 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
                 PreparingPackageDetailBean bean = GsonUtils.getBean(response.body().string(), PreparingPackageDetailBean.class);
                 if(null != bean && 0 == bean.getCode()){
                     detailView.getPreparingPackageDetailDataSuccess(bean);
-                }else if(0 != bean.getCode()){
+                }else if(null != bean && 0 != bean.getCode()){
                     LoadFailUtil.initDialogToLogin((Activity) detailView.getCustomContext());
                 }else{
                     detailView.error("", String.valueOf(Constants.REQUEST_ERROR_CODE));

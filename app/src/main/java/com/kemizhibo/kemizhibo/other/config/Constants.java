@@ -47,16 +47,17 @@ public class Constants {
 
     public static final String MODULE_ID = "moduleId";
 
+    public static final String KPOINT_ID = "kpointId";
+
     public static final String ROLE_ID = "roleId";
     public static final int MANAGER_ROLE_ID = 8;
     public static final int CHILD_ROLE_ID = 9;
 
-    public static final String TEST_IMAGE_URL = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1532500163&di=0b977fc00b6968ed4e6e5fc7707bd986&src=http://file25.mafengwo.net/M00/0A/AC/wKgB4lMC26CAWsKoAALb5778DWg60.rbook_comment.w1024.jpeg";
-    public static final String PREPARING_PACKAGE_VIDEO_URL = "http://39.155.221.165:8080/kemiapi/course/getPlayUrl";
-    public static final String PREPARING_PACKAGE_DOC_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/previewDoc";
-    public static final String PREPARING_PACKAGE_DEL_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/delDoc";
-    public static final String PREPARING_PACKAGE_DOCMESSAGE_URL = "http://39.155.221.165:8080/kemiapi/upload/getBydocId";
-    public static final String PREPARING_PACKAGE_ADDCLASS_URL = "http://39.155.221.165:8080/kemiapi/prepare/module/addPlan";
+    public static final String PREPARING_PACKAGE_VIDEO_URL = SERVER + "kemiapi/course/getPlayUrl";
+    public static final String PREPARING_PACKAGE_DOC_URL = SERVER + "kemiapi/prepare/module/previewDoc";
+    public static final String PREPARING_PACKAGE_DEL_URL = SERVER + "kemiapi/prepare/module/delDoc";
+    public static final String PREPARING_PACKAGE_DOCMESSAGE_URL = SERVER + "kemiapi/upload/getBydocId";
+    public static final String PREPARING_PACKAGE_ADDCLASS_URL = SERVER + "kemiapi/prepare/module/addPlan";
     public static final String VIDEOTYPE = "videoType";
     public static final String DOCTYPE = "docType";
     public static final String DOCNAME= "docName";
@@ -65,5 +66,6 @@ public class Constants {
     public static final String ENCRYPTION = "encryption";
     public static final String VIDEOCLARITY = "videoClarity";
 
+    public static final String TEST_IMAGE_URL = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1532500163&di=0b977fc00b6968ed4e6e5fc7707bd986&src=http://file25.mafengwo.net/M00/0A/AC/wKgB4lMC26CAWsKoAALb5778DWg60.rbook_comment.w1024.jpeg";
     public static final String TEST_VIDEO_URL = "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4";
 }

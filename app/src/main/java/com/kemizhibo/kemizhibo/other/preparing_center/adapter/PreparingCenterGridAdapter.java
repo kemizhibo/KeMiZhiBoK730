@@ -56,8 +56,8 @@ public class PreparingCenterGridAdapter extends BaseAdapter {
             holder = (PreparingCenterGridViewHolder) convertView.getTag();
         }
 
-        if(!TextUtils.isEmpty(dataBeanList.get(position).getBackImg())){
-            holder.image.setImageURI(Uri.parse(dataBeanList.get(position).getBackImg()));
+        if(!TextUtils.isEmpty(dataBeanList.get(position).getLogo())){
+            holder.image.setImageURI(Uri.parse(dataBeanList.get(position).getLogo()));
         }else{
             holder.image.setImageURI(Uri.parse(Constants.TEST_IMAGE_URL));
         }
