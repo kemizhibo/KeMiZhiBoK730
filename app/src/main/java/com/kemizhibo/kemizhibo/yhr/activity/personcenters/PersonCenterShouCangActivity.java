@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter.CollectionBoxAdapter;
@@ -510,12 +511,31 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     //这里一定要获取到所在Activity再startActivity()；
                     this.startActivity(intent);
                 } else {
-                    Intent intent = new Intent(this, YingXinagVideoDetailsActivity.class);
+                    if (myLive.getCourse().getCourseType().equals("YINGXIANGSUCAI")){
+                        Intent intent = new Intent(this, TeacherTrainingDetailsActivity.class);
+                        Bundle bundle = new Bundle();
+                        //视频和当前时长
+                        bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
+                        //bundle.putString("watchTime", String.valueOf(myLive.getCourse().getWatchTime()));
+                        intent.putExtras(bundle);
+                        //这里一定要获取到所在Activity再startActivity()；
+                        this.startActivity(intent);
+                    }else if (myLive.getCourse().getCourseType().equals("TEACHERCOURSE")){
+                        Intent intent = new Intent(this, YingXinagVideoDetailsActivity.class);
+                        Bundle bundle = new Bundle();
+                        //视频和当前时长
+                        bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
+                        //bundle.putString("watchTime", String.valueOf(myLive.getCourse().getWatchTime()));
+                        intent.putExtras(bundle);
+                        //这里一定要获取到所在Activity再startActivity()；
+                        this.startActivity(intent);
+                    }
+                    /*Intent intent = new Intent(this, YingXinagVideoDetailsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
                     intent.putExtras(bundle);
                     //这里一定要获取到所在Activity再startActivity()；
-                    this.startActivity(intent);
+                    this.startActivity(intent);*/
                 }
             }
         }

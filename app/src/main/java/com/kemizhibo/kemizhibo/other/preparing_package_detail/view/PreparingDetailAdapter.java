@@ -255,8 +255,6 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         });
                     }
                 }
-
-
                 break;
             case 4://表格
                 List<PreparingPackageDetailBean.ContentBean.DataBean> kemiExcel = material.getKemiExcel();

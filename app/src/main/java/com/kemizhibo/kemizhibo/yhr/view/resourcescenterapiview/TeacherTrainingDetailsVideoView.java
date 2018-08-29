@@ -49,4 +49,8 @@ public interface TeacherTrainingDetailsVideoView extends BaseView{
     void onGetOneLookSuccess(OneLookBean oneLookBean);
     void onGetOneLookError(String msg);
 
+    //记录第n次播放位置
+    void onGetMoreLookSuccess(OneLookBean oneLookBean);
+    void onGetMoreLookError(String msg);
+
 }

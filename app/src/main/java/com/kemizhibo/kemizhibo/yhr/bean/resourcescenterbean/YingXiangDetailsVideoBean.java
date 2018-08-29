@@ -120,7 +120,7 @@ public class YingXiangDetailsVideoBean {
         private String courseEdition;
         private String videoUrl;
         private String materialEdition;
-        private Object watchTime;
+        private int watchTime;
         private int isEnd;
         private String knowledgeId;
         private List<?> knowledgeList;
@@ -357,11 +357,11 @@ public class YingXiangDetailsVideoBean {
             this.materialEdition = materialEdition;
         }
 
-        public Object getWatchTime() {
+        public int getWatchTime() {
             return watchTime;
         }
 
-        public void setWatchTime(Object watchTime) {
+        public void setWatchTime(int watchTime) {
             this.watchTime = watchTime;
         }
 

@@ -203,7 +203,7 @@ public class LiuLanBean {
                 private Object sequence;
                 private int isImageText;
                 private Object title;
-                private int watchTime;
+                private Long watchTime;
                 private int isEnd;
                 private Object imageText;
 
@@ -336,11 +336,11 @@ public class LiuLanBean {
                     this.title = title;
                 }
 
-                public int getWatchTime() {
+                public Long getWatchTime() {
                     return watchTime;
                 }
 
-                public void setWatchTime(int watchTime) {
+                public void setWatchTime(Long watchTime) {
                     this.watchTime = watchTime;
                 }
 

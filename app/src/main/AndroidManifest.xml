@@ -22,7 +22,10 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
+
         <activity android:name=".yhr.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

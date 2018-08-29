@@ -5,10 +5,12 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.PictureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.CollectionIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.FilterIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.OneLookIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.PictureIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.TeacherTrainingIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.resourcescenterpresenter.PicturePresenter;
@@ -31,6 +33,9 @@ public class PicturePresenterImpl extends BasePresenterImpl<PictureView> impleme
 
     @Inject
     public CollectionIteractor collectionIteractor ;
+
+    @Inject
+    public OneLookIteractor oneLookIteractor ;
 
     @Inject
     public PicturePresenterImpl() {}
@@ -63,5 +68,20 @@ public class PicturePresenterImpl extends BasePresenterImpl<PictureView> impleme
                 mPresenterView.onGetCollectionError(errmsg);
             }
         },token,courseId);
+    }
+
+    @Override
+    public void getOneLookData(BaseActivity activity, String token, String playPosition, String keyId, String courseId, String watchTime, String isEnd) {
+        oneLookIteractor.loadOneLookData(activity, new IGetDataDelegate<OneLookBean>() {
+            @Override
+            public void getDataSuccess(OneLookBean oneLookBean) {
+                mPresenterView.onGetOneLookSuccess(oneLookBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onGetOneLookError(errmsg);
+            }
+        },token,playPosition,keyId,courseId,watchTime,isEnd);
     }
 }

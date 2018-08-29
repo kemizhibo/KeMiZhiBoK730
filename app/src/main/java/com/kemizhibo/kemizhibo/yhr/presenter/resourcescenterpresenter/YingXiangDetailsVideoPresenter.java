@@ -27,4 +27,6 @@ public interface YingXiangDetailsVideoPresenter extends BasePresenter<YingXiangD
     void getLikeData(BaseActivity activity,String token, String targetId,String type);
     //记录第一次播放位置
     void getOneLookData(BaseActivity activity,String token, String playPosition,String keyId,String courseId,String watchTime,String isEnd);
+    //记录第n次播放位置
+    void getMoreLookData(BaseActivity activity,String token, String playPosition,String keyId,String courseId,String watchTime,String isEnd);
 }

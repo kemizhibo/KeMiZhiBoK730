@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
@@ -23,18 +24,16 @@ import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
-import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
@@ -83,7 +82,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     private String token;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            if(msg.what==0)
+            if (msg.what == 0)
                 startActivity(new Intent(getContext(), LoginActivity.class));
         }
     };
@@ -98,10 +97,8 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
 
     @Override
     public View createSuccessView() {
-        View view = UIUtils.inflate(mActivity,R.layout.home_first_fragment);
+        View view = UIUtils.inflate(R.layout.home_first_fragment);
         ButterKnife.bind(this, view);
-        //展示我的备课数据
-        initMyClassData();
         return view;
     }
 
@@ -115,7 +112,8 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     public void load() {
         sp = getContext().getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
-        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
+        homePagePresenter.getHomePageData(mActivity, "Bearer " + token);
+        LogUtils.i("备课接口", token);
     }
 
     private void initMyClassData() {
@@ -129,11 +127,11 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 courseId = myclassBean.get(position).getCourseId();
-                if(1 == myclassBean.get(position).getPrepareStatus()){
+                if (1 == myclassBean.get(position).getPrepareStatus()) {
                     Intent intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
                     intent.putExtra(Constants.COURSE_ID, courseId);
                     startActivity(intent);
-                }else{
+                } else {
                     Intent intent = new Intent(getActivity(), CommonWebActivity.class);
                     intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
                     intent.putExtra(Constants.MODULE_ID, myclassBean.get(position).getModuleId());
@@ -155,7 +153,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                         currentPage = 1;
                         sp = getContext().getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
+                        homePagePresenter.getHomePageData(mActivity, "Bearer " + token);
                         myclassSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -166,20 +164,20 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                            isUp = 2;
-                            currentPage++;
-                            sp = getContext().getSharedPreferences("logintoken", 0);
-                            token = sp.getString("token", "");
-                            homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
-                            myclassSpring.onFinishFreshAndLoad();
+                        isUp = 2;
+                        currentPage++;
+                        sp = getContext().getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        homePagePresenter.getHomePageData(mActivity, "Bearer " + token);
+                        myclassSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
             }
         });
         myclassSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        if (myclassBean==null){
-            myclassSpring.setFooter(new AliFooter(getContext(),  R.drawable.ali,false));
-        }else {
+        if (myclassBean == null) {
+            myclassSpring.setFooter(new AliFooter(getContext(), R.drawable.ali, false));
+        } else {
             myclassSpring.setFooter(new AliFooter(getContext(), true));
         }
 
@@ -188,38 +186,49 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
 
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
-        if (searchBean.getCode()==0){
+        LogUtils.i("备课是否请求陈宫", searchBean.getCode() + "");
+        if (searchBean.getCode() == 0) {
             if (isUp == 1) {
+                LogUtils.i("备课是否请求陈宫", "走的上拉");
                 myclassBean.clear();
+                setState(LoadingPager.LoadResult.success);
                 myclassBean.addAll(searchBean.getContent().getReturnPrepare());
-                if (myclassBean==null){
+                if (myclassBean.size() == 0) {
                     setState(LoadingPager.LoadResult.empty);
-                }else {
+                    LogUtils.i("备课是否请求陈宫", "集合为空");
+                } else {
                     setState(LoadingPager.LoadResult.success);
+                    //展示我的备课数据
+                    initMyClassData();
+                    LogUtils.i("备课是否请求陈宫", "集合不为空");
                     if (isFlag) {
                         myClassAdapter.notifyDataSetChanged();
                     }
                 }
             } else if (isUp == 2) {
+                LogUtils.i("备课是否请求陈宫", "走的下拉");
                 myclassBean.addAll(searchBean.getContent().getReturnPrepare());
-                if (myclassBean==null){
+                if (myclassBean.size() == 0) {
                     setState(LoadingPager.LoadResult.empty);
-                }else {
+                } else {
                     setState(LoadingPager.LoadResult.success);
+                    //展示我的备课数据
+                    initMyClassData();
                     if (isFlag) {
                         myClassAdapter.notifyDataSetChanged();
                     }
                 }
             }
-        }else {
-            setState(LoadingPager.LoadResult.error);
-            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
+        } else {
+            //setState(LoadingPager.LoadResult.error);
+            Transparent.showErrorMessage(getContext(), "登录失效请重新登录");
         }
     }
 
     @Override
     public void onHomePageError(String msg) {
         //加载失败的状态
+        LogUtils.i("备课是否请求陈宫", msg);
         setState(LoadingPager.LoadResult.error);
     }
 

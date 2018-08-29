@@ -14,6 +14,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingDetai
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.CollectionIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.DeleteCommentIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.GetLikeIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.MoreLookIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.OneLookIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.PutCommentIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.ReplyCommentIteractor;
@@ -50,6 +51,8 @@ public class TeacherTrainingDetailsVideoPresenterImpl extends BasePresenterImpl<
     public GetLikeIteractor getLikeIteractor ;
     @Inject
     public OneLookIteractor oneLookIteractor ;
+    @Inject
+    public MoreLookIteractor moreLookIteractor ;
 
     @Inject
     public TeacherTrainingDetailsVideoPresenterImpl() {}
@@ -173,6 +176,21 @@ public class TeacherTrainingDetailsVideoPresenterImpl extends BasePresenterImpl<
             @Override
             public void getDataError(String errmsg) {
                 mPresenterView.onGetOneLookError(errmsg);
+            }
+        },token,playPosition,keyId,courseId,watchTime,isEnd);
+    }
+
+    @Override
+    public void getMoreLookData(BaseActivity activity, String token, String playPosition, String keyId, String courseId, String watchTime, String isEnd) {
+        moreLookIteractor.loadMoreLookData(activity, new IGetDataDelegate<OneLookBean>() {
+            @Override
+            public void getDataSuccess(OneLookBean oneLookBean) {
+                mPresenterView.onGetMoreLookSuccess(oneLookBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onGetMoreLookError(errmsg);
             }
         },token,playPosition,keyId,courseId,watchTime,isEnd);
     }

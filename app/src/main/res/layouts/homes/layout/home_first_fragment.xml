@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/myclass_linearlayout"
     android:background="@color/white">
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/myclass_spring"
@@ -11,7 +12,6 @@
         android:layout_height="match_parent"
         android:background="#ffffff"
         app:type="follow">
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/myclass_recyclerview"
             android:layout_width="match_parent"

@@ -25,6 +25,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.ViewPagerAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.PictureBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
@@ -78,20 +79,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     //图文详情收藏
     private CollectionBean collectionBeans;
     private SharedPreferences sp;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0: {
-                    startActivity(new Intent(PictrueDetailsActivity.this, LoginActivity.class));
-                    break;
-                }
-                default: {
-
-                    break;
-                }
-            }
-        }
-    };
     private ViewPagerAdapter viewPagerAdapter;
 
     @Override
@@ -142,6 +129,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     public void onPictureSuccess(PictureBean pictureBean) {
         LogUtils.i("456789", pictureBean.getContent().getImageText());
         if (pictureBean.getCode() == 0) {
+            picturePresenter.getOneLookData(this, "Bearer " + token, "", "", courseId, "", "0");
             content = pictureBean.getContent();
             listBeanArrayList.addAll(pictureBean.getContent().getImageTextList());
             //判断是否收藏过
@@ -171,6 +159,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         //切换控件
         frameLayout.setVisibility(View.GONE);
         relativelayout.setVisibility(View.VISIBLE);
+        pictrueDetailsTitle.setText(content.getCourseName());
         //图片标题
         /*for (int i = 0;i<listBeanArrayList.size();i++){
             String text = listBeanArrayList.get(i).getText();
@@ -247,6 +236,16 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     @Override
     public void onGetCollectionError(String msg) {
         Transparent.showErrorMessage(this, "收藏失败请重试");
+    }
+
+    @Override
+    public void onGetOneLookSuccess(OneLookBean oneLookBean) {
+
+    }
+
+    @Override
+    public void onGetOneLookError(String msg) {
+
     }
 
     @Override

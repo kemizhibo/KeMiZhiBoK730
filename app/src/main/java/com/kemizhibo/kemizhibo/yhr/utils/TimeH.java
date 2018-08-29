@@ -35,9 +35,9 @@ public class TimeH {
         if(second > 0) {
             sb.append(second+"秒");
         }
-        if(milliSecond > 0) {
+       /* if(milliSecond > 0) {
             sb.append(milliSecond+"毫秒");
-        }
+        }*/
         return sb.toString();
     }
 }

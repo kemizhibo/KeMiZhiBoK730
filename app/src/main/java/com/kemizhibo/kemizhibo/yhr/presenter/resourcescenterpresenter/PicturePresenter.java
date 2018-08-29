@@ -15,4 +15,7 @@ public interface PicturePresenter extends BasePresenter<PictureView> {
     void getPictureData(BaseActivity activity, String token,String courseId);
     //收藏
     void getCollectionData(BaseActivity activity, String token,String courseId);
+
+    //记录第一次播放位置
+    void getOneLookData(BaseActivity activity,String token, String playPosition,String keyId,String courseId,String watchTime,String isEnd);
 }

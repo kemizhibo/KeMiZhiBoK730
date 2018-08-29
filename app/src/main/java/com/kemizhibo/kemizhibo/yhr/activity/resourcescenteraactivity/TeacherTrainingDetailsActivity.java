@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -156,12 +157,10 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     private long currentPosition;
     //记录返回值
     private String oneLookBeanMessage;
-    private String watchTime;
+    //private String watchTime;
     //上或者下拉的状态判断
     int isUp = 1;
     private int page;
-    //是否播放完毕的状态判断
-    private int isEnd;
     private int p;
     private List<CommentBean.ContentBean.DataBean> data;
     private TeacherTrainingDetailsVideoBean.ContentBean content;
@@ -178,7 +177,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         //播放视频
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
-        watchTime = intent.getStringExtra("watchTime");
+        //watchTime = intent.getStringExtra("watchTime");
         //LogUtils.i("播放判断从浏览记录传回来的毫秒值",watchTime);
     }
 
@@ -188,7 +187,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         finish();
     }
 
-    private void initVideo() {
+    /*private void initVideo() {
         player.setPlayerConfig(new PlayerConfig.Builder()
                 .setCustomMediaPlayer(new IjkPlayer(this) {
                     @Override
@@ -203,18 +202,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                                 iMediaPlayer.start();
                             }
                         });
-                        //拿到是否播放完的状态\
-                        mMediaPlayer.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(IMediaPlayer iMediaPlayer) {
-                                isEnd = 1;
-                            }
-                        });
                     }
                 })
                 .autoRotate()//自动旋转屏幕
                 .build());
-    }
+    }*/
 
 
     @Override
@@ -257,7 +249,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onDeleteCommentError(String msg) {
         Transparent.showErrorMessage(this, "删除评论失败请重试");
     }
-
+    //获取视屏详情信息
     @Override
     public void onTeacherTrainingDetailsVideoSuccess(TeacherTrainingDetailsVideoBean teacherTrainingDetailsVideoBean) {
         if (teacherTrainingDetailsVideoBean.getCode() == 0) {
@@ -265,6 +257,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             initYingXiangDetailsVideoData();
             //判断是否收藏过
             isCollection();
+            teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
         } else {
             initDialogToLogin();
         }
@@ -274,7 +267,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onTeacherTrainingDetailsVideoError(String msg) {
 
     }
-
+    //获取视频播放地址
     @Override
     public void onTeacherTrainingDetailsVideoUrlSuccess(TeacherTrainingDetailsVideoUrlBean teacherTrainingDetailsVideoUrlBean) {
         if (teacherTrainingDetailsVideoUrlBean.getCode() == 0) {
@@ -344,32 +337,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         Transparent.showErrorMessage(this, "点赞失败请重试");
     }
 
-    //第一次记录播放时间
-    @Override
-    public void onGetOneLookSuccess(OneLookBean oneLookBean) {
-        if (oneLookBean.getCode() == 0) {
-            oneLookBeanMessage = oneLookBean.getMessage();
-        } else {
-            ToastUtils.showToast("当前网络状态不佳");
-            /*Transparent.showErrorMessage(this,"登录失效请重新登录");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();*/
-        }
-    }
-
     @Override
     public void onGetOneLookError(String msg) {
         ToastUtils.showToast("浏览失败");
     }
+
 
     // 停止定时器
     private void stopTimer() {
@@ -445,7 +417,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer " + token, courseId);
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
         teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
         LogUtils.i("视频介绍",token+"++"+courseId);
         isFlag = true;
@@ -514,68 +485,79 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         player.setDefinitionVideos(videos);
         player.setVideoController(controller);
         player.setTitle("视屏详情");
-        //initVideo();
-        player.seekTo(100000);
-        //ijkVideoView.onPrepared();
-        player.start();
-        //ijkVideoView.start();
-        /*//高级设置
-        PlayerConfig playerConfig = new PlayerConfig.Builder()
-                .enableCache() //启用边播边缓存功能
-                .autoRotate() //启用重力感应自动进入/退出全屏功能---
-                .savingProgress() //保存播放进度
-                .build();
-        ijkVideoView.setPlayerConfig(playerConfig);*/
-        /*if (contentBean.getWatchTime()==0){
-            LogUtils.i("播放判断是否是从新开始播放的新视频",contentBean.getWatchTime()+"");
-            ijkVideoView.seekTo(0);
-            ijkVideoView.start();
-            yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "0");
+
+        if (content.getWatchTime()==0){
+            player.skipPositionWhenPlay(0);
+            player.start();
+            teacherTrainingDetailsVideoPresenter.getOneLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "0");
+        }else {
+            player.skipPositionWhenPlay(content.getWatchTime());
+            player.start();
             //设置时间
-            if (isEnd==1){
-                //currentPosition = ijkVideoView.getCurrentPosition();
-                yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "1");
-                LogUtils.i("播放判断如果播放完毕",contentBean.getWatchTime()+"");
-            }else {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //获取视频当前播放时长
+                    currentPosition = player.getCurrentPosition();
+                    teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
+                }
+            }, 0, 5000);
+            //设置时间
+           /* new IjkMediaPlayer().setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(IMediaPlayer iMediaPlayer) {
+                    teacherTrainingDetailsVideoPresenter.getOneLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "1");
+                }
+            });*/
+        }
+    }
+
+    //第一次记录播放时间
+    @Override
+    public void onGetOneLookSuccess(OneLookBean oneLookBean) {
+        if (oneLookBean.getCode() == 0) {
+            oneLookBeanMessage = oneLookBean.getMessage();
                 // 初始化定时器
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         //获取视频当前播放时长
-                        currentPosition = ijkVideoView.getCurrentPosition();
-                        yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
-                        LogUtils.i("播放判断每五秒记录当前播放时间",currentPosition+"");
-                    }
-                }, 0, 5000);
-            }
+                        currentPosition = player.getCurrentPosition();
+                        teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
 
-        }else {
-            LogUtils.i("播放判断如果不是从头播放",contentBean.getWatchTime()+"");
-            ijkVideoView.seekTo(contentBean.getWatchTime());
-            ijkVideoView.start();
-            if (isEnd==1){
-                yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "1");
-            }else {
-                //设置时间
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        //获取视频当前播放时长
-                        currentPosition = ijkVideoView.getCurrentPosition();
-                        yingXiangDetailsVideoPresenter.getOneLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
-                        LogUtils.i("播放判断接着播放记录时间是否正确",currentPosition+"");
+                       /* if (player.getDuration()-content.getWatchTime()<=10000){
+                            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, String.valueOf(currentPosition), "1");
+                        }else {
+                            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
+                        }*/
                     }
                 }, 0, 5000);
-            }
-        }*/
+
+        } else {
+            ToastUtils.showToast("当前网络状态不佳");
+        }
+    }
+
+    @Override
+    public void onGetMoreLookSuccess(OneLookBean oneLookBean) {
+        //视频总时长减去当前时长
+        if (player.getDuration()-content.getWatchTime()<=10000){
+            LogUtils.i("总时长",player.getDuration()+"");
+            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBean.getMessage(), courseId, String.valueOf(currentPosition), "1");
+        }
+    }
+
+    @Override
+    public void onGetMoreLookError(String msg) {
+
     }
     //、、、、、、、、、、、视频播放的各种方法,第一次播放时记录位置，暂停时，看完时
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override

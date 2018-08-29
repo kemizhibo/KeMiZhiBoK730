@@ -1,14 +1,18 @@
 package com.kemizhibo.kemizhibo.yhr;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 
 /**
@@ -105,7 +109,6 @@ public abstract class LoadingPager extends FrameLayout {
         }
         if(state == STATE_UNKOWN){
             state = STATE_LOADING ;
-
 //            ThreadManager.creatLongPool().execute(new LoadingTask());
             load();
         }
@@ -143,6 +146,10 @@ public abstract class LoadingPager extends FrameLayout {
             @Override
             public void onClick(View v) {
                 show();
+                /*FragmentManager fm = getFragmentManager();
+                fm.beginTransaction() 
+                //替换为TwoFragment 
+                .replace(R.layout.loading_empty_page,new ForTeachingFragment()) .commit();*/
             }
         });
         return view ;
