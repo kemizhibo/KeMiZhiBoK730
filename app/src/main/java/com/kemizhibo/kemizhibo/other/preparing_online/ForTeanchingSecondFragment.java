@@ -295,25 +295,20 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
 
     @Override
     public void refreshSuccess(PreparingOnlineBean bean) {
-        if(bean.getContent().getData().size() > 0){
-            dataBeanList.clear();
-            dataBeanList.addAll(bean.getContent().getData());
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setState(LoadingPager.LoadResult.success);
-                    refreshLayout.finishRefresh();
-                    setAdapter();
-                }
-            });
-        }else{
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setState(LoadingPager.LoadResult.empty);
-                }
-            });
+        dataBeanList.clear();
+        dataBeanList.addAll(bean.getContent().getData());
+        getActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            refreshLayout.finishRefresh();
+            if(dataBeanList.size() > 0){
+                setState(LoadingPager.LoadResult.success);
+                setAdapter();
+            }else{
+                setState(LoadingPager.LoadResult.empty);
+            }
         }
+        });
     }
 
     private void setAdapter() {
