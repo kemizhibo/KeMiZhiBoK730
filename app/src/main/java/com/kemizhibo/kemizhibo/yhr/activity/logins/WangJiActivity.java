@@ -123,9 +123,9 @@ public class WangJiActivity extends BaseMvpActivity<SendValidateBeforLoginPresen
     @Override
     public void onBeforLoginValiDatePhoneBeforLoginValiDatePhoneSuccess(BeforLoginValiDatePhoneBean beforLoginValiDatePhoneBean) {
         if (beforLoginValiDatePhoneBean.getCode() == 0) {
-            //token = messageBean.getContent().toString();
+            content = beforLoginValiDatePhoneBean.getContent().toString();
             Intent intent = new Intent(WangJiActivity.this, XiuGaiActivity.class);
-            //intent.putExtra("token", token);
+            intent.putExtra("content", content);
             startActivity(intent);
         } else {
             yanzhengma.setError("验证码错误，请重新输入");

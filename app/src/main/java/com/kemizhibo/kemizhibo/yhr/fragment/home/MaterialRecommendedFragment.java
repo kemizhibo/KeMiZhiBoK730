@@ -1,22 +1,27 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
@@ -98,12 +103,24 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    Intent intent = new Intent(getActivity().getApplicationContext(), TeacherTrainingDetailsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
-                    intent.putExtras(bundle);
-                    //这里一定要获取到所在Activity再startActivity()；
-                    getActivity().startActivity(intent);
+                    switch (materialBean.get(position).getFileType()) {
+                        case "VIDEO":
+                            intent = new Intent(getActivity().getApplicationContext(), TeacherTrainingDetailsActivity.class);
+                            bundle = new Bundle();
+                            bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
+                            intent.putExtras(bundle);
+                            //这里一定要获取到所在Activity再startActivity()；
+                            getActivity().startActivity(intent);
+                            break;
+                        default:
+                            intent = new Intent(getActivity().getApplicationContext(), PictrueDetailsActivity.class);
+                            bundle = new Bundle();
+                            bundle.putString("courseId", String.valueOf(materialBean.get(position).getCourseId()));
+                            intent.putExtras(bundle);
+                            //这里一定要获取到所在Activity再startActivity()；
+                            getActivity().startActivityForResult(intent, MyApplication.YINGXIANG_TO_PICK_req);
+                            break;
+                    }
                 }
             }
         });
@@ -127,25 +144,11 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
 
             @Override
             public void onLoadmore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isUp = 2;
-                        currentPage++;
-                        sp = getContext().getSharedPreferences("logintoken", 0);
-                        token = sp.getString("token", "");
-                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
-                        materialRecommendedSpring.onFinishFreshAndLoad();
-                    }
-                }, 1000);
+
             }
         });
         materialRecommendedSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        if (materialBean==null){
-            materialRecommendedSpring.setFooter(new AliFooter(getContext(), R.drawable.ali,false));
-        }else {
-            materialRecommendedSpring.setFooter(new AliFooter(getContext(), true));
-        }
+
     }
 
     @Override
@@ -169,21 +172,31 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
                         materialRecommendedAdapter.notifyDataSetChanged();
                     }
                 }
-            } else if (isUp == 2) {
-                materialBean.addAll(searchBean.getContent().getReturnMaterial());
-                if (materialBean==null){
-                    setState(LoadingPager.LoadResult.empty);
-                }else {
-                    setState(LoadingPager.LoadResult.success);
-                    if (isFlag) {
-                        materialRecommendedAdapter.notifyDataSetChanged();
-                    }
-                }
             }
         }else {
-            setState(LoadingPager.LoadResult.error);
-            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
+            initDialogToLogin();
         }
+    }
+
+    private void initDialogToLogin() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        AlertDialog dialog=builder
+                .setView(R.layout.alertdialog_login)
+                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override

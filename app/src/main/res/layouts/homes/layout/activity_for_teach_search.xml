@@ -8,11 +8,12 @@
         android:id="@+id/search_view_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textSizeSearch="@dimen/text_size_12sp"
-        app:textColorSearch="@color/text_999999"
+        app:textSizeSearch="5dp"
+        app:textColorSearch="#3F51B5"
         app:textHintSearch="输入查询关键字"
         app:searchBlockHeight="150"
-        app:searchBlockColor="@color/white" />
+        app:searchBlockColor="#ffffff"
+        />
     <FrameLayout
         android:layout_below="@+id/search_view_box"
         android:id="@+id/frame_layout"

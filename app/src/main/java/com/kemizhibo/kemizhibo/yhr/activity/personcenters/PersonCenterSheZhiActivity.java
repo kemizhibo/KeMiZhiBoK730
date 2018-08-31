@@ -4,31 +4,24 @@ package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
-import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SignOutBean;
-import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SignOutPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
-import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SignOutView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -151,6 +144,7 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
         dialog.setCancelable(false);
         dialog.show();
         Window window = dialog.getWindow();
+        //window.getAttributes().gravity = Gravity.CENTER;
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = 520;
         lp.height = 260;

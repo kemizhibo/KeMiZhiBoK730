@@ -689,6 +689,8 @@ public class GetUserBean {
                     ", testUserType=" + testUserType +
                     '}';
         }
+
+
     }
 
 

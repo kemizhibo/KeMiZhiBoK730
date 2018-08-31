@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.liaoinstan.springview.widget.SpringView
-        android:layout_marginTop="@dimen/res_63dp"
+        android:layout_marginTop="@dimen/res_48dp"
         android:layout_marginLeft="@dimen/res_10dp"
         android:id="@+id/teacher_trainingg_spring"
         android:layout_width="match_parent"

@@ -74,11 +74,17 @@
             android:text="发表评论的时间"
             android:textColor="@color/text_a6a4a4"
             android:textSize="@dimen/res_textsize_10sp" />
-        <ImageView
+        <RelativeLayout
+            android:id="@+id/comment_dianzan_layout"
             android:layout_marginRight="@dimen/res_31.5dp"
-            android:id="@+id/comment_dianzan"
-            android:layout_width="@dimen/res_8.5dp"
-            android:layout_height="@dimen/res_8.5dp"
-            android:src="@mipmap/dianzan_2"/>
+            android:layout_width="@dimen/res_50dp"
+            android:layout_height="@dimen/res_20dp">
+            <ImageView
+                android:id="@+id/comment_dianzan"
+                android:layout_width="@dimen/res_12dp"
+                android:layout_height="@dimen/res_12dp"
+                android:src="@mipmap/dianzan_2"/>
+        </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

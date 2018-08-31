@@ -26,15 +26,5 @@ class TransparentDialog extends Dialog {
 		TextView msgView = (TextView)findViewById(R.id.transparent_message);
 		msgView.setText(message);
 	}
-	
-	public void setImage(Context ctx, int resId) {
-		ImageView image = (ImageView)findViewById(R.id.transparent_image);
-		image.setImageResource(resId);
-		
-		if(resId==R.drawable.transparent_spinner) {
-			Animation anim = AnimationUtils.loadAnimation(ctx,R.anim.progressbar);
-			anim.start();
-			image.startAnimation(anim);
-		}
-	}
+
 }

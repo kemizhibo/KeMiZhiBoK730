@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +38,7 @@ import com.dueeeke.videoplayer.player.IjkPlayer;
 import com.dueeeke.videoplayer.player.PlayerConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePwdActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.CommentAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
@@ -116,6 +118,13 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     RelativeLayout pinglunLayout;
     @BindView(R.id.relativelayout)
     RelativeLayout relativelayout;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0){
+                dialogOk.dismiss();
+            }
+        }
+    };
 
     private TextView bt_comment;
     private BottomSheetDialog dialog;
@@ -124,7 +133,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     private String token;
     private String courseId;
     private String trim;
-
     //评论列表项
     CommentAdapter commentAdapter;
     private List<CommentBean.ContentBean.DataBean> commentList = new ArrayList<>();
@@ -164,6 +172,8 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     private int p;
     private List<CommentBean.ContentBean.DataBean> data;
     private TeacherTrainingDetailsVideoBean.ContentBean content;
+    private AlertDialog dialogOk;
+    private CommentBean.ContentBean tatle;
 
     @Override
     protected int getLayoutId() {
@@ -180,7 +190,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         //watchTime = intent.getStringExtra("watchTime");
         //LogUtils.i("播放判断从浏览记录传回来的毫秒值",watchTime);
     }
-
 
     @OnClick(R.id.video_back_butn)
     public void onViewClicked() {
@@ -221,6 +230,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onPutCommentSuccess(CommentDetailBean commentDetailBean) {
         //发表成功以后吧数据添加到评论列表中然后刷新适配器，刷新列表数据
         if (commentDetailBean.getCode() == 0) {
+            Transparent.showErrorMessage(this,"评论成功～");
             teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
         } else {
             initDialogToLogin();
@@ -230,7 +240,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
 
     @Override
     public void onPutCommentError(String msg) {
-        Transparent.showErrorMessage(this, "评论失败请重试");
+        Transparent.showErrorMessage(this,"评论失败请重试～");
     }
 
 
@@ -239,6 +249,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onDeleteCommentSuccess(DeleteCommentBean deleteCommentBean) {
         //如果数据返回成功，就删除,刷新适配器
         if (deleteCommentBean.getCode() == 0) {
+            Transparent.showErrorMessage(this,"删除评论成功～");
             teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
         } else {
             initDialogToLogin();
@@ -247,7 +258,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
 
     @Override
     public void onDeleteCommentError(String msg) {
-        Transparent.showErrorMessage(this, "删除评论失败请重试");
+        Transparent.showErrorMessage(this, "删除评论失败请重试～");
     }
     //获取视屏详情信息
     @Override
@@ -290,10 +301,10 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             collectionBeans = collectionBean;
             if (collectionBean.getMessage().equals("添加收藏成功")) {
                 yingxiangDetailsShoucangImageview.setImageResource(R.mipmap.dianzan_select);
-                Transparent.showSuccessMessage(this, "添加收藏成功");
+                Transparent.showErrorMessage(this,"收藏成功～");
             } else if (collectionBean.getMessage().equals("取消收藏成功")) {
                 yingxiangDetailsShoucangImageview.setImageResource(R.mipmap.dianzan_kong);
-                Transparent.showInfoMessage(this, "已取消收藏");
+                Transparent.showErrorMessage(this,"收藏已取消～");
             }
         } else {
             initDialogToLogin();
@@ -303,7 +314,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
 
     @Override
     public void onGetCollectionError(String msg) {
-        Transparent.showErrorMessage(this, "收藏失败请重试");
+        Transparent.showErrorMessage(this,"收藏失败请重试～");
     }
 
     //点赞
@@ -311,20 +322,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onGetLikeSuccess(GetLikeBean getLikeBean) {
         if (getLikeBean.getCode() == 0) {
             getLikeData = getLikeBean;
-            /*if (commentList.get(p).getPraiseHistory()==1){
-                commentList.get(p).setPraiseHistory(0);
-            }else {
-                commentList.get(p).setPraiseHistory(1);
-            }
-            //更改数据源的方法
-            commentList.set(p,commentList.get(p));
-            commentAdapter.notifyDataSetChanged();*/
             if (getLikeBean.getContent() == null) {
                 comment_dianzan.setImageResource(R.mipmap.getlike_select_2);
             } else if (getLikeBean.getContent().equals("CANCEL")) {
                 comment_dianzan.setImageResource(R.mipmap.dianzan_2);
             }
-            //commentAdapter.notifyDataSetChanged();
             teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
 
         } else {
@@ -422,8 +424,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         isFlag = true;
     }
 
-
-
     private void initDialogToLogin() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AlertDialog dialog = builder
@@ -459,10 +459,10 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             yingxiangDetailsVideoJieshao.setText(content.getContext().toString().trim());
         }
         //评论的数量
-        if (content.getCommentnum()==null||content.getCommentnum().toString().trim()==""||(int)content.getCommentnum()==0){
+        if (tatle.getTotal()==0){
             yingxiangDetailsCommentNumTxt.setText("暂无评论");
         }else {
-            yingxiangDetailsCommentNumTxt.setText("评论(" + content.getCommentnum() + ")");
+            yingxiangDetailsCommentNumTxt.setText("评论(" + tatle.getTotal() + ")");
         }
     }
 
@@ -598,6 +598,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     protected void onDestroy() {
         super.onDestroy();
         player.release();
+        handler.removeMessages(0);
         stopTimer();
     }
 
@@ -606,6 +607,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     @Override
     public void onYingXiangDetailsVideoCommentSuccess(CommentBean commentBean) {
         data = commentBean.getContent().getData();
+        tatle = commentBean.getContent();
         LogUtils.i("评论列表数据",data.toString());
             /*//判断是否点过赞
             if (data.get(0).getPraiseHistory() == 1) {
@@ -624,8 +626,9 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                     //删除
                     initCommentDelete();
             } else if (isUp == 2) {
-                commentAdapter.addData(commentBean.getContent().getData());
-                //commentList.addAll(commentBean.getContent().getData());
+                //commentAdapter.addData(commentBean.getContent().getData());
+                commentList.addAll(commentBean.getContent().getData());
+                commentAdapter.notifyDataSetChanged();
                 //展示列表
                 initComment();
                 //点赞

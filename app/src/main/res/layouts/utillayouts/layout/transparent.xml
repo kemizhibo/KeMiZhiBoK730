@@ -1,24 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_margin="16dp"
-    android:layout_width="200dp"
-	android:gravity="center_horizontal"
-    android:layout_height="wrap_content" >
-
-    <ImageView 
-        android:id="@+id/transparent_image"
-        android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:contentDescription="@string/app_name"
-		android:src="@mipmap/milier"/>
-
+    android:layout_width="@dimen/res_150dp"
+	android:gravity="center"
+    android:layout_height="@dimen/res_60dp" >
 	<TextView
     	android:id="@+id/transparent_message"
     	android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:textSize="16sp"
-    	android:layout_marginTop="10dp"
-		android:text="111111111"/>
-
-</LinearLayout>
+		android:textColor="@color/white"
+    	android:textSize="16sp"/>
+</RelativeLayout>

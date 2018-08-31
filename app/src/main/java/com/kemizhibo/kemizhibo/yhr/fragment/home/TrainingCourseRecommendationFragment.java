@@ -98,24 +98,11 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    switch (trainBean.get(position).getFileType()) {
-                        case "VIDEO":
-                            intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString("courseId", String.valueOf(trainBean.get(position).getCourseId()));
-                            intent.putExtras(bundle);
-                            //这里一定要获取到所在Activity再startActivity()；
-                            getActivity().startActivity(intent);
-                            break;
-                        default:
-                            intent = new Intent(getActivity().getApplicationContext(), PictrueDetailsActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString("courseId", String.valueOf(trainBean.get(position).getCourseId()));
-                            intent.putExtras(bundle);
-                            //这里一定要获取到所在Activity再startActivity()；
-                            getActivity().startActivityForResult(intent, MyApplication.YINGXIANG_TO_PICK_req);
-                            break;
-                    }
+                    intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
+                    bundle = new Bundle();
+                    bundle.putString("courseId", String.valueOf(trainBean.get(position).getCourseId()));
+                    intent.putExtras(bundle);
+                    getActivity().startActivity(intent);
                 }
             }
         });

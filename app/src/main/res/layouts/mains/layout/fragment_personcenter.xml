@@ -60,7 +60,6 @@
                 android:layout_below="@+id/person_touxiang_touming"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/res_16.5dp"
-                android:text="北京清华附属小学"
                 android:textColor="@color/text_1c1c1c"
                 android:textSize="@dimen/res_textsize_14sp" />
 
@@ -78,7 +77,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/person_school_name"
                     android:layout_centerHorizontal="true"
-                    android:text="一年级"
                     android:textColor="@color/text_585757"
                     android:textSize="@dimen/res_textsize_12sp" />
 
@@ -89,7 +87,6 @@
                     android:layout_below="@+id/person_school_name"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/res_20dp"
-                    android:text="科学课"
                     android:textColor="@color/text_585757"
                     android:textSize="@dimen/res_textsize_12sp" />
             </LinearLayout>

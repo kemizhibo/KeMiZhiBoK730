@@ -14,14 +14,14 @@ public class Transparent {
 	
 	public static void showLoadingMessage(Context context, String msg, boolean cancelable) {
 		dismiss();
-		setDialog(context, msg, R.drawable.transparent_spinner, cancelable);
+		setDialog(context, msg, cancelable);
 		if(dialog!=null) dialog.show();
 
 	}
 	
 	public static void showErrorMessage(Context context, String msg) {
 		dismiss();
-		setDialog(context, msg, R.drawable.transparent_error, true);
+		setDialog(context, msg, false);
 		if(dialog!=null) {
 			dialog.show();
 			dismissAfter2s();
@@ -30,7 +30,7 @@ public class Transparent {
 
 	public static void showSuccessMessage(Context context, String msg) {
 		dismiss();
-		setDialog(context, msg, R.drawable.transparent_success, true);
+		setDialog(context, msg,  false);
 		if(dialog!=null) {
 			dialog.show();
 			dismissAfter2s();
@@ -39,24 +39,23 @@ public class Transparent {
 	
 	public static void showInfoMessage(Context context, String msg) {
 		dismiss();
-		setDialog(context, msg, R.drawable.transparent_info, true);
+		setDialog(context, msg,false);
 		if(dialog!=null) {
 			dialog.show();
 			dismissAfter2s();
 		}
 	}
-	
+
 
 	
-	private static void setDialog(Context ctx, String msg, int resId, boolean cancelable) {
+	private static void setDialog(Context ctx, String msg,  boolean cancelable) {
 		context = ctx;
-
 		if(!isContextValid()){
 			return;
 		}
 		dialog = TransparentDialog.createDialog(ctx);
 		dialog.setMessage(msg);
-		dialog.setImage(ctx, resId);
+		//dialog.setImage(ctx, resId);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.setCancelable(cancelable);		// back键是否可dimiss对话框
 
@@ -81,7 +80,7 @@ public class Transparent {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1500);
 					handler.sendEmptyMessage(0);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -89,7 +88,7 @@ public class Transparent {
 			}
 		}).start();
 	}
-	
+
 
 	private static Handler handler = new Handler() {
 		public void handleMessage(Message msg) {

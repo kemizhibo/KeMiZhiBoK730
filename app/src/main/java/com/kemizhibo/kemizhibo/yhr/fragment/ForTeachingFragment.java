@@ -1,12 +1,15 @@
 package com.kemizhibo.kemizhibo.yhr.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.androidkun.xtablayout.XTabLayout;
@@ -14,6 +17,8 @@ import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_center.ForTeanchingFirstFragment;
 import com.kemizhibo.kemizhibo.other.preparing_online.ForTeanchingSecondFragment;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.ForTeachSearchActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
@@ -24,6 +29,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Author: yhr
@@ -34,6 +41,7 @@ import butterknife.ButterKnife;
 public class ForTeachingFragment extends BaseFragment {
     @BindView(R.id.forteaching_tab_layout)
     XTabLayout forteachingTabLayout;
+    Unbinder unbinder;
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
 
@@ -62,7 +70,7 @@ public class ForTeachingFragment extends BaseFragment {
         forteachingViewPager.setAdapter(new HomeAdapter(getChildFragmentManager(), mFragmentList, mTitleList));
         //将tablayout与fragment关联
         forteachingTabLayout.setupWithViewPager(forteachingViewPager);
-         android.os.Debug.stopMethodTracing();
+        Debug.stopMethodTracing();
         return view;
     }
 
@@ -107,5 +115,10 @@ public class ForTeachingFragment extends BaseFragment {
 
             }
         }
+    }
+
+    @OnClick(R.id.forteaching_sousuo)
+    public void onViewClicked() {
+        startActivity(new Intent(getContext(), ForTeachSearchActivity.class));
     }
 }

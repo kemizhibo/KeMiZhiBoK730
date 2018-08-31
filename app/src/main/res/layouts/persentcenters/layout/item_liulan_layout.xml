@@ -18,12 +18,26 @@
         android:layout_marginLeft="12dp"
         android:gravity="center"
         android:visibility="gone"/>
-    <ImageView
-        android:id="@+id/item_liulan_photo"
+    <RelativeLayout
         android:layout_width="@dimen/res_175dp"
-        android:layout_height="@dimen/res_105dp"
-        android:layout_marginLeft="@dimen/res_5dp"
-        android:src="@mipmap/milier"/>
+        android:layout_height="@dimen/res_105dp">
+        <ImageView
+            android:id="@+id/item_liulan_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/res_5dp"
+            android:src="@mipmap/milier"/>
+        <ImageView
+            android:id="@+id/collection_box_tuji"
+            android:layout_width="@dimen/res_18dp"
+            android:layout_height="@dimen/res_15dp"
+            android:layout_marginRight="@dimen/res_5dp"
+            android:layout_marginBottom="@dimen/res_5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/tuji"/>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_marginLeft="@dimen/res_10dp"
         android:orientation="vertical"

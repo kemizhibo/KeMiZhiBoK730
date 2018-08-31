@@ -140,6 +140,11 @@ public interface HttpGetService {
     Observable<ResponseBody> getOldPhoneData(@Header("Authorization") String token,
                                              @Field("mobile") String mobile,
                                              @Field("code") String code);
+    //重置密码
+    @FormUrlEncoded
+    @POST("kemiapi/ketang/user/resetPassword")
+    Observable<ResponseBody> getResetPwdData(@Field("token") String token,
+                                              @Field("password") String password);
     //修改密码
     @FormUrlEncoded
     @POST("kemiapi/ketang/user/info/edit/password")
@@ -187,6 +192,14 @@ public interface HttpGetService {
                                            @Query("currentPage") String currentPage,
                                            @Query("pageSize") String pageSize,
                                            @Query("courseName") String courseName);
+
+    //备授课搜索总列表接口
+    @GET("kemiapi/prepare/module/courseSearch")
+    Observable<ResponseBody> getForTeachSearchData(@Header("Authorization") String token,
+                                           @Query("keyWord") String keyWord,
+                                           @Query("pageSize") String pageSize,
+                                           @Query("currentPage") String currentPage);
+
     //获取浏览记录列表
     @GET("kemiapi/user/watchHistory/listForB")
     Observable<ResponseBody> getLiuLanData(@Header("Authorization") String token,

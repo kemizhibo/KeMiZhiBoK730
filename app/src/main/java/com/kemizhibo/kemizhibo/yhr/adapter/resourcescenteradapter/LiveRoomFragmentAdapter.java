@@ -6,6 +6,7 @@ package com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter;
  * Describe:
  */
 
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangFragmentBean;
@@ -30,9 +32,10 @@ public class LiveRoomFragmentAdapter extends BaseQuickAdapter<LiveRoomBean.Conte
 
     @Override
     protected void convert(BaseViewHolder helper, LiveRoomBean.ContentBean.DataBean item) {
-        //设置值
-        Glide.with(mContext).load(item.getLogo()).error(R.mipmap.milier).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.liveroom_recyclerview_imageview));
+        SimpleDraweeView simpleDraweeView = helper.getView(R.id.liveroom_recyclerview_imageview);
+        simpleDraweeView.setImageURI(Uri.parse(item.getLogo()));
         helper.setText(R.id.liveroom_item_title,item.getCourseName());
+        helper.getView(R.id.collection_box_play_butn).setVisibility(View.VISIBLE);
     }
 
 

@@ -184,6 +184,5 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
                     .into(imageView);
         }
     }
-
 }
 

@@ -1,6 +1,5 @@
 package com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
@@ -22,11 +21,12 @@ import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimeH;
 import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Author: 闫浩然
@@ -79,25 +79,30 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final LiuLanBean.ContentBean.DataBean myLive = mMyLiveList.get(holder.getAdapterPosition());
         //填充值
-        Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into( holder.itemLiulanPhoto);
+        Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.itemLiulanPhoto);
         holder.itemLiulanTitle.setText(myLive.getCourse().getCourseName());
         holder.itemLiulanTime.setText(myLive.getWatchTime());
-        if (myLive.getCourse().getIsImageText()==1){
+        if (myLive.getCourse().getIsImageText() == 1) {
+            holder.collectionBoxTuji.setVisibility(View.VISIBLE);
+        } else {
+            holder.collectionBoxTuji.setVisibility(View.GONE);
+        }
+        if (myLive.getCourse().getIsImageText() == 1) {
             holder.itemLiulanButn.setText("查看");
             holder.itemLiulanButn.setTextColor(0xFF67c58c);
             holder.itemLiulanButn.setBackgroundResource(R.mipmap.touming_lvse_state);
-        }else {
-            if (myLive.getCourse().getIsEnd()==0){
+        } else {
+            if (myLive.getCourse().getIsEnd() == 0) {
                 holder.itemLiulanButn.setText("继续观看");
                 holder.itemLiulanButn.setTextColor(0xFFffffff);
                 holder.itemLiulanButn.setBackgroundResource(R.mipmap.green_state);
-                if (myLive.getCourse().getWatchTime()<=5000){
+                if (myLive.getCourse().getWatchTime() <= 5000) {
                     holder.itemLiulanState.setText("上次观看至5秒处");
-                }else {
-                    holder.itemLiulanState.setText("上次观看至"+ TimeH.formatTime(myLive.getCourse().getWatchTime())+"处");
+                } else {
+                    holder.itemLiulanState.setText("上次观看至" + TimeH.formatTime(myLive.getCourse().getWatchTime()) + "处");
                 }
                 LogUtils.i("播放判断浏览记录拿到的时间长度", String.valueOf((myLive.getCourse().getWatchTime())));
-            }else {
+            } else {
                 //helper.setTextColor(R.id.item_liulan_butn,R.color.text_999999);
                 holder.itemLiulanButn.setText("重新观看");
                 holder.itemLiulanButn.setTextColor(0xFF999999);
@@ -111,9 +116,9 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
             public void onClick(View view) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    LogUtils.i("播放判断点击继续播放传回去视频详情的毫秒值",myLive.getCourse().getWatchTime()+"");
-                    if (myLive.getCourse().getIsImageText()==0) {
-                        if (myLive.getCourse().getCourseType().equals("YINGXIANGSUCAI")){
+                    LogUtils.i("播放判断点击继续播放传回去视频详情的毫秒值", myLive.getCourse().getWatchTime() + "");
+                    if (myLive.getCourse().getIsImageText() == 0) {
+                        if (myLive.getCourse().getCourseType().equals("YINGXIANGSUCAI")) {
                             Intent intent = new Intent(context, TeacherTrainingDetailsActivity.class);
                             Bundle bundle = new Bundle();
                             //视频和当前时长
@@ -122,7 +127,7 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
                             intent.putExtras(bundle);
                             //这里一定要获取到所在Activity再startActivity()；
                             context.startActivity(intent);
-                        }else if (myLive.getCourse().getCourseType().equals("TEACHERCOURSE")){
+                        } else if (myLive.getCourse().getCourseType().equals("TEACHERCOURSE")) {
                             Intent intent = new Intent(context, YingXinagVideoDetailsActivity.class);
                             Bundle bundle = new Bundle();
                             //视频和当前时长
@@ -133,8 +138,7 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
                             context.startActivity(intent);
                         }
 
-                    }
-                    else {
+                    } else {
                         Intent intent = new Intent(context, PictrueDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(myLive.getCourse().getCourseId()));
@@ -192,6 +196,8 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
         TextView itemLiulanTime;
         @BindView(R.id.item_liulan_butn)
         Button itemLiulanButn;
+        @BindView(R.id.collection_box_tuji)
+        ImageView collectionBoxTuji;
 
         public ViewHolder(View itemView) {
             super(itemView);

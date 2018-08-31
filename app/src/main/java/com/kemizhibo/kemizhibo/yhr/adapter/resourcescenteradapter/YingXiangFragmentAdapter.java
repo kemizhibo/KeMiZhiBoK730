@@ -8,14 +8,11 @@ package com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangFragmentBean;
-import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
 import java.util.List;
 
 public class YingXiangFragmentAdapter extends BaseQuickAdapter<YingXiangFragmentBean.ContentBean.DataBean, BaseViewHolder> {
@@ -26,8 +23,6 @@ public class YingXiangFragmentAdapter extends BaseQuickAdapter<YingXiangFragment
 
     @Override
     protected void convert(BaseViewHolder helper, YingXiangFragmentBean.ContentBean.DataBean item) {
-        //.crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5))
-        //Glide.with(mContext).load(item.getLogo()).transform(new GlideRoundTransform(mContext, 5)).error(R.mipmap.milier).into((ImageView) helper.getView(R.id.yinxiang_recyclerview_imageview));
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.yinxiang_recyclerview_imageview);
         simpleDraweeView.setImageURI(Uri.parse(item.getLogo()));
         helper.setText(R.id.yinxiang_item_title, item.getCourseName());

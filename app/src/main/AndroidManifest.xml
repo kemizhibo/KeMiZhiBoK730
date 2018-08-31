@@ -22,10 +22,7 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" >
-
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".yhr.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -82,7 +79,8 @@
             android:screenOrientation="landscape" />
         <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity" />
         <activity android:name=".yhr.activity.personcenters.LectureActivity" />
-        <activity android:name=".other.preparing_package_detail.preview.PreviewActivity"></activity>
+        <activity android:name=".other.preparing_package_detail.preview.PreviewActivity" />
+        <activity android:name=".yhr.activity.resourcescenteraactivity.ForTeachSearchActivity"></activity>
     </application>
 
 </manifest>

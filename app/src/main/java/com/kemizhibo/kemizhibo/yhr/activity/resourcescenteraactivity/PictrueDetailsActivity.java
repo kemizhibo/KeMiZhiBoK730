@@ -80,6 +80,14 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     private CollectionBean collectionBeans;
     private SharedPreferences sp;
     private ViewPagerAdapter viewPagerAdapter;
+    private AlertDialog dialogOk;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0){
+                dialogOk.dismiss();
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -202,10 +210,10 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
             collectionBeans = collectionBean;
             if (collectionBean.getMessage().equals("添加收藏成功")) {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
-                Transparent.showSuccessMessage(this, "添加收藏成功");
+                Transparent.showErrorMessage(this,"收藏成功～");
             } else if (collectionBean.getMessage().equals("取消收藏成功")) {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
-                Transparent.showInfoMessage(this, "已取消收藏");
+                Transparent.showErrorMessage(this,"取消收藏成功～");
             }
         } else {
             initDialogToLogin();
@@ -235,7 +243,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onGetCollectionError(String msg) {
-        Transparent.showErrorMessage(this, "收藏失败请重试");
+        Transparent.showErrorMessage(this,"收藏失败请重试～");
     }
 
     @Override
@@ -253,18 +261,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         activityComponent.inject(this);
         return picturePresenter;
     }
-
-
-    //自定义的图片加载器
-   /* private class MyLoader extends ImageLoader {
-        @Override
-        public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(context).load((String) path)
-                    .error(R.mipmap.milier)
-                    .placeholder(R.mipmap.milier)
-                    .into(imageView);
-        }
-    }*/
 
 
     @OnClick(R.id.pictrue_details_collection)

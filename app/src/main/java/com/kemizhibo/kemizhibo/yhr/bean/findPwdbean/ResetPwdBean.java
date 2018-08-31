@@ -1,32 +1,24 @@
-package com.kemizhibo.kemizhibo.yhr.bean;
+package com.kemizhibo.kemizhibo.yhr.bean.findPwdbean;
 
 /**
- * Created by 17600 on 2018/5/18.
+ * Author: 闫浩然
+ * Date: on 2018/8/30.
+ * Describe:重置密码
  */
 
 public class ResetPwdBean {
 
     /**
-     * flag : true
      * code : 0
-     * message : 成功
-     * content : d4b36ad56ea14da1a44bda7177b6cc49
+     * message : success
+     * content : null
      * page : null
      */
 
-    private boolean flag;
     private int code;
     private String message;
-    private String content;
+    private Object content;
     private Object page;
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
 
     public int getCode() {
         return code;
@@ -44,11 +36,11 @@ public class ResetPwdBean {
         this.message = message;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 

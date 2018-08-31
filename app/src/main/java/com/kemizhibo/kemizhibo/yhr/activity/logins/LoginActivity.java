@@ -108,7 +108,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
 
     @Override
     public void onLoginError(String msg) {
-        Transparent.showErrorMessage(this,"无网络!");
+        Transparent.showErrorMessage(this,"登录失败请重试！");
     }
 
     //获取用户信息

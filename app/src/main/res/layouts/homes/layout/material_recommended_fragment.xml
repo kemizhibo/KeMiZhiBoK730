@@ -7,6 +7,7 @@
     android:background="@color/white">
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/material_recommended_spring"
+        android:layout_marginBottom="@dimen/res_15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"

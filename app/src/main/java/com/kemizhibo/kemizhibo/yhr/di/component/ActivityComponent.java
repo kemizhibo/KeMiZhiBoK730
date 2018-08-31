@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.WangJiActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.XiuGaiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePwdActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.LectureActivity;
@@ -15,6 +16,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSheZhiActi
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.SetNewPhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.TakePhotoActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.ForTeachSearchActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
@@ -64,4 +66,6 @@ public interface ActivityComponent {
     void inject(PersonCenterLiuLanActivity activity);
     void inject(LectureActivity activity);
     void inject(WangJiActivity activity);
+    void inject(ForTeachSearchActivity activity);
+    void inject(XiuGaiActivity activity);
 }

@@ -28,10 +28,10 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean.ContentBean.Dat
                 .placeholder(R.mipmap.milier)
                 .into(helper.<CircleImageView>getView(R.id.comment_teacher_touxiang));//头像
         //头像
-        helper.setText(R.id.comment_teacher_name,item.getUserName());
+        helper.setText(R.id.comment_teacher_name,item.getShowName());
         helper.setText(R.id.comment_time_txt,item.getAddtime());
         helper.setText(R.id.comment_text,item.getContent());
-        helper.addOnClickListener(R.id.comment_dianzan);
+        helper.addOnClickListener(R.id.comment_dianzan_layout);
         if (item.getPraiseHistory()==1){
             helper.getView(R.id.comment_dianzan).setBackgroundResource(R.mipmap.getlike_select_2);
         }
