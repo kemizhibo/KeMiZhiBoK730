@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
@@ -61,6 +62,8 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     RefreshLayout refreshLayout;
     @BindView(R.id.grid_view)
     GridView gridView;
+    @BindView(R.id.first_ll)
+    LinearLayout firstL;
     //隐藏和显示布局模块
     private boolean isOpen = false;
     ValueAnimator valueAnimator = null;
@@ -220,9 +223,11 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                 refreshLayout.finishRefresh();
                 if(dataBeanList.size() > 0){
                     setState(LoadingPager.LoadResult.success);
+                    firstL.setVisibility(View.VISIBLE);
                     setAdapter();
                 }else{
                     setState(LoadingPager.LoadResult.empty);
+                    firstL.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -256,6 +261,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
             @Override
             public void run() {
                 setState(LoadingPager.LoadResult.error);
+                firstL.setVisibility(View.INVISIBLE);
                 if(isLoadMore){
                     refreshLayout.finishLoadMore();
                 }else{

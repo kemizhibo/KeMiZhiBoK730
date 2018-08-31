@@ -47,6 +47,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
     private ArrayList<MediaItem> mediaItemSelectedList;
     private String url;
     private WebView webView;
+    private boolean h5LoadComplete = false;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +88,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
             //     在WebView开始加载网页时，显示进度框；加载完毕时，隐藏进度框
             public void onProgressChanged(WebView view, int newProgress) {
                 if(newProgress==100){
+                    h5LoadComplete = true;
                     loading_page.setVisibility(View.GONE);
                     frameLayout.setVisibility(View.VISIBLE);
                 }
@@ -228,7 +230,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if(keyCode == KeyEvent.KEYCODE_BACK && h5LoadComplete){
             webView.loadUrl("javascript:onBackPressed()");
             return true;
         }

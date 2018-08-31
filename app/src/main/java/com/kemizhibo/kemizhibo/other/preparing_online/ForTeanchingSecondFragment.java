@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -67,6 +68,8 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     ImageView forteachingShaixuanImageview;
     @BindView(R.id.forteaching_shaixuan_butn)
     RelativeLayout forteachingShaixuanButn;
+    @BindView(R.id.second_ll)
+    LinearLayout secondL;
 
     private PreparingOnlinePresenter presenter;
     private CommonPresenter commonPresenter;
@@ -303,9 +306,11 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             refreshLayout.finishRefresh();
             if(dataBeanList.size() > 0){
                 setState(LoadingPager.LoadResult.success);
+                secondL.setVisibility(View.VISIBLE);
                 setAdapter();
             }else{
                 setState(LoadingPager.LoadResult.empty);
+                secondL.setVisibility(View.INVISIBLE);
             }
         }
         });
@@ -338,6 +343,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             @Override
             public void run() {
                 setState(LoadingPager.LoadResult.error);
+                secondL.setVisibility(View.INVISIBLE);
                 if(isLoadMore){
                     refreshLayout.finishLoadMore();
                 }else{
