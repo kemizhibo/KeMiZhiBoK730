@@ -59,7 +59,7 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
                     preparingOnlineView.refreshSuccess(bean);
                     pageNum = DEFAULT_PAGE_NUM;
                 }else if(0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) preparingOnlineView.getCustomContext());
+                    preparingOnlineView.error(Constants.OTHER_ERROR_CODE, false);
                 }else{
                     preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -89,7 +89,7 @@ public class PreparingOnlinePresenterImp implements PreparingOnlinePresenter {
                 if(null != bean && 0 == bean.getCode()){
                     preparingOnlineView.loadMoreSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) preparingOnlineView.getCustomContext());
+                    preparingOnlineView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{
                     preparingOnlineView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

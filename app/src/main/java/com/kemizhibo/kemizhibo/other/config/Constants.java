@@ -5,8 +5,8 @@ package com.kemizhibo.kemizhibo.other.config;
  */
 
 public class Constants {
-    //public static final String SERVER = "";
-    public static final String SERVER = "http://39.155.221.165:8080/";
+    public static final boolean isDebug = true;
+    public static final String SERVER = isDebug ? "http://39.155.221.165:8080/" : "";
 
     public static final String PREPARING_CENTER_URL = SERVER + "kemiapi/prepare/module/prepareList";
     public static final String PREPARING_ONLINE_URL = SERVER + "kemiapi/prepare/module/planList";
@@ -26,6 +26,7 @@ public class Constants {
 
     public static final int NET_ERROR_CODE = 12345;
     public static final int REQUEST_ERROR_CODE = 23456;
+    public static final int OTHER_ERROR_CODE = 34567;
 
     public static final String METERIAL_ID = "materialId";
     public static final String GRADE_ID = "gradeId";

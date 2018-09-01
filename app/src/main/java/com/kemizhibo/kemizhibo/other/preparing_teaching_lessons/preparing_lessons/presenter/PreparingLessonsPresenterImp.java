@@ -58,7 +58,7 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
                     pageNum = DEFAULT_PAGE_NUM;
                     preparingLessonsView.refreshSuccess(bean);
                 }else if(0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) preparingLessonsView.getCustomContext());
+                    preparingLessonsView.error(Constants.OTHER_ERROR_CODE, false);
                 }else{
                     preparingLessonsView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -87,7 +87,7 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
                 if(bean != null && "0".equals(bean.getCode())){
                     preparingLessonsView.refreshSuccess(bean);
                 }else if(0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) preparingLessonsView.getCustomContext());
+                    preparingLessonsView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{
                     preparingLessonsView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

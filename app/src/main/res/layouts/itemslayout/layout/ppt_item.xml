@@ -51,6 +51,7 @@
         android:layout_toLeftOf="@+id/mdownppt">
 
         <ImageView
+            android:id="@+id/tianjia_icon"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_centerInParent="true"

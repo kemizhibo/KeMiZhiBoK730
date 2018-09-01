@@ -53,7 +53,7 @@ public class CommonPresenterImp implements CommonPresenter {
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonFilterSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
+                    commonView.getCommonFilterError(Constants.OTHER_ERROR_CODE);
                 }else{
                     commonView.getCommonFilterError(Constants.REQUEST_ERROR_CODE);
                 }
@@ -87,7 +87,7 @@ public class CommonPresenterImp implements CommonPresenter {
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonUserInfoSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
+                    commonView.getCommonUserInfoError(Constants.OTHER_ERROR_CODE);
                 }else{
                     commonView.getCommonUserInfoError(Constants.REQUEST_ERROR_CODE);
                 }
@@ -114,7 +114,7 @@ public class CommonPresenterImp implements CommonPresenter {
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonTeacherSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
+                    commonView.getCommonTeacherError(Constants.OTHER_ERROR_CODE);
                 }else{
                     commonView.getCommonTeacherError(Constants.REQUEST_ERROR_CODE);
                 }
@@ -140,7 +140,7 @@ public class CommonPresenterImp implements CommonPresenter {
                 if(null != bean && 0 == bean.getCode()){
                     commonView.getCommonUserTeachPlanSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) commonView.getCommonCustomContext());
+                    commonView.getCommonUserTeachPlanError(Constants.OTHER_ERROR_CODE);
                 }else{
                     commonView.getCommonUserTeachPlanError(Constants.REQUEST_ERROR_CODE);
                 }

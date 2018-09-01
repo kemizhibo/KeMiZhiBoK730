@@ -39,6 +39,7 @@ import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.PreparingLessonsFragment;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons.TeachingLessonsFragment;
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
@@ -444,8 +445,15 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     }
 
     @Override
-    public void getCommonUserInfoError(int errorCode) {
-
+    public void getCommonUserInfoError(final int errorCode) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(Constants.OTHER_ERROR_CODE == errorCode){
+                    LoadFailUtil.initDialogToLogin(PersonCenterBeiShouKeJiLuActivity.this);
+                }
+            }
+        });
     }
 
     @Override
@@ -464,8 +472,16 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     }
 
     @Override
-    public void getCommonTeacherError(int errorCode) {
+    public void getCommonTeacherError(final int errorCode) {
         Log.d("PersonCenterBeiShouKeJi", "eoor" + errorCode);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(Constants.OTHER_ERROR_CODE == errorCode){
+                    LoadFailUtil.initDialogToLogin(PersonCenterBeiShouKeJiLuActivity.this);
+                }
+            }
+        });
     }
 
     @Override

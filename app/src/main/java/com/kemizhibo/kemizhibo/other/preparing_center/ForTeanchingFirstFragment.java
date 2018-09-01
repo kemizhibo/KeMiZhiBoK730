@@ -25,6 +25,7 @@ import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenter;
 import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.preparing_center.adapter.PreparingCenterGridAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
 import com.kemizhibo.kemizhibo.other.preparing_center.presenter.PreparingCenterPresenter;
@@ -256,7 +257,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     }
 
     @Override
-    public void error(int errorCode, final boolean isLoadMore) {
+    public void error(final int errorCode, final boolean isLoadMore) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -266,6 +267,9 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                     refreshLayout.finishLoadMore();
                 }else{
                     refreshLayout.finishRefresh();
+                }
+                if(Constants.OTHER_ERROR_CODE == errorCode){
+                    LoadFailUtil.initDialogToLogin(getActivity());
                 }
             }
         });
@@ -308,8 +312,17 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     }
 
     @Override
-    public void getCommonFilterError(int errorCode) {
-
+    public void getCommonFilterError(final int errorCode) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(Constants.OTHER_ERROR_CODE == errorCode){
+                    if(Constants.OTHER_ERROR_CODE == errorCode){
+                        LoadFailUtil.initDialogToLogin(getActivity());
+                    }
+                }
+            }
+        });
     }
 
     @Override

@@ -147,14 +147,18 @@ public class MyFragment extends Fragment {
                             UIUtils.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    jcVideoPlayer.setUp(url, 1, "");
+                                    if(null != getActivity() && null != jcVideoPlayer){
+                                        jcVideoPlayer.setUp(url, 1, "");
+                                    }
                                 }
                             });
                         }else{
                             UIUtils.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                    if(null != getActivity()){
+                                        Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             });
                         }
@@ -162,7 +166,9 @@ public class MyFragment extends Fragment {
                         UIUtils.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                if(null != getActivity()){
+                                    Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }
@@ -200,13 +206,17 @@ public class MyFragment extends Fragment {
 
             @Override
             protected void onPostExecute(final Bitmap bitmap) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        jzVideoPlayerStandard.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
-                    }
-                });
+                if(null != getActivity()){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(null != jzVideoPlayerStandard){
+                                jzVideoPlayerStandard.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                                jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+                            }
+                        }
+                    });
+                }
             }
         }.execute();
     }
