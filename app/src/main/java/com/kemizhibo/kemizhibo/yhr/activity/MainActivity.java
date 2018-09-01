@@ -42,8 +42,6 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     @BindView(R.id.main_rg_bottom)
     RadioGroup mainRgBottom;
 
-
-
     @Inject
     public GetLoginPresenterImpl getTokenPresenter;
     //获取token
@@ -68,6 +66,9 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     private static final long WAIT_TIME = 2000L;
     private SharedPreferences sp;
 
+    public void gotoDownloadFragment(){
+        mainRgBottom.check(R.id.main_rb_forteaching);
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;

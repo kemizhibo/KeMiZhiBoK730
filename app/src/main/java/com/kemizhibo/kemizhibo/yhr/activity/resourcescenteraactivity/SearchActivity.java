@@ -96,10 +96,13 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
         searchViewBox.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String courseName) {
-                coursename = courseName;
-                sp = getSharedPreferences("logintoken", 0);
-                token = sp.getString("token", "");
-                searchPresenter.getSearchData(SearchActivity.this, "Bearer " + token, "YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    coursename = courseName;
+                    sp = getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    searchPresenter.getSearchData(SearchActivity.this, "Bearer " + token, "YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
+                }
             }
         });
 
@@ -149,9 +152,12 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -174,7 +180,6 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
-
                 } else {
                     LogUtils.e("+++++++++++++", dataBeans.get(position).getFileType());
                     if (dataBeans.get(position).getFileType().equals("VIDEO")) {

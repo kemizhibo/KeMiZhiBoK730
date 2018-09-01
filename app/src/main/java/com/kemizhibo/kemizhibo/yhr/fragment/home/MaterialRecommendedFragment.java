@@ -185,9 +185,12 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);

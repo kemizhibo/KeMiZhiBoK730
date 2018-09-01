@@ -72,10 +72,13 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
         searchViewBox.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String courseName) {
-                coursename = courseName;
-                sp = getSharedPreferences("logintoken", 0);
-                token = sp.getString("token", "");
-                forTeachSearchPresenter.getForTeachSearchData(ForTeachSearchActivity.this, "Bearer " + token, coursename, "10", "1");
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    coursename = courseName;
+                    sp = getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    forTeachSearchPresenter.getForTeachSearchData(ForTeachSearchActivity.this, "Bearer " + token, coursename, "10", "1");
+                }
             }
         });
 
@@ -128,7 +131,6 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
-
                 } else {
                     if (dataBeans.get(position).getFileType().equals("VIDEO")) {
                         Intent intent = new Intent(ForTeachSearchActivity.this, YingXinagVideoDetailsActivity.class);
@@ -198,9 +200,12 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(ForTeachSearchActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(ForTeachSearchActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);

@@ -31,6 +31,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.PicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.PictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -227,9 +228,12 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(PictrueDetailsActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(PictrueDetailsActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -265,9 +269,11 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @OnClick(R.id.pictrue_details_collection)
     public void onViewClicked() {
-        sp = getSharedPreferences("logintoken", 0);
-        token = sp.getString("token", "");
-        picturePresenter.getCollectionData(this, "Bearer " + token, courseId);
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            sp = getSharedPreferences("logintoken", 0);
+            token = sp.getString("token", "");
+            picturePresenter.getCollectionData(this, "Bearer " + token, courseId);
+        }
     }
-
 }

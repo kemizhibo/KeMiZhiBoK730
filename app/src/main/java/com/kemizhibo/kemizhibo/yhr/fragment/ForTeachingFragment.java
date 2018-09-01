@@ -21,6 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.ForTeachSea
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 
 import java.io.File;
@@ -119,6 +120,9 @@ public class ForTeachingFragment extends BaseFragment {
 
     @OnClick(R.id.forteaching_sousuo)
     public void onViewClicked() {
-        startActivity(new Intent(getContext(), ForTeachSearchActivity.class));
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            startActivity(new Intent(getContext(), ForTeachSearchActivity.class));
+        }
     }
 }

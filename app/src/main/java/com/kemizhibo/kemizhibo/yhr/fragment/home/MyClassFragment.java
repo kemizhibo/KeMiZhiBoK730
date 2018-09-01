@@ -34,6 +34,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
@@ -99,6 +100,8 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.home_first_fragment);
         ButterKnife.bind(this, view);
+        //展示我的备课数据
+        initMyClassData();
         return view;
     }
 
@@ -116,6 +119,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         LogUtils.i("备课接口", token);
     }
 
+
     private void initMyClassData() {
         //设置适配器
         myClassAdapter = new MyClassAdapter(R.layout.myclass_fragment, myclassBean);
@@ -126,18 +130,21 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         myClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                courseId = myclassBean.get(position).getCourseId();
-                if (1 == myclassBean.get(position).getPrepareStatus()) {
-                    Intent intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
-                    intent.putExtra(Constants.COURSE_ID, courseId);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getActivity(), CommonWebActivity.class);
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
-                    intent.putExtra(Constants.MODULE_ID, myclassBean.get(position).getModuleId());
-                    startActivity(intent);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    courseId = myclassBean.get(position).getCourseId();
+                    if (1 == myclassBean.get(position).getPrepareStatus()) {
+                        Intent intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
+                        intent.putExtra(Constants.COURSE_ID, courseId);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                        intent.putExtra(Constants.MODULE_ID, myclassBean.get(position).getModuleId());
+                        startActivity(intent);
                     /*commonPresenter.getUserTeachPlan();
                     show();*/
+                    }
                 }
             }
         });
@@ -186,12 +193,13 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
 
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
+        setState(LoadingPager.LoadResult.empty);
         LogUtils.i("备课是否请求陈宫", searchBean.getCode() + "");
         if (searchBean.getCode() == 0) {
             if (isUp == 1) {
                 LogUtils.i("备课是否请求陈宫", "走的上拉");
-                myclassBean.clear();
                 setState(LoadingPager.LoadResult.success);
+                myclassBean.clear();
                 myclassBean.addAll(searchBean.getContent().getReturnPrepare());
                 if (myclassBean.size() == 0) {
                     setState(LoadingPager.LoadResult.empty);
@@ -199,7 +207,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 } else {
                     setState(LoadingPager.LoadResult.success);
                     //展示我的备课数据
-                    initMyClassData();
+                    //initMyClassData();
                     LogUtils.i("备课是否请求陈宫", "集合不为空");
                     if (isFlag) {
                         myClassAdapter.notifyDataSetChanged();
@@ -213,7 +221,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 } else {
                     setState(LoadingPager.LoadResult.success);
                     //展示我的备课数据
-                    initMyClassData();
+                    //initMyClassData();
                     if (isFlag) {
                         myClassAdapter.notifyDataSetChanged();
                     }

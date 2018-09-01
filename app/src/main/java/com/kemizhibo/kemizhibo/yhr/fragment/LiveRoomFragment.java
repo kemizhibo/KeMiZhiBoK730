@@ -293,11 +293,14 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
 
     @OnClick(R.id.live_room_shaixuan_butn)
     public void onViewClicked() {
-        materialEdition = "";
-        subjectId = "";
-        semester = "";
-        knowledgeId = "";
-        liveRoomPresenter.getFilterData(mActivity);
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            materialEdition = "";
+            subjectId = "";
+            semester = "";
+            knowledgeId = "";
+            liveRoomPresenter.getFilterData(mActivity);
+        }
     }
 
 

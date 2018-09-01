@@ -17,6 +17,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SignOutBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SignOutPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SignOutView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -136,9 +137,12 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(PersonCenterSheZhiActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(PersonCenterSheZhiActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);

@@ -23,6 +23,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.Validator;
@@ -211,9 +212,12 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(PersonCenterBianJiActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(PersonCenterBianJiActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -241,12 +245,15 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_change_phone:
-                //回传值
-                Intent intent = new Intent(this,ChangePhoneActivity.class);
-                intent.putExtra("mobile",mobile);
-                startActivity(intent);
-                //startActivityForResult(intent,1000);
-                //startActivity(new Intent(this, ChangePhoneActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //回传值
+                    Intent intent = new Intent(this,ChangePhoneActivity.class);
+                    intent.putExtra("mobile",mobile);
+                    startActivity(intent);
+                    //startActivityForResult(intent,1000);
+                    //startActivity(new Intent(this, ChangePhoneActivity.class));
+                }
                 break;
             case R.id.finish_butn:
                 sp = getSharedPreferences("logintoken", 0);

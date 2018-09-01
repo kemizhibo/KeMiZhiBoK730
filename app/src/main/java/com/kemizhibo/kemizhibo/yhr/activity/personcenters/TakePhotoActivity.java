@@ -29,6 +29,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.TakePhotoBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LQRPhotoSelectUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
@@ -231,33 +232,36 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     //选取图片成功以后上传头像
     @OnClick(R.id.yes_butn)
     public void onViewClicked() {
-        Map map = new HashMap();
-        map.put("param","picImg");
-        OkHttpRequest.uploadFile(this, "http://39.155.221.165:8080/image/upload", outputFile, "yhr.jpg", map, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                ToastUtils.showToast(String.valueOf(e));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //返回的图片地址
-                //LogUtils.i("返回图片",response.body().string());
-                TakePhotoBean takePhotoBean = GsonUtils.getBean(response.body().string(), TakePhotoBean.class);
-                if(takePhotoBean != null && 0 == (takePhotoBean.getCode())){
-                    String picImg = takePhotoBean.getContent().toString();
-                    sp = getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
-                }else{
-                    //ToastUtils.showToast("返回失败");
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            Map map = new HashMap();
+            map.put("param","picImg");
+            OkHttpRequest.uploadFile(this, "http://39.155.221.165:8080/image/upload", outputFile, "yhr.jpg", map, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    ToastUtils.showToast(String.valueOf(e));
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //返回的图片地址
+                    //LogUtils.i("返回图片",response.body().string());
+                    TakePhotoBean takePhotoBean = GsonUtils.getBean(response.body().string(), TakePhotoBean.class);
+                    if(takePhotoBean != null && 0 == (takePhotoBean.getCode())){
+                        String picImg = takePhotoBean.getContent().toString();
+                        sp = getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
+                    }else{
+                        //ToastUtils.showToast("返回失败");
+                    }
+                }
+            });
         /*File file = new File(filepath);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
         preservationPicturePresenter.getTakePhotoData(this,part);*/
+        }
     }
 
     //保存头像
@@ -288,9 +292,12 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(TakePhotoActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(TakePhotoActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);

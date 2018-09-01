@@ -145,10 +145,10 @@ public abstract class LoadingPager extends FrameLayout {
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                show();
+                changeFragment();
                 /*FragmentManager fm = getFragmentManager();
-                fm.beginTransaction() 
-                //替换为TwoFragment 
+                fm.beginTransaction()
+                //替换为TwoFragment
                 .replace(R.layout.loading_empty_page,new ForTeachingFragment()) .commit();*/
             }
         });
@@ -164,6 +164,11 @@ public abstract class LoadingPager extends FrameLayout {
      * 加载获取数据
      * */
     protected abstract void load() ;
+
+    /**
+     * 切换
+     * */
+    protected abstract void changeFragment() ;
 
 
     /** 服务器返回状态枚举 */

@@ -15,6 +15,7 @@ import com.kemizhibo.kemizhibo.yhr.presenter.GetMssPresenter;
 import com.kemizhibo.kemizhibo.yhr.presenter.MessagePresenter;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.findpwdimpl.SendValidateBeforLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.PhoneFormatCheckUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
@@ -74,6 +75,8 @@ public class WangJiActivity extends BaseMvpActivity<SendValidateBeforLoginPresen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.huoqv_yanzhengma:
+                if (NoFastClickUtils.isFastClick()) {
+                }{
                 mobile = phoneNumber.getText().toString().trim();
                 if (TextUtils.isEmpty(phoneNumber.getText().toString())) {
                     phoneNumber.setError("请先输入您的手机号码");
@@ -86,17 +89,22 @@ public class WangJiActivity extends BaseMvpActivity<SendValidateBeforLoginPresen
                 } else {
                     sendYanZhengMaPresenter.getSendYanZhengMaData(this, "1", mobile);
                 }
+            }
+
                 break;
             case R.id.next:
-                yanzhengcode = yanzhengma.getText().toString().trim();
-                if (TextUtils.isEmpty(yanzhengma.getText().toString().trim())) {
-                    yanzhengma.setError("请先输入您的验证码");
-                    yanzhengma.requestFocus();
-                } else if (TextUtils.isEmpty(phoneNumber.getText().toString())){
-                    phoneNumber.setError("请先输入您的手机号码");
-                    phoneNumber.requestFocus();
+                if (NoFastClickUtils.isFastClick()) {
                 }else {
-                    sendYanZhengMaPresenter.getBeforLoginValiDatePhone(this,mobile,yanzhengcode);
+                    yanzhengcode = yanzhengma.getText().toString().trim();
+                    if (TextUtils.isEmpty(yanzhengma.getText().toString().trim())) {
+                        yanzhengma.setError("请先输入您的验证码");
+                        yanzhengma.requestFocus();
+                    } else if (TextUtils.isEmpty(phoneNumber.getText().toString())){
+                        phoneNumber.setError("请先输入您的手机号码");
+                        phoneNumber.requestFocus();
+                    }else {
+                        sendYanZhengMaPresenter.getBeforLoginValiDatePhone(this,mobile,yanzhengcode);
+                    }
                 }
                 break;
         }

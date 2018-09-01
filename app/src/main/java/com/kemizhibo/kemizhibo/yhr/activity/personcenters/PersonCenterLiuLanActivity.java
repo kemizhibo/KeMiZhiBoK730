@@ -111,13 +111,16 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
         publicTitleBarRoot.setRightImageResouse(R.drawable.pan).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
             @Override
             public void onClick() {
-                if (flag){
-                    publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
-                }else{
-                    publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    if (flag){
+                        publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
+                    }else{
+                        publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
+                    }
+                    flag =! flag;
+                    updataEditMode();
                 }
-                flag =! flag;
-                updataEditMode();
             }
         });
         publicTitleBarRoot.changeTitleBar("浏览记录");
@@ -195,9 +198,12 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(PersonCenterLiuLanActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(PersonCenterLiuLanActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -364,12 +370,15 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //删除接口
-                if (selectAllButn.getText().equals("取消全选")) {
-                    liuLanPresenter.getClearLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token);
-                } else {
-                    //否则存数组删除多个
-                    liuLanPresenter.getClearOneOrMoreLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token, stringshoucang);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //删除接口
+                    if (selectAllButn.getText().equals("取消全选")) {
+                        liuLanPresenter.getClearLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token);
+                    } else {
+                        //否则存数组删除多个
+                        liuLanPresenter.getClearOneOrMoreLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token, stringshoucang);
+                    }
                 }
             }
         });

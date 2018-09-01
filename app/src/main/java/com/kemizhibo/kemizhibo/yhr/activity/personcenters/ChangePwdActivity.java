@@ -20,6 +20,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.ChangePwdPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
@@ -97,34 +98,37 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
 
     @OnClick(R.id.finish_butn)
     public void onViewClicked() {
-        oldpwd = oldPwdEdittext.getText().toString();
-        newpwd = newPwdEdittext.getText().toString();
-        aginpwd = newPwdEdittextAgin.getText().toString();
-        sp = getSharedPreferences("logintoken", 0);
-        String pwd = sp.getString("pwd", "");
-        if (TextUtils.isEmpty(oldpwd)) {
-            oldPwdEdittext.setError("请输入旧密码");
-            oldPwdEdittext.requestFocus();
-        } else if (TextUtils.isEmpty(newpwd)) {
-            newPwdEdittext.setError("请输入新密码");
-            newPwdEdittext.requestFocus();
-        } else if (TextUtils.isEmpty(aginpwd)){
-            newPwdEdittextAgin.setError("请输入新密码");
-            newPwdEdittextAgin.requestFocus();
-        }else if (!isPwd(newpwd)) {
-            newPwdEdittext.setError("密码必须由6-20位字母和数字组成");
-            newPwdEdittext.requestFocus();
-        } else if (!newpwd.equals(aginpwd)){
-            newPwdEdittextAgin.setError("两次密码不一致，请重新输入");
-            newPwdEdittextAgin.requestFocus();
-        }else if (!oldpwd.equals(pwd)){
-            oldPwdEdittext.setError("旧密码错误");
-            oldPwdEdittext.requestFocus();
-        }
-        else {
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            oldpwd = oldPwdEdittext.getText().toString();
+            newpwd = newPwdEdittext.getText().toString();
+            aginpwd = newPwdEdittextAgin.getText().toString();
             sp = getSharedPreferences("logintoken", 0);
-            token = sp.getString("token", "");
-            changePwdPresenter.getChangePwdData(this, "Bearer " + token, oldpwd, newpwd);
+            String pwd = sp.getString("pwd", "");
+            if (TextUtils.isEmpty(oldpwd)) {
+                oldPwdEdittext.setError("请输入旧密码");
+                oldPwdEdittext.requestFocus();
+            } else if (TextUtils.isEmpty(newpwd)) {
+                newPwdEdittext.setError("请输入新密码");
+                newPwdEdittext.requestFocus();
+            } else if (TextUtils.isEmpty(aginpwd)){
+                newPwdEdittextAgin.setError("请输入新密码");
+                newPwdEdittextAgin.requestFocus();
+            }else if (!isPwd(newpwd)) {
+                newPwdEdittext.setError("密码必须由6-20位字母和数字组成");
+                newPwdEdittext.requestFocus();
+            } else if (!newpwd.equals(aginpwd)){
+                newPwdEdittextAgin.setError("两次密码不一致，请重新输入");
+                newPwdEdittextAgin.requestFocus();
+            }else if (!oldpwd.equals(pwd)){
+                oldPwdEdittext.setError("旧密码错误");
+                oldPwdEdittext.requestFocus();
+            }
+            else {
+                sp = getSharedPreferences("logintoken", 0);
+                token = sp.getString("token", "");
+                changePwdPresenter.getChangePwdData(this, "Bearer " + token, oldpwd, newpwd);
+            }
         }
     }
 
@@ -170,9 +174,12 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);

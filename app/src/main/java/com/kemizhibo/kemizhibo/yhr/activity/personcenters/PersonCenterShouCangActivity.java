@@ -218,9 +218,12 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(PersonCenterShouCangActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(PersonCenterShouCangActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -429,14 +432,17 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //删除接口
-                if (selectAllButn.getText().equals("取消全选")) {
-                    //请求取消全部收藏
-                    collectionBoxPresenter.getClearCollectionBoxData(PersonCenterShouCangActivity.this, "Bearer " + token);
-                } else {
-                    //否则取消一个或多个收藏
-                    collectionBoxPresenter.getCollectionData(PersonCenterShouCangActivity.this, "Bearer " + token, stringshoucang);
-                    LogUtils.i("多选", stringshoucang);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //删除接口
+                    if (selectAllButn.getText().equals("取消全选")) {
+                        //请求取消全部收藏
+                        collectionBoxPresenter.getClearCollectionBoxData(PersonCenterShouCangActivity.this, "Bearer " + token);
+                    } else {
+                        //否则取消一个或多个收藏
+                        collectionBoxPresenter.getCollectionData(PersonCenterShouCangActivity.this, "Bearer " + token, stringshoucang);
+                        LogUtils.i("多选", stringshoucang);
+                    }
                 }
             }
         });

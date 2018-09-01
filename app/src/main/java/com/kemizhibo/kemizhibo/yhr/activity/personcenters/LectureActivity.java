@@ -10,6 +10,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LectureBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.LecturePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.LectureView;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
@@ -61,9 +62,13 @@ public class LectureActivity extends BaseMvpActivity<LecturePresenterImpl> imple
 
     @OnClick(R.id.finish_lecture)
     public void onViewClicked() {
-        SharedPreferences sp = getSharedPreferences("logintoken", 0);
-        String token = sp.getString("token", "");
-        lecturePresenter.getLectureData(this,"Bearer "+token,moduleId,"3");
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            SharedPreferences sp = getSharedPreferences("logintoken", 0);
+            String token = sp.getString("token", "");
+            lecturePresenter.getLectureData(this,"Bearer "+token,moduleId,"3");
+        }
+
     }
 
     @Override

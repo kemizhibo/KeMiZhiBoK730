@@ -273,10 +273,13 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
 
     @OnClick(R.id.teacher_training_shaixuan_butn)
     public void onViewClicked() {
-        materialEdition="";
-        subjectId="";
-        semester="";
-        teacherTrainingPresenter.getFilterData(mActivity);
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            materialEdition="";
+            subjectId="";
+            semester="";
+            teacherTrainingPresenter.getFilterData(mActivity);
+        }
     }
 
 

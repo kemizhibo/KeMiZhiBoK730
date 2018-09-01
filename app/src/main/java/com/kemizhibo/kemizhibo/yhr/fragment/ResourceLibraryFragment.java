@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TabUtils;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
@@ -136,7 +137,10 @@ public class ResourceLibraryFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ziyuanku_sousuo:
-                startActivity(new Intent(getContext(), SearchActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getContext(), SearchActivity.class));
+                }
                 break;
         }
     }

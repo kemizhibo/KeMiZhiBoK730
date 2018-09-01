@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KeMiZhiBo</string>
+    <string name="app_name">科米课堂</string>
 
     <string name="str_loading">正在加载，请稍候…</string>
     <string name="setting_network">设置网络</string>

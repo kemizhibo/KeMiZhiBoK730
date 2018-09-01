@@ -21,6 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SendYanZhengMaPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SendYanZhengMaView;
@@ -62,11 +63,6 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         bindTitleBar();
         //获取传过来的值
         mobile = getIntent().getStringExtra("mobile");
-        /*String res =editText2.getText().toString().trim();
-        Intent intent = new Intent();
-        intent.putExtra("result",res);
-        setResult(1001,intent1);
-        finish();*/
     }
 
     @Override
@@ -90,13 +86,18 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_change_send_yanzhengma:
+                if (NoFastClickUtils.isFastClick()) {
+                }{
                 sp = getSharedPreferences("logintoken", 0);
                 token = sp.getString("token", "");
                 sendYanZhengMaPresenter.getSendYanZhengMaData(this, "1", "Bearer " + token, mobile);
+            }
+
                 break;
             case R.id.person_change_next_butn:
                 if (TextUtils.isEmpty(personChangeEdittext.getText().toString().trim())) {
-                    ToastUtils.showToast("请输入验证码");
+                    personChangeEdittext.setError("请输入您收到的验证码");
+                    personChangeEdittext.requestFocus();
                 } else {
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
@@ -124,9 +125,12 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(ChangePhoneActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(ChangePhoneActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -149,7 +153,10 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         if (sendYanZhengMaBean.getCode() == 0) {
             Intent intent = new Intent(ChangePhoneActivity.this, SetNewPhoneActivity.class);
             startActivity(intent);
-        } else {
+        } else if (sendYanZhengMaBean.getCode()==500){
+            personChangeEdittext.setError("验证码错误，请重新输入");
+            personChangeEdittext.requestFocus();
+        }else {
             initDialogToLogin();
         }
     }
@@ -175,5 +182,4 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         activityComponent.inject(this);
         return sendYanZhengMaPresenter;
     }
-
 }

@@ -20,6 +20,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
@@ -70,22 +71,29 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
 
     }
 
-
     @OnClick({R.id.login_wangji, R.id.login_butn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_wangji:
-                startActivity(new Intent(LoginActivity.this, WangJiActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(LoginActivity.this, WangJiActivity.class));
+                }
                 break;
             case R.id.login_butn:
-                if (TextUtils.isEmpty(loginName.getText().toString().trim())){
-                    loginName.setError("用户名不能为空");
-                }else if (TextUtils.isEmpty(loginPwd.getText().toString().trim())){
-                    loginPwd.setError("密码不能为空");
+                if (NoFastClickUtils.isFastClick()) {
                 }else {
-                    name = loginName.getText().toString().trim();
-                    pwd = loginPwd.getText().toString().trim();
-                    getTokenPresenter.getLoginData(this, name,pwd);
+                    if (TextUtils.isEmpty(loginName.getText().toString().trim())){
+                        loginName.setError("请输入用户名");
+                        loginName.requestFocus();
+                    }else if (TextUtils.isEmpty(loginPwd.getText().toString().trim())){
+                        loginPwd.setError("请输入密码");
+                        loginPwd.requestFocus();
+                    }else {
+                        name = loginName.getText().toString().trim();
+                        pwd = loginPwd.getText().toString().trim();
+                        getTokenPresenter.getLoginData(this, name,pwd);
+                    }
                 }
                 break;
         }

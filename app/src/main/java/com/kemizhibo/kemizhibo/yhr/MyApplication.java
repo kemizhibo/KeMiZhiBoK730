@@ -2,13 +2,20 @@ package com.kemizhibo.kemizhibo.yhr;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 
 import com.kemizhibo.kemizhibo.yhr.di.component.AppComponent;
 import com.kemizhibo.kemizhibo.yhr.di.component.DaggerAppComponent;
 import com.kemizhibo.kemizhibo.yhr.model.modules.AppModule;
+import com.tencent.bugly.crashreport.CrashReport;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Author: yhr
@@ -20,7 +27,6 @@ public class MyApplication extends App {
     private static int mMainThreadId;
     private static Handler mHandler;
     private AppComponent appComponent;
-
     public static int YINGXIANG_TO_PICK_req = 100;
     public static int YINGXIANG_TO_PICK_res = 101;
 
@@ -29,6 +35,7 @@ public class MyApplication extends App {
         super.onCreate();
         initApplicationComponent();
         mHandler = new Handler();
+        CrashReport.initCrashReport(getApplicationContext(), "f7e4244a8d", true);
     }
 
     /**

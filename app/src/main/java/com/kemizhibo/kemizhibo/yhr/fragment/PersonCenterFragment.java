@@ -30,6 +30,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 
@@ -151,9 +152,12 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -169,39 +173,63 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.person_bianji_butn:
-                startActivity(new Intent(getActivity(), PersonCenterBianJiActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterBianJiActivity.class));
+                }
                 break;
             case R.id.person_touxiang:
-                //点击跳转
-                intent = new Intent(getActivity().getApplicationContext(), TakePhotoActivity.class);
-                bundle = new Bundle();
-                bundle.putString("photo", String.valueOf(userData.getPicImg()));
-                intent.putExtras(bundle);
-                //这里一定要获取到所在Activity再startActivity()；
-                getActivity().startActivity(intent);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //点击跳转
+                    intent = new Intent(getActivity().getApplicationContext(), TakePhotoActivity.class);
+                    bundle = new Bundle();
+                    bundle.putString("photo", String.valueOf(userData.getPicImg()));
+                    intent.putExtras(bundle);
+                    //这里一定要获取到所在Activity再startActivity()；
+                    getActivity().startActivity(intent);
+                }
                 break;
             case R.id.shoucang_layout:
-                startActivity(new Intent(getActivity(), PersonCenterShouCangActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterShouCangActivity.class));
+                }
                 break;
             case R.id.liulan_layout:
-                startActivity(new Intent(getActivity(), PersonCenterLiuLanActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterLiuLanActivity.class));
+                }
                 break;
             /*case R.id.sucai_layout:
                 startActivity(new Intent(getActivity(), PersonCenterSuCaiActivity.class));
                 break;*/
             case R.id.jilu_layout:
-                startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
-                PreferencesUtils.saveIntValue(Constants.ROLE_ID, Constants.CHILD_ROLE_ID, getActivity());
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
+                    PreferencesUtils.saveIntValue(Constants.ROLE_ID, Constants.CHILD_ROLE_ID, getActivity());
+                }
                 break;
             case R.id.guanli_layout:
-                startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
-                PreferencesUtils.saveIntValue(Constants.ROLE_ID, Constants.MANAGER_ROLE_ID, getActivity());
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterBeiShouKeJiLuActivity.class));
+                    PreferencesUtils.saveIntValue(Constants.ROLE_ID, Constants.MANAGER_ROLE_ID, getActivity());
+                }
                 break;
             case R.id.fankui_layout:
-                startActivity(new Intent(getActivity(), PersonCenterFanKuiActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterFanKuiActivity.class));
+                }
                 break;
             case R.id.shehzi_layout:
-                startActivity(new Intent(getActivity(), PersonCenterSheZhiActivity.class));
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    startActivity(new Intent(getActivity(), PersonCenterSheZhiActivity.class));
+                }
                 break;
         }
     }

@@ -8,11 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
-import com.kemizhibo.kemizhibo.yhr.bean.MessageBean;
-import com.kemizhibo.kemizhibo.yhr.bean.UpdataPwdBean;
 import com.kemizhibo.kemizhibo.yhr.bean.findPwdbean.ResetPwdBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.findpwdimpl.ResetPwdPresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.findpwdview.ResetPwdView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
@@ -63,17 +61,20 @@ public class XiuGaiActivity extends BaseMvpActivity<ResetPwdPresenterImpl> imple
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.finish_next:
-                if (TextUtils.isEmpty(xiugaiPwd.getText().toString().trim())) {
-                    xiugaiPwd.setError("密码不能为空");
-                    xiugaiPwd.requestFocus();
-                } else if (!isPwd(xiugaiPwd.getText().toString().trim())) {
-                    xiugaiPwd.setError("密码必须由6-20位字母和数字组成");
-                    xiugaiPwd.requestFocus();
-                } else if (TextUtils.isEmpty(querenPwd.getText().toString().trim()) || !querenPwd.getText().toString().trim().equals(xiugaiPwd.getText().toString().trim())) {
-                    querenPwd.setError("两次密码输入不一致");
-                    querenPwd.requestFocus();
-                } else {
-                    resetPwdPresenter.getResetPwdData(this,content,querenPwd.getText().toString().trim());
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    if (TextUtils.isEmpty(xiugaiPwd.getText().toString().trim())) {
+                        xiugaiPwd.setError("密码不能为空");
+                        xiugaiPwd.requestFocus();
+                    } else if (!isPwd(xiugaiPwd.getText().toString().trim())) {
+                        xiugaiPwd.setError("密码必须由6-20位字母和数字组成");
+                        xiugaiPwd.requestFocus();
+                    } else if (TextUtils.isEmpty(querenPwd.getText().toString().trim()) || !querenPwd.getText().toString().trim().equals(xiugaiPwd.getText().toString().trim())) {
+                        querenPwd.setError("两次密码输入不一致");
+                        querenPwd.requestFocus();
+                    } else {
+                        resetPwdPresenter.getResetPwdData(this,content,querenPwd.getText().toString().trim());
+                    }
                 }
                 break;
         }

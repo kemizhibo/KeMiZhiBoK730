@@ -482,7 +482,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
         if (yingXiangDetailsVideoUrlBean.getCode() == 0) {
             contentUrlBean = yingXiangDetailsVideoUrlBean;
             //播放视频
-            startVideo();
+            //startVideo();
             //ijkVideoView.setOnHierarchyChangeListener();
         }
     }
@@ -495,7 +495,8 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
         videos.put("高清", str);
         videos.put("原画", str);
         videos.put("超清", str);
-        ijkVideoView.setDefinitionVideos(videos);
+        //ijkVideoView.setDefinitionVideos(videos);
+        ijkVideoView.setUrl(str);
         ijkVideoView.setVideoController(controller);
         ijkVideoView.setTitle("视屏详情");
         //initVideo();
@@ -620,33 +621,33 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
     @Override
     public void onYingXiangDetailsVideoCommentSuccess(CommentBean commentBean) {
         LogUtils.i("评论列表",commentBean.getCode()+"");
-            data = commentBean.getContent().getData();
-            tatle = commentBean.getContent();
+        data = commentBean.getContent().getData();
+        tatle = commentBean.getContent();
                 /*//判断是否点过赞
                 if (data.get(0).getPraiseHistory() == 1) {
                     comment_dianzan.setImageResource(R.mipmap.getlike_select_2);
                 } else {
                     comment_dianzan.setImageResource(R.mipmap.dianzan_2);
                 }*/
-                if (isUp==1){
-                    commentList.clear();
-                    commentList.addAll(data);
-                    if (commentList.size()>0){
-                        commentAdapter.notifyDataSetChanged();
-                        //点赞
-                        initCommentGetLike();
-                        //删除
-                        initCommentDelete();
-                    }
-                }else if (isUp==2){
-                    commentList.addAll(commentBean.getContent().getData());
-                    commentAdapter.notifyDataSetChanged();
-                    //commentList.addAll(commentBean.getContent().getData());
-                    //点赞
-                    initCommentGetLike();
-                    //删除
-                    initCommentDelete();
-                }
+        if (isUp==1){
+            commentList.clear();
+            commentList.addAll(data);
+            if (commentList.size()>0){
+                commentAdapter.notifyDataSetChanged();
+                //点赞
+                initCommentGetLike();
+                //删除
+                initCommentDelete();
+            }
+        }else if (isUp==2){
+            commentList.addAll(commentBean.getContent().getData());
+            commentAdapter.notifyDataSetChanged();
+            //commentList.addAll(commentBean.getContent().getData());
+            //点赞
+            initCommentGetLike();
+            //删除
+            initCommentDelete();
+        }
 
         //解决滑动冲突
         /*appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

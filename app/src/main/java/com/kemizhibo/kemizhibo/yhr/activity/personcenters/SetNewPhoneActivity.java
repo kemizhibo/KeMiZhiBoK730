@@ -20,6 +20,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SendYanZhengMaPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.PhoneFormatCheckUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
@@ -80,28 +81,34 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.get_yanzhengma:
-                if (TextUtils.isEmpty(putPhoneNum.getText().toString())){
-                    putPhoneNum.setError("请先输入您的手机号码");
-                    //ToastUtils.showToast("请先输入您的手机号码");
-                }
-                else if (!PhoneFormatCheckUtils.isChinaPhoneLegal(putPhoneNum.getText().toString())&&!PhoneFormatCheckUtils.isHKPhoneLegal(putPhoneNum.getText().toString())&&!PhoneFormatCheckUtils.isPhoneLegal(putPhoneNum.getText().toString())){
-                    putPhoneNum.setError("请输入正确的手机号码");
-                    //ToastUtils.showToast("请输入正确的手机号码");
-                }
-                else{
-                    sp = getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    sendYanZhengMaPresenter.getSendYanZhengMaData(this,"2","Bearer "+ token,putPhoneNum.getText().toString());
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    if (TextUtils.isEmpty(putPhoneNum.getText().toString())){
+                        putPhoneNum.setError("请先输入您的手机号码");
+                        //ToastUtils.showToast("请先输入您的手机号码");
+                    }
+                    else if (!PhoneFormatCheckUtils.isChinaPhoneLegal(putPhoneNum.getText().toString())&&!PhoneFormatCheckUtils.isHKPhoneLegal(putPhoneNum.getText().toString())&&!PhoneFormatCheckUtils.isPhoneLegal(putPhoneNum.getText().toString())){
+                        putPhoneNum.setError("请输入正确的手机号码");
+                        //ToastUtils.showToast("请输入正确的手机号码");
+                    }
+                    else{
+                        sp = getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        sendYanZhengMaPresenter.getSendYanZhengMaData(this,"2","Bearer "+ token,putPhoneNum.getText().toString());
+                    }
                 }
                 break;
             case R.id.commit_butn:
-                if (TextUtils.isEmpty(putYanzhengma.getText().toString().trim())){
-                    ToastUtils.showToast("验证码不能为空");
-                }else{
-                    sp = getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    sendYanZhengMaPresenter.getNewPhoneData(this,"Bearer "+token,putPhoneNum.getText().toString().trim(),putYanzhengma.getText().toString().trim());
-                    LogUtils.i("0000000000000",token+"++++"+putPhoneNum.getText().toString()+"++++"+putYanzhengma.getText().toString().trim());
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    if (TextUtils.isEmpty(putYanzhengma.getText().toString().trim())){
+                        ToastUtils.showToast("验证码不能为空");
+                    }else{
+                        sp = getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        sendYanZhengMaPresenter.getNewPhoneData(this,"Bearer "+token,putPhoneNum.getText().toString().trim(),putYanzhengma.getText().toString().trim());
+                        LogUtils.i("0000000000000",token+"++++"+putPhoneNum.getText().toString()+"++++"+putYanzhengma.getText().toString().trim());
+                    }
                 }
                 break;
         }
@@ -124,9 +131,12 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(SetNewPhoneActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(SetNewPhoneActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);

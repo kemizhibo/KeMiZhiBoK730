@@ -8,11 +8,6 @@
         android:id="@+id/relativelayout"
         android:layout_width="@dimen/res_287.5dp"
         android:layout_height="@dimen/res_160dp">
-        <!--<ImageView
-            android:id="@+id/yinxiang_recyclerview_imageview"
-            android:background="@drawable/layout_yuanjiao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />-->
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/yinxiang_recyclerview_imageview"
             android:layout_width="match_parent"

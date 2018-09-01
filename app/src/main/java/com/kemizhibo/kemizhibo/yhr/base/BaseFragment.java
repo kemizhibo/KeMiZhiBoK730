@@ -7,10 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
-
 import butterknife.Unbinder;
 
 /**
@@ -40,6 +39,17 @@ public abstract class BaseFragment extends Fragment implements BaseView {
             @Override
             protected void load() {
                 BaseFragment.this.load();
+            }
+
+            @Override
+            protected void changeFragment() {
+                //切换的方法
+                /*FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.home_rel_layout, new ForTeachingFragment());
+                transaction.commit();*/
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.gotoDownloadFragment ();
             }
         };
         return pager;

@@ -1,9 +1,16 @@
 package com.kemizhibo.kemizhibo.yhr;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Author: yhr
@@ -14,7 +21,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 public class App extends Application{
     private static App context ;
     private String token;
-
 
     @Override
     public void onCreate() {

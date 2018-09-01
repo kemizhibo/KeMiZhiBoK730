@@ -191,7 +191,6 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         });
         yinxiangSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
         yinxiangSpring.setFooter(new AliFooter(getContext(), true));
-
     }
 
     @Override
@@ -203,11 +202,14 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
 
     @OnClick(R.id.yingxiang_shaixuan_butn)
     public void onViewClicked() {
-        materialEdition="";
-        subjectId="";
-        semester="";
-        knowledgeId="";
-        filterPresenter.getFilterData(mActivity);
+        if (NoFastClickUtils.isFastClick()) {
+        }else {
+            materialEdition="";
+            subjectId="";
+            semester="";
+            knowledgeId="";
+            filterPresenter.getFilterData(mActivity);
+        }
     }
 
     private void showPopTopWithDarkBg() {
@@ -382,7 +384,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 LogUtils.i("上拉下拉","1");
                 yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
                 LogUtils.i("上拉下拉","2");
-                if (yingXiangFragmentdata==null){
+                if (yingXiangFragmentdata.size()==0){
                     setState(LoadingPager.LoadResult.empty);
                     LogUtils.i("上拉下拉","3");
                 }else {
@@ -407,7 +409,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     yingXiangFragmentAdapter.notifyDataSetChanged();
                     LogUtils.i("上拉下拉","8");
                     LogUtils.i("上拉下拉","9");
-                    if (yingXiangFragmentdata==null){
+                    if (yingXiangFragmentdata.size()==0){
                         setState(LoadingPager.LoadResult.empty);
                         LogUtils.i("上拉下拉","10");
                     }else {

@@ -57,6 +57,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.TeacherTrainingDetailsVideoPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.YingXiangDetailsVideoPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionController;
@@ -136,8 +137,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     //评论列表项
     CommentAdapter commentAdapter;
     private List<CommentBean.ContentBean.DataBean> commentList = new ArrayList<>();
-    //防止快速点击
-    private boolean isVisibility = false;
     //视频信息
     //private TeacherTrainingDetailsVideoBean.ContentBean.DataBean content;
     //发表评论
@@ -284,7 +283,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         if (teacherTrainingDetailsVideoUrlBean.getCode() == 0) {
             contentUrlBean = teacherTrainingDetailsVideoUrlBean;
             //播放视频
-            startVideo();
+            //startVideo();
             //ijkVideoView.setOnHierarchyChangeListener();
         }
     }
@@ -360,7 +359,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
      * func:弹出评论框
      */
     private void showCommentDialog() {
-        dialog = new BottomSheetDialog(this);
+        dialog = new BottomSheetDialog(this,R.style.BottomSheetEdit);
         View commentView = LayoutInflater.from(this).inflate(R.layout.comment_dialog_layout, null);
         commentText = (EditText) commentView.findViewById(R.id.dialog_comment_et);
         bt_comment1 = (Button) commentView.findViewById(R.id.dialog_comment_bt);
@@ -376,16 +375,19 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         bt_comment1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //正常点击的逻辑
-                trim = commentText.getText().toString().trim();
-                if (!TextUtils.isEmpty(trim)) {
-                    //commentOnWork(commentContent);
-                    dialog.dismiss();
-                    sp = getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    teacherTrainingDetailsVideoPresenter.getPutCommentData(TeacherTrainingDetailsActivity.this, "Bearer " + token, courseId, trim, "");
-                } else {
-                    Toast.makeText(TeacherTrainingDetailsActivity.this, "评论内容不能为空", Toast.LENGTH_SHORT).show();
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //正常点击的逻辑
+                    trim = commentText.getText().toString().trim();
+                    if (!TextUtils.isEmpty(trim)) {
+                        //commentOnWork(commentContent);
+                        dialog.dismiss();
+                        sp = getSharedPreferences("logintoken", 0);
+                        token = sp.getString("token", "");
+                        teacherTrainingDetailsVideoPresenter.getPutCommentData(TeacherTrainingDetailsActivity.this, "Bearer " + token, courseId, trim, "");
+                    } else {
+                        Toast.makeText(TeacherTrainingDetailsActivity.this, "评论内容不能为空", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -431,9 +433,12 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                 .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(TeacherTrainingDetailsActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NoFastClickUtils.isFastClick()) {
+                        }else {
+                            Intent intent = new Intent(TeacherTrainingDetailsActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }).create();
         dialog.setCancelable(false);
@@ -490,6 +495,22 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             player.skipPositionWhenPlay(0);
             player.start();
             teacherTrainingDetailsVideoPresenter.getOneLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "0");
+            // 初始化定时器
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //获取视频当前播放时长
+                    currentPosition = player.getCurrentPosition();
+                    teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
+
+                       /* if (player.getDuration()-content.getWatchTime()<=10000){
+                            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, String.valueOf(currentPosition), "1");
+                        }else {
+                            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
+                        }*/
+                }
+            }, 0, 5000);
         }else {
             player.skipPositionWhenPlay(content.getWatchTime());
             player.start();
@@ -518,23 +539,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onGetOneLookSuccess(OneLookBean oneLookBean) {
         if (oneLookBean.getCode() == 0) {
             oneLookBeanMessage = oneLookBean.getMessage();
-                // 初始化定时器
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        //获取视频当前播放时长
-                        currentPosition = player.getCurrentPosition();
-                        teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
-
-                       /* if (player.getDuration()-content.getWatchTime()<=10000){
-                            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, String.valueOf(currentPosition), "1");
-                        }else {
-                            teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
-                        }*/
-                    }
-                }, 0, 5000);
-
         } else {
             ToastUtils.showToast("当前网络状态不佳");
         }
@@ -671,12 +675,15 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         commentAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                p = position;
-                sp = getSharedPreferences("logintoken", 0);
-                token = sp.getString("token", "");
-                String targetId = String.valueOf(commentList.get(position).getCommentId());
-                teacherTrainingDetailsVideoPresenter.getLikeData(TeacherTrainingDetailsActivity.this, "Bearer " + token, targetId, "4");
-                LogUtils.i("点赞1", targetId + "+" + token);
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    p = position;
+                    sp = getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    String targetId = String.valueOf(commentList.get(position).getCommentId());
+                    teacherTrainingDetailsVideoPresenter.getLikeData(TeacherTrainingDetailsActivity.this, "Bearer " + token, targetId, "4");
+                    LogUtils.i("点赞1", targetId + "+" + token);
+                }
             }
         });
     }
@@ -746,11 +753,14 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         yesDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //请求删除接口
-                sp = getSharedPreferences("logintoken", 0);
-                token = sp.getString("token", "");
-                teacherTrainingDetailsVideoPresenter.getDeleteCommentData(TeacherTrainingDetailsActivity.this, "Bearer " + token, commentId, "4");
-                dialog.dismiss();
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //请求删除接口
+                    sp = getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    teacherTrainingDetailsVideoPresenter.getDeleteCommentData(TeacherTrainingDetailsActivity.this, "Bearer " + token, commentId, "4");
+                    dialog.dismiss();
+                }
             }
         });
         noDelete.setOnClickListener(new View.OnClickListener() {
@@ -769,11 +779,14 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.yingxiang_details_shoucang_butn:
-                //点击收藏判断是否登录，登录成功改变图片，失败弹出popwindow
-                sp = getSharedPreferences("logintoken", 0);
-                token = sp.getString("token", "");
-                teacherTrainingDetailsVideoPresenter.getCollectionData(this, "Bearer " + token, courseId);
-                //如果成功拿到数据，就正常收藏，否则就弹框
+                if (NoFastClickUtils.isFastClick()) {
+                }else {
+                    //点击收藏判断是否登录，登录成功改变图片，失败弹出popwindow
+                    sp = getSharedPreferences("logintoken", 0);
+                    token = sp.getString("token", "");
+                    teacherTrainingDetailsVideoPresenter.getCollectionData(this, "Bearer " + token, courseId);
+                    //如果成功拿到数据，就正常收藏，否则就弹框
+                }
                 break;
             case R.id.detail_page_do_comment:
                 showCommentDialog();

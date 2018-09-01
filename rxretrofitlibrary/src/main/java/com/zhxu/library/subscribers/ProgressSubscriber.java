@@ -189,7 +189,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
             Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
         } else {
             //Toast.makeText(context, "错误" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(context, "请十秒钟之后重新刷新" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "当前网络环境差" , Toast.LENGTH_SHORT).show();
         }
         if (mSubscriberOnNextListener.get() != null) {
             mSubscriberOnNextListener.get().onError(e);
