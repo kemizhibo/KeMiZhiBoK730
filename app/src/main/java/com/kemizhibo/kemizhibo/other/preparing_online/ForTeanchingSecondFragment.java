@@ -305,20 +305,22 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     public void refreshSuccess(PreparingOnlineBean bean) {
         dataBeanList.clear();
         dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-            springView.onFinishFreshAndLoad();
-            if(dataBeanList.size() > 0){
-                setState(LoadingPager.LoadResult.success);
-                secondL.setVisibility(View.VISIBLE);
-                setAdapter();
-            }else{
-                setState(LoadingPager.LoadResult.empty);
-                secondL.setVisibility(View.INVISIBLE);
-            }
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    springView.onFinishFreshAndLoad();
+                    if(dataBeanList.size() > 0){
+                        setState(LoadingPager.LoadResult.success);
+                        secondL.setVisibility(View.VISIBLE);
+                        setAdapter();
+                    }else{
+                        setState(LoadingPager.LoadResult.empty);
+                        secondL.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
         }
-        });
     }
 
     private void setAdapter() {
@@ -333,30 +335,34 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     @Override
     public void loadMoreSuccess(PreparingOnlineBean bean) {
         dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                springView.onFinishFreshAndLoad();
-                setAdapter();
-            }
-        });
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    springView.onFinishFreshAndLoad();
+                    setAdapter();
+                }
+            });
+        }
     }
 
     @Override
     public void error(final int errorCode, final boolean isLoadMore) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setState(LoadingPager.LoadResult.error);
-                secondL.setVisibility(View.INVISIBLE);
-                springView.onFinishFreshAndLoad();
-                if(Constants.OTHER_ERROR_CODE == errorCode){
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setState(LoadingPager.LoadResult.error);
+                    secondL.setVisibility(View.INVISIBLE);
+                    springView.onFinishFreshAndLoad();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
-                        LoadFailUtil.initDialogToLogin(getActivity());
+                        if(Constants.OTHER_ERROR_CODE == errorCode){
+                            LoadFailUtil.initDialogToLogin(getActivity());
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -399,16 +405,18 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
 
     @Override
     public void getCommonFilterError(final int errorCode) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(Constants.OTHER_ERROR_CODE == errorCode){
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     if(Constants.OTHER_ERROR_CODE == errorCode){
-                        LoadFailUtil.initDialogToLogin(getActivity());
+                        if(Constants.OTHER_ERROR_CODE == errorCode){
+                            LoadFailUtil.initDialogToLogin(getActivity());
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

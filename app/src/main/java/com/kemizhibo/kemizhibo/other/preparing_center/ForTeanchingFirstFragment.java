@@ -223,21 +223,23 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     public void refreshSuccess(PreparingCenterBean bean) {
         dataBeanList.clear();
         dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                springView.onFinishFreshAndLoad();
-                ToastUtils.showToast("refresh" + dataBeanList.size());
-                if(dataBeanList.size() > 0){
-                    setState(LoadingPager.LoadResult.success);
-                    firstL.setVisibility(View.VISIBLE);
-                    setAdapter();
-                }else{
-                    setState(LoadingPager.LoadResult.empty);
-                    firstL.setVisibility(View.INVISIBLE);
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    springView.onFinishFreshAndLoad();
+                    ToastUtils.showToast("refresh" + dataBeanList.size());
+                    if(dataBeanList.size() > 0){
+                        setState(LoadingPager.LoadResult.success);
+                        firstL.setVisibility(View.VISIBLE);
+                        setAdapter();
+                    }else{
+                        setState(LoadingPager.LoadResult.empty);
+                        firstL.setVisibility(View.INVISIBLE);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setAdapter() {
@@ -252,30 +254,34 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     @Override
     public void loadMoreSuccess(PreparingCenterBean bean) {
         dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtils.showToast("load" + dataBeanList.size());
-                springView.onFinishFreshAndLoad();
-                setAdapter();
-            }
-        });
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastUtils.showToast("load" + dataBeanList.size());
+                    springView.onFinishFreshAndLoad();
+                    setAdapter();
+                }
+            });
+        }
     }
 
     @Override
     public void error(final int errorCode, final boolean isLoadMore) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtils.showToast(String.valueOf(errorCode));
-                setState(LoadingPager.LoadResult.error);
-                firstL.setVisibility(View.INVISIBLE);
-                springView.onFinishFreshAndLoad();
-                if(Constants.OTHER_ERROR_CODE == errorCode){
-                    LoadFailUtil.initDialogToLogin(getActivity());
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastUtils.showToast(String.valueOf(errorCode));
+                    setState(LoadingPager.LoadResult.error);
+                    firstL.setVisibility(View.INVISIBLE);
+                    springView.onFinishFreshAndLoad();
+                    if(Constants.OTHER_ERROR_CODE == errorCode){
+                        LoadFailUtil.initDialogToLogin(getActivity());
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -316,16 +322,18 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
 
     @Override
     public void getCommonFilterError(final int errorCode) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(Constants.OTHER_ERROR_CODE == errorCode){
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     if(Constants.OTHER_ERROR_CODE == errorCode){
-                        LoadFailUtil.initDialogToLogin(getActivity());
+                        if(Constants.OTHER_ERROR_CODE == errorCode){
+                            LoadFailUtil.initDialogToLogin(getActivity());
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

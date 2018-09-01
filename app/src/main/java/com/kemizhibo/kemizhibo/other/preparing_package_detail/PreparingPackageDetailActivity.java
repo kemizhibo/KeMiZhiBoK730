@@ -182,7 +182,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         Log.i("--hhhhh--", "====hhhhhh");
         frameLayout.setVisibility(View.VISIBLE);
         getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
-        detailPresenter.getPreparingPackageDetailData();
+        if(null != detailPresenter)
+            detailPresenter.getPreparingPackageDetailData();
     }
 
     public void onPlanDelComplete() {

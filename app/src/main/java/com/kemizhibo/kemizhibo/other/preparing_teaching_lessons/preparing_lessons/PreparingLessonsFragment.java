@@ -145,20 +145,22 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     public void refreshSuccess(PreparingLessonsBean bean) {
         dataBeanList.clear();
         dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(dataBeanList.size() > 0){
-                    springView.setVisibility(View.VISIBLE);
-                    frameLayout.setVisibility(View.GONE);
-                    setAdapter(false);
-                }else{
-                    springView.setVisibility(View.INVISIBLE);
-                    frameLayout.setVisibility(View.VISIBLE);
-                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(dataBeanList.size() > 0){
+                        springView.setVisibility(View.VISIBLE);
+                        frameLayout.setVisibility(View.GONE);
+                        setAdapter(false);
+                    }else{
+                        springView.setVisibility(View.INVISIBLE);
+                        frameLayout.setVisibility(View.VISIBLE);
+                        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setAdapter(final boolean isLoadMore) {
@@ -174,29 +176,33 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     @Override
     public void loadMoreSuccess(PreparingLessonsBean bean) {
         dataBeanList.addAll(bean.getContent().getData());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setAdapter(true);
-            }
-        });
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setAdapter(true);
+                }
+            });
+        }
     }
 
     @Override
     public void error(final int errorCode, final boolean isLoadMore) {
-        getActivity().runOnUiThread(new Runnable() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void run() {
-                springView.onFinishFreshAndLoad();
-                springView.setVisibility(View.GONE);
-                frameLayout.setVisibility(View.VISIBLE);
-                getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
-                if(Constants.OTHER_ERROR_CODE == errorCode){
-                    LoadFailUtil.initDialogToLogin(getActivity());
+        if(null != getActivity()){
+            getActivity().runOnUiThread(new Runnable() {
+                @SuppressLint("RestrictedApi")
+                @Override
+                public void run() {
+                    springView.onFinishFreshAndLoad();
+                    springView.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
+                    if(Constants.OTHER_ERROR_CODE == errorCode){
+                        LoadFailUtil.initDialogToLogin(getActivity());
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void onStatusFilterSelect(int planStatus) {
