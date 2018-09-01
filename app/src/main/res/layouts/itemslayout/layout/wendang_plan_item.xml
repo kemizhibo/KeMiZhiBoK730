@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp">
+    android:layout_height="30dp"
+    android:background="#f0f0f0">
 
     <TextView
         android:id="@+id/mword"
@@ -9,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/picxiugaiword"
-        android:text="这是上传的WORD版文档" />
+        android:text="这是上传的WORD版文档"
+        android:textColor="#000000"/>
 
     <ImageView
         android:id="@+id/picxiugaiword"

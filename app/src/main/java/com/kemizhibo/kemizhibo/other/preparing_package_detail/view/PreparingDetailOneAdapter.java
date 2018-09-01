@@ -114,13 +114,12 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         Log.i("---onekeysize--", oneKeyBeanList.size() + "");
         // 获取当前条目的类型
         int itemViewType = getItemViewType(position);
-        final MyViewHolder holder;
-        ImageView icon = null;
+        MyViewHolder holder = null;
         // PreparingPackageDetailBean.ContentBean.MaterialBean materialBean = material.get(position);
         if (convertView == null) {
-            holder = new MyViewHolder();
             switch (itemViewType) {
                 case TYPE_WENDANG://文档
+                    holder = new MyViewHolder();
                     convertView = View.inflate(context, R.layout.wendang_item, null);
                     holder.mwendang = (TextView) convertView.findViewById(R.id.mword);
                     holder.mcheck = (TextView) convertView.findViewById(R.id.mcheck);
@@ -128,24 +127,29 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     convertView.setTag(holder);
                     break;
                 case TYPE_PPT://ppt
+                    holder = new MyViewHolder();
                     convertView = View.inflate(context, R.layout.ppt_item, null);
-                    icon = convertView.findViewById(R.id.tianjia_icon);
+                    holder.icon = convertView.findViewById(R.id.tianjia_icon);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mcheckppt = (TextView) convertView.findViewById(R.id.mcheckppt);
                     holder.mdownppt = (TextView) convertView.findViewById(R.id.mdownppt);
                     convertView.setTag(holder);
                     break;
                 case TYPE_PUPIAN://图片
+                    holder = new MyViewHolder();
                     convertView = View.inflate(context, R.layout.tupian_item, null);
                     holder.miv = (SimpleDraweeView) convertView.findViewById(R.id.mimage);
                     holder.madjsucai = (TextView) convertView.findViewById(R.id.adj);
+                    holder.title = (TextView) convertView.findViewById(R.id.title);
                     convertView.setTag(holder);
                     break;
                 case TYPE_SHIPIN://视频
+                    holder = new MyViewHolder();
                     convertView = View.inflate(context, R.layout.shipin_item, null);
                     holder.jcVideoPlayer = (JZVideoPlayerStandard) convertView.findViewById(R.id.jc);
                     holder.madj = (TextView) convertView.findViewById(R.id.adj);
                     holder.mbtn = (Button) convertView.findViewById(R.id.btn);
+                    holder.title = (TextView) convertView.findViewById(R.id.title_111);
                     convertView.setTag(holder);
                     break;
                /* case TYPE_MAKE://在线制作
@@ -159,6 +163,8 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         } else {
             holder = (MyViewHolder) convertView.getTag();
         }
+
+        final MyViewHolder myViewHolder = holder;
         Log.i("---itemViewType--", "" + itemViewType);
         if (itemViewType == TYPE_SHIPIN) {
             courseId = oneKeyBeanList.get(position).getCourseId();
@@ -170,6 +176,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             getPlayUrl(context, holder.jcVideoPlayer, courseId, oneKeyBeanList.get(position).getKpointId());
             //holder.jcVideoPlayer.thumbImageView.setImageURI(Uri.parse(oneKeyBeanList.get(position).getVideoLogo()));
             loadLogo(oneKeyBeanList.get(position).getVideoLogo(), holder.jcVideoPlayer);
+            holder.title.setText(oneKeyBeanList.get(position).getDocName());
             holder.mbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -182,9 +189,9 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             });
         } else if (itemViewType == TYPE_PPT) {
             if(2 == oneKeyBeanList.get(position).getIsRepeatAdd()){
-                icon.setImageResource(R.drawable.yitianjia);
+                holder.icon.setImageResource(R.drawable.yitianjia);
             }
-            final ImageView icon2 = icon;
+            final ImageView icon2 = holder.icon;
             moduleId = oneKeyBeanList.get(position).getModuleId();
             //RequestUtil.requestPPT((Activity) context, holder.mppt, holder.mcheckppt, holder.mdownppt, 3, moduleId);
             holder.mppt.setText(oneKeyBeanList.get(position).getDocName());
@@ -202,7 +209,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 holder.mdownppt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RequestUtil.requestSuCaiAdd((Activity) context, oneKeyBeanList.get(position).getCourseId(), oneKeyBeanList.get(position).getDocName(), 3, oneKeyBeanList.get(position).getContentIds(), icon2, holder.mdownppt);
+                        RequestUtil.requestSuCaiAdd((Activity) context, oneKeyBeanList.get(position).getCourseId(), oneKeyBeanList.get(position).getDocName(), 3, oneKeyBeanList.get(position).getContentIds(), icon2, myViewHolder.mdownppt);
                     }
                 });
             }
@@ -222,7 +229,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    holder.mdown.setText("已下载");
+                                    myViewHolder.mdown.setText("已下载");
                                 }
                             });
                         }

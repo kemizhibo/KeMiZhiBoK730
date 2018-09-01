@@ -64,6 +64,8 @@ public class MyFragment extends Fragment {
     private String logo;
     private String introduce;
     private int kpiontId;
+    private String title;
+    private TextView titleText;
 
     @Nullable
     @Override
@@ -79,6 +81,7 @@ public class MyFragment extends Fragment {
             jzVideoPlayerStandard = convertView.findViewById(R.id.jcVideoPlayer_video);
             adjshipin = convertView.findViewById(R.id.adj);
             btn = convertView.findViewById(R.id.btn);
+            titleText = convertView.findViewById(R.id.title_222);
         }
 
         return convertView;
@@ -102,6 +105,8 @@ public class MyFragment extends Fragment {
         /*jzVideoPlayerStandard.setUp(url
                 , 1, "");*/
         kpiontId = arguments.getInt("kpointId");
+        title = arguments.getString("title");
+        titleText.setText(title);
         loadLogo();
         getPlayUrl(getActivity(), jzVideoPlayerStandard, courseid, kpiontId);
         adjshipin.setText(TextUtils.isEmpty(introduce) ? "暂无" : introduce);

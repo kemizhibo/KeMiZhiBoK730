@@ -2,6 +2,7 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.bean;
 
 import android.support.v4.view.ViewPager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,4 +22,6 @@ public  class MyViewHolder {
     public  SimpleDraweeView miv,simpledraweeview_pic;
     public  LinearLayout mlinearLayout;
     public  ViewPager mviewPager,mshipinviewpager;
+    public  TextView title;
+    public ImageView icon;
 }

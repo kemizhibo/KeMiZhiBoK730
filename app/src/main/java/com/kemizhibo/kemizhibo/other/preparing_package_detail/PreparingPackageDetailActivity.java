@@ -189,5 +189,10 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         if(null != detailPresenter)
             detailPresenter.getPreparingPackageDetailData();;
     }
+
+    public void onAddComplete() {
+        if(null != detailPresenter)
+            detailPresenter.getPreparingPackageDetailData();
+    }
 }
 

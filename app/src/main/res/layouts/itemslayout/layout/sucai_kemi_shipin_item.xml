@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/res_300dp"
+    android:layout_height="280dp"
     android:background="#000000">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/kemi_shipinviewpager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/res_300dp"></android.support.v4.view.ViewPager>
+        android:layout_height="280dp"></android.support.v4.view.ViewPager>
 
 
 </RelativeLayout>

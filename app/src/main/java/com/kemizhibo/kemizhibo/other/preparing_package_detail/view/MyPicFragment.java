@@ -37,6 +37,8 @@ public class MyPicFragment extends Fragment {
     private int courseid;
     private String url;
     private String introduce;
+    private String title;
+    private TextView titleText;
 
     @Nullable
     @Override
@@ -45,6 +47,7 @@ public class MyPicFragment extends Fragment {
         simpleDraweeView = view.findViewById(R.id.simpledraweeview_pic);
         adjPic = view.findViewById(R.id.adj);
         btn = view.findViewById(R.id.btn);
+        titleText = view.findViewById(R.id.title_333);
         return view;
     }
 
@@ -56,6 +59,8 @@ public class MyPicFragment extends Fragment {
         courseid = arguments.getInt("courseid");
         url = arguments.getString("url");
         introduce = arguments.getString("introduce");
+        title = arguments.getString("title");
+        titleText.setText(title);
         //RequestUtil.requestSuCaiPic((Activity) getContext(), moduleId,6,simpleDraweeView);
         simpleDraweeView.setImageURI(url);
         adjPic.setText(TextUtils.isEmpty(introduce) ? "暂无" : introduce);

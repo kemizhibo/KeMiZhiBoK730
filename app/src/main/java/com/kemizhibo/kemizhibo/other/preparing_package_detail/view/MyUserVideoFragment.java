@@ -44,6 +44,8 @@ public class MyUserVideoFragment extends Fragment {
     private String url;
     private String logo;
     private String introduce;
+    private String title;
+    private TextView titleText;
 
     @Nullable
     @Override
@@ -52,6 +54,7 @@ public class MyUserVideoFragment extends Fragment {
         jzVideoPlayerStandard = view.findViewById(R.id.jcVideoPlayer_video);
         adjshipin = view.findViewById(R.id.adj);
         btn = view.findViewById(R.id.btn);
+        titleText = view.findViewById(R.id.title_222);
         return view;
     }
 
@@ -65,6 +68,8 @@ public class MyUserVideoFragment extends Fragment {
         //loadLogo();
         logo = arguments.getString("logo");
         introduce = arguments.getString("introduce");
+        title = arguments.getString("title");
+        titleText.setText(title);
         /*if (usercourseid !=0){
             RequestUtil.requestSuCaiVideo((Activity) getContext(), usercourseid,jzVideoPlayerStandard);
         }*/

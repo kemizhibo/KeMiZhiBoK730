@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.MyViewpagerAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.SampleObserver;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.view.WordShowActivity;
@@ -391,6 +392,10 @@ public class RequestUtil {
                             ToastUtils.showToast("添加成功");
                             mdownppt1.setText("已添加");
                             icon2.setImageResource(R.drawable.yitianjia);
+                            PreparingPackageDetailActivity activity = (PreparingPackageDetailActivity) context;
+                            if(null != activity){
+                                activity.onAddComplete();
+                            }
                         }
                     });
                 }

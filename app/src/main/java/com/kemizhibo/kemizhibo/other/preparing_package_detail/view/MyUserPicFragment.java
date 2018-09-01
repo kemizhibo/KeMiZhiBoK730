@@ -36,6 +36,8 @@ public class MyUserPicFragment extends Fragment {
     private int courseid;
     private String url;
     private String introduce;
+    private String title;
+    private TextView titleText;
 
     @Nullable
     @Override
@@ -44,6 +46,7 @@ public class MyUserPicFragment extends Fragment {
         simpleDraweeView = view.findViewById(R.id.simpledraweeview_pic);
         adjPic = view.findViewById(R.id.adj);
         btn = view.findViewById(R.id.btn);
+        titleText = view.findViewById(R.id.title_333);
         return view;
     }
 
@@ -55,6 +58,8 @@ public class MyUserPicFragment extends Fragment {
         courseid = arguments.getInt("courseid");
         url = arguments.getString("url");
         introduce = arguments.getString("introduce");
+        title = arguments.getString("title");
+        titleText.setText(title);
 
         Log.i("userpiccouseid",courseid+"");
         adjPic.setText(TextUtils.isEmpty(introduce) ? "暂无" : introduce);

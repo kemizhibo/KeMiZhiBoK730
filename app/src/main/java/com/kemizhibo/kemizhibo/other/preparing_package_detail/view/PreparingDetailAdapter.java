@@ -88,6 +88,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             bundle.putInt("kpointId", kemiVideo.get(position).getKpointId());
                             bundle.putString("logo", kemiVideo.get(position).getVideoLogo());
                             bundle.putString("introduce", kemiVideo.get(position).getVideoIntroduce());
+                            bundle.putString("title", kemiVideo.get(position).getDocName());
                             myFragment.setArguments(bundle);
                             return myFragment;
                         }
@@ -134,7 +135,8 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             bundle.putInt("courseid", kemiPic.get(position).getCourseId());
                             bundle.putInt("moduleid", kemiPic.get(position).getModuleId());
                             bundle.putString("url", kemiPic.get(position).getUrl());
-                            bundle.putString("introduce", kemiPic.get(position).getVideoIntroduce());
+                            bundle.putString("introduce", kemiPic.get(position).getIntroduce());
+                            bundle.putString("title", kemiPic.get(position).getDocName());
                             myFragment.setArguments(bundle);
                             return myFragment;
                         }
@@ -338,6 +340,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             bundle.putString("url", userVideo.get(position).getUrl());
                             bundle.putString("logo", userVideo.get(position).getUserVideoLogo());
                             bundle.putString("introduce", userVideo.get(position).getIntroduce());
+                            bundle.putString("title", userVideo.get(position).getDocName());
                             myFragment.setArguments(bundle);
                             return myFragment;
                         }
@@ -379,6 +382,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             bundle.putInt("moduleid", userPic.get(position).getModuleId());
                             bundle.putString("url", userPic.get(position).getUrl());
                             bundle.putString("introduce", userPic.get(position).getIntroduce());
+                            bundle.putString("title", userPic.get(position).getDocName());
                             myFragment.setArguments(bundle);
                             return myFragment;
                         }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp">
+    android:layout_height="30dp"
+    android:background="#F0F0F0">
     <RelativeLayout
         android:id="@+id/logo"
         android:layout_width="40dp"
@@ -20,7 +21,8 @@
         android:id="@+id/mppt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="这是上传的PPT版文档" />
+        android:text="这是上传的PPT版文档"
+        android:textColor="#000000"/>
 
     <RelativeLayout
         android:id="@+id/logodown"
