@@ -2,6 +2,7 @@ package com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
@@ -20,7 +21,6 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.LiuLanBean;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimeH;
-import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,6 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
 
     private static final int MYLIVE_MODE_CHECK = 0;
     int mEditMode = MYLIVE_MODE_CHECK;
-
     private Context context;
     private List<LiuLanBean.ContentBean.DataBean> mMyLiveList;
     private OnItemClickListener mOnItemClickListener;
@@ -79,7 +78,9 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final LiuLanBean.ContentBean.DataBean myLive = mMyLiveList.get(holder.getAdapterPosition());
         //填充值
-        Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.itemLiulanPhoto);
+        SimpleDraweeView simpleDraweeView = holder.itemLiulanPhoto;
+        simpleDraweeView.setImageURI(Uri.parse(myLive.getCourse().getLogo()));
+        //Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.itemLiulanPhoto);
         holder.itemLiulanTitle.setText(myLive.getCourse().getCourseName());
         holder.itemLiulanTime.setText(myLive.getWatchTime());
         if (myLive.getCourse().getIsImageText() == 1) {
@@ -186,8 +187,6 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.check_box)
         ImageView checkBox;
-        @BindView(R.id.item_liulan_photo)
-        ImageView itemLiulanPhoto;
         @BindView(R.id.item_liulan_title)
         TextView itemLiulanTitle;
         @BindView(R.id.item_liulan_state)
@@ -198,6 +197,8 @@ public class LiuLanAdapter extends RecyclerView.Adapter<LiuLanAdapter.ViewHolder
         Button itemLiulanButn;
         @BindView(R.id.collection_box_tuji)
         ImageView collectionBoxTuji;
+        @BindView(R.id.item_liulan_photo)
+        SimpleDraweeView itemLiulanPhoto;
 
         public ViewHolder(View itemView) {
             super(itemView);

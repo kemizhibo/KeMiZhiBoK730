@@ -17,7 +17,7 @@ public class GetLikeBean {
 
     private int code;
     private String message;
-    private Object content;
+    private String content;
     private Object otherData;
 
     public int getCode() {
@@ -36,11 +36,11 @@ public class GetLikeBean {
         this.message = message;
     }
 
-    public Object getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(Object content) {
+    public void setContent(String content) {
         this.content = content;
     }
 

@@ -2,16 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
     <RelativeLayout
         android:id="@+id/relativelayout"
         android:layout_width="@dimen/res_287.5dp"
         android:layout_height="@dimen/res_160dp">
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/collection_box_recyclerview_imageview"
-            android:layout_width="@dimen/res_287.5dp"
-            android:layout_height="@dimen/res_160dp"
-            android:scaleType="fitXY"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/res_5dp"
+            fresco:roundedCornerRadius="@dimen/x10"
+            fresco:placeholderImage="@mipmap/milier"
+            fresco:failureImage="@mipmap/milier"/>
         <ImageView
             android:id="@+id/collection_box_play_butn"
             android:layout_centerInParent="true"

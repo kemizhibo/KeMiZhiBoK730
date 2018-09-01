@@ -1,6 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.utils.immersion.GlideRoundTransform;
@@ -29,7 +31,6 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
 
     private static final int MYLIVE_MODE_CHECK = 0;
     int mEditMode = MYLIVE_MODE_CHECK;
-
     private Context context;
     private List<CollectionBoxBean.ContentBean.DataBean> mMyLiveList;
     private OnItemClickListener mOnItemClickListener;
@@ -70,13 +71,15 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final CollectionBoxBean.ContentBean.DataBean myLive = mMyLiveList.get(holder.getAdapterPosition());
         //填充值
-        Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.collectionBoxRecyclerviewImageview);
+        SimpleDraweeView simpleDraweeView = holder.collectionBoxRecyclerviewImageview;
+        simpleDraweeView.setImageURI(Uri.parse(myLive.getCourse().getLogo()));
+        //Glide.with(context).load(myLive.getCourse().getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(context, 5)).into(holder.collectionBoxRecyclerviewImageview);
         holder.collectionBoxItemTitle.setText(myLive.getCourse().getCourseName());
         if (myLive.getCourse().getIsImageText() == 0) {
             holder.collectionBoxTuji.setVisibility(View.GONE);
             holder.collectionBoxPlayButn.setVisibility(View.VISIBLE);
-        }else {
-            if (myLive.getCourse().getIsImageText() == 1){
+        } else {
+            if (myLive.getCourse().getIsImageText() == 1) {
                 holder.collectionBoxPlayButn.setVisibility(View.GONE);
                 holder.collectionBoxTuji.setVisibility(View.VISIBLE);
             }
@@ -113,8 +116,6 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.collection_box_recyclerview_imageview)
-        ImageView collectionBoxRecyclerviewImageview;
         @BindView(R.id.collection_box_item_title)
         TextView collectionBoxItemTitle;
         @BindView(R.id.check_box)
@@ -123,6 +124,8 @@ public class CollectionBoxAdapter extends RecyclerView.Adapter<CollectionBoxAdap
         ImageView collectionBoxPlayButn;
         @BindView(R.id.collection_box_tuji)
         ImageView collectionBoxTuji;
+        @BindView(R.id.collection_box_recyclerview_imageview)
+        SimpleDraweeView collectionBoxRecyclerviewImageview;
 
         public ViewHolder(View itemView) {
             super(itemView);

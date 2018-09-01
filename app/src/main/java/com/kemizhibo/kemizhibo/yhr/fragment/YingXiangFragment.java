@@ -9,8 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -19,7 +17,6 @@ import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterMaterialAdapter;
@@ -30,7 +27,6 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangFragmentBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.FilterPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
@@ -108,6 +104,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         ButterKnife.bind(this, view);
         //影像素材展示列表的方法
         initYingXiangFragmentData();
+        isFlag=true;
         return view;
     }
 
@@ -148,14 +145,12 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         });
         yinxiangRecyclerview.setAdapter(yingXiangFragmentAdapter);
         itemCount = yingXiangFragmentAdapter.getItemCount();
-        LogUtils.i("上拉下拉当前条目数量2",itemCount+"");
         yinxiangSpring.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtils.i("刚进来下拉没","下来了");
                         materialEdition="";
                         subjectId="";
                         semester="";
@@ -176,14 +171,12 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtils.i("刚进来下拉没","上拉了");
                         isUp = 2;
                         currentPage++;
                         sp = getContext().getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
                         filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", String.valueOf(currentPage), "10", materialEdition, subjectId, semester, knowledgeId);
                         isFlag = true;
-                        LogUtils.i("123456",String.valueOf(currentPage));
                         yinxiangSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -227,7 +220,6 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         LinearLayoutManager imgScienceManage = new LinearLayoutManager(getContext());
         imgScienceManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         yingxiangShaixuanFenleiRecyclerview.setLayoutManager(imgScienceManage);
-        //LogUtils.e("data.size()",data.size()+"");
         filterImgScienceAdapter = new FilterImgScienceAdapter(R.layout.shaixuan_fenlei_item, filterImgSciencedata);
         filterImgScienceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -260,7 +252,6 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         LinearLayoutManager semesterManage = new LinearLayoutManager(getContext());
         semesterManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         yingxiangShaixuanXueqiRecyclerview.setLayoutManager(semesterManage);
-        //LogUtils.e("data.size()",data.size()+"");
         filterSemesterAdapter = new FilterSemesterAdapter(R.layout.shaixuan_xueqi_item, filterSemesterdata);
         filterSemesterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -293,7 +284,6 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         LinearLayoutManager gradeManage = new LinearLayoutManager(getContext());
         gradeManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         yingxiangShaixuanNianjiRecyclerview.setLayoutManager(gradeManage);
-        //LogUtils.e("data.size()",data.size()+"");
         filterGradeAdapter = new FilterGradeAdapter(R.layout.shaixuan_nianji_item, filterGradedata);
         filterGradeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -326,7 +316,6 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         LinearLayoutManager materialManage = new LinearLayoutManager(getContext());
         materialManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         yingxiangShaixuanJiaocaiRecyclerview.setLayoutManager(materialManage);
-        //LogUtils.e("data.size()",data.size()+"");
         filterMaterialAdapter = new FilterMaterialAdapter(R.layout.shaixuanjiaocai_item, filterMaterialdata);
         filterMaterialAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -381,50 +370,33 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         if (yingXiangFragmentBean.getCode()==0){
             if (isUp == 1) {
                 yingXiangFragmentdata.clear();
-                LogUtils.i("上拉下拉","1");
                 yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
-                LogUtils.i("上拉下拉","2");
                 if (yingXiangFragmentdata.size()==0){
                     setState(LoadingPager.LoadResult.empty);
-                    LogUtils.i("上拉下拉","3");
                 }else {
                     setState(LoadingPager.LoadResult.success);
-                    LogUtils.i("上拉下拉","4");
                     if (isFlag) {
                         yingXiangFragmentAdapter.notifyDataSetChanged();
-                        LogUtils.i("上拉下拉","5");
                     }
                 }
             } else if (isUp == 2) {
                 if (itemCount>=yingXiangFragmentBean.getContent().getTotal()){
-                    LogUtils.i("上拉下拉当前条目数量1",itemCount+"");
-                    /*if (isUp==1){
-                        yingXiangFragmentdata.clear();
-                    }*/
-                    LogUtils.i("上拉下拉","6");
                     ToastUtils.showToast("没有更多数据");
                 }else {
                     yingXiangFragmentdata.addAll(yingXiangFragmentBean.getContent().getData());
-                    LogUtils.i("上拉下拉","7");
                     yingXiangFragmentAdapter.notifyDataSetChanged();
-                    LogUtils.i("上拉下拉","8");
-                    LogUtils.i("上拉下拉","9");
                     if (yingXiangFragmentdata.size()==0){
                         setState(LoadingPager.LoadResult.empty);
-                        LogUtils.i("上拉下拉","10");
                     }else {
                         setState(LoadingPager.LoadResult.success);
-                        LogUtils.i("上拉下拉","11");
                         if (isFlag) {
                             yingXiangFragmentAdapter.notifyDataSetChanged();
-                            LogUtils.i("上拉下拉","12");
                         }
                     }
                 }
             }
         }else {
             setState(LoadingPager.LoadResult.error);
-            LogUtils.i("上拉下拉","13");
             Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
         }
     }

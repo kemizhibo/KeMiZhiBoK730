@@ -34,6 +34,8 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean.ContentBean.Dat
         helper.addOnClickListener(R.id.comment_dianzan_layout);
         if (item.getPraiseHistory()==1){
             helper.getView(R.id.comment_dianzan).setBackgroundResource(R.mipmap.getlike_select_2);
+        }else {
+            helper.getView(R.id.comment_dianzan).setBackgroundResource(R.mipmap.dianzan_2);
         }
     }
 }

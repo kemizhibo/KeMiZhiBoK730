@@ -35,7 +35,8 @@ public class MyApplication extends App {
         super.onCreate();
         initApplicationComponent();
         mHandler = new Handler();
-        CrashReport.initCrashReport(getApplicationContext(), "f7e4244a8d", true);
+        //CrashReport.initCrashReport(getApplicationContext(), "f7e4244a8d", true);
+        CrashReport.initCrashReport(getApplicationContext(), "", true);
     }
 
     /**
