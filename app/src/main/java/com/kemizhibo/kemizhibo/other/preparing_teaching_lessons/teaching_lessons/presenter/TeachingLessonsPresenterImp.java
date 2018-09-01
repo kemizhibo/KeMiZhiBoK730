@@ -83,8 +83,8 @@ public class TeachingLessonsPresenterImp implements TeachingLessonsPresenter {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 TeachingLessonsBean bean = GsonUtils.getBean(response.body().string(), TeachingLessonsBean.class);
-                if(bean != null && "0".equals(bean.getCode())){
-                    teachingLessonsView.refreshSuccess(bean);
+                if(bean != null && 0 == bean.getCode()){
+                    teachingLessonsView.loadMoreSuccess(bean);
                 }else if(0 != bean.getCode()){
                     teachingLessonsView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{

@@ -84,8 +84,8 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 PreparingLessonsBean bean = GsonUtils.getBean(response.body().string(), PreparingLessonsBean.class);
-                if(bean != null && "0".equals(bean.getCode())){
-                    preparingLessonsView.refreshSuccess(bean);
+                if(bean != null && 0 == bean.getCode()){
+                    preparingLessonsView.loadMoreSuccess(bean);
                 }else if(0 != bean.getCode()){
                     preparingLessonsView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{

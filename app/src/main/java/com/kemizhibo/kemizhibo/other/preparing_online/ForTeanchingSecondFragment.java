@@ -42,8 +42,9 @@ import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDet
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.liaoinstan.springview.container.AliFooter;
+import com.liaoinstan.springview.container.AliHeader;
+import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,8 +62,8 @@ import butterknife.OnClick;
  */
 
 public class ForTeanchingSecondFragment extends BaseFragment implements PreparingOnlineView, CommonView {
-    @BindView(R.id.refreshLayout)
-    RefreshLayout refreshLayout;
+    @BindView(R.id.spring_view)
+    SpringView springView;
     @BindView(R.id.list_view)
     ListView listView;
     @BindView(R.id.forteaching_shaixuan_imageview)
@@ -164,15 +165,18 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     }
 
     private void initView() {
-        refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
+        springView.setType(SpringView.Type.FOLLOW);
+        springView.setHeader(new AliHeader(getActivity(), R.drawable.ali, true));
+        springView.setFooter(new AliFooter(getActivity(), true));
+        springView.setListener(new SpringView.OnFreshListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh() {
                 initialize();
                 presenter.refresh();
             }
 
             @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+            public void onLoadmore() {
                 presenter.loadMore();
             }
         });
@@ -304,7 +308,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         getActivity().runOnUiThread(new Runnable() {
         @Override
         public void run() {
-            refreshLayout.finishRefresh();
+            springView.onFinishFreshAndLoad();
             if(dataBeanList.size() > 0){
                 setState(LoadingPager.LoadResult.success);
                 secondL.setVisibility(View.VISIBLE);
@@ -332,7 +336,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                refreshLayout.finishLoadMore();
+                springView.onFinishFreshAndLoad();
                 setAdapter();
             }
         });
@@ -345,11 +349,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             public void run() {
                 setState(LoadingPager.LoadResult.error);
                 secondL.setVisibility(View.INVISIBLE);
-                if(isLoadMore){
-                    refreshLayout.finishLoadMore();
-                }else{
-                    refreshLayout.finishRefresh();
-                }
+                springView.onFinishFreshAndLoad();
                 if(Constants.OTHER_ERROR_CODE == errorCode){
                     if(Constants.OTHER_ERROR_CODE == errorCode){
                         LoadFailUtil.initDialogToLogin(getActivity());

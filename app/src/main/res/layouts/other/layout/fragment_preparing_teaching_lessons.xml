@@ -13,19 +13,10 @@
 
     </FrameLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
-        android:visibility="invisible"
+    <com.liaoinstan.springview.widget.SpringView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlAccentColor="#fff"
-        app:srlPrimaryColor="#444"
-        app:srlEnablePreviewInEditMode="false">
-
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srlClassicsSpinnerStyle="Translate"/>
+        android:id="@+id/spring_view">
 
         <ListView
             android:id="@+id/list_view"
@@ -36,10 +27,5 @@
 
         </ListView>
 
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srlClassicsSpinnerStyle="Translate"/>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </com.liaoinstan.springview.widget.SpringView>
 </RelativeLayout>

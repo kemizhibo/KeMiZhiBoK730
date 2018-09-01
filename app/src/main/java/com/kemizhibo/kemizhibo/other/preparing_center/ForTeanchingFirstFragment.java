@@ -35,9 +35,12 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDe
 import com.kemizhibo.kemizhibo.other.utils.FilterPopUtils;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.liaoinstan.springview.container.AliFooter;
+import com.liaoinstan.springview.container.AliHeader;
+import com.liaoinstan.springview.container.DefaultHeader;
+import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +62,8 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     ImageView forteachingShaixuanImageview;
     @BindView(R.id.forteaching_shaixuan_butn)
     RelativeLayout forteachingShaixuanButn;
-    @BindView(R.id.refreshLayout)
-    RefreshLayout refreshLayout;
+    @BindView(R.id.spring_view)
+    SpringView springView;
     @BindView(R.id.grid_view)
     GridView gridView;
     @BindView(R.id.first_ll)
@@ -131,16 +134,18 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                 startActivity(intent);
             }
         });
-        refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
+        springView.setType(SpringView.Type.FOLLOW);
+        springView.setHeader(new AliHeader(getActivity(), R.drawable.ali, true));
+        springView.setFooter(new AliFooter(getActivity(), true));
+        springView.setListener(new SpringView.OnFreshListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh() {
                 initialize();
                 presenter.refresh();
             }
 
             @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                initialize();
+            public void onLoadmore() {
                 presenter.loadMore();
             }
         });
@@ -221,7 +226,8 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                refreshLayout.finishRefresh();
+                springView.onFinishFreshAndLoad();
+                ToastUtils.showToast("refresh" + dataBeanList.size());
                 if(dataBeanList.size() > 0){
                     setState(LoadingPager.LoadResult.success);
                     firstL.setVisibility(View.VISIBLE);
@@ -230,7 +236,6 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                     setState(LoadingPager.LoadResult.empty);
                     firstL.setVisibility(View.INVISIBLE);
                 }
-
             }
         });
     }
@@ -250,7 +255,8 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                refreshLayout.finishLoadMore();
+                ToastUtils.showToast("load" + dataBeanList.size());
+                springView.onFinishFreshAndLoad();
                 setAdapter();
             }
         });
@@ -261,13 +267,10 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ToastUtils.showToast(String.valueOf(errorCode));
                 setState(LoadingPager.LoadResult.error);
                 firstL.setVisibility(View.INVISIBLE);
-                if(isLoadMore){
-                    refreshLayout.finishLoadMore();
-                }else{
-                    refreshLayout.finishRefresh();
-                }
+                springView.onFinishFreshAndLoad();
                 if(Constants.OTHER_ERROR_CODE == errorCode){
                     LoadFailUtil.initDialogToLogin(getActivity());
                 }

@@ -33,9 +33,9 @@ import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.liaoinstan.springview.container.AliFooter;
+import com.liaoinstan.springview.container.AliHeader;
+import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +50,8 @@ import butterknife.ButterKnife;
  */
 @SuppressLint("RestrictedApi")
 public class PreparingLessonsFragment extends Fragment implements PreparingLessonsView{
-    @BindView(R.id.refreshLayout)
-    RefreshLayout refreshLayout;
+    @BindView(R.id.spring_view)
+    SpringView springView;
     @BindView(R.id.list_view)
     ListView listView;
     @BindView(R.id.frame_layout)
@@ -82,21 +82,21 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        refreshLayout.setOnRefreshListener(new OnRefreshLoadMoreListener() {
+        springView.setType(SpringView.Type.FOLLOW);
+        springView.setHeader(new AliHeader(getActivity(), R.drawable.ali, true));
+        springView.setFooter(new AliFooter(getActivity(), true));
+        springView.setListener(new SpringView.OnFreshListener() {
             @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                userId = "0";
-                startTime = "";
-                planStatus = 0;
-                presenter.loadMorePreparingLessonsData();
-            }
-
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh() {
                 userId = "0";
                 startTime = "";
                 planStatus = 0;
                 presenter.refreshPreparingLessonsData();
+            }
+
+            @Override
+            public void onLoadmore() {
+                presenter.loadMorePreparingLessonsData();
             }
         });
         presenter.refreshPreparingLessonsData();
@@ -145,33 +145,15 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     public void refreshSuccess(PreparingLessonsBean bean) {
         dataBeanList.clear();
         dataBeanList.addAll(bean.getContent().getData());
-        setAdapter(false);
-    }
-
-    private void setAdapter(final boolean isLoadMore) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(isLoadMore){
-                    refreshLayout.finishLoadMore();
-                }else{
-                    refreshLayout.finishRefresh();
-                    if(frameLayout.getVisibility() == View.VISIBLE){
-                        frameLayout.setVisibility(View.GONE);
-                        SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
-                        smartRefreshLayout.setVisibility(View.VISIBLE);
-                    }
-                }
                 if(dataBeanList.size() > 0){
-                    if(adapter == null){
-                        adapter = new PreparingLessonsListAdapter(getActivity(), dataBeanList);
-                        listView.setAdapter(adapter);
-                    }else{
-                        adapter.notifyDataSetChanged();
-                    }
+                    springView.setVisibility(View.VISIBLE);
+                    frameLayout.setVisibility(View.GONE);
+                    setAdapter(false);
                 }else{
-                    SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
-                    smartRefreshLayout.setVisibility(View.GONE);
+                    springView.setVisibility(View.INVISIBLE);
                     frameLayout.setVisibility(View.VISIBLE);
                     getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
                 }
@@ -179,10 +161,25 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
         });
     }
 
+    private void setAdapter(final boolean isLoadMore) {
+        springView.onFinishFreshAndLoad();
+        if(adapter == null){
+            adapter = new PreparingLessonsListAdapter(getActivity(), dataBeanList);
+            listView.setAdapter(adapter);
+        }else{
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void loadMoreSuccess(PreparingLessonsBean bean) {
         dataBeanList.addAll(bean.getContent().getData());
-        setAdapter(true);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setAdapter(true);
+            }
+        });
     }
 
     @Override
@@ -191,13 +188,8 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
-                if(isLoadMore){
-                    refreshLayout.finishLoadMore();
-                }else{
-                    refreshLayout.finishRefresh();
-                }
-                SmartRefreshLayout smartRefreshLayout = (SmartRefreshLayout) refreshLayout;
-                smartRefreshLayout.setVisibility(View.GONE);
+                springView.onFinishFreshAndLoad();
+                springView.setVisibility(View.GONE);
                 frameLayout.setVisibility(View.VISIBLE);
                 getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
                 if(Constants.OTHER_ERROR_CODE == errorCode){
@@ -209,12 +201,14 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
 
     public void onStatusFilterSelect(int planStatus) {
         this.planStatus = planStatus;
-        presenter.refreshPreparingLessonsData();
+        if(null != presenter)
+            presenter.refreshPreparingLessonsData();
     }
 
     public void onManagerFilterSelect(int userId, String time) {
         this.userId = String.valueOf(userId);
         this.startTime = time;
-        presenter.refreshPreparingLessonsData();
+        if(null != presenter)
+            presenter.refreshPreparingLessonsData();
     }
 }

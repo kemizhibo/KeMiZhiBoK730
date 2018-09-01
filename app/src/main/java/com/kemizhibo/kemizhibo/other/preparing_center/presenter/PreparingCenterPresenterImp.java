@@ -9,6 +9,9 @@ import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
 import com.kemizhibo.kemizhibo.other.preparing_center.view.PreparingCenterView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.utils.NetUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -84,10 +87,10 @@ public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, final Response response) throws IOException {
                 PreparingCenterBean bean = GsonUtils.getBean(response.body().string(), PreparingCenterBean.class);
-                if(null != bean && "0".equals(bean.getCode())){
-                    preparingCenterView.refreshSuccess(bean);
+                if(null != bean && 0 == bean.getCode()){
+                    preparingCenterView.loadMoreSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
                     preparingCenterView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{
