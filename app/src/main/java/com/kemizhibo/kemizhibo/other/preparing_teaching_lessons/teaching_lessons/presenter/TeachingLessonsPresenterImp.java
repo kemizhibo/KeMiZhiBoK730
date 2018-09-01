@@ -57,7 +57,7 @@ public class TeachingLessonsPresenterImp implements TeachingLessonsPresenter {
                     pageNum = DEFAULT_PAGE_NUM;
                     teachingLessonsView.refreshSuccess(bean);
                 }else if(0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) teachingLessonsView.getCustomContext());
+                    teachingLessonsView.error(Constants.OTHER_ERROR_CODE, false);
                 }else{
                     teachingLessonsView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -86,7 +86,7 @@ public class TeachingLessonsPresenterImp implements TeachingLessonsPresenter {
                 if(bean != null && "0".equals(bean.getCode())){
                     teachingLessonsView.refreshSuccess(bean);
                 }else if(0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) teachingLessonsView.getCustomContext());
+                    teachingLessonsView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{
                     teachingLessonsView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

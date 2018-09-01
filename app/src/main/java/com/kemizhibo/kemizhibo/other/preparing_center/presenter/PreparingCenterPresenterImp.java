@@ -59,7 +59,7 @@ public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
                     pageNum = DEFAULT_PAGE_NUM;
                     preparingCenterView.refreshSuccess(bean);
                 }else if(0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) preparingCenterView.getCustomContext());
+                    preparingCenterView.error(Constants.OTHER_ERROR_CODE, false);
                 }else{
                     preparingCenterView.error(Constants.REQUEST_ERROR_CODE, false);
                 }
@@ -89,7 +89,7 @@ public class PreparingCenterPresenterImp implements PreparingCenterPresenter {
                 if(null != bean && "0".equals(bean.getCode())){
                     preparingCenterView.refreshSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) preparingCenterView.getCustomContext());
+                    preparingCenterView.error(Constants.OTHER_ERROR_CODE, true);
                 }else{
                     preparingCenterView.error(Constants.REQUEST_ERROR_CODE, true);
                 }

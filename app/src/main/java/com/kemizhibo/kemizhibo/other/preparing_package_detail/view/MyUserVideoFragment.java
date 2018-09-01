@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kemizhibo.kemizhibo.R;
@@ -112,12 +113,17 @@ public class MyUserVideoFragment extends Fragment {
 
             @Override
             protected void onPostExecute(final Bitmap bitmap) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
-                    }
-                });
+                if(null != getActivity()){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(null != jzVideoPlayerStandard){
+                                jzVideoPlayerStandard.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                                jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+                            }
+                        }
+                    });
+                }
             }
         }.execute();
     }

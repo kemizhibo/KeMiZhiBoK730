@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.bdocreader.BDocInfo;
@@ -364,7 +365,7 @@ public class RequestUtil {
     }
 
 
-    public static void requestSuCaiAdd(final Activity context, int finalCourseId, String finalDocName, int i, String contentIds, final TextView mdownppt1) {
+    public static void requestSuCaiAdd(final Activity context, int finalCourseId, String finalDocName, int i, String contentIds, final ImageView icon2, final TextView mdownppt1) {
         Map map = new HashMap();
         map.put(Constants.COURSE_ID, String.valueOf(finalCourseId));
         map.put(Constants.DOCNAME, finalDocName);
@@ -388,7 +389,8 @@ public class RequestUtil {
                         @Override
                         public void run() {
                             ToastUtils.showToast("添加成功");
-                            mdownppt1.setText("已加入授课");
+                            mdownppt1.setText("已添加");
+                            icon2.setImageResource(R.drawable.yitianjia);
                         }
                     });
                 }

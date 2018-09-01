@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -31,7 +30,6 @@ import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -117,6 +115,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         // 获取当前条目的类型
         int itemViewType = getItemViewType(position);
         final MyViewHolder holder;
+        ImageView icon = null;
         // PreparingPackageDetailBean.ContentBean.MaterialBean materialBean = material.get(position);
         if (convertView == null) {
             holder = new MyViewHolder();
@@ -130,6 +129,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     break;
                 case TYPE_PPT://ppt
                     convertView = View.inflate(context, R.layout.ppt_item, null);
+                    icon = convertView.findViewById(R.id.tianjia_icon);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mcheckppt = (TextView) convertView.findViewById(R.id.mcheckppt);
                     holder.mdownppt = (TextView) convertView.findViewById(R.id.mdownppt);
@@ -181,6 +181,10 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 }
             });
         } else if (itemViewType == TYPE_PPT) {
+            if(2 == oneKeyBeanList.get(position).getIsRepeatAdd()){
+                icon.setImageResource(R.drawable.yitianjia);
+            }
+            final ImageView icon2 = icon;
             moduleId = oneKeyBeanList.get(position).getModuleId();
             //RequestUtil.requestPPT((Activity) context, holder.mppt, holder.mcheckppt, holder.mdownppt, 3, moduleId);
             holder.mppt.setText(oneKeyBeanList.get(position).getDocName());
@@ -193,12 +197,15 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
-            holder.mdownppt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RequestUtil.requestSuCaiAdd((Activity) context, oneKeyBeanList.get(position).getCourseId(), oneKeyBeanList.get(position).getDocName(), 3, oneKeyBeanList.get(position).getContentIds(), holder.mdownppt);
-                }
-            });
+            holder.mdownppt.setText(2 == oneKeyBeanList.get(position).getIsRepeatAdd() ? "已添加" : "加入授课");
+            if(2 != oneKeyBeanList.get(position).getIsRepeatAdd()){
+                holder.mdownppt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RequestUtil.requestSuCaiAdd((Activity) context, oneKeyBeanList.get(position).getCourseId(), oneKeyBeanList.get(position).getDocName(), 3, oneKeyBeanList.get(position).getContentIds(), icon2, holder.mdownppt);
+                    }
+                });
+            }
         } else if (itemViewType == TYPE_WENDANG) {
             moduleId = oneKeyBeanList.get(position).getModuleId();
             //RequestUtil.requestDoc((Activity) context, holder.mwendang, holder.mdown, holder.mcheck, 1, moduleId);
@@ -291,14 +298,18 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                             UIUtils.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    jcVideoPlayer.setUp(url, 1, "");
+                                    if(null != context){
+                                        jcVideoPlayer.setUp(url, 1, "");
+                                    }
                                 }
                             });
                         }else{
                             UIUtils.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                    if(null != context){
+                                        Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             });
                         }
@@ -306,7 +317,9 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                         UIUtils.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                if(null != context){
+                                    Toast.makeText(context, "获取视频播放地址失败", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }
@@ -347,8 +360,10 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 UIUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        jzVideoPlayerStandard.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+                        if(null != context && null != jzVideoPlayerStandard){
+                            jzVideoPlayerStandard.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                            jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+                        }
                     }
                 });
             }

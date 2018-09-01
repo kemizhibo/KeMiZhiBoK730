@@ -22,6 +22,7 @@ import com.androidkun.xtablayout.XTabLayout;
 import com.kemizhibo.kemizhibo.BuildConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.presenter.PreparingPackageDetailPresenter;
@@ -149,11 +150,14 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
 
     @Override
-    public void error(String operate, String errorCode) {
+    public void error(String operate, final String errorCode) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
+                if(String.valueOf(Constants.OTHER_ERROR_CODE ).equals(errorCode)){
+                    LoadFailUtil.initDialogToLogin(PreparingPackageDetailActivity.this);
+                }
             }
         });
     }
@@ -179,6 +183,11 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         frameLayout.setVisibility(View.VISIBLE);
         getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
         detailPresenter.getPreparingPackageDetailData();
+    }
+
+    public void onPlanDelComplete() {
+        if(null != detailPresenter)
+            detailPresenter.getPreparingPackageDetailData();;
     }
 }
 

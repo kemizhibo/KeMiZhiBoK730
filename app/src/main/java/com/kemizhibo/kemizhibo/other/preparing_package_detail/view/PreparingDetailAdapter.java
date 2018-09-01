@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baidu.bdocreader.BDocInfo;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
@@ -30,10 +27,7 @@ import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil.getDocMessage;
 
 /**
  * Created by asus on 2018/8/1.
@@ -171,9 +165,16 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 if (null != kemiPpt && kemiPpt.size() > 0) {
                     for (PreparingPackageDetailBean.ContentBean.DataBean kpt : kemiPpt) {
                         View view2 = View.inflate(context, R.layout.ppt_item, null);
+                        ImageView icon = null;
+                        icon = view2.findViewById(R.id.tianjia_icon);
+                        if(2 == kpt.getIsRepeatAdd()){
+                            icon.setImageResource(R.drawable.yitianjia);
+                        }
+                        final ImageView icon2 = icon;
                         TextView mppt = (TextView) view2.findViewById(R.id.mppt);
                         TextView mcheckppt = (TextView) view2.findViewById(R.id.mcheckppt);
                         final TextView mdownppt = (TextView) view2.findViewById(R.id.mdownppt);
+                        mdownppt.setText(2 == kpt.getIsRepeatAdd() ? "已添加" : "加入授课");
                         mlinearLayout.addView(view2);
                         final int courseId = kpt.getCourseId();
                         int moduleId = kpt.getModuleId();
@@ -190,12 +191,14 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //getDocMessage((Activity) context, String.valueOf(mkpt.getDocId()), null, 3, true);
                             }
                         });
-                        mdownppt.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                RequestUtil.requestSuCaiAdd((Activity) context, courseId, docName, 3, contentIds, mdownppt);
-                            }
-                        });
+                        if(2 != kpt.getIsRepeatAdd()){
+                            mdownppt.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    RequestUtil.requestSuCaiAdd((Activity) context, courseId, docName, 3, contentIds, icon2, mdownppt);
+                                }
+                            });
+                        }
                     }
                 }
 
@@ -407,9 +410,16 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 if (null != userPpt && userPpt.size() > 0) {
                     for (final PreparingPackageDetailBean.ContentBean.DataBean upt : userPpt) {
                         View view7 = View.inflate(context, R.layout.ppt_item, null);
+                        ImageView icn = null;
+                        icn = view7.findViewById(R.id.tianjia_icon);
+                        if(2 == upt.getIsRepeatAdd()){
+                            icn.setImageResource(R.drawable.yitianjia);
+                        }
+                        final ImageView icon2 = icn;
                         TextView mPpt = (TextView) view7.findViewById(R.id.mppt);
                         final TextView mCheckppt = (TextView) view7.findViewById(R.id.mcheckppt);
                         final TextView mdownppt1 = (TextView) view7.findViewById(R.id.mdownppt);
+                        mdownppt1.setText(2 == upt.getIsRepeatAdd() ? "已添加" : "加入授课");
                         mlinearLayout.addView(view7);
                         final int courseId1 = upt.getCourseId();
                         final int moduleId1 = upt.getModuleId();
@@ -427,12 +437,14 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //getDocMessage((Activity) context, String.valueOf(mupt.getDocId()), mCheckppt, 3, true);
                             }
                         });
-                        mdownppt1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                RequestUtil.requestSuCaiAdd((Activity) context, courseId1, docName1, 3, contentIds1, mdownppt1);
-                            }
-                        });
+                        if(2 != upt.getIsRepeatAdd()){
+                            mdownppt1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    RequestUtil.requestSuCaiAdd((Activity) context, courseId1, docName1, 3, contentIds1, icon2, mdownppt1);
+                                }
+                            });
+                        }
                     }
                 }
 

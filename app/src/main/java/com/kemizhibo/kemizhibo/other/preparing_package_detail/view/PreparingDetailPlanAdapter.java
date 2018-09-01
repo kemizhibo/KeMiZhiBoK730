@@ -16,6 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPPTBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
@@ -158,7 +159,12 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DEL_URL, map), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "删除失败", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
@@ -170,9 +176,11 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "删除成功", Toast.LENGTH_LONG).show();
-                            planBeanList.remove(position);
-                            notifyDataSetChanged();
+                        Toast.makeText(context, "删除成功", Toast.LENGTH_LONG).show();
+                        PreparingPackageDetailActivity activity = (PreparingPackageDetailActivity) context;
+                        if(null != activity){
+                            activity.onPlanDelComplete();
+                        }
                         }
                     });
                 }

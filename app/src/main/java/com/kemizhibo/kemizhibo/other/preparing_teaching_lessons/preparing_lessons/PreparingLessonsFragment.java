@@ -19,6 +19,7 @@ import android.widget.ListView;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.load.LoadingEmptyFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingErrorFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
@@ -185,7 +186,7 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     }
 
     @Override
-    public void error(int errorCode, final boolean isLoadMore) {
+    public void error(final int errorCode, final boolean isLoadMore) {
         getActivity().runOnUiThread(new Runnable() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -199,6 +200,9 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 smartRefreshLayout.setVisibility(View.GONE);
                 frameLayout.setVisibility(View.VISIBLE);
                 getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
+                if(Constants.OTHER_ERROR_CODE == errorCode){
+                    LoadFailUtil.initDialogToLogin(getActivity());
+                }
             }
         });
     }

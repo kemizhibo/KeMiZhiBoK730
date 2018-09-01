@@ -54,7 +54,7 @@ public class PreparingPackageDetailPresenterImp implements PreparingPackageDetai
                 if(null != bean && 0 == bean.getCode()){
                     detailView.getPreparingPackageDetailDataSuccess(bean);
                 }else if(null != bean && 0 != bean.getCode()){
-                    LoadFailUtil.initDialogToLogin((Activity) detailView.getCustomContext());
+                    detailView.error("", String.valueOf(Constants.OTHER_ERROR_CODE));
                 }else{
                     detailView.error("", String.valueOf(Constants.REQUEST_ERROR_CODE));
                 }
