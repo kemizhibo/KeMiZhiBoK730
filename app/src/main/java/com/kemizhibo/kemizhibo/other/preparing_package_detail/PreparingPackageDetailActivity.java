@@ -23,6 +23,7 @@ import com.kemizhibo.kemizhibo.BuildConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
+import com.kemizhibo.kemizhibo.other.load.LoadingErrorFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.presenter.PreparingPackageDetailPresenter;
@@ -70,6 +71,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     private PreparingPackageDetailPresenter detailPresenter;
     private int courseId;
     Handler mHandler = new Handler();
+    private LoadingFragment loadingFragment;
+    private LoadingErrorFragment loadingErrorFragment;
     //private PreparingDetailAdapter preparingDetailAdapter;
 
     @Override
@@ -79,6 +82,16 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
 
     @Override
     protected void initData() {
+        loadingFragment = new LoadingFragment();
+        loadingErrorFragment = new LoadingErrorFragment();
+        loadingErrorFragment.setListener(new LoadingErrorFragment.OnErrorPageCickListener() {
+            @Override
+            public void onErrorPageClick() {
+                if(null != detailPresenter){
+                    detailPresenter.getPreparingPackageDetailData();
+                }
+            }
+        });
         bindTitleBar();
         detailPresenter = new PreparingPackageDetailPresenterImp(this);
        // detailPresenter.getPreparingPackageDetailData();
@@ -128,6 +141,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void run() {
+                    mdetailescrollView.setVisibility(View.VISIBLE);
                     frameLayout.setVisibility(View.GONE);
                     PreparingDetailOneAdapter preparingDetailOneAdapter = new PreparingDetailOneAdapter(PreparingPackageDetailActivity.this, bean.getContent().getOneKey());
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
@@ -154,7 +168,9 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
+                mdetailescrollView.setVisibility(View.INVISIBLE);
+                frameLayout.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, loadingErrorFragment).commit();
                 if(String.valueOf(Constants.OTHER_ERROR_CODE ).equals(errorCode)){
                     LoadFailUtil.initDialogToLogin(PreparingPackageDetailActivity.this);
                 }
@@ -181,19 +197,30 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         super.onResume();
         Log.i("--hhhhh--", "====hhhhhh");
         frameLayout.setVisibility(View.VISIBLE);
-        getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
+        mdetailescrollView.setVisibility(View.INVISIBLE);
+        getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
         if(null != detailPresenter)
             detailPresenter.getPreparingPackageDetailData();
     }
 
     public void onPlanDelComplete() {
-        if(null != detailPresenter)
+        if(null != detailPresenter){
+            frameLayout.setVisibility(View.VISIBLE);
+            mdetailescrollView.setVisibility(View.INVISIBLE);
+            getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
             detailPresenter.getPreparingPackageDetailData();;
+        }
+
+
     }
 
     public void onAddComplete() {
-        if(null != detailPresenter)
-            detailPresenter.getPreparingPackageDetailData();
+        if(null != detailPresenter){
+            frameLayout.setVisibility(View.VISIBLE);
+            mdetailescrollView.setVisibility(View.INVISIBLE);
+            getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
+            detailPresenter.getPreparingPackageDetailData();;
+        }
     }
 }
 

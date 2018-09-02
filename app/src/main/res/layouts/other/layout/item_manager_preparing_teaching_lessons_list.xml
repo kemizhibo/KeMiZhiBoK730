@@ -10,13 +10,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x117"
+        android:layout_height="@dimen/res_117.5dp"
         android:background="@drawable/bg_preparing_teaching_lessons_list_item">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/logo"
-            android:layout_width="@dimen/x175"
-            android:layout_height="@dimen/x105"
+            android:layout_width="@dimen/res_175dp"
+            android:layout_height="@dimen/res_109dp"
             android:layout_marginLeft="@dimen/x5"
             fresco:roundedCornerRadius="@dimen/x10"
             android:layout_marginTop="@dimen/x6"

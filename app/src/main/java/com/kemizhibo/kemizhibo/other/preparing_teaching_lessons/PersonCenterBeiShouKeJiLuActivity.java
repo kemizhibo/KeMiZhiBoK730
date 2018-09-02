@@ -69,8 +69,6 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
     private CommonPresenter commonPresenter;//
     private int roleId;//用来判断是管理者还是一般用户
     private List<String> statusList;//状态筛选的集合
-    private PreparingLessonsFragment preparingLessonsFragment;
-    private TeachingLessonsFragment teachingLessonsFragment;
     private PopupWindow statusFilterPop;//
     private TimePickerView pvTime;//日期筛选控件对象
     private Calendar selectCalendar;
@@ -148,8 +146,8 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
         endYear = endDate.get(Calendar.YEAR);
         selectCalendar = endDate;
         fragments = new ArrayList();
-        preparingLessonsFragment = new PreparingLessonsFragment();
-        teachingLessonsFragment = new TeachingLessonsFragment();
+        PreparingLessonsFragment preparingLessonsFragment = new PreparingLessonsFragment();
+        TeachingLessonsFragment teachingLessonsFragment = new TeachingLessonsFragment();
         fragments.add(preparingLessonsFragment);
         fragments.add(teachingLessonsFragment);
         titles = new ArrayList<>();
@@ -160,8 +158,10 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
             titles.add("备课记录");
             titles.add("授课记录");
         }
+        tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(titles.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(titles.get(1)));
+        viewPager.removeAllViews();
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Nullable
             @Override
@@ -209,6 +209,11 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
         monthSelectIndex = monthItems.size();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void showDateFilterPop() {
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
@@ -218,7 +223,13 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 Log.d("PersonCenterBeiShouKeJi", time);
                 if(currentIndex == 1){
                     //selectCalendar.setTime(date);
-                    teachingLessonsFragment.onDateFilterSelect(time);
+                    try{
+                        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+                        TeachingLessonsFragment fragment = (TeachingLessonsFragment) fragmentList.get(1);
+                        fragment.onDateFilterSelect(time);
+                    }catch (Exception e){
+
+                    }
                 }
             }
         })
@@ -295,7 +306,15 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 if(null != statusFilterPop && statusFilterPop.isShowing()){
                     statusFilterPop.dismiss();
                 }
-                preparingLessonsFragment.onStatusFilterSelect(position);
+                if(currentIndex == 0){
+                    try{
+                        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+                        PreparingLessonsFragment fragment = (PreparingLessonsFragment) fragmentList.get(0);
+                        fragment.onStatusFilterSelect(position);
+                    }catch (Exception e){
+
+                    }
+                }
             }
         });
         statusFilterPop = new PopupWindow(this);
@@ -346,10 +365,17 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
 
                 }
                 String time = year + "-" + monthStr;
-                if(currentIndex == 0){
-                    preparingLessonsFragment.onManagerFilterSelect(userId, time);
-                }else{
-                    teachingLessonsFragment.onManagerFilterSelect(userId, time);
+                try{
+                    List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+                    if(currentIndex == 0){
+                        PreparingLessonsFragment fragment= (PreparingLessonsFragment) fragmentList.get(0);
+                        fragment.onManagerFilterSelect(userId, time);
+                    }else{
+                        TeachingLessonsFragment fragment = (TeachingLessonsFragment) fragmentList.get(1);
+                        fragment.onManagerFilterSelect(userId, time);
+                    }
+                }catch (Exception e){
+
                 }
                 Log.d("PersonCenterBeiShouKeJi", "userId:" + userId);
                 Log.d("PersonCenterBeiShouKeJi", time);

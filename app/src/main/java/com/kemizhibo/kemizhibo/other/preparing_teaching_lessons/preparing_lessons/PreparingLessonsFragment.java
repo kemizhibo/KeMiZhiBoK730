@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,6 +33,8 @@ import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -63,13 +66,9 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     private String startTime = "";
     private String userId = "0";
     private int roleId;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, context);
-        presenter = new PreparingLessonsPresenterImp(this);
-    }
+    private LoadingEmptyFragment loadingEmptyFragment;
+    private LoadingErrorFragment loadingErrorFragment;
+    private LoadingFragment loadingFragment;
 
     @Nullable
     @Override
@@ -79,9 +78,26 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
         return view;
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        loadingFragment = new LoadingFragment();
+        loadingEmptyFragment = new LoadingEmptyFragment();
+        loadingErrorFragment = new LoadingErrorFragment();
+        loadingErrorFragment.setListener(new LoadingErrorFragment.OnErrorPageCickListener() {
+            @Override
+            public void onErrorPageClick() {
+                if(null != presenter){
+                    springView.setVisibility(View.INVISIBLE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
+                    presenter.refreshPreparingLessonsData();
+                }
+            }
+        });
+        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, getActivity());
+        presenter = new PreparingLessonsPresenterImp(this);
         springView.setType(SpringView.Type.FOLLOW);
         springView.setHeader(new AliHeader(getActivity(), R.drawable.ali, true));
         springView.setFooter(new AliFooter(getActivity(), true));
@@ -101,7 +117,7 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
         });
         presenter.refreshPreparingLessonsData();
         frameLayout.setVisibility(View.VISIBLE);
-        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingFragment()).commit();
+        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -156,7 +172,7 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                     }else{
                         springView.setVisibility(View.INVISIBLE);
                         frameLayout.setVisibility(View.VISIBLE);
-                        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingEmptyFragment()).commit();
+                        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingEmptyFragment).commit();
                     }
                 }
             });
@@ -194,11 +210,20 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 @Override
                 public void run() {
                     springView.onFinishFreshAndLoad();
-                    springView.setVisibility(View.GONE);
-                    frameLayout.setVisibility(View.VISIBLE);
-                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, new LoadingErrorFragment()).commit();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
+                        springView.setVisibility(View.VISIBLE);
+                        frameLayout.setVisibility(View.GONE);
                         LoadFailUtil.initDialogToLogin(getActivity());
+                    }else{
+                        if(dataBeanList.size() > 0 ){
+                            springView.setVisibility(View.VISIBLE);
+                            frameLayout.setVisibility(View.GONE);
+                            ToastUtils.showToast("网络中断，请检查您的网络状态");
+                        }else{
+                            springView.setVisibility(View.GONE);
+                            frameLayout.setVisibility(View.VISIBLE);
+                            getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingErrorFragment).commit();
+                        }
                     }
                 }
             });

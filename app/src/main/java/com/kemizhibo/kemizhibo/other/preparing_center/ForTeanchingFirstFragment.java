@@ -108,6 +108,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     @Override
     public void load() {
         setState(LoadingPager.LoadResult.success);
+        presenter.refresh();
     }
 
 
@@ -149,7 +150,6 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                 presenter.loadMore();
             }
         });
-        presenter.refresh();
     }
 
     public void initialize(){
@@ -228,7 +228,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                 @Override
                 public void run() {
                     springView.onFinishFreshAndLoad();
-                    ToastUtils.showToast("refresh" + dataBeanList.size());
+                    //ToastUtils.showToast("refresh" + dataBeanList.size());
                     if(dataBeanList.size() > 0){
                         setState(LoadingPager.LoadResult.success);
                         firstL.setVisibility(View.VISIBLE);
@@ -258,7 +258,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ToastUtils.showToast("load" + dataBeanList.size());
+                    //ToastUtils.showToast("load" + dataBeanList.size());
                     springView.onFinishFreshAndLoad();
                     setAdapter();
                 }
@@ -272,12 +272,25 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ToastUtils.showToast(String.valueOf(errorCode));
-                    setState(LoadingPager.LoadResult.error);
-                    firstL.setVisibility(View.INVISIBLE);
-                    springView.onFinishFreshAndLoad();
+                    //ToastUtils.showToast(String.valueOf(errorCode));
+                    if(null != firstL)
+                        firstL.setVisibility(View.INVISIBLE);
+                    if(null != springView)
+                        springView.onFinishFreshAndLoad();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
+                        setState(LoadingPager.LoadResult.success);
+                        if(null != firstL)
+                            firstL.setVisibility(View.VISIBLE);
                         LoadFailUtil.initDialogToLogin(getActivity());
+                    }else{
+                        if(dataBeanList.size() > 0){
+                            setState(LoadingPager.LoadResult.success);
+                            if(null != firstL)
+                                firstL.setVisibility(View.VISIBLE);
+                            ToastUtils.showToast("网络中断，请检查您的网络状态");
+                        }else{
+                            setState(LoadingPager.LoadResult.error);
+                        }
                     }
                 }
             });

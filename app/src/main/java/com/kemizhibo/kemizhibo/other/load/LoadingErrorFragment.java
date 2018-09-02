@@ -15,9 +15,27 @@ import com.kemizhibo.kemizhibo.R;
  */
 
 public class LoadingErrorFragment extends Fragment {
+    private OnErrorPageCickListener listener;
+
+    public void setListener(OnErrorPageCickListener listener) {
+        this.listener = listener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return View.inflate(getActivity(), R.layout.loading_error_page, null);
+        View view = View.inflate(getActivity(), R.layout.loading_error_page, null);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null != listener)
+                    listener.onErrorPageClick();
+            }
+        });
+        return view;
+    }
+
+    public interface OnErrorPageCickListener{
+        void onErrorPageClick();
     }
 }

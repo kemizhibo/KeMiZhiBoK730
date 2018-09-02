@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity">
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-    </FrameLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <include layout="@layout/pubic_title_bar" />
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+        </FrameLayout>
 
         <ScrollView
             android:id="@+id/detaile_scrollView"

@@ -41,6 +41,7 @@ import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -352,12 +353,23 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    setState(LoadingPager.LoadResult.error);
-                    secondL.setVisibility(View.INVISIBLE);
-                    springView.onFinishFreshAndLoad();
+                    if(null != secondL)
+                        secondL.setVisibility(View.INVISIBLE);
+                    if(null != springView)
+                        springView.onFinishFreshAndLoad();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
-                        if(Constants.OTHER_ERROR_CODE == errorCode){
-                            LoadFailUtil.initDialogToLogin(getActivity());
+                        setState(LoadingPager.LoadResult.success);
+                        if(null != secondL)
+                            secondL.setVisibility(View.VISIBLE);
+                        LoadFailUtil.initDialogToLogin(getActivity());
+                    }else{
+                        if(dataBeanList.size() > 0){
+                            setState(LoadingPager.LoadResult.success);
+                            if(null != secondL)
+                                secondL.setVisibility(View.VISIBLE);
+                            ToastUtils.showToast("网络中断，请检查您的网络状态");
+                        }else{
+                            setState(LoadingPager.LoadResult.error);
                         }
                     }
                 }
