@@ -68,6 +68,8 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     ScrollView mdetailescrollView;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
+    @BindView(R.id.make_img)
+    ImageView makeImg;
     private PreparingPackageDetailPresenter detailPresenter;
     private int courseId;
     Handler mHandler = new Handler();
@@ -143,6 +145,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                 public void run() {
                     mdetailescrollView.setVisibility(View.VISIBLE);
                     frameLayout.setVisibility(View.GONE);
+                    makeImg.setVisibility(View.VISIBLE);
                     PreparingDetailOneAdapter preparingDetailOneAdapter = new PreparingDetailOneAdapter(PreparingPackageDetailActivity.this, bean.getContent().getOneKey());
                     Log.i("---onekey-", bean.getContent().getOneKey().size() + "");
                     listViewone.setAdapter(preparingDetailOneAdapter);
@@ -170,6 +173,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
             public void run() {
                 mdetailescrollView.setVisibility(View.INVISIBLE);
                 frameLayout.setVisibility(View.VISIBLE);
+                makeImg.setVisibility(View.GONE);
                 getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, loadingErrorFragment).commit();
                 if(String.valueOf(Constants.OTHER_ERROR_CODE ).equals(errorCode)){
                     LoadFailUtil.initDialogToLogin(PreparingPackageDetailActivity.this);

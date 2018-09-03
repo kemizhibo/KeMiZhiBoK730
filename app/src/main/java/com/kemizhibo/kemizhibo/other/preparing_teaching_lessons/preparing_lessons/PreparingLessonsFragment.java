@@ -52,13 +52,13 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/8/1.
  */
 @SuppressLint("RestrictedApi")
-public class PreparingLessonsFragment extends Fragment implements PreparingLessonsView{
+public class PreparingLessonsFragment extends BaseFragment implements PreparingLessonsView{
     @BindView(R.id.spring_view)
     SpringView springView;
     @BindView(R.id.list_view)
     ListView listView;
-    @BindView(R.id.frame_layout)
-    FrameLayout frameLayout;
+    /*@BindView(R.id.frame_layout)
+    FrameLayout frameLayout;*/
     private int planStatus = 0;
     private List<PreparingLessonsBean.ContentBean.DataBean> dataBeanList = new ArrayList<>();
     private PreparingLessonsListAdapter adapter;
@@ -70,18 +70,28 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
     private LoadingErrorFragment loadingErrorFragment;
     private LoadingFragment loadingFragment;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = UIUtils.inflate(getActivity(), R.layout.fragment_preparing_teaching_lessons);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, getActivity());
+        presenter = new PreparingLessonsPresenterImp(this);
+    }
+
+    @Override
+    public int getEmptyPageLayoutId() {
+
+        return 0;
+    }
+
+    @Override
+    public View createSuccessView() {
+        View view = UIUtils.inflate(mActivity, R.layout.fragment_preparing_teaching_lessons);
         ButterKnife.bind(this, view);
+        init();
         return view;
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void init() {
         loadingFragment = new LoadingFragment();
         loadingEmptyFragment = new LoadingEmptyFragment();
         loadingErrorFragment = new LoadingErrorFragment();
@@ -90,14 +100,12 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
             public void onErrorPageClick() {
                 if(null != presenter){
                     springView.setVisibility(View.INVISIBLE);
-                    frameLayout.setVisibility(View.VISIBLE);
-                    getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
+                    //frameLayout.setVisibility(View.VISIBLE);
+                    //getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
                     presenter.refreshPreparingLessonsData();
                 }
             }
         });
-        roleId = PreferencesUtils.getIntValue(Constants.ROLE_ID, getActivity());
-        presenter = new PreparingLessonsPresenterImp(this);
         springView.setType(SpringView.Type.FOLLOW);
         springView.setHeader(new AliHeader(getActivity(), R.drawable.ali, true));
         springView.setFooter(new AliFooter(getActivity(), true));
@@ -115,9 +123,9 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 presenter.loadMorePreparingLessonsData();
             }
         });
-        presenter.refreshPreparingLessonsData();
-        frameLayout.setVisibility(View.VISIBLE);
-        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
+
+        //frameLayout.setVisibility(View.VISIBLE);
+        //getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,6 +140,20 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void load() {
+        setState(LoadingPager.LoadResult.success);
+        presenter.refreshPreparingLessonsData();
+    }
+
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        show();
     }
 
 
@@ -167,12 +189,14 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 public void run() {
                     if(dataBeanList.size() > 0){
                         springView.setVisibility(View.VISIBLE);
-                        frameLayout.setVisibility(View.GONE);
+                        //frameLayout.setVisibility(View.GONE);
+                        setState(LoadingPager.LoadResult.success);
                         setAdapter(false);
                     }else{
                         springView.setVisibility(View.INVISIBLE);
-                        frameLayout.setVisibility(View.VISIBLE);
-                        getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingEmptyFragment).commit();
+                        setState(LoadingPager.LoadResult.empty);
+                        //frameLayout.setVisibility(View.VISIBLE);
+                        //getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingEmptyFragment).commit();
                     }
                 }
             });
@@ -196,6 +220,7 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    setState(LoadingPager.LoadResult.success);
                     setAdapter(true);
                 }
             });
@@ -209,20 +234,26 @@ public class PreparingLessonsFragment extends Fragment implements PreparingLesso
                 @SuppressLint("RestrictedApi")
                 @Override
                 public void run() {
-                    springView.onFinishFreshAndLoad();
+                    if(null != springView)
+                        springView.onFinishFreshAndLoad();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
-                        springView.setVisibility(View.VISIBLE);
-                        frameLayout.setVisibility(View.GONE);
+                        if(null != springView)
+                            springView.setVisibility(View.VISIBLE);
+                        //frameLayout.setVisibility(View.GONE);
+                        setState(LoadingPager.LoadResult.success);
                         LoadFailUtil.initDialogToLogin(getActivity());
                     }else{
                         if(dataBeanList.size() > 0 ){
-                            springView.setVisibility(View.VISIBLE);
-                            frameLayout.setVisibility(View.GONE);
+                            if(null != springView)
+                                springView.setVisibility(View.VISIBLE);
+                            //frameLayout.setVisibility(View.GONE);
                             ToastUtils.showToast("网络中断，请检查您的网络状态");
                         }else{
-                            springView.setVisibility(View.GONE);
-                            frameLayout.setVisibility(View.VISIBLE);
-                            getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingErrorFragment).commit();
+                            if(null != springView)
+                                springView.setVisibility(View.GONE);
+                            setState(LoadingPager.LoadResult.error);
+                            //frameLayout.setVisibility(View.VISIBLE);
+                            //getChildFragmentManager().openTransaction().replace(R.id.frame_layout, loadingErrorFragment).commit();
                         }
                     }
                 }
