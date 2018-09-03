@@ -17,6 +17,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
@@ -55,7 +56,6 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
     public GetLoginPresenterImpl getTokenPresenter;
 
     //登陆
-    private LoginBean loginContentBean;
     private String name;
     private String pwd;
     private Intent intent;
@@ -146,6 +146,16 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
 
     @Override
     public void onUserError(String msg) {
+
+    }
+
+    @Override
+    public void onVersionInformationSuccess(VersionInformationBean versionInformationBean) {
+
+    }
+
+    @Override
+    public void onVersionInformationError(String msg) {
 
     }
 

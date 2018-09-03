@@ -102,7 +102,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         builder.detectFileUriExposure();
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
-        courseId = 2832;
+        //courseId = 2832;
     }
 
     private void bindTitleBar() {

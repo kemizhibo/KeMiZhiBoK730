@@ -29,12 +29,12 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import butterknife.BindView;
@@ -106,7 +106,6 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
         return view;
     }
 
-
     @Override
     public void load() {
         setState(LoadingPager.LoadResult.success);
@@ -151,20 +150,22 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     }
 
     private void initDialogToLogin() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog dialog = builder
-                .setView(R.layout.alertdialog_login)
-                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (NoFastClickUtils.isFastClick()) {
-                        }else {
-                            Intent intent = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                        }
-                    }
-                }).create();
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            }
+                        })
+                        .build();
         dialog.setCancelable(false);
         dialog.show();
         Window window = dialog.getWindow();

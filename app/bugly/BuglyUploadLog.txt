@@ -6,3 +6,15 @@ file=C:\Users\17600\Desktop\KeMiZhiBoK730\app\build\outputs\mapping\release\mapp
 sha1=d581639be94faadab9e9644148b068eeedf2ee13
 appId=f7e4244a8d
 
+file=C:\Users\17600\Desktop\KeMiZhiBoK730\app\build\outputs\mapping\release\mapping.txt
+sha1=d581639be94faadab9e9644148b068eeedf2ee13
+appId=f7e4244a8d
+
+file=C:\Users\17600\Desktop\KeMiZhiBoK730\app\build\outputs\mapping\release\mapping.txt
+sha1=d581639be94faadab9e9644148b068eeedf2ee13
+appId=f7e4244a8d
+
+file=C:\Users\17600\Desktop\KeMiZhiBoK730\app\build\outputs\mapping\release\mapping.txt
+sha1=d581639be94faadab9e9644148b068eeedf2ee13
+appId=f7e4244a8d
+

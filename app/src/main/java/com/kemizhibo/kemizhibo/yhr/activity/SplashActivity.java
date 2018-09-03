@@ -10,6 +10,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
@@ -86,6 +87,16 @@ public class SplashActivity extends BaseMvpActivity<GetLoginPresenterImpl> imple
 
     @Override
     public void onUserError(String msg) {
+
+    }
+
+    @Override
+    public void onVersionInformationSuccess(VersionInformationBean versionInformationBean) {
+
+    }
+
+    @Override
+    public void onVersionInformationError(String msg) {
 
     }
 

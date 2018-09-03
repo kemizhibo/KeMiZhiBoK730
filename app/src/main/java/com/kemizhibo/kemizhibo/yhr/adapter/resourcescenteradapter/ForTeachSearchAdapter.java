@@ -31,7 +31,4 @@ public class ForTeachSearchAdapter extends BaseQuickAdapter<ForTeachSearchBean.C
         Glide.with(mContext).load(item.getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.search_recyclerview_imageview));
         helper.setText(R.id.search_item_title, item.getCourseName());
     }
-
-
-
 }

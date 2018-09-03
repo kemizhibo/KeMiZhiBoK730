@@ -52,6 +52,7 @@
             android:id="@+id/yanzhengma"
             android:maxLength="4"
             android:theme="@style/MyEditText"
+            android:inputType="number"
             android:layout_marginLeft="@dimen/res_30dp"
             android:layout_width="@dimen/res_137dp"
             android:layout_height="wrap_content"

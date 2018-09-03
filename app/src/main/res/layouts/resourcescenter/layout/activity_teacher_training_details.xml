@@ -8,14 +8,19 @@
         android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="@dimen/res_375dp" >
+    </com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView>
+    <RelativeLayout
+        android:id="@+id/video_back_butn"
+        android:layout_marginTop="@dimen/res_25dp"
+        android:layout_marginLeft="@dimen/res_20dp"
+        android:layout_width="@dimen/res_50dp"
+        android:layout_height="@dimen/res_50dp">
         <ImageView
-            android:id="@+id/video_back_butn"
-            android:layout_marginTop="@dimen/res_20dp"
-            android:layout_marginLeft="@dimen/res_20dp"
+            android:layout_centerInParent="true"
             android:layout_width="@dimen/res_20dp"
             android:layout_height="@dimen/res_20dp"
             android:src="@mipmap/fanhui"/>
-    </com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView>
+    </RelativeLayout>
     <ScrollView
         android:layout_below="@+id/player"
         android:layout_above="@+id/pinglun_layout"

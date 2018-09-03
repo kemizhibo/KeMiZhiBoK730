@@ -14,4 +14,7 @@ public interface GetLoginPresenter extends BasePresenter<LoginView> {
     void getLoginData(BaseActivity activity, String account, String password);
     //获取用户信息
     void getUserData(BaseActivity activity,String token);
+
+    //版本信息
+    void getVersionInformationData(BaseActivity activity);
 }

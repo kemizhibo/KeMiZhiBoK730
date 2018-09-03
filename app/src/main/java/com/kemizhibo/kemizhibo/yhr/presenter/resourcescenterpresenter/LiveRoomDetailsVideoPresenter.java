@@ -17,4 +17,8 @@ public interface LiveRoomDetailsVideoPresenter extends BasePresenter<LiveRoomDet
 
     //获取视频地址
     void getLiveRoomDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
+    void getLiveRoomDetailsVideoUrlData2(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
+    void getLiveRoomDetailsVideoUrlData3(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
+    void getLiveRoomDetailsVideoUrlData4(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
+
 }

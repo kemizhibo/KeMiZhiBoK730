@@ -1,21 +1,34 @@
 package com.kemizhibo.kemizhibo.yhr.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
-import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
-import com.kemizhibo.kemizhibo.yhr.fragment.DemoFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
@@ -24,11 +37,23 @@ import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Author: yhr
@@ -41,11 +66,19 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     FrameLayout frameLayout;
     @BindView(R.id.main_rg_bottom)
     RadioGroup mainRgBottom;
-
     @Inject
     public GetLoginPresenterImpl getTokenPresenter;
-    //获取token
-    private TokenBean tokenContentBean;
+
+    //获取设备名称
+    private String deviceName = Build.MODEL;
+    //获取设备序列号
+    //private String serialNumber = getSerialNumber();
+    private static final String TAG = "SplashActivity";
+    public static final int SHOW_UPDATE_DIALOG = 0;
+    public static final int SHOW_ERROR = 1;
+    public final static int CONNECT_TIMEOUT = 5000;
+    public final static int READ_TIMEOUT = 5000;
+    public final static int WRITE_TIMEOUT = 5000;
 
     /**
      * 之前显示的Fragment
@@ -65,6 +98,7 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     // 再点一次退出程序时间设置
     private static final long WAIT_TIME = 2000L;
     private SharedPreferences sp;
+    private int versionNo;
 
     public void gotoDownloadFragment(){
         mainRgBottom.check(R.id.main_rb_forteaching);
@@ -78,13 +112,266 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     protected void initData() {
         initFragment();
         initListener();
+        //initDatas();
     }
+/*
+    //初始化数据
+    private void initDatas() {
+        boolean autoUpdate = PreferenceUtils.getBoolean(this, Constants.AUTO_UPDATE, true);
+        if (autoUpdate) {
+            //版本更新,去服务器获取最新的版本,和本地版本比较
+            new Thread(new CheckServerVersion()).start();
+        } else {
+            //直接跳转到登录界面
+            load2Login();
+        }
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                */
+/** 弹出提示更新的dialog   *//*
+
+                case SHOW_UPDATE_DIALOG:
+                    showUpdateDialog();
+                    break;
+
+                */
+/** 提示错误    *//*
+
+                case SHOW_ERROR:
+                    load2Login();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
+    */
+/**
+     * 检查服务器端版本号
+     *//*
+
+    private class CheckServerVersion implements Runnable {
+        @Override
+        public void run() {
+
+
+        }
+    }
+
+    */
+/**
+     * 弹出提示更新的dialog
+     *//*
+
+    private void showUpdateDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setCancelable(false);
+        dialog.setTitle("版本更新提示");
+        dialog.setMessage("檢查到有最新版本,是否更新?");
+        dialog.setNegativeButton("暫不更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //跳转到登录界面
+                load2Login();
+            }
+        });
+        dialog.setPositiveButton("立刻更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //从服务器端下载最新apk
+                downloadApk();
+            }
+        });
+        dialog.show();
+    }
+
+    */
+/**
+     * 从服务器端下载最新apk
+     *//*
+
+    private void downloadApk() {
+        //显示下载进度
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        //访问网络下载apk
+        new Thread(new DownloadApk(dialog)).start();
+    }
+
+    */
+/**
+     * 访问网络下载apk
+     *//*
+
+    private class DownloadApk implements Runnable {
+        private ProgressDialog dialog;
+        InputStream is;
+        FileOutputStream fos;
+
+        public DownloadApk(ProgressDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        @Override
+        public void run() {
+            OkHttpClient client = new OkHttpClient();
+            String url = versionDataBean.VERSION_URL;
+            Request request = new Request.Builder().get().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "开始下载apk");
+                    //获取内容总长度
+                    long contentLength = response.body().contentLength();
+                    //设置最大值
+                    dialog.setMax((int) contentLength);
+                    //保存到sd卡
+                    File apkFile = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".apk");
+                    fos = new FileOutputStream(apkFile);
+                    //获得输入流
+                    is = response.body().byteStream();
+                    //定义缓冲区大小
+                    byte[] bys = new byte[1024];
+                    int progress = 0;
+                    int len = -1;
+                    while ((len = is.read(bys)) != -1) {
+                        try {
+                            Thread.sleep(1);
+                            fos.write(bys, 0, len);
+                            fos.flush();
+                            progress += len;
+                            //设置进度
+                            dialog.setProgress(progress);
+                        } catch (InterruptedException e) {
+                            Message msg = Message.obtain();
+                            msg.what = SHOW_ERROR;
+                            msg.obj = "ERROR:10002";
+                            handler.sendMessage(msg);
+                            load2Login();
+                        }
+                    }
+                    //下载完成,提示用户安装
+                    installApk(apkFile);
+                }
+            } catch (IOException e) {
+                Message msg = Message.obtain();
+                msg.what = SHOW_ERROR;
+                msg.obj = "ERROR:10003";
+                handler.sendMessage(msg);
+                load2Login();
+            } finally {
+                //关闭io流
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    is = null;
+                }
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    fos = null;
+                }
+            }
+            dialog.dismiss();
+        }
+    }
+
+    */
+/**
+     * 下载完成,提示用户安装
+     *//*
+
+    private void installApk(File file) {
+        //调用系统安装程序
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        startActivityForResult(intent, REQUEST_INSTALL_CODE);
+    }
+
+    */
+/**
+     * 跳转到登录界面
+     *//*
+
+    private void load2Login() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    Intent toLogin = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(toLogin);
+                    finish();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    */
+/**
+     * 跳转到主界面
+     *//*
+
+    private void load2MainActivity() {
+        Intent toMainActivity = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(toMainActivity);
+        finish();
+    }
+
+    */
+/**
+     * 获取设备序列号
+     *//*
+
+    private String getSerialNumber() {
+        String serial = null;
+        try {
+            Class<?> c = Class.forName("android.os.SystemProperties");
+            Method get = c.getMethod("get", String.class);
+            serial = (String) get.invoke(c, "ro.serialno");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return serial;
+    }
+
+    */
+/**
+     * 封装版本升级数据
+     *//*
+
+    private class VersionDatas {
+        String COMMAND = "GET_APP_VERSION";
+        String DEVICE_NAME = deviceName;
+        String DEVICE_SN = serialNumber;
+    }
+*/
 
     @Override
     protected void getData() {
         super.getData();
-        //进来页面就去请求token
-        //getTokenPresenter.getTokenData(this, "yanhaoran001","yhr425581972");
+        getTokenPresenter.getVersionInformationData(this);
     }
 
     private void initListener() {
@@ -113,12 +400,6 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
         });
         mainRgBottom.check(R.id.main_rb_homepage);
     }
-
-   /* @OnClick(R.id.main_bt_lecture)
-    public void onViewClicked() {
-        goToActivity(LectureActivity.class,null);
-//        goToActivity(SearchActivity.class,null);
-    }*/
 
     /**
      * 初始化Fragment
@@ -218,31 +499,27 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     public void onUserError(String msg) {
 
     }
-
-    /*@Override
-    public void onGetTokenSuccess(TokenBean tokenBean) {
-        tokenContentBean = tokenBean;
-        //如果登录成功调转到首页
-        //如果返回0，代表正确的返回token
-        if (tokenBean.getCode() == 0) {
-            //获取成功的话保存在本地并且添加到请求头中
-            //token保存到本地
-           *//* SPUtil spUtil = SPUtil.getInstance(this);
-            String token = spUtil.read("token", tokenBean.getContent());*//*
-            sp = getSharedPreferences("loginToken", 0);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("token",tokenBean.getContent());
-            editor.commit();
-            LogUtils.e("11111111111111111111111111111",tokenBean.getContent());
-            //否则获取token失败
-        } else {
-            //失效的话返回一个401，并且清空缓存
-            if(sp!=null){
-                sp.edit().clear().commit();
+    //版本跟新
+    @Override
+    public void onVersionInformationSuccess(VersionInformationBean versionInformationBean) {
+        /*// 解析json数据
+        if(versionInformationBean!=null){
+            versionNo = Integer.parseInt(versionInformationBean.getContent().getVersionNo());
+            //获取到服务器端版本号,对比本地的版本号
+            int localVersionCode = PackageUtils.getVersionCode(SplashActivity.this);
+            if (serverVersionCode > localVersionCode) {
+                //服务器端版本号大于本地版本号,弹出dialog提示更新
+                Message showUpdateDialog = Message.obtain();
+                showUpdateDialog.what = SHOW_UPDATE_DIALOG;
+                handler.sendMessage(showUpdateDialog);
             }
-        }
-    }*/
+        }*/
+    }
 
+    @Override
+    public void onVersionInformationError(String msg) {
+
+    }
 
     @Override
     protected GetLoginPresenterImpl initInject() {

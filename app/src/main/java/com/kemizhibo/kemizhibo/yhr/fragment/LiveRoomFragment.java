@@ -12,12 +12,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
@@ -28,6 +31,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.LiveRoomPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
@@ -277,9 +281,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                 }
             }
         } else {
-            setState(LoadingPager.LoadResult.error);
-            LogUtils.i("上拉下拉", "13");
-            Transparent.showErrorMessage(getContext(), "登录失效请重新登录");
+            initDialogToLogin();
         }
     }
 
@@ -447,5 +449,31 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
             }
         });
         liveRoomShaixuanJiaocaiRecyclerview.setAdapter(filterMaterialAdapter);
+    }
+
+    private void initDialogToLogin() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            }
+                        })
+                        .build();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 }

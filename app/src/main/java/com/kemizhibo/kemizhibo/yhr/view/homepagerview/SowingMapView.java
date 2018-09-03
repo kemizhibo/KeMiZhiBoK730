@@ -17,7 +17,4 @@ public interface SowingMapView extends BaseView{
     void onSowingMapSuccess(SowingMapBean sowingMapBean);
     void onSowingMapError(String msg);
 
-    //获取版本信息
-    void onVersionInformationSuccess( VersionInformationBean versionInformationBean);
-    void onVersionInformationError(String msg);
 }

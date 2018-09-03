@@ -32,7 +32,9 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.CollectionBoxBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CollectionBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentShouCnagEmpty;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.CollectionBoxPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
@@ -187,7 +189,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     //切换控件
                     shoucangFrameLayout.setVisibility(View.VISIBLE);
                     collectionBoxSpringview.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentShouCnagEmpty()).commit();
                 }
             }else if (isUp==2){
                     mList.clear();
@@ -201,7 +203,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                         //切换控件
                         shoucangFrameLayout.setVisibility(View.VISIBLE);
                         collectionBoxSpringview.setVisibility(View.GONE);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentEmpty()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentShouCnagEmpty()).commit();
                     }
             }
         } else {
@@ -212,20 +214,22 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     }
 
     private void initDialogToLogin() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        AlertDialog dialog=builder
-                .setView(R.layout.alertdialog_login)
-                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (NoFastClickUtils.isFastClick()) {
-                        }else {
-                            Intent intent = new Intent(PersonCenterShouCangActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                }).create();
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(PersonCenterShouCangActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        })
+                        .build();
         dialog.setCancelable(false);
         dialog.show();
         Window window = dialog.getWindow();

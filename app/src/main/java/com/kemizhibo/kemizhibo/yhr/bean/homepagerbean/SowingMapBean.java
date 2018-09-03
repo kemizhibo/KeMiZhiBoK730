@@ -10,10 +10,11 @@ import java.util.List;
 
 public class SowingMapBean {
 
+
     /**
      * code : 0
      * message : success
-     * content : [{"imagesUrl":"http://192.168.1.101:8080/images/upload/image/20170608/1496906679701.png","TYPE_ID":28,"imageId":352,"previewUrl":"","COLOR":"","typeName":"欢迎banner","linkAddress":"/","title":"welcome3","DESCRIBE":"welcome3","seriesNumber":1},{"imagesUrl":"http://192.168.1.101:8080/images/upload/image/20170608/1496906658127.png","TYPE_ID":28,"imageId":351,"previewUrl":"","COLOR":"","typeName":"欢迎banner","linkAddress":"/","title":"welcome2","DESCRIBE":"welcome2","seriesNumber":2},{"imagesUrl":"http://192.168.1.101:8080/images/upload/image/20170608/1496906633897.png","TYPE_ID":28,"imageId":350,"previewUrl":"","COLOR":"","typeName":"欢迎banner","linkAddress":"/","title":"welcome1","DESCRIBE":"welcome1","seriesNumber":3},{"imagesUrl":"http://192.168.1.101:8080/images/upload/image/20170608/1496906596107.jpg","TYPE_ID":28,"imageId":349,"previewUrl":"","COLOR":"","typeName":"欢迎banner","linkAddress":"/","title":"welcome0","DESCRIBE":"welcome0","seriesNumber":4}]
+     * content : [{"imagesUrl":"http://kemivideouploadtest.oss-cn-beijing.aliyuncs.com/courseimage/image/1534929895398.jpg???¶m=image","TYPE_ID":62,"courseType":"TEACHERCOURSE","imageId":452,"previewUrl":"","COLOR":"","typeName":"app端2.2首页轮播图","linkAddress":"1003732","title":"app首页轮播图-1","DESCRIBE":"app","courseId":"1003732","seriesNumber":0},{"imagesUrl":"http://kemivideouploadtest.oss-cn-beijing.aliyuncs.com/courseimage/image/1534929909706.jpg???¶m=image","TYPE_ID":62,"courseType":"TEACHERCOURSE","imageId":462,"previewUrl":"","COLOR":"","typeName":"app端2.2首页轮播图","linkAddress":"1003712","title":"app首页轮播图-2","DESCRIBE":"app","courseId":"1003712","seriesNumber":1}]
      * otherData : null
      */
 
@@ -56,20 +57,23 @@ public class SowingMapBean {
 
     public static class ContentBean {
         /**
-         * imagesUrl : http://192.168.1.101:8080/images/upload/image/20170608/1496906679701.png
-         * TYPE_ID : 28
-         * imageId : 352
+         * imagesUrl : http://kemivideouploadtest.oss-cn-beijing.aliyuncs.com/courseimage/image/1534929895398.jpg???¶m=image
+         * TYPE_ID : 62
+         * courseType : TEACHERCOURSE
+         * imageId : 452
          * previewUrl :
          * COLOR :
-         * typeName : 欢迎banner
-         * linkAddress : /
-         * title : welcome3
-         * DESCRIBE : welcome3
-         * seriesNumber : 1
+         * typeName : app端2.2首页轮播图
+         * linkAddress : 1003732
+         * title : app首页轮播图-1
+         * DESCRIBE : app
+         * courseId : 1003732
+         * seriesNumber : 0
          */
 
         private String imagesUrl;
         private int TYPE_ID;
+        private String courseType;
         private int imageId;
         private String previewUrl;
         private String COLOR;
@@ -77,6 +81,7 @@ public class SowingMapBean {
         private String linkAddress;
         private String title;
         private String DESCRIBE;
+        private String courseId;
         private int seriesNumber;
 
         public String getImagesUrl() {
@@ -93,6 +98,14 @@ public class SowingMapBean {
 
         public void setTYPE_ID(int TYPE_ID) {
             this.TYPE_ID = TYPE_ID;
+        }
+
+        public String getCourseType() {
+            return courseType;
+        }
+
+        public void setCourseType(String courseType) {
+            this.courseType = courseType;
         }
 
         public int getImageId() {
@@ -149,6 +162,14 @@ public class SowingMapBean {
 
         public void setDESCRIBE(String DESCRIBE) {
             this.DESCRIBE = DESCRIBE;
+        }
+
+        public String getCourseId() {
+            return courseId;
+        }
+
+        public void setCourseId(String courseId) {
+            this.courseId = courseId;
         }
 
         public int getSeriesNumber() {

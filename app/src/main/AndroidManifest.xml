@@ -49,11 +49,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"

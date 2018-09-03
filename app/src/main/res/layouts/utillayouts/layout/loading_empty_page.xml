@@ -10,27 +10,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/wuneirong"/>
-    <Button
+    <RelativeLayout
         android:layout_marginTop="@dimen/res_15dp"
-        android:layout_width="@dimen/res_90dp"
-        android:layout_height="@dimen/res_28dp"
-        android:textColor="@color/white"
-        android:text="去备课吧"
-        android:background="@mipmap/login_butn"/>
-
-    <!--<ImageView
-        android:id="@+id/no_wifi"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/wuneirong"/>
-    <Button
-        android:layout_marginTop="@dimen/res_14dp"
-        android:layout_width="@dimen/res_90dp"
-        android:layout_height="@dimen/res_28dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_12sp"
-        android:background="@mipmap/login_butn"
-        android:text="去备课吧"/>-->
-
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="@dimen/res_80dp"
+            android:layout_height="@dimen/res_28dp"
+            android:background="@mipmap/wanchengshouke"/>
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="去备课吧" />
+    </RelativeLayout>
 </LinearLayout>

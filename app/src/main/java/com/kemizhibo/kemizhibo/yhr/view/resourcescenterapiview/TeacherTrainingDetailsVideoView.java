@@ -6,6 +6,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentDetailBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.DeleteCommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.GetLikeBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsVideoUrlBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.ReplyCommentBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingDetailsVideoBean;
@@ -52,5 +53,15 @@ public interface TeacherTrainingDetailsVideoView extends BaseView{
     //记录第n次播放位置
     void onGetMoreLookSuccess(OneLookBean oneLookBean);
     void onGetMoreLookError(String msg);
+
+    //获取视频地址2
+    void onLiveRoomDetailsVideoUrl2Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
+    void onLiveRoomDetailsVideoUrl2Error(String msg);
+    //获取视频地址3
+    void onLiveRoomDetailsVideoUrl3Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
+    void onLiveRoomDetailsVideoUrl3Error(String msg);
+    //获取视频地址4
+    void onLiveRoomDetailsVideoUrl4Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
+    void onLiveRoomDetailsVideoUrl4Error(String msg);
 
 }

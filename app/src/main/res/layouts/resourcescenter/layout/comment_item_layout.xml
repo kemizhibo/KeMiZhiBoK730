@@ -81,9 +81,8 @@
             android:layout_height="@dimen/res_20dp">
             <ImageView
                 android:id="@+id/comment_dianzan"
-                android:layout_width="@dimen/res_12dp"
-                android:layout_height="@dimen/res_12dp" />
+                android:layout_width="@dimen/res_14dp"
+                android:layout_height="@dimen/res_14dp" />
         </RelativeLayout>
-
     </LinearLayout>
 </LinearLayout>

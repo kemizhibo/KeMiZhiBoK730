@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import com.dueeeke.videoplayer.player.IjkVideoView;
 import java.util.LinkedHashMap;
 
+import retrofit2.http.HTTP;
+
 /**
  * 清晰度切换
  * Created by xinyu on 2018/4/16.
@@ -60,9 +62,13 @@ public class DefinitionIjkVideoView extends IjkVideoView implements DefinitionMe
         return null;
     }
 
+    //重写，改变清晰度
    /* @Override
     protected void startPrepare(boolean needReset) {
         super.startPrepare(needReset);
-        setPlayerState();
+        setPlayerState(STATE_PREPARING);
+        setPlayerState(isFullScreen()?PLAYER_FULL_SCREEN:PLAYER_NORMAL);
+        String url =mCurrentUrl;
+        DefinitionIjkVideoView.super.startPrepare(needReset);
     }*/
 }

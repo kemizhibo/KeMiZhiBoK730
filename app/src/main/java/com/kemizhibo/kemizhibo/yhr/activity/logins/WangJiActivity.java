@@ -39,8 +39,6 @@ public class WangJiActivity extends BaseMvpActivity<SendValidateBeforLoginPresen
     Button next;
     @BindView(R.id.public_title_bar_root)
     TapBarLayout publicTitleBarRoot;
-    private GetMssPresenter getMssPresenter;
-    private MessagePresenter messagePresenter;
     private TimerUtils timerUtils;
     private String content;
     private String mobile;

@@ -21,4 +21,13 @@ public interface LiveRoomDetailsView extends BaseView {
     //获取视频地址
     void onLiveRoomDetailsVideoUrlSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
     void onLiveRoomDetailsVideoUrlError(String msg);
+    //获取视频地址2
+    void onLiveRoomDetailsVideoUrl2Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
+    void onLiveRoomDetailsVideoUrl2Error(String msg);
+    //获取视频地址3
+    void onLiveRoomDetailsVideoUrl3Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
+    void onLiveRoomDetailsVideoUrl3Error(String msg);
+    //获取视频地址4
+    void onLiveRoomDetailsVideoUrl4Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
+    void onLiveRoomDetailsVideoUrl4Error(String msg);
 }

@@ -230,6 +230,9 @@ public interface HttpGetService {
     @GET("kemiapi/microblog/init")
     Observable<ResponseBody> getDynamicData();
 
+    //创建课件接口
+
+
 
 
    /* @POST("microblog/get/{microblogId}")

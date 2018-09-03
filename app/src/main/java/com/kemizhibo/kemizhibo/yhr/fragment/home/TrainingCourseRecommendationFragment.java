@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
@@ -24,6 +26,7 @@ import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.TrainingCourseRecomme
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
@@ -145,11 +148,11 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
             }
         });
         trainingCourseRecommendationSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        if (trainBean==null){
+        /*if (trainBean==null){
             trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), R.drawable.ali,false));
         }else {
             trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), true));
-        }
+        }*/
     }
 
     @Override
@@ -185,8 +188,7 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
                 }
             }
         }else {
-            setState(LoadingPager.LoadResult.error);
-            Transparent.showErrorMessage(getContext(),"登录失效请重新登录");
+            initDialogToLogin();
         }
     }
 
@@ -201,6 +203,32 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
         //this需要去di注册
         fragmentComponent.inject(this);
         return homePagePresenter;
+    }
+
+    private void initDialogToLogin() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            }
+                        })
+                        .build();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
 }

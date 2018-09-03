@@ -2,9 +2,7 @@ package com.kemizhibo.kemizhibo.yhr.fragment.stateFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
@@ -17,7 +15,7 @@ import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
  * Describe:activity中状态显示页
  */
 
-public class FramgmentEmpty extends BaseFragment{
+public class FramgmentShouCnagEmpty extends BaseFragment{
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -32,7 +30,7 @@ public class FramgmentEmpty extends BaseFragment{
 
     @Override
     public View createSuccessView() {
-        View view = UIUtils.inflate(mActivity,R.layout.loading_activity_empty_page_liulan);
+        View view = UIUtils.inflate(mActivity,R.layout.loading_activity_empty_page);
         return view;
     }
 

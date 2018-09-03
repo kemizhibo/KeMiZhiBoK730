@@ -26,8 +26,7 @@ public class SowingMapPresenterImpl extends BasePresenterImpl<SowingMapView> imp
     @Inject
     public SowingMapIteractor sowingMapIteractor ;
 
-    @Inject
-    public VersionInformationIteractor versionInformationIteractor ;
+
 
     @Inject
     public SowingMapPresenterImpl() {}
@@ -47,18 +46,4 @@ public class SowingMapPresenterImpl extends BasePresenterImpl<SowingMapView> imp
         },token,device);
     }
 
-    @Override
-    public void getVersionInformationData(BaseActivity activity) {
-        versionInformationIteractor.loadVersionInformationData(activity, new IGetDataDelegate<VersionInformationBean>() {
-            @Override
-            public void getDataSuccess(VersionInformationBean versionInformationBean) {
-                mPresenterView.onVersionInformationSuccess(versionInformationBean);
-            }
-
-            @Override
-            public void getDataError(String errmsg) {
-                mPresenterView.onVersionInformationError(errmsg);
-            }
-        });
-    }
 }

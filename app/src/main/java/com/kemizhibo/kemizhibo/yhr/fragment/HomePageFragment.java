@@ -11,12 +11,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import com.androidkun.xtablayout.XTabLayout;
 import com.bumptech.glide.Glide;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.HomeAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.SowingMapBean;
@@ -26,6 +32,8 @@ import com.kemizhibo.kemizhibo.yhr.fragment.home.MyClassFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.FourFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.home.TrainingCourseRecommendationFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.SowingMapPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.SowingMapView;
@@ -111,13 +119,28 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
         SharedPreferences sp = getContext().getSharedPreferences("logintoken", 0);
         String token = sp.getString("token", "");
         sowingMapPresenter.getSowingMapData(mActivity,"Bearer "+token,"app-2");
-        sowingMapPresenter.getVersionInformationData(mActivity);
     }
 
     //轮播图的监听方法
     @Override
     public void OnBannerClick(int position) {
         Log.i("tag", "你点了第" + position + "张轮播图");
+        if (sowingData.get(position).getCourseType().equals("YINGXIANGSUCAI")){
+            Intent intent = new Intent(getActivity().getApplicationContext(), TeacherTrainingDetailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("courseId", String.valueOf(sowingData.get(position).getLinkAddress()));
+            intent.putExtras(bundle);
+            //这里一定要获取到所在Activity再startActivity()；
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("courseId", String.valueOf(sowingData.get(position).getLinkAddress()));
+            intent.putExtras(bundle);
+            //这里一定要获取到所在Activity再startActivity()；
+            startActivity(intent);
+        }
+
     }
 
     private void initTitile() {
@@ -157,18 +180,6 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
     @Override
     public void onSowingMapError(String msg) {
         //setState(LoadingPager.LoadResult.error);
-    }
-    //版本更新
-    @Override
-    public void onVersionInformationSuccess(VersionInformationBean versionInformationBean) {
-        /*if (versionInformationBean.getCode()==0&&versionInformationBean.getContent().getVersionNo()!="现在的版本号"){
-            //比较，如果有新版本，弹出提示，有新版本,确定以后调用下载最新apk接口接口
-        }*/
-    }
-
-    @Override
-    public void onVersionInformationError(String msg) {
-
     }
 
     @Override

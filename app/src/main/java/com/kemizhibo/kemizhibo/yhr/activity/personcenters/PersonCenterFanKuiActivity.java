@@ -25,6 +25,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.FeedBackBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.FeedBackPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
@@ -167,20 +168,22 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
     }
 
     private void initDialogToLogin() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        AlertDialog dialog=builder
-                .setView(R.layout.alertdialog_login)
-                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (NoFastClickUtils.isFastClick()) {
-                        }else {
-                            Intent intent = new Intent(PersonCenterFanKuiActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                }).create();
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(PersonCenterFanKuiActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        })
+                        .build();
         dialog.setCancelable(false);
         dialog.show();
         Window window = dialog.getWindow();

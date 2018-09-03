@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.yhr.view;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 
 
@@ -19,4 +20,8 @@ public interface LoginView extends BaseView{
     //获取用户信息
     void onUserSuccess(GetUserBean getUserBean);
     void onUserError(String msg);
+
+    //获取版本信息
+    void onVersionInformationSuccess( VersionInformationBean versionInformationBean);
+    void onVersionInformationError(String msg);
 }

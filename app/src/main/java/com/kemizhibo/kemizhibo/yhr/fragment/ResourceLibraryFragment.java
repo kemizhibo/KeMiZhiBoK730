@@ -82,24 +82,24 @@ public class ResourceLibraryFragment extends BaseFragment {
 
         YingXiangFragment f1 = new YingXiangFragment();
         PeiXunFragment f2 = new PeiXunFragment();
-        TalkClassFragment f3 = new TalkClassFragment();
         LiveRoomFragment f4 = new LiveRoomFragment();
-        ZouJinFragment f5 = new ZouJinFragment();
+        /*TalkClassFragment f3 = new TalkClassFragment();
+        ZouJinFragment f5 = new ZouJinFragment();*/
 
         list_title = new ArrayList<>();
         list_title.add("影像素材");
         list_title.add("教师培训");
         list_title.add("科学观察室");
-        list_title.add("科学进校园");
-        list_title.add("探秘科学馆");
+        /*list_title.add("科学进校园");
+        list_title.add("探秘科学馆");*/
 
 
         list_fragment = new ArrayList<>();
         list_fragment.add(f1);
         list_fragment.add(f2);
         list_fragment.add(f4);
-        list_fragment.add(f3);
-        list_fragment.add(f5);
+       /* list_fragment.add(f3);
+        list_fragment.add(f5);*/
         ziyuankuTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

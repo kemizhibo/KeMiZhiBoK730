@@ -4,9 +4,11 @@ import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
+import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.interactor.GetLoginIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.LoginIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.homeinteractor.VersionInformationIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.personcenterinteractor.GetUserIteractor;
 import com.kemizhibo.kemizhibo.yhr.presenter.GetLoginPresenter;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
@@ -25,6 +27,9 @@ public class GetLoginPresenterImpl extends BasePresenterImpl<LoginView> implemen
     public GetLoginIteractor getLoginIteractor;
     @Inject
     public GetUserIteractor getUserIteractor ;
+
+    @Inject
+    public VersionInformationIteractor versionInformationIteractor ;
 
     @Inject
     public GetLoginPresenterImpl() {}
@@ -58,6 +63,21 @@ public class GetLoginPresenterImpl extends BasePresenterImpl<LoginView> implemen
                 mPresenterView.onUserError(errmsg);
             }
         },token);
+    }
+
+    @Override
+    public void getVersionInformationData(BaseActivity activity) {
+        versionInformationIteractor.loadVersionInformationData(activity, new IGetDataDelegate<VersionInformationBean>() {
+            @Override
+            public void getDataSuccess(VersionInformationBean versionInformationBean) {
+                mPresenterView.onVersionInformationSuccess(versionInformationBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onVersionInformationError(errmsg);
+            }
+        });
     }
 
 }

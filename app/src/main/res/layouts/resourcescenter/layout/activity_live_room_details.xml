@@ -3,21 +3,33 @@
     android:id="@+id/relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
-        android:layout_alignParentTop="true"
-        android:id="@+id/player"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/res_375dp" >
-        <ImageView
+    <RelativeLayout
+        android:id="@+id/relativelayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
+            android:layout_alignParentTop="true"
+            android:id="@+id/player"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/res_375dp" >
+        </com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView>
+        <RelativeLayout
             android:id="@+id/video_back_butn"
-            android:layout_marginTop="@dimen/res_20dp"
+            android:layout_marginTop="@dimen/res_25dp"
             android:layout_marginLeft="@dimen/res_20dp"
-            android:layout_width="@dimen/res_20dp"
-            android:layout_height="@dimen/res_20dp"
-            android:src="@mipmap/fanhui"/>
-    </com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView>
+            android:layout_width="@dimen/res_50dp"
+            android:layout_height="@dimen/res_50dp">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/res_20dp"
+                android:layout_height="@dimen/res_20dp"
+                android:src="@mipmap/fanhui"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
     <ScrollView
-        android:layout_below="@+id/player"
+        android:layout_below="@+id/relativelayout2"
         android:layout_above="@+id/pinglun_layout"
         android:id="@+id/teacher_training_screview"
         android:fillViewport="true"

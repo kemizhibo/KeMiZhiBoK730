@@ -12,7 +12,4 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.LiveRoomView;
  */
 public interface SowingMapPresenter extends BasePresenter<SowingMapView> {
     void getSowingMapData(BaseActivity activity, String token,String device);
-
-    //版本信息
-    void getVersionInformationData(BaseActivity activity);
 }

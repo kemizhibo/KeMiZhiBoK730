@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -33,6 +35,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
@@ -81,12 +84,6 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     private int courseId;
     private SharedPreferences sp;
     private String token;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            if (msg.what == 0)
-                startActivity(new Intent(getContext(), LoginActivity.class));
-        }
-    };
 
 
     @Override
@@ -108,12 +105,6 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         //展示我的备课数据
         initMyClassData();
         return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        handler.removeMessages(0);
     }
 
     @Override
@@ -192,7 +183,6 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         } else {
             myclassSpring.setFooter(new AliFooter(getContext(), true));
         }
-
     }
 
 
@@ -202,24 +192,20 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         LogUtils.i("备课是否请求陈宫", searchBean.getCode() + "");
         if (searchBean.getCode() == 0) {
             if (isUp == 1) {
-                LogUtils.i("备课是否请求陈宫", "走的上拉");
                 setState(LoadingPager.LoadResult.success);
                 myclassBean.clear();
                 myclassBean.addAll(searchBean.getContent().getReturnPrepare());
                 if (myclassBean.size() == 0) {
                     setState(LoadingPager.LoadResult.empty);
-                    LogUtils.i("备课是否请求陈宫", "集合为空");
                 } else {
                     setState(LoadingPager.LoadResult.success);
                     //展示我的备课数据
                     //initMyClassData();
-                    LogUtils.i("备课是否请求陈宫", "集合不为空");
                     if (isFlag) {
                         myClassAdapter.notifyDataSetChanged();
                     }
                 }
             } else if (isUp == 2) {
-                LogUtils.i("备课是否请求陈宫", "走的下拉");
                 myclassBean.addAll(searchBean.getContent().getReturnPrepare());
                 if (myclassBean.size() == 0) {
                     setState(LoadingPager.LoadResult.empty);
@@ -233,15 +219,13 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 }
             }
         } else {
-            //setState(LoadingPager.LoadResult.error);
-            Transparent.showErrorMessage(getContext(), "登录失效请重新登录");
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onHomePageError(String msg) {
         //加载失败的状态
-        LogUtils.i("备课是否请求陈宫", msg);
         setState(LoadingPager.LoadResult.error);
     }
 
@@ -305,5 +289,31 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     @Override
     public void getCommonUserTeachPlanError(int errorCode) {
 
+    }
+
+    private void initDialogToLogin() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            }
+                        })
+                        .build();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 }

@@ -26,6 +26,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.SearchBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.SearchPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
@@ -72,19 +73,6 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
     private String coursename;
     private SharedPreferences sp;
     private String token;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0: {
-                    startActivity(new Intent(SearchActivity.this, LoginActivity.class));
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        }
-    };
     @Override
     protected int getLayoutId() {
         return R.layout.activity_search;
@@ -118,7 +106,6 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeMessages(0);
     }
 
 
@@ -146,20 +133,22 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
     }
 
     private void initDialogToLogin() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        AlertDialog dialog=builder
-                .setView(R.layout.alertdialog_login)
-                .setPositiveButton("前往登录", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (NoFastClickUtils.isFastClick()) {
-                        }else {
-                            Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                }).create();
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        })
+                        .build();
         dialog.setCancelable(false);
         dialog.show();
         Window window = dialog.getWindow();
@@ -181,22 +170,30 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    LogUtils.e("+++++++++++++", dataBeans.get(position).getFileType());
                     if (dataBeans.get(position).getFileType().equals("VIDEO")) {
-                        Intent intent = new Intent(SearchActivity.this, YingXinagVideoDetailsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
-                        intent.putExtras(bundle);
-                        //这里一定要获取到所在Activity再startActivity()；
-                        SearchActivity.this.startActivity(intent);
-                    } else if (dataBeans.get(position).getFileType().equals("LIVE")) {
+                        if (dataBeans.get(position).getSellType().equals("TEACHERCOURSE")){
+                            Intent intent = new Intent(SearchActivity.this, YingXinagVideoDetailsActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
+                            intent.putExtras(bundle);
+                            //这里一定要获取到所在Activity再startActivity()；
+                            SearchActivity.this.startActivity(intent);
+                        }else if (dataBeans.get(position).getSellType().equals("YINGXIANGSUCAI")){
+                            Intent intent = new Intent(SearchActivity.this, TeacherTrainingDetailsActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
+                            intent.putExtras(bundle);
+                            //这里一定要获取到所在Activity再startActivity()；
+                            SearchActivity.this.startActivity(intent);
+                        }
+                    } /*else if (dataBeans.get(position).getFileType().equals("LIVE")) {
                         Intent intent = new Intent(SearchActivity.this, TeacherTrainingDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
                         intent.putExtras(bundle);
                         //这里一定要获取到所在Activity再startActivity()；
                         SearchActivity.this.startActivity(intent);
-                    } else {
+                    } */else {
                         Intent intent = new Intent(SearchActivity.this, PictrueDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));

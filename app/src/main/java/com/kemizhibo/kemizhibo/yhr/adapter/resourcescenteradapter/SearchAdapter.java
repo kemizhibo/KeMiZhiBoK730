@@ -8,6 +8,7 @@ package com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter;
 
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -33,7 +34,17 @@ public class SearchAdapter extends BaseQuickAdapter<SearchBean.ContentBean.DataB
         simpleDraweeView.setImageURI(Uri.parse(item.getLogo()));
         //Glide.with(mContext).load(item.getLogo()).crossFade().centerCrop().transform(new GlideRoundTransform(mContext, 5)).into((ImageView) helper.getView(R.id.search_recyclerview_imageview));
         helper.setText(R.id.search_item_title, item.getCourseName());
-
+        if (item.getIsImageText() == 1) {
+            helper.getView(R.id.collection_box_tuji).setVisibility(View.VISIBLE);
+            helper.getView(R.id.collection_box_play_butn).setVisibility(View.GONE);
+        }else {
+            if (item.getFileType().equals("VIDEO")){
+                helper.getView(R.id.collection_box_tuji).setVisibility(View.GONE);
+                helper.getView(R.id.collection_box_play_butn).setVisibility(View.VISIBLE);
+            }else {
+                //直播图标
+            }
+        }
     }
 
 }
