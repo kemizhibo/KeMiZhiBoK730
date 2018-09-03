@@ -20,6 +20,11 @@ public class TalkClassFragment extends BaseFragment {
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.guancha_fragment);
         ButterKnife.bind(this, view);

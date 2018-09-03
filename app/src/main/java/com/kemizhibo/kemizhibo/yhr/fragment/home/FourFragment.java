@@ -25,6 +25,11 @@ public class FourFragment extends BaseFragment{
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.home_four_fragment);
         return view;

@@ -103,6 +103,11 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.peixun_fragment);
         ButterKnife.bind(this, view);

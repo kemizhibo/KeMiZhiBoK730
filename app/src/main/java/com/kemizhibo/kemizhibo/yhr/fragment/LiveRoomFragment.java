@@ -106,6 +106,11 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.kexue_fragment);
         ButterKnife.bind(this, view);

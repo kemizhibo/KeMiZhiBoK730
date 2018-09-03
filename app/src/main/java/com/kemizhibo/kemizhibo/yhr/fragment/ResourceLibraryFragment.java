@@ -52,6 +52,11 @@ public class ResourceLibraryFragment extends BaseFragment {
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         //如果依附于activity需要依附于mactivity
         View view = UIUtils.inflate(mActivity, R.layout.fragment_main_resource_library);

@@ -99,6 +99,11 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.yingxiang_fragment);
         ButterKnife.bind(this, view);

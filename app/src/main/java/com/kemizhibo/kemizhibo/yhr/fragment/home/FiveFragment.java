@@ -22,6 +22,12 @@ public class FiveFragment extends BaseFragment{
         super.onActivityCreated(savedInstanceState);
         show();
     }
+
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
     @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.home_five_fragment);

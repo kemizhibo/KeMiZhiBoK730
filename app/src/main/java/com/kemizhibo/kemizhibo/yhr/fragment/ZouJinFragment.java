@@ -18,6 +18,11 @@ public class ZouJinFragment extends BaseFragment {
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.zoujin_fragment);
         ButterKnife.bind(this, view);

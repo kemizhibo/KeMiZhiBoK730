@@ -33,6 +33,11 @@ public class FramgmentNext extends BaseFragment{
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity,R.layout.loading_nextpager_page);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.loading_next);

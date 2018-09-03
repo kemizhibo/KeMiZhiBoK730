@@ -77,6 +77,11 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
         show();
     }
 
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
 
     @Override
     public View createSuccessView() {

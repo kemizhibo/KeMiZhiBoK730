@@ -111,6 +111,11 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public void load() {
         setState(LoadingPager.LoadResult.success);
     }

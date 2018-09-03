@@ -84,6 +84,11 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.material_recommended_fragment);
         ButterKnife.bind(this, view);

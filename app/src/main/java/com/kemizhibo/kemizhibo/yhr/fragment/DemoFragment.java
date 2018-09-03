@@ -30,6 +30,12 @@ public class DemoFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         show();
     }
+
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
     @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity,R.layout.demo);

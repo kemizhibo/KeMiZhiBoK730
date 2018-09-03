@@ -97,6 +97,11 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.home_first_fragment);
         ButterKnife.bind(this, view);

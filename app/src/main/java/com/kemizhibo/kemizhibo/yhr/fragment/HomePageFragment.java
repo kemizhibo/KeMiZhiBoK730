@@ -70,6 +70,11 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity, R.layout.fragment_homepage);
         ButterKnife.bind(this, view);

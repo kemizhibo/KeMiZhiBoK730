@@ -26,6 +26,11 @@ public class FramgmentEmpty extends BaseFragment{
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity,R.layout.loading_empty_page);
         return view;

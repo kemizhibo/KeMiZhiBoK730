@@ -138,9 +138,12 @@ public abstract class LoadingPager extends FrameLayout {
         });
         return  view ;
     }
+
+    protected abstract int getEmptyPageLayoutId();
+
     /** 创建空界面 */
     private View createEmptyView() {
-        View view = UIUtils.inflate(R.layout.loading_empty_page) ;
+        View view = UIUtils.inflate(0 == getEmptyPageLayoutId() ? R.layout.loading_empty_page : getEmptyPageLayoutId());
         //点击刷新界面
         view.setOnClickListener(new OnClickListener() {
             @Override
@@ -160,6 +163,8 @@ public abstract class LoadingPager extends FrameLayout {
      * @return
      */
     protected abstract View createLoadedView();
+
+    //protected abstract View createEmptyView();
     /**
      * 加载获取数据
      * */

@@ -170,6 +170,11 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         show();
     }
 
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
     private void showFilterPop() {
         filterPop = FilterPopUtils.show(getActivity(), materials, grades, semesters, materialSelectI, gradeSelectI, semesterSelectI, new FilterPopUtils.OnPopIndicatorClickListener() {
             @Override

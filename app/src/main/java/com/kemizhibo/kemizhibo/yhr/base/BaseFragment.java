@@ -32,6 +32,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
         pager = new LoadingPager(getContext()) {
             @Override
+            protected int getEmptyPageLayoutId() {
+                return BaseFragment.this.getEmptyPageLayoutId();
+            }
+
+            @Override
             protected View createLoadedView() {
                 return BaseFragment.this.createSuccessView();
             }
@@ -48,8 +53,12 @@ public abstract class BaseFragment extends Fragment implements BaseView {
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.home_rel_layout, new ForTeachingFragment());
                 transaction.commit();*/
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.gotoDownloadFragment ();
+                try{
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.gotoDownloadFragment ();
+                }catch (Exception e){
+
+                }
             }
         };
         return pager;
@@ -71,6 +80,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         mActivity.shotToast(msg);
     }*/
 
+    public abstract int getEmptyPageLayoutId();
     public abstract View createSuccessView() ;
     public abstract void load();
 

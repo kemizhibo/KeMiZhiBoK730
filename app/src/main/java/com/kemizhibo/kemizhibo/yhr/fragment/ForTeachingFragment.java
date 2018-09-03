@@ -58,6 +58,11 @@ public class ForTeachingFragment extends BaseFragment {
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         File file = getContext().getExternalFilesDir(null);//注意该方法是Context的方法,故需要调用的地方如果不在Activity中,需要传入Context调用
         Debug.startMethodTracing(file + "/dmtrace.trace");

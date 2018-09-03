@@ -43,6 +43,10 @@ public class TeacherTrainingLookFragment extends BaseMvpFragment<TeacherTraining
         show();
     }
 
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
 
 
     @Override

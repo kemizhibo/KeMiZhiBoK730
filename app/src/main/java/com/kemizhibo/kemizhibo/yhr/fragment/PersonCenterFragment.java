@@ -86,6 +86,11 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         sp = getContext().getSharedPreferences("logintoken", 0);

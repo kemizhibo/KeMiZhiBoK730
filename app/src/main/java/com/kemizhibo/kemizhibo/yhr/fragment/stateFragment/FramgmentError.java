@@ -24,6 +24,11 @@ public class FramgmentError extends BaseFragment{
     }
 
     @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(mActivity,R.layout.loading_error_page);
         return view;
