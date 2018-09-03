@@ -66,8 +66,6 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
     SpringView springView;
     @BindView(R.id.grid_view)
     GridView gridView;
-    @BindView(R.id.first_ll)
-    LinearLayout firstL;
     //隐藏和显示布局模块
     private boolean isOpen = false;
     ValueAnimator valueAnimator = null;
@@ -172,7 +170,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
 
     @Override
     public int getEmptyPageLayoutId() {
-        return 0;
+        return R.layout.beishouke_empty_layout;
     }
 
     private void showFilterPop() {
@@ -236,11 +234,11 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                     //ToastUtils.showToast("refresh" + dataBeanList.size());
                     if(dataBeanList.size() > 0){
                         setState(LoadingPager.LoadResult.success);
-                        firstL.setVisibility(View.VISIBLE);
+                        springView.setVisibility(View.VISIBLE);
                         setAdapter();
                     }else{
                         setState(LoadingPager.LoadResult.empty);
-                        firstL.setVisibility(View.INVISIBLE);
+                        springView.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -264,6 +262,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                 @Override
                 public void run() {
                     //ToastUtils.showToast("load" + dataBeanList.size());
+                    setState(LoadingPager.LoadResult.success);
                     springView.onFinishFreshAndLoad();
                     setAdapter();
                 }
@@ -278,20 +277,20 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
                 @Override
                 public void run() {
                     //ToastUtils.showToast(String.valueOf(errorCode));
-                    if(null != firstL)
-                        firstL.setVisibility(View.INVISIBLE);
+                    if(null != springView)
+                        springView.setVisibility(View.INVISIBLE);
                     if(null != springView)
                         springView.onFinishFreshAndLoad();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
                         setState(LoadingPager.LoadResult.success);
-                        if(null != firstL)
-                            firstL.setVisibility(View.VISIBLE);
+                        if(null != springView)
+                            springView.setVisibility(View.VISIBLE);
                         LoadFailUtil.initDialogToLogin(getActivity());
                     }else{
                         if(dataBeanList.size() > 0){
                             setState(LoadingPager.LoadResult.success);
-                            if(null != firstL)
-                                firstL.setVisibility(View.VISIBLE);
+                            if(null != springView)
+                                springView.setVisibility(View.VISIBLE);
                             ToastUtils.showToast("网络中断，请检查您的网络状态");
                         }else{
                             setState(LoadingPager.LoadResult.error);

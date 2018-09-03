@@ -71,8 +71,6 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
     ImageView forteachingShaixuanImageview;
     @BindView(R.id.forteaching_shaixuan_butn)
     RelativeLayout forteachingShaixuanButn;
-    @BindView(R.id.second_ll)
-    LinearLayout secondL;
 
     private PreparingOnlinePresenter presenter;
     private CommonPresenter commonPresenter;
@@ -112,7 +110,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
 
     @Override
     public int getEmptyPageLayoutId() {
-        return 0;
+        return R.layout.beishouke_empty_layout;
     }
 
     @Override
@@ -318,11 +316,11 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
                     springView.onFinishFreshAndLoad();
                     if(dataBeanList.size() > 0){
                         setState(LoadingPager.LoadResult.success);
-                        secondL.setVisibility(View.VISIBLE);
+                        springView.setVisibility(View.VISIBLE);
                         setAdapter();
                     }else{
                         setState(LoadingPager.LoadResult.empty);
-                        secondL.setVisibility(View.INVISIBLE);
+                        springView.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -345,6 +343,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    setState(LoadingPager.LoadResult.success);
                     springView.onFinishFreshAndLoad();
                     setAdapter();
                 }
@@ -358,20 +357,20 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if(null != secondL)
-                        secondL.setVisibility(View.INVISIBLE);
+                    if(null != springView)
+                        springView.setVisibility(View.INVISIBLE);
                     if(null != springView)
                         springView.onFinishFreshAndLoad();
                     if(Constants.OTHER_ERROR_CODE == errorCode){
                         setState(LoadingPager.LoadResult.success);
-                        if(null != secondL)
-                            secondL.setVisibility(View.VISIBLE);
+                        if(null != springView)
+                            springView.setVisibility(View.VISIBLE);
                         LoadFailUtil.initDialogToLogin(getActivity());
                     }else{
                         if(dataBeanList.size() > 0){
                             setState(LoadingPager.LoadResult.success);
-                            if(null != secondL)
-                                secondL.setVisibility(View.VISIBLE);
+                            if(null != springView)
+                                springView.setVisibility(View.VISIBLE);
                             ToastUtils.showToast("网络中断，请检查您的网络状态");
                         }else{
                             setState(LoadingPager.LoadResult.error);

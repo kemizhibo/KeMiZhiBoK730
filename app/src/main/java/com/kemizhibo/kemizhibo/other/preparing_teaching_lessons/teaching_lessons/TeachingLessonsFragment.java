@@ -76,6 +76,11 @@ public class TeachingLessonsFragment extends BaseFragment implements TeachingLes
 
     @Override
     public int getEmptyPageLayoutId() {
+        if(Constants.MANAGER_ROLE_ID == roleId){
+            return R.layout.jiaoxueguanli_empty_layout;
+        }else if(Constants.CHILD_ROLE_ID == roleId){
+            return R.layout.beishoukejilu_empty_layout;
+        }
         return 0;
     }
 
