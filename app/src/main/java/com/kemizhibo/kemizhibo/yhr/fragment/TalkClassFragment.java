@@ -36,4 +36,9 @@ public class TalkClassFragment extends BaseFragment {
         setState(LoadingPager.LoadResult.success);
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
 }

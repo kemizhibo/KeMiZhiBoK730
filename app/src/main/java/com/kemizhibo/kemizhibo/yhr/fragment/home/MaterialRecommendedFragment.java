@@ -165,6 +165,11 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
     }
 
     @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         if (searchBean.getCode()==0){
             if (isUp == 1) {

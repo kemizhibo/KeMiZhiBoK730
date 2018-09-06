@@ -38,4 +38,9 @@ public class FiveFragment extends BaseFragment{
     public void load() {
         setState(LoadingPager.LoadResult.success);
 }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
 }

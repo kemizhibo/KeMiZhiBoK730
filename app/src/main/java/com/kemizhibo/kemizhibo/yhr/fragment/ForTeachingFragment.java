@@ -91,6 +91,11 @@ public class ForTeachingFragment extends BaseFragment {
         }).start();
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
     private void initTitile() {
         mTitleList = new ArrayList<>();
         mTitleList.add("备课中心");

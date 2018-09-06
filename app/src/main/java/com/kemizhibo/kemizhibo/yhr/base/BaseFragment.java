@@ -53,12 +53,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.home_rel_layout, new ForTeachingFragment());
                 transaction.commit();*/
-                try{
+                /*try{
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.gotoDownloadFragment ();
                 }catch (Exception e){
 
-                }
+                }*/
+                onEmptyViewClick();
             }
         };
         return pager;
@@ -83,6 +84,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public abstract int getEmptyPageLayoutId();
     public abstract View createSuccessView() ;
     public abstract void load();
+    public abstract void onEmptyViewClick();
 
 
     //启动新的activity

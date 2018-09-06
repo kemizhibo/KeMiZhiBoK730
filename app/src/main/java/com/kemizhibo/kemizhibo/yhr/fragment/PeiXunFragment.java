@@ -194,6 +194,11 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     }
 
     @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
     public void onFilterSuccess(FilterBean filterBean) {
         setState(LoadingPager.LoadResult.success);
         filterMaterialdata = new ArrayList<>();

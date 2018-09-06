@@ -109,6 +109,12 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         presenter.refresh();
     }
 
+    @Override
+    public void onEmptyViewClick() {
+        initialize();
+        show();
+    }
+
 
     @OnClick(R.id.forteaching_shaixuan_butn)
     public void onViewClicked() {
@@ -203,7 +209,7 @@ public class ForTeanchingFirstFragment extends BaseFragment implements Preparing
         filterPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                initialize();
+                //initialize();
             }
         });
     }

@@ -163,6 +163,11 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     }
 
     @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         if (searchBean.getCode()==0){
             if (isUp == 1) {

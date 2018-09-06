@@ -118,6 +118,12 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         setState(LoadingPager.LoadResult.success);
     }
 
+    @Override
+    public void onEmptyViewClick() {
+        initialize();
+        show();
+    }
+
     @OnClick(R.id.forteaching_shaixuan_butn)
     public void onViewClicked() {
         if(null != filterPop && filterPop.isShowing()){
@@ -255,7 +261,7 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
         planPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                initialize();
+                //initialize();
             }
         });
     }

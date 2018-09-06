@@ -121,6 +121,11 @@ public class HomePageFragment extends BaseMvpFragment<SowingMapPresenterImpl> im
         sowingMapPresenter.getSowingMapData(mActivity,"Bearer "+token,"app-2");
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
     //轮播图的监听方法
     @Override
     public void OnBannerClick(int position) {

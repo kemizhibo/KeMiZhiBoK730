@@ -145,6 +145,13 @@ public class TeachingLessonsFragment extends BaseFragment implements TeachingLes
     }
 
     @Override
+    public void onEmptyViewClick() {
+        startTime = "";
+        userId = "0";
+        show();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         show();

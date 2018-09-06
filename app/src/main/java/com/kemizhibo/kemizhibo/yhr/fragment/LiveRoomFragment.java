@@ -213,6 +213,11 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     }
 
     @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
     public void onFilterSuccess(FilterBean filterBean) {
         setState(LoadingPager.LoadResult.success);
         filterMaterialdata = new ArrayList<>();

@@ -115,6 +115,11 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     }
 
     @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
     public void onUserSuccess(GetUserBean getUserBean) {
         if (getUserBean.getCode()==0){
             setState(LoadingPager.LoadResult.success);

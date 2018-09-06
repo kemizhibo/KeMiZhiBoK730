@@ -54,4 +54,9 @@ public class DemoFragment extends BaseFragment {
             }
         }).start();
     }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
 }

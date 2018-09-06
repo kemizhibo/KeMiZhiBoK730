@@ -38,4 +38,9 @@ public class FramgmentError extends BaseFragment{
     public void load() {
         setState(LoadingPager.LoadResult.error);
     }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
 }

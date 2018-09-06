@@ -115,6 +115,11 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         LogUtils.i("备课接口", token);
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
 
     private void initMyClassData() {
         //设置适配器

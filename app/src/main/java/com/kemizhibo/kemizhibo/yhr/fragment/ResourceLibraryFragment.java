@@ -137,6 +137,11 @@ public class ResourceLibraryFragment extends BaseFragment {
         }).start();
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
 
     @OnClick({R.id.ziyuanku_sousuo})
     public void onViewClicked(View view) {

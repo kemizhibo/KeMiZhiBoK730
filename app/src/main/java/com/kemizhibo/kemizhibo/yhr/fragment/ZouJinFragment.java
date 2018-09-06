@@ -34,4 +34,9 @@ public class ZouJinFragment extends BaseFragment {
         setState(LoadingPager.LoadResult.success);
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
 }

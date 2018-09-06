@@ -56,4 +56,9 @@ public class FramgmentNext extends BaseFragment{
             }
         });
     }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
 }

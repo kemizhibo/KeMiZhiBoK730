@@ -66,6 +66,11 @@ public class TeacherTrainingLookFragment extends BaseMvpFragment<TeacherTraining
     }
 
     @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
     public void onTeacherTrainingLookFragmentSuccess(TeacherTrainingLookBean teacherTrainingLookBean) {
         //成功的状态显示UI操作,添加数据
         setState(LoadingPager.LoadResult.success);

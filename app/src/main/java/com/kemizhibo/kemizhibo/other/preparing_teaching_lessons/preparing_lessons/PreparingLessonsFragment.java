@@ -152,6 +152,12 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
         presenter.refreshPreparingLessonsData();
     }
 
+    @Override
+    public void onEmptyViewClick() {
+        startTime = "";
+        userId = "0";
+        show();
+    }
 
 
     @Override

@@ -51,6 +51,11 @@ public class TeacherTrainingTalkFragment extends BaseFragment {
         setState(LoadingPager.LoadResult.success);
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
 
     @OnClick(R.id.detail_page_do_comment)
     public void onViewClicked() {

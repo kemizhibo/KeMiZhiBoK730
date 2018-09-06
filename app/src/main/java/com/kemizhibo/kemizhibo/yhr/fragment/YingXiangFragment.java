@@ -202,6 +202,11 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", "1", "10", materialEdition, subjectId, semester, knowledgeId);
     }
 
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
     @OnClick(R.id.yingxiang_shaixuan_butn)
     public void onViewClicked() {
         if (NoFastClickUtils.isFastClick()) {

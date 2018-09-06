@@ -40,4 +40,9 @@ public class FramgmentEmpty extends BaseFragment{
     public void load() {
         setState(LoadingPager.LoadResult.success);
     }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
 }
