@@ -21,6 +21,7 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPPTBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 
@@ -101,6 +102,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                 case TYPE_PPT://ppt
                     convertView = View.inflate(context, R.layout.ppt_plan_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
+                    holder.mcheckppt = convertView.findViewById(R.id.mcheckppt);
                     holder.mdeleteppt = convertView.findViewById(R.id.mdeleteppt);
                     convertView.setTag(holder);
                     break;
@@ -120,6 +122,12 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         Log.i("---itemViewType--", "" + itemViewType);
         if (itemViewType == TYPE_PPT) {
             moduleId = planBeanList.get(position).getModuleId();
+            holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goPreview(planBeanList.get(position).getUrl());
+                }
+            });
             holder.mdeleteppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -190,5 +198,10 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         });
     }
 
+    private void goPreview(String url) {
+        Intent intent = new Intent(context, PreviewActivity.class);
+        intent.putExtra("url", url);
+        context.startActivity(intent);
+    }
 
 }
