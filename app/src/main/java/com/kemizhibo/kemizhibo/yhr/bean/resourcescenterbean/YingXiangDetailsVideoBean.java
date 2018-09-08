@@ -103,7 +103,7 @@ public class YingXiangDetailsVideoBean {
         private String courseType;
         private String knowledge;
         private Object liveStartDuration;
-        private Object videoDuration;
+        private int videoDuration;
         private String liveStatus;
         private String teacherName;
         private Object liveBeginTime;
@@ -221,11 +221,11 @@ public class YingXiangDetailsVideoBean {
             this.liveStartDuration = liveStartDuration;
         }
 
-        public Object getVideoDuration() {
+        public int getVideoDuration() {
             return videoDuration;
         }
 
-        public void setVideoDuration(Object videoDuration) {
+        public void setVideoDuration(int videoDuration) {
             this.videoDuration = videoDuration;
         }
 

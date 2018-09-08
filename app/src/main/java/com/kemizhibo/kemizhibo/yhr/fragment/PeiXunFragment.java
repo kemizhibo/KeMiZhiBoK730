@@ -7,98 +7,74 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.example.zhouwei.library.CustomPopWindow;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterMaterialAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterSemesterAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListGradeAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListMaterialAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListSemesterAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.TeacherTrainingFragmentAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.TeacherTrainingPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
-import com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.TeacherTrainingView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
+import com.yyydjk.library.DropDownMenu;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl> implements TeacherTrainingView {
+
     @BindView(R.id.teacher_training_recyclerview)
     RecyclerView teacherTrainingRecyclerview;
     @BindView(R.id.teacher_trainingg_spring)
     SpringView teacherTraininggSpring;
-    @BindView(R.id.teacher_training_xiala_imageview)
-    ImageView teacherTrainingXialaImageview;
-    @BindView(R.id.teacher_training_shaixuan_butn)
-    LinearLayout teacherTrainingShaixuanButn;
-    @BindView(R.id.teacher_training_shaixuan_jiaocai_recyclerview)
-    RecyclerView teacherTrainingShaixuanJiaocaiRecyclerview;
-    @BindView(R.id.teacher_training_shaixuan_nianji_recyclerview)
-    RecyclerView teacherTrainingShaixuanNianjiRecyclerview;
-    @BindView(R.id.teacher_training_shaixuan_xueqi_recyclerview)
-    RecyclerView teacherTrainingShaixuanXueqiRecyclerview;
-    @BindView(R.id.teacher_training_xiala_dropDownMenu)
-    DropDownMenuView teacherTrainingXialaDropDownMenu;
-
-    //筛选条件
-    private List<FilterBean.ContentBean.MaterialBean> filterMaterialdata;
-    FilterMaterialAdapter filterMaterialAdapter;
-    private List<FilterBean.ContentBean.GradeBean> filterGradedata;
-    FilterGradeAdapter filterGradeAdapter;
-    private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;
-    FilterSemesterAdapter filterSemesterAdapter;
-
-    @Inject
-    public TeacherTrainingPresenterImpl teacherTrainingPresenter;
-    //申明presenterImpl对象,教师培训列表
-    TeacherTrainingFragmentAdapter teacherTrainingFragmentAdapter;
+    @BindView(R.id.dropDownMenu)
+    DropDownMenu mDropDownMenu;
     private List<TeacherTrainingBean.ContentBean.DataBean> teacherTrainingData = new ArrayList<>();
-    private String materialEdition;
-    private String knowledgeId;
-    private String semester;
-    private String subjectId;
+    TeacherTrainingFragmentAdapter teacherTrainingFragmentAdapter;
+    private String materialEdition = "";
+    private String subjectId = "";
+    private String semester = "";
     //上或者下拉的状态判断
     int isUp = 1;
-    //刷新适配器的判断
-    private boolean isFlag;
-    //页数
-    private int currentPage;
+    private int currentPage = 1;
     private SharedPreferences sp;
     private String token;
     private int itemCount;
+    @Inject
+    public TeacherTrainingPresenterImpl teacherTrainingPresenter;
+
+    private String headers[] = {"教材", "年级", "学期"};
+    private List<View> popupViews = new ArrayList<>();
+    private ListMaterialAdapter cityAdapter;
+    private ListGradeAdapter ageAdapter;
+    private ListSemesterAdapter sexAdapter;
+    //筛选条件
+    private List<FilterBean.ContentBean.MaterialBean> filterMaterialdata;
+    private List<FilterBean.ContentBean.GradeBean> filterGradedata;
+    private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -107,18 +83,117 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     }
 
     @Override
-    public int getEmptyPageLayoutId() {
-        return 0;
-    }
-
-    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.peixun_fragment);
         ButterKnife.bind(this, view);
         //展示教师培训的列表数据
         initTeacherTrainingData();
+        initView();
         return view;
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        //退出activity前关闭菜单
+        if (mDropDownMenu.isShowing()) {
+            mDropDownMenu.closeMenu();
+        }
+    }
+
+    @Override
+    public void load() {
+        sp = getContext().getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        //筛选条件
+        isUp=1;
+        teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
+        teacherTrainingPresenter.getFilterData(mActivity);
+    }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
+    public void onFilterSuccess(FilterBean filterBean) {
+        setState(LoadingPager.LoadResult.success);
+        //教材版本
+        filterMaterialdata = new ArrayList<>();
+        FilterBean.ContentBean.MaterialBean materialBean = new FilterBean.ContentBean.MaterialBean();
+        materialBean.setSubjectName("通用");
+        filterMaterialdata.add(materialBean);
+        filterMaterialdata.addAll(filterBean.getContent().getMaterial());
+        //年级
+        filterGradedata = new ArrayList<>();
+        FilterBean.ContentBean.GradeBean gradeBean = new FilterBean.ContentBean.GradeBean();
+        gradeBean.setSubjectName("通用");
+        filterGradedata.add(gradeBean);
+        filterGradedata.addAll(filterBean.getContent().getGrade());
+        //学期
+        filterSemesterdata = new ArrayList<>();
+        FilterBean.ContentBean.SemesterBean semesterBean = new FilterBean.ContentBean.SemesterBean();
+        semesterBean.setSubjectName("通用");
+        filterSemesterdata.add(semesterBean);
+        filterSemesterdata.addAll(filterBean.getContent().getSemester());
+    }
+
+    @Override
+    public void onFilterError(String msg) {
+        LogUtils.i("报错了3",msg);
+    }
+
+    @Override
+    public void onTeacherTrainingSuccess(TeacherTrainingBean teacherTrainingBean) {
+        if (teacherTrainingBean.getCode() == 0) {
+            if (isUp == 1) {
+                teacherTrainingData.clear();
+                teacherTrainingData.addAll(teacherTrainingBean.getContent().getData());
+                if (teacherTrainingData.size() == 0) {
+                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
+                    setState(LoadingPager.LoadResult.empty);
+                } else {
+                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
+                    setState(LoadingPager.LoadResult.success);
+                }
+            } else if (isUp == 2) {
+                if (itemCount >= teacherTrainingBean.getContent().getTotal()) {
+                    ToastUtils.showToast("没有更多数据");
+                } else {
+                    teacherTrainingData.addAll(teacherTrainingBean.getContent().getData());
+                    if (teacherTrainingData.size() == 0) {
+                        setState(LoadingPager.LoadResult.empty);
+                    } else {
+                        teacherTrainingFragmentAdapter.notifyDataSetChanged();
+                        setState(LoadingPager.LoadResult.success);
+                    }
+                }
+            }
+        } else if (teacherTrainingBean.getCode()==401){
+            initDialogToLogin();
+        }else {
+            setState(LoadingPager.LoadResult.error);
+        }
+    }
+
+    @Override
+    public void onTeacherTrainingError(String msg) {
+        //加载失败的状态
+        setState(LoadingPager.LoadResult.error);
+    }
+
+    @Override
+    protected TeacherTrainingPresenterImpl initInjector() {
+        fragmentComponent.inject(this);
+        return teacherTrainingPresenter;
+    }
+
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
+    }
+
 
     private void initTeacherTrainingData() {
         //设置适配器
@@ -151,15 +226,21 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        materialEdition="";
-                        subjectId="";
-                        semester="";
+                        materialEdition = "";
+                        subjectId = "";
+                        semester = "";
                         isUp = 1;
                         currentPage = 1;
+                        //设置头部为固定的通用样式
+                        cityAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[0]);
+                        ageAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[1]);
+                        sexAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[2]);
                         sp = getContext().getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", currentPage + "", "10", "", "", "", "","");
-                        isFlag = true;
+                        teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                         teacherTraininggSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -174,8 +255,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
                         currentPage++;
                         sp = getContext().getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", currentPage + "", "10", "", "", "", "","");
-                        isFlag = true;
+                        teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                         teacherTraininggSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -186,223 +266,99 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
 
     }
 
-    @Override
-    public void load() {
-        sp = getContext().getSharedPreferences("logintoken", 0);
-        token = sp.getString("token", "");
-        teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", "1", "10", "", "", "", "", "");
-    }
+    private void initView() {
+        //init city menu
+        final ListView cityView = new ListView(getContext());
+        cityAdapter = new ListMaterialAdapter(getContext(), filterMaterialdata);
+        cityView.setDividerHeight(0);
+        cityView.setAdapter(cityAdapter);
 
-    @Override
-    public void onEmptyViewClick() {
+        //init age menu
+        final ListView ageView = new ListView(getContext());
+        ageView.setDividerHeight(0);
+        ageAdapter = new ListGradeAdapter(getContext(), filterGradedata);
+        ageView.setAdapter(ageAdapter);
 
-    }
+        //init sex menu
+        final ListView sexView = new ListView(getContext());
+        sexView.setDividerHeight(0);
+        sexAdapter = new ListSemesterAdapter(getContext(), filterSemesterdata);
+        sexView.setAdapter(sexAdapter);
 
-    @Override
-    public void onFilterSuccess(FilterBean filterBean) {
-        setState(LoadingPager.LoadResult.success);
-        filterMaterialdata = new ArrayList<>();
-        filterMaterialdata.addAll(filterBean.getContent().getMaterial());
-        filterGradedata = new ArrayList<>();
-        filterGradedata.addAll(filterBean.getContent().getGrade());
-        filterSemesterdata = new ArrayList<>();
-        filterSemesterdata.addAll(filterBean.getContent().getSemester());
-        if (!teacherTrainingXialaDropDownMenu.isOpen()) {
-            teacherTrainingXialaDropDownMenu.open();
-            showPopTopWithDarkBg();
-        }
-    }
+        //init popupViews
+        popupViews.add(cityView);
+        popupViews.add(ageView);
+        popupViews.add(sexView);
 
-    @Override
-    public void onFilterError(String msg) {
-        //setState(LoadingPager.LoadResult.error);
-    }
-
-    @Override
-    public void onTeacherTrainingSuccess(TeacherTrainingBean teacherTrainingBean) {
-        if (teacherTrainingBean.getCode()==0){
-            if (isUp == 1) {
-                teacherTrainingData.clear();
-                LogUtils.i("上拉下拉","1");
-                teacherTrainingData.addAll(teacherTrainingBean.getContent().getData());
-                LogUtils.i("上拉下拉","2");
-                if (teacherTrainingData==null){
-                    setState(LoadingPager.LoadResult.empty);
-                    LogUtils.i("上拉下拉","3");
-                }else {
-                    setState(LoadingPager.LoadResult.success);
-                    LogUtils.i("上拉下拉","4");
-                    if (isFlag) {
-                        teacherTrainingFragmentAdapter.notifyDataSetChanged();
-                        LogUtils.i("上拉下拉","5");
-                    }
-                }
-            } else if (isUp == 2) {
-                if (itemCount>=teacherTrainingBean.getContent().getTotal()){
-                    LogUtils.i("上拉下拉当前条目数量1",itemCount+"");
-                    /*if (isUp==1){
-                        yingXiangFragmentdata.clear();
-                    }*/
-                    LogUtils.i("上拉下拉","6");
-                    ToastUtils.showToast("没有更多数据");
-                }else {
-                    teacherTrainingData.addAll(teacherTrainingBean.getContent().getData());
-                    LogUtils.i("上拉下拉","7");
-                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
-                    LogUtils.i("上拉下拉","8");
-                    LogUtils.i("上拉下拉","9");
-                    if (teacherTrainingData==null){
-                        setState(LoadingPager.LoadResult.empty);
-                        LogUtils.i("上拉下拉","10");
-                    }else {
-                        setState(LoadingPager.LoadResult.success);
-                        LogUtils.i("上拉下拉","11");
-                        if (isFlag) {
-                            teacherTrainingFragmentAdapter.notifyDataSetChanged();
-                            LogUtils.i("上拉下拉","12");
-                        }
-                    }
-                }
-            }
-        }else {
-            initDialogToLogin();
-        }
-    }
-
-    @Override
-    public void onTeacherTrainingError(String msg) {
-        //加载失败的状态
-        setState(LoadingPager.LoadResult.error);
-    }
-
-    @Override
-    protected TeacherTrainingPresenterImpl initInjector() {
-        //如果是fragment，就是他，如果是acyivity就是acyivityComponent
-        //this需要去di注册
-        fragmentComponent.inject(this);
-        return teacherTrainingPresenter;
-    }
-
-    @OnClick(R.id.teacher_training_shaixuan_butn)
-    public void onViewClicked() {
-        if (NoFastClickUtils.isFastClick()) {
-        }else {
-            materialEdition="";
-            subjectId="";
-            semester="";
-            teacherTrainingPresenter.getFilterData(mActivity);
-        }
-    }
-
-
-    private void showPopTopWithDarkBg() {
-        //处理popWindow 显示筛选内容
-        setDataFilterMaterial();
-        setDataFilterGrade();
-        setDataFilterSemester();
-    }
-    private void setDataFilterSemester() {
-        //RecyclerView yingxiangShaixuanXueqiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_xueqi_recyclerview);
-        //设置适配器
-        LinearLayoutManager semesterManage = new LinearLayoutManager(getContext());
-        semesterManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        teacherTrainingShaixuanXueqiRecyclerview.setLayoutManager(semesterManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterSemesterAdapter = new FilterSemesterAdapter(R.layout.shaixuan_xueqi_item, filterSemesterdata);
-        filterSemesterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        //add item click event
+        cityView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()){
-                }else {
-                    semester = String.valueOf(filterSemesterdata.get(position).getSubjectId());
-                    //改变单选状态，并且刷新数据
-                    for (int i=0;i<filterSemesterdata.size();i++){
-                        filterSemesterdata.get(i).setFlage(false);
-                        filterSemesterdata.set(i, filterSemesterdata.get(i));
-                    }
-                    filterSemesterdata.get(position).setFlage(true);
-                    filterSemesterdata.set(position, filterSemesterdata.get(position));
-                    filterSemesterAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    teacherTrainingData.clear();
-                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, "", knowledgeId);
-                    isFlag = true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                cityAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[0]);
+                    materialEdition = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
+                } else {
+                    mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
+                    materialEdition = filterMaterialdata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                 }
+                mDropDownMenu.closeMenu();
             }
         });
-        teacherTrainingShaixuanXueqiRecyclerview.setAdapter(filterSemesterAdapter);
-    }
 
-    private void setDataFilterGrade() {
-        //设置适配器
-        LinearLayoutManager gradeManage = new LinearLayoutManager(getContext());
-        gradeManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        teacherTrainingShaixuanNianjiRecyclerview.setLayoutManager(gradeManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterGradeAdapter = new FilterGradeAdapter(R.layout.shaixuan_nianji_item, filterGradedata);
-        filterGradeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        ageView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()){
-                }else {
-                    subjectId = String.valueOf(filterGradedata.get(position).getSubjectId());
-                    //改变单选状态，并且刷新数据
-                    for (int i=0;i<filterGradedata.size();i++){
-                        filterGradedata.get(i).setFlage(false);
-                        filterGradedata.set(i, filterGradedata.get(i));
-                    }
-                    filterGradedata.get(position).setFlage(true);
-                    filterGradedata.set(position, filterGradedata.get(position));
-                    filterGradeAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    teacherTrainingData.clear();
-                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, "", knowledgeId);
-                    isFlag = true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                ageAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[1]);
+                    subjectId = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
+                } else {
+                    mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
+                    subjectId = filterGradedata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                 }
+                mDropDownMenu.closeMenu();
             }
         });
-        teacherTrainingShaixuanNianjiRecyclerview.setAdapter(filterGradeAdapter);
-    }
 
-    private void setDataFilterMaterial() {
-        //RecyclerView yingxiangShaixuanJiaocaiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_jiaocai_recyclerview);
-        //设置适配器
-        LinearLayoutManager materialManage = new LinearLayoutManager(getContext());
-        materialManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        teacherTrainingShaixuanJiaocaiRecyclerview.setLayoutManager(materialManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterMaterialAdapter = new FilterMaterialAdapter(R.layout.shaixuanjiaocai_item, filterMaterialdata);
-        filterMaterialAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        sexView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()){
-                }else {
-                    materialEdition = String.valueOf(filterMaterialdata.get(position).getSubjectId());
-
-                    for (int i = 0; i < filterMaterialdata.size(); i++) {
-                        filterMaterialdata.get(i).setFlage(false);
-                        filterMaterialdata.set(i, filterMaterialdata.get(i));
-                    }
-                    filterMaterialdata.get(position).setFlage(true);
-                    filterMaterialdata.set(position, filterMaterialdata.get(position));
-                    filterMaterialAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    teacherTrainingData.clear();
-                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", "1", "10", materialEdition, subjectId, semester, "", knowledgeId);
-                    isFlag = true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                sexAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[2]);
+                    semester = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
+                } else {
+                    mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
+                    semester = filterSemesterdata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                 }
-
-
-                /*YingXiangFragmentBean.ContentBean.DataBean yingxiangbean = new  YingXiangFragmentBean.ContentBean.DataBean();
-                yingxiangbean.setSubjectId(filterMaterialdata.get(position).getSubjectId());
-                yingXiangFragmentdata.add(yingxiangbean);*/
-                //ToastUtils.showToast(materialEdition);
+                mDropDownMenu.closeMenu();
             }
         });
-        teacherTrainingShaixuanJiaocaiRecyclerview.setAdapter(filterMaterialAdapter);
+        //好像文字的水印
+        TextView contentView = new TextView(getContext());
+        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
 
     private void initDialogToLogin() {
@@ -410,11 +366,11 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
@@ -430,5 +386,4 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
         lp.height = 260;
         window.setAttributes(lp);
     }
-
 }

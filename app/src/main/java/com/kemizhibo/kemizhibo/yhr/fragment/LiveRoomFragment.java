@@ -7,101 +7,88 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterGradeAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterImgScienceAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterMaterialAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.FilterSemesterAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListGradeAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListImgScienceAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListMaterialAdapter;
+import com.kemizhibo.kemizhibo.yhr.adapter.filtureadapter.ListSemesterAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.LiveRoomFragmentAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomBean;
+import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangFragmentBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.LiveRoomPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
-import com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.LiveRoomView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
+import com.yyydjk.library.DropDownMenu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> implements LiveRoomView {
 
-    @Inject
-    public LiveRoomPresenterImpl liveRoomPresenter;
-    //申明presenterImpl对象,教材筛选条件
-    LiveRoomFragmentAdapter liveRoomFragmentAdapter;
     @BindView(R.id.live_room_recyclerview)
     RecyclerView liveRoomRecyclerview;
     @BindView(R.id.live_room_spring)
     SpringView liveRoomSpring;
-    @BindView(R.id.live_room_xiala_imageview)
-    ImageView liveRoomXialaImageview;
-    @BindView(R.id.live_room_shaixuan_butn)
-    LinearLayout liveRoomShaixuanButn;
-    @BindView(R.id.live_room_shaixuan_jiaocai_recyclerview)
-    RecyclerView liveRoomShaixuanJiaocaiRecyclerview;
-    @BindView(R.id.live_room_shaixuan_fenlei_recyclerview)
-    RecyclerView liveRoomShaixuanFenleiRecyclerview;
-    @BindView(R.id.live_room_xiala_dropDownMenu)
-    DropDownMenuView liveRoomXialaDropDownMenu;
-    @BindView(R.id.live_room_shaixuan_nianji_recyclerview)
-    RecyclerView liveRoomShaixuanNianjiRecyclerview;
-    @BindView(R.id.live_room_shaixuan_xueqi_recyclerview)
-    RecyclerView liveRoomShaixuanXueqiRecyclerview;
-    Unbinder unbinder;
-
+    @BindView(R.id.dropDownMenu)
+    DropDownMenu mDropDownMenu;
+    @Inject
+    public LiveRoomPresenterImpl liveRoomPresenter;
+    //申明presenterImpl对象,教材筛选条件
+    LiveRoomFragmentAdapter liveRoomFragmentAdapter;
     private List<LiveRoomBean.ContentBean.DataBean> liveDataBean = new ArrayList<>();
-    //筛选条件
-    private List<FilterBean.ContentBean.MaterialBean> filterMaterialdata;
-    FilterMaterialAdapter filterMaterialAdapter;
-    private List<FilterBean.ContentBean.GradeBean> filterGradedata;
-    FilterGradeAdapter filterGradeAdapter;
-    private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;
-    FilterSemesterAdapter filterSemesterAdapter;
-    private List<FilterBean.ContentBean.ImgScienceBean> filterImgSciencedata;
-    FilterImgScienceAdapter filterImgScienceAdapter;
-    private String materialEdition;
-    private String knowledgeId;
-    private String semester;
-    private String subjectId;
-    //分页
-    private int currentPage;
-    //上或者下拉的状态判断
-    int isUp = 1;
-    //刷新适配器的判断
-    private boolean isFlag;
+    private String materialEdition = "";
+    private String knowledgeId = "";
+    private String semester = "";
+    private String subjectId = "";
     private SharedPreferences sp;
     private String token;
+    //上或者下拉的状态判断
+    int isUp = 1;
+    private Intent intent;
+    private Bundle bundle;
+    private int currentPage = 1;
     private int itemCount = 0;
+    private String headers[] = {"教材", "年级", "学期", "分类"};
+    private List<View> popupViews = new ArrayList<>();
+    private ListMaterialAdapter cityAdapter;
+    private ListGradeAdapter ageAdapter;
+    private ListSemesterAdapter sexAdapter;
+    private ListImgScienceAdapter constellationAdapter;
+    //筛选条件
+    private List<FilterBean.ContentBean.MaterialBean> filterMaterialdata;
+    private List<FilterBean.ContentBean.GradeBean> filterGradedata;
+    private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;
+    private List<FilterBean.ContentBean.ImgScienceBean> filterImgSciencedata;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -110,17 +97,116 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     }
 
     @Override
-    public int getEmptyPageLayoutId() {
-        return 0;
-    }
-
-    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.kexue_fragment);
         ButterKnife.bind(this, view);
+        initView();
         //科学观察室展示列表的方法
         initLiveRoomFragmentData();
         return view;
+    }
+
+    @Override
+    public void load() {
+        //筛选条件
+        sp = getContext().getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        isUp = 1;
+        liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+        liveRoomPresenter.getFilterData(mActivity);
+    }
+
+    @Override
+    public void onEmptyViewClick() {
+
+    }
+
+    @Override
+    public void onFilterSuccess(FilterBean filterBean) {
+        setState(LoadingPager.LoadResult.success);
+        //教材版本
+        filterMaterialdata = new ArrayList<>();
+        FilterBean.ContentBean.MaterialBean materialBean = new FilterBean.ContentBean.MaterialBean();
+        materialBean.setSubjectName("通用");
+        filterMaterialdata.add(materialBean);
+        filterMaterialdata.addAll(filterBean.getContent().getMaterial());
+        //年级
+        filterGradedata = new ArrayList<>();
+        FilterBean.ContentBean.GradeBean gradeBean = new FilterBean.ContentBean.GradeBean();
+        gradeBean.setSubjectName("通用");
+        filterGradedata.add(gradeBean);
+        filterGradedata.addAll(filterBean.getContent().getGrade());
+        //学期
+        filterSemesterdata = new ArrayList<>();
+        FilterBean.ContentBean.SemesterBean semesterBean = new FilterBean.ContentBean.SemesterBean();
+        semesterBean.setSubjectName("通用");
+        filterSemesterdata.add(semesterBean);
+        filterSemesterdata.addAll(filterBean.getContent().getSemester());
+        //分类
+        filterImgSciencedata = new ArrayList<>();
+        FilterBean.ContentBean.ImgScienceBean imgScienceBean = new FilterBean.ContentBean.ImgScienceBean();
+        imgScienceBean.setSubjectName("通用");
+        filterImgSciencedata.add(imgScienceBean);
+        filterImgSciencedata.addAll(filterBean.getContent().getImgScience());
+    }
+
+    @Override
+    public void onFilterError(String msg) {
+
+    }
+
+    @Override
+    public void onLiveRoomSuccess(LiveRoomBean liveRoomBean) {
+        if (liveRoomBean.getCode() == 0) {
+            if (isUp == 1) {
+                liveDataBean.clear();
+                liveDataBean.addAll(liveRoomBean.getContent().getData());
+                LogUtils.i("数量1", liveDataBean.size() + "");
+                if (liveDataBean.size() == 0) {
+                    liveRoomFragmentAdapter.notifyDataSetChanged();
+                    setState(LoadingPager.LoadResult.empty);
+                } else {
+                    liveRoomFragmentAdapter.notifyDataSetChanged();
+                    setState(LoadingPager.LoadResult.success);
+                }
+            } else if (isUp == 2) {
+                if (itemCount >= liveRoomBean.getContent().getTotal()) {
+                    LogUtils.i("数量3", liveDataBean.size() + "");
+                    ToastUtils.showToast("没有更多数据");
+                } else {
+                    liveDataBean.addAll(liveRoomBean.getContent().getData());
+                    LogUtils.i("数量2", liveDataBean.size() + "");
+                    if (liveDataBean.size() == 0) {
+                        setState(LoadingPager.LoadResult.empty);
+                    } else {
+                        liveRoomFragmentAdapter.notifyDataSetChanged();
+                        setState(LoadingPager.LoadResult.success);
+                    }
+                }
+            }
+        } else if (liveRoomBean.getCode() == 401) {
+            initDialogToLogin();
+        } else {
+            setState(LoadingPager.LoadResult.error);
+        }
+    }
+
+    @Override
+    public void onLiveRoomError(String msg) {
+        setState(LoadingPager.LoadResult.error);
+    }
+
+    @Override
+    protected LiveRoomPresenterImpl initInjector() {
+        //如果是fragment，就是他，如果是acyivity就是acyivityComponent
+        //this需要去di注册
+        fragmentComponent.inject(this);
+        return liveRoomPresenter;
+    }
+
+    @Override
+    public int getEmptyPageLayoutId() {
+        return 0;
     }
 
     private void initLiveRoomFragmentData() {
@@ -143,22 +229,6 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                     intent.putExtras(bundle);
                     //这里一定要获取到所在Activity再startActivity()；
                     getActivity().startActivity(intent);
-                    /*//判断点击的是图片还是视频还是直播
-                    if (liveDataBean.get(position).getFileType().equals("VIDEO")) {
-                        Intent intent = new Intent(getActivity().getApplicationContext(), YingXinagVideoDetailsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", String.valueOf(liveDataBean.get(position).getCourseId()));
-                        intent.putExtras(bundle);
-                        //这里一定要获取到所在Activity再startActivity()；
-                        getActivity().startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(getActivity().getApplicationContext(), TeacherTrainingDetailsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", String.valueOf(liveDataBean.get(position).getCourseId()));
-                        intent.putExtras(bundle);
-                        //这里一定要获取到所在Activity再startActivity()；
-                        getActivity().startActivity(intent);
-                    }*/
                 }
             }
         });
@@ -176,10 +246,17 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                         knowledgeId = "";
                         isUp = 1;
                         currentPage = 1;
+                        cityAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[0]);
+                        ageAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[1]);
+                        sexAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[2]);
+                        constellationAdapter.setCheckItem(0);
+                        //mDropDownMenu.setTabText(headers[3]);
                         sp = getContext().getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", "", "", "", "");
-                        isFlag = true;
+                        liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                         liveRoomSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -194,8 +271,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                         currentPage++;
                         sp = getContext().getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", "", "", "", "");
-                        isFlag = true;
+                        liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                         liveRoomSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -205,267 +281,158 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
         liveRoomSpring.setFooter(new AliFooter(getContext(), true));
     }
 
-    @Override
-    public void load() {
-        sp = getContext().getSharedPreferences("logintoken", 0);
-        token = sp.getString("token", "");
-        liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", "1", "8", "", "", "", "");
+    private void initView() {
+        //init city menu
+        final ListView cityView = new ListView(getContext());
+        cityAdapter = new ListMaterialAdapter(getContext(), filterMaterialdata);
+        cityView.setDividerHeight(0);
+        cityView.setAdapter(cityAdapter);
+
+        //init age menu
+        final ListView ageView = new ListView(getContext());
+        ageView.setDividerHeight(0);
+        ageAdapter = new ListGradeAdapter(getContext(), filterGradedata);
+        ageView.setAdapter(ageAdapter);
+
+        //init sex menu
+        final ListView sexView = new ListView(getContext());
+        sexView.setDividerHeight(0);
+        sexAdapter = new ListSemesterAdapter(getContext(), filterSemesterdata);
+        sexView.setAdapter(sexAdapter);
+
+        //init constellation
+        final ListView constellationView = new ListView(getContext());
+        constellationView.setDividerHeight(0);
+        constellationAdapter = new ListImgScienceAdapter(getContext(), filterImgSciencedata);
+        constellationView.setAdapter(constellationAdapter);
+
+        //init popupViews
+        popupViews.add(cityView);
+        popupViews.add(ageView);
+        popupViews.add(sexView);
+        popupViews.add(constellationView);
+
+        //add item click event
+        cityView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                cityAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[0]);
+                    materialEdition = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                } else {
+                    mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
+                    materialEdition = filterMaterialdata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                }
+                mDropDownMenu.closeMenu();
+            }
+        });
+
+        ageView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                ageAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[1]);
+                    subjectId = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                } else {
+                    mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
+                    subjectId = filterGradedata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                }
+                mDropDownMenu.closeMenu();
+            }
+        });
+
+        sexView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                sexAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[2]);
+                    semester = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                } else {
+                    mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
+                    semester = filterSemesterdata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                }
+                mDropDownMenu.closeMenu();
+            }
+        });
+
+        constellationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setState(LoadingPager.LoadResult.loading);
+                constellationAdapter.setCheckItem(position);
+                if (position == 0) {
+                    mDropDownMenu.setTabText(headers[3]);
+                    knowledgeId = "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                } else {
+                    mDropDownMenu.setTabText(filterImgSciencedata.get(position).getSubjectName());
+                    knowledgeId = filterImgSciencedata.get(position).getSubjectId() + "";
+                    currentPage = 1;
+                    isUp = 1;
+                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                }
+                mDropDownMenu.closeMenu();
+            }
+        });
+
+        //好像文字的水印
+        TextView contentView = new TextView(getContext());
+        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
 
-    @Override
-    public void onEmptyViewClick() {
-
-    }
-
-    @Override
-    public void onFilterSuccess(FilterBean filterBean) {
-        setState(LoadingPager.LoadResult.success);
-        filterMaterialdata = new ArrayList<>();
-        filterMaterialdata.addAll(filterBean.getContent().getMaterial());
-        filterGradedata = new ArrayList<>();
-        filterGradedata.addAll(filterBean.getContent().getGrade());
-        filterSemesterdata = new ArrayList<>();
-        filterSemesterdata.addAll(filterBean.getContent().getSemester());
-        filterImgSciencedata = new ArrayList<>();
-        filterImgSciencedata.addAll(filterBean.getContent().getImgScience());
-        if (!liveRoomXialaDropDownMenu.isOpen()) {
-            liveRoomXialaDropDownMenu.open();
-            showPopTopWithDarkBg();
+   /* @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //退出activity前关闭菜单
+        if (mDropDownMenu.isShowing()) {
+            mDropDownMenu.closeMenu();
         }
-    }
-
-    @Override
-    public void onFilterError(String msg) {
-        //setState(LoadingPager.LoadResult.error);
-    }
-
-    @Override
-    public void onLiveRoomSuccess(LiveRoomBean liveRoomBean) {
-        if (liveRoomBean.getCode() == 0) {
-            if (isUp == 1) {
-                liveDataBean.clear();
-                LogUtils.i("上拉下拉", "1");
-                liveDataBean.addAll(liveRoomBean.getContent().getData());
-                LogUtils.i("上拉下拉", "2");
-                if (liveDataBean == null) {
-                    setState(LoadingPager.LoadResult.empty);
-                    LogUtils.i("上拉下拉", "3");
-                } else {
-                    setState(LoadingPager.LoadResult.success);
-                    LogUtils.i("上拉下拉", "4");
-                    if (isFlag) {
-                        liveRoomFragmentAdapter.notifyDataSetChanged();
-                        LogUtils.i("上拉下拉", "5");
-                    }
-                }
-            } else if (isUp == 2) {
-                if (itemCount >= liveRoomBean.getContent().getTotal()) {
-                    LogUtils.i("上拉下拉当前条目数量1", itemCount + "");
-                    /*if (isUp==1){
-                        yingXiangFragmentdata.clear();
-                    }*/
-                    LogUtils.i("上拉下拉", "6");
-                    ToastUtils.showToast("没有更多数据");
-                } else {
-                    liveDataBean.addAll(liveRoomBean.getContent().getData());
-                    LogUtils.i("上拉下拉", "7");
-                    liveRoomFragmentAdapter.notifyDataSetChanged();
-                    LogUtils.i("上拉下拉", "8");
-                    LogUtils.i("上拉下拉", "9");
-                    if (liveDataBean == null) {
-                        setState(LoadingPager.LoadResult.empty);
-                        LogUtils.i("上拉下拉", "10");
-                    } else {
-                        setState(LoadingPager.LoadResult.success);
-                        LogUtils.i("上拉下拉", "11");
-                        if (isFlag) {
-                            liveRoomFragmentAdapter.notifyDataSetChanged();
-                            LogUtils.i("上拉下拉", "12");
-                        }
-                    }
-                }
-            }
-        } else {
-            initDialogToLogin();
-        }
-    }
-
-    @Override
-    public void onLiveRoomError(String msg) {
-        setState(LoadingPager.LoadResult.error);
-    }
-
-    @Override
-    protected LiveRoomPresenterImpl initInjector() {
-        //如果是fragment，就是他，如果是acyivity就是acyivityComponent
-        //this需要去di注册
-        fragmentComponent.inject(this);
-        return liveRoomPresenter;
-    }
-
-    @OnClick(R.id.live_room_shaixuan_butn)
-    public void onViewClicked() {
-        if (NoFastClickUtils.isFastClick()) {
-        }else {
-            materialEdition = "";
-            subjectId = "";
-            semester = "";
-            knowledgeId = "";
-            liveRoomPresenter.getFilterData(mActivity);
-        }
-    }
-
-
-    private void showPopTopWithDarkBg() {
-        //处理popWindow 显示筛选内容
-        setDataFilterMaterial();
-        setDataFilterGrade();
-        setDataFilterSemester();
-        setDataFilterImgScience();
-    }
-
-
-    private void setDataFilterImgScience() {
-        //RecyclerView yingxiangShaixuanFenleiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_fenlei_recyclerview);
-        //设置适配器
-        LinearLayoutManager imgScienceManage = new LinearLayoutManager(getContext());
-        imgScienceManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        liveRoomShaixuanFenleiRecyclerview.setLayoutManager(imgScienceManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterImgScienceAdapter = new FilterImgScienceAdapter(R.layout.shaixuan_fenlei_item, filterImgSciencedata);
-        filterImgScienceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()) {
-                } else {
-                    knowledgeId = String.valueOf(filterImgSciencedata.get(position).getSubjectId());
-                    //改变单选状态，并且刷新数据
-                    for (int i = 0; i < filterImgSciencedata.size(); i++) {
-                        filterImgSciencedata.get(i).setFlage(false);
-                        filterImgSciencedata.set(i, filterImgSciencedata.get(i));
-                    }
-                    filterImgSciencedata.get(position).setFlage(true);
-                    filterImgSciencedata.set(position, filterImgSciencedata.get(position));
-                    filterImgScienceAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    liveDataBean.clear();
-                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                    isFlag = true;
-                }
-            }
-        });
-        liveRoomShaixuanFenleiRecyclerview.setAdapter(filterImgScienceAdapter);
-    }
-
-    private void setDataFilterSemester() {
-        //RecyclerView yingxiangShaixuanXueqiRecyclerview = contentView.findViewById(R.id.yingxiang_shaixuan_xueqi_recyclerview);
-        //设置适配器
-        LinearLayoutManager semesterManage = new LinearLayoutManager(getContext());
-        semesterManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        liveRoomShaixuanXueqiRecyclerview.setLayoutManager(semesterManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterSemesterAdapter = new FilterSemesterAdapter(R.layout.shaixuan_xueqi_item, filterSemesterdata);
-        filterSemesterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()) {
-                } else {
-                    semester = String.valueOf(filterSemesterdata.get(position).getSubjectId());
-                    //改变单选状态，并且刷新数据
-                    for (int i = 0; i < filterSemesterdata.size(); i++) {
-                        filterSemesterdata.get(i).setFlage(false);
-                        filterSemesterdata.set(i, filterSemesterdata.get(i));
-                    }
-                    filterSemesterdata.get(position).setFlage(true);
-                    filterSemesterdata.set(position, filterSemesterdata.get(position));
-                    filterSemesterAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    liveDataBean.clear();
-                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                    isFlag = true;
-                }
-            }
-        });
-        liveRoomShaixuanXueqiRecyclerview.setAdapter(filterSemesterAdapter);
-    }
-
-    private void setDataFilterGrade() {
-        //设置适配器
-        LinearLayoutManager gradeManage = new LinearLayoutManager(getContext());
-        gradeManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        liveRoomShaixuanNianjiRecyclerview.setLayoutManager(gradeManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterGradeAdapter = new FilterGradeAdapter(R.layout.shaixuan_nianji_item, filterGradedata);
-        filterGradeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()) {
-                } else {
-                    subjectId = String.valueOf(filterGradedata.get(position).getSubjectId());
-                    //改变单选状态，并且刷新数据
-                    for (int i = 0; i < filterGradedata.size(); i++) {
-                        filterGradedata.get(i).setFlage(false);
-                        filterGradedata.set(i, filterGradedata.get(i));
-                    }
-                    filterGradedata.get(position).setFlage(true);
-                    filterGradedata.set(position, filterGradedata.get(position));
-                    filterGradeAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    liveDataBean.clear();
-                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                    isFlag = true;
-                }
-            }
-        });
-        liveRoomShaixuanNianjiRecyclerview.setAdapter(filterGradeAdapter);
-    }
-
-    private void setDataFilterMaterial() {
-        //设置适配器
-        LinearLayoutManager materialManage = new LinearLayoutManager(getContext());
-        materialManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        liveRoomShaixuanJiaocaiRecyclerview.setLayoutManager(materialManage);
-        //LogUtils.e("data.size()",data.size()+"");
-        filterMaterialAdapter = new FilterMaterialAdapter(R.layout.shaixuanjiaocai_item, filterMaterialdata);
-        filterMaterialAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (NoFastClickUtils.isFastClick()) {
-                } else {
-                    materialEdition = String.valueOf(filterMaterialdata.get(position).getSubjectId());
-                    //改变单选状态，并且刷新数据
-                    for (int i = 0; i < filterMaterialdata.size(); i++) {
-                        filterMaterialdata.get(i).setFlage(false);
-                        filterMaterialdata.set(i, filterMaterialdata.get(i));
-                    }
-                    filterMaterialdata.get(position).setFlage(true);
-                    filterMaterialdata.set(position, filterMaterialdata.get(position));
-                    filterMaterialAdapter.notifyDataSetChanged();
-                    sp = getContext().getSharedPreferences("logintoken", 0);
-                    token = sp.getString("token", "");
-                    liveDataBean.clear();
-                    liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", "1", "10", materialEdition, subjectId, semester, knowledgeId);
-                    isFlag = true;
-                }
-
-            }
-        });
-        liveRoomShaixuanJiaocaiRecyclerview.setAdapter(filterMaterialAdapter);
-    }
+    }*/
+   @Override
+   public void onHiddenChanged(boolean hidden) {
+       super.onHiddenChanged(hidden);
+       //退出activity前关闭菜单
+       if (mDropDownMenu.isShowing()) {
+           mDropDownMenu.closeMenu();
+       }
+   }
 
     private void initDialogToLogin() {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();

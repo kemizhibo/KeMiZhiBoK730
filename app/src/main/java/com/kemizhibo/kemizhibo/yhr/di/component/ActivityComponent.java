@@ -8,7 +8,6 @@ import com.kemizhibo.kemizhibo.yhr.activity.logins.WangJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.XiuGaiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePwdActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.personcenters.LectureActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActivity;
@@ -17,6 +16,7 @@ import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterShouCangAc
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.SetNewPhoneActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.personcenters.TakePhotoActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.ForTeachSearchActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDetailsFinishActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.SearchActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
@@ -51,6 +51,7 @@ public interface ActivityComponent {
     void inject(YingXinagVideoDetailsActivity activity);
     void inject(TeacherTrainingDetailsActivity activity);
     void inject(LiveRoomDetailsActivity activity);
+    void inject(LiveRoomDetailsFinishActivity activity);
     void inject(LoginActivity activity);
     void inject(SearchActivity activity);
     void inject(SplashActivity activity);
@@ -64,7 +65,6 @@ public interface ActivityComponent {
     void inject(ChangePwdActivity activity);
     void inject(PersonCenterSheZhiActivity activity);
     void inject(PersonCenterLiuLanActivity activity);
-    void inject(LectureActivity activity);
     void inject(WangJiActivity activity);
     void inject(ForTeachSearchActivity activity);
     void inject(XiuGaiActivity activity);

@@ -56,6 +56,10 @@ public interface YingXiangDetailsVideoView extends BaseView{
     void onGetMoreLookSuccess(OneLookBean oneLookBean);
     void onGetMoreLookError(String msg);
 
+    //播放完毕
+    void onGetLastLookSuccess(OneLookBean oneLookBean);
+    void onGetLastLookError(String msg);
+
     //获取视频地址2
     void onLiveRoomDetailsVideoUrl2Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
     void onLiveRoomDetailsVideoUrl2Error(String msg);

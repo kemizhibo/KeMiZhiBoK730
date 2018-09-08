@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
 
     <application
         android:name=".yhr.MyApplication"
@@ -23,25 +27,52 @@
             android:name=".yhr.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".yhr.activity.SplashActivity">
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".yhr.activity.resourcescenteraactivity.SearchActivity" />
-        <activity android:name=".yhr.activity.logins.LoginActivity" />
-        <activity android:name=".yhr.activity.logins.FinishActivity" />
-        <activity android:name=".yhr.activity.logins.WangJiActivity" />
-        <activity android:name=".yhr.activity.logins.XiuGaiActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterBianJiActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterShouCangActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterLiuLanActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterSuCaiActivity" />
-        <activity android:name=".other.preparing_teaching_lessons.PersonCenterBeiShouKeJiLuActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterFanKuiActivity" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterSheZhiActivity" />
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.logins.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.logins.FinishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.logins.WangJiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.logins.XiuGaiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterBianJiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterShouCangActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterLiuLanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterSuCaiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".other.preparing_teaching_lessons.PersonCenterBeiShouKeJiLuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterFanKuiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterSheZhiActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -55,13 +86,18 @@
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:hardwareAccelerated="true" />
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.PictrueDetailsActivity"
-            android:hardwareAccelerated="true" />
-        <activity android:name=".yhr.activity.personcenters.TakePhotoActivity" />
-        <activity android:name=".other.preparing_package_detail.PreparingPackageDetailActivity" />
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.TakePhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".other.preparing_package_detail.PreparingPackageDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
             android:screenOrientation="portrait"
@@ -71,18 +107,32 @@
             android:name=".other.web.CommonWebActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape" />
-        <activity android:name=".yhr.activity.personcenters.ChangePhoneActivity" />
-        <activity android:name=".yhr.activity.personcenters.SetNewPhoneActivity" />
-        <activity android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity" />
-        <activity android:name=".yhr.activity.personcenters.ChangePwdActivity" />
-        <activity android:name=".yhr.activity.personcenters.FuWuActivity" />
+        <activity
+            android:name=".yhr.activity.personcenters.ChangePhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.SetNewPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.ChangePhoneFinishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.ChangePwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".yhr.activity.personcenters.FuWuActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.web.MyLiveRoomWebActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity" />
-        <activity android:name=".yhr.activity.personcenters.LectureActivity" />
+        <activity
+            android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".other.preparing_package_detail.preview.PreviewActivity" />
-        <activity android:name=".yhr.activity.resourcescenteraactivity.ForTeachSearchActivity"></activity>
+        <activity
+            android:name=".yhr.activity.resourcescenteraactivity.ForTeachSearchActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsFinishActivity"></activity>
     </application>
 
 </manifest>

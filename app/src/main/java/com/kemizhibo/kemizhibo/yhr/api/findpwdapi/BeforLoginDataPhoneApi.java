@@ -1,15 +1,13 @@
 package com.kemizhibo.kemizhibo.yhr.api.findpwdapi;
 
+
 import com.alibaba.fastjson.JSON;
 import com.kemizhibo.kemizhibo.yhr.api.httpservice.HttpGetService;
 import com.kemizhibo.kemizhibo.yhr.bean.findPwdbean.BeforLoginValiDatePhoneBean;
-import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhxu.library.api.BaseApi;
 import com.zhxu.library.listener.HttpOnNextListener;
-
 import java.io.IOException;
-
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import rx.Observable;

@@ -17,6 +17,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.YingXiangDetailsVide
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.CollectionIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.DeleteCommentIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.GetLikeIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LastLookIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LiveRoomDetailsVideoUrlIteractor2;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LiveRoomDetailsVideoUrlIteractor3;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LiveRoomDetailsVideoUrlIteractor4;
@@ -63,6 +64,9 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
 
     @Inject
     public MoreLookIteractor moreLookIteractor ;
+
+    @Inject
+    public LastLookIteractor lastLookIteractor ;
 
     @Inject
     public LiveRoomDetailsVideoUrlIteractor2 liveRoomDetailsVideoUrlIteractor2 ;
@@ -208,6 +212,21 @@ public class YingXiangDetailsVideoPresenterImpl extends BasePresenterImpl<YingXi
             @Override
             public void getDataError(String errmsg) {
                 mPresenterView.onGetMoreLookError(errmsg);
+            }
+        },token,playPosition,keyId,courseId,watchTime,isEnd);
+    }
+
+    @Override
+    public void getLastLookData(BaseActivity activity, String token, String playPosition, String keyId, String courseId, String watchTime, String isEnd) {
+        lastLookIteractor.loadLastLookData(activity, new IGetDataDelegate<OneLookBean>() {
+            @Override
+            public void getDataSuccess(OneLookBean oneLookBean) {
+                mPresenterView.onGetLastLookSuccess(oneLookBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onGetLastLookError(errmsg);
             }
         },token,playPosition,keyId,courseId,watchTime,isEnd);
     }

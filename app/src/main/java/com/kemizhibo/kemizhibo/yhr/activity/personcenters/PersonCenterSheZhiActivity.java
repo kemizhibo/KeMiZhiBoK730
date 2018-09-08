@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SignOutBean;
@@ -118,13 +119,20 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode== MyApplication.YINGXIANG_TO_PICK_req&&resultCode==MyApplication.YINGXIANG_TO_PICK_res){
+            finish();
+        }
+    }
+
+    @Override
     public void onSignOutSuccess(SignOutBean signOutBean) {
           if (signOutBean.getCode()==0){
               if(sp!=null){
                   sp.edit().clear().commit();
               }
-              intent = new Intent(PersonCenterSheZhiActivity.this, LoginActivity.class);
-              startActivity(intent);
+              setResult(MyApplication.YINGXIANG_TO_PICK_res);
               finish();
           }else {
               initDialogToLogin();

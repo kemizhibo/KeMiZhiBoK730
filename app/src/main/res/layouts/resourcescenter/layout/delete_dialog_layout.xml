@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:layout_marginTop="@dimen/res_20dp"
     android:orientation="vertical">
     <TextView
+        android:layout_marginTop="@dimen/res_75dp"
+        android:layout_marginBottom="@dimen/res_70dp"
+        android:textSize="@dimen/res_textsize_15sp"
+        android:textColor="@color/black_666666"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="是否删除"/>
+        android:text="是否删除该评论？"/>
     <LinearLayout
         android:layout_marginTop="@dimen/res_20dp"
         android:layout_marginBottom="@dimen/res_20dp"
@@ -18,13 +21,19 @@
         <Button
             android:id="@+id/delete_yes_butn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/res_50dp"
+            android:background="@color/text_67c58c"
+            android:textColor="@color/white"
+            android:textSize="@dimen/res_textsize_15sp"
             android:layout_weight="1"
             android:text="确定"/>
         <Button
             android:id="@+id/delete_no_butn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/res_50dp"
+            android:background="@color/white"
+            android:textColor="@color/text_999999"
+            android:textSize="@dimen/res_textsize_15sp"
             android:layout_weight="1"
             android:text="取消"/>
     </LinearLayout>

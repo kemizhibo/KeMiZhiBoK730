@@ -3,6 +3,12 @@
     android:id="@+id/relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/detail_framlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
     <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
         android:layout_alignParentTop="true"
         android:id="@+id/player"

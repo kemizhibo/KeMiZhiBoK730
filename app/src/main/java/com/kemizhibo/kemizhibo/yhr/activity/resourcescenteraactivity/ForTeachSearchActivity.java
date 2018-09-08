@@ -1,11 +1,9 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,19 +11,20 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.ForTeachSearchAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter.SearchAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.ForTeachSearchBean;
-import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.SearchBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentSearchEmpty;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.ForTeachSearchPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.ForeTeachSearchIView;
 import com.liaoinstan.springview.container.AliFooter;
@@ -54,6 +53,8 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
     RecyclerView searchRecyclerview;
     @BindView(R.id.search_springview)
     SpringView searchSpringview;
+    @BindView(R.id.relativelayout)
+    RelativeLayout relativelayout;
     private List<ForTeachSearchBean.ContentBean.DataBean> dataBeans;
     //上或者下拉的状态判断
     int isUp = 1;
@@ -74,7 +75,7 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
             @Override
             public void SearchAciton(String courseName) {
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
+                } else {
                     coursename = courseName;
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
@@ -106,14 +107,14 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
             frameLayout.setVisibility(View.GONE);
             searchRecyclerview.setVisibility(View.VISIBLE);
             dataBeans.addAll(foreTeachSearchBean.getContent().getData());
-            if (foreTeachSearchBean.getContent().getData().size()>0){
+            if (foreTeachSearchBean.getContent().getData().size() > 0) {
                 //加载数据
                 initSearchData();
-            }else {
+            } else {
                 //切换控件
                 frameLayout.setVisibility(View.VISIBLE);
                 searchRecyclerview.setVisibility(View.GONE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentEmpty()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentSearchEmpty()).commit();
             }
 
         } else {
@@ -133,7 +134,11 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    if (dataBeans.get(position).getFileType().equals("VIDEO")) {
+                    int courseId = dataBeans.get(position).getCourseId();
+                    Intent intent = new Intent(ForTeachSearchActivity.this, PreparingPackageDetailActivity.class);
+                    intent.putExtra(Constants.COURSE_ID, courseId);
+                    startActivity(intent);
+                    /*if (dataBeans.get(position).getFileType().equals("VIDEO")) {
                         Intent intent = new Intent(ForTeachSearchActivity.this, YingXinagVideoDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
@@ -154,7 +159,7 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
                         intent.putExtras(bundle);
                         //这里一定要获取到所在Activity再startActivity()；
                         ForTeachSearchActivity.this.startActivity(intent);
-                    }
+                    }*/
                 }
             }
         });
@@ -199,11 +204,11 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(ForTeachSearchActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();

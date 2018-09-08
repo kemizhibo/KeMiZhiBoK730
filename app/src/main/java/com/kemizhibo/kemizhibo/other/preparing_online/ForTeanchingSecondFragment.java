@@ -1,11 +1,9 @@
 package com.kemizhibo.kemizhibo.other.preparing_online;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,12 +11,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonTeacherBean;
@@ -39,19 +35,17 @@ import com.kemizhibo.kemizhibo.other.utils.FilterPopUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -236,7 +230,8 @@ public class ForTeanchingSecondFragment extends BaseFragment implements Preparin
                     if(docType == 5){
                         //视频
                         Intent intent = new Intent(getActivity(), LiveRoomDetailsActivity.class);
-                        intent.putExtra(Constants.COURSE_ID, String.valueOf(planBeanList.get(selectIndex).getCourseId()));
+                        intent.putExtra(Constants.MODULE_ID, String.valueOf(planBeanList.get(selectIndex).getModuleId()));
+                        LogUtils.i("取值",String.valueOf(planBeanList.get(selectIndex).getModuleId()));
                         startActivity(intent);
                     }else{
                         Intent intent = new Intent(getActivity(), CommonWebActivity.class);

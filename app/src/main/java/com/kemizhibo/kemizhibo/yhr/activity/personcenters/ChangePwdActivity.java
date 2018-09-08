@@ -1,39 +1,30 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.ChangePwdPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
-import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.kemizhibo.kemizhibo.yhr.activity.logins.XiuGaiActivity.isPwd;
 
 public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> implements ChangePwdView {
@@ -53,12 +44,14 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             if(msg.what==0){
-                Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
+                startActivity(intent);*/
+                setResult(MyApplication.YINGXIANG_TO_PICK_res);
                 finish();
             }
-        };
+        }
     };
+
     private SharedPreferences sp;
     private String token;
     private String oldpwd;

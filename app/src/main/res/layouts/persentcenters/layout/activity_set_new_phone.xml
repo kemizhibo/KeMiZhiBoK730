@@ -26,6 +26,8 @@
             android:src="@mipmap/shouji_2"/>
         <EditText
             android:id="@+id/put_phone_num"
+            android:theme="@style/MyEditText"
+            android:inputType="number"
             android:layout_marginLeft="@dimen/res_10dp"
             android:layout_width="@dimen/res_336.5dp"
             android:layout_height="wrap_content"
@@ -46,7 +48,9 @@
         <EditText
             android:singleLine="true"
             android:id="@+id/put_yanzhengma"
+            android:maxLength="4"
             android:theme="@style/MyEditText"
+            android:inputType="number"
             android:layout_marginLeft="@dimen/res_10dp"
             android:layout_width="@dimen/res_137dp"
             android:layout_height="wrap_content"

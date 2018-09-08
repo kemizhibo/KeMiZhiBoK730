@@ -5,52 +5,54 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import com.bumptech.glide.Glide;
-import com.dueeeke.videoplayer.util.L;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
-import com.kemizhibo.kemizhibo.other.preparing_center.bean.PreparingCenterBean;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.PreservationPictureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.TakePhotoBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentLoading;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.PreservationPicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LQRPhotoSelectUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.PreservationPictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.namee.permissiongen.PermissionFail;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresenterImpl> implements PreservationPictureView {
@@ -65,6 +67,10 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     TapBarLayout publicTitleBarRoot;
     @BindView(R.id.yes_butn)
     Button yesButn;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
+    @BindView(R.id.linear_layout)
+    LinearLayout linearLayout;
     private LQRPhotoSelectUtils mLqrPhotoSelectUtils;
     private SharedPreferences sp;
     private String token;
@@ -74,7 +80,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     private String photo;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            if(msg.what==0){
+            if (msg.what == 0) {
                 finish();
             }
         }
@@ -86,20 +92,25 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     }
 
     @Override
-    protected void getData() {
-        super.getData();
-        Intent intent = getIntent();
-        photo = intent.getStringExtra("photo");
-        Glide.with(TakePhotoActivity.this).load(photo).into(ivPic);
-    }
-
-    @Override
     protected void initData() {
+        frameLayout.setVisibility(View.VISIBLE);
+        linearLayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentLoading()).commit();
         init();
         bindTitleBar();
         initListener();
         //上传图片
         //intiPhoto();
+    }
+
+    @Override
+    protected void getData() {
+        super.getData();
+        Intent intent = getIntent();
+        photo = intent.getStringExtra("photo");
+        Glide.with(TakePhotoActivity.this).load(photo).into(ivPic);
+        frameLayout.setVisibility(View.GONE);
+        linearLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -234,30 +245,39 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     @OnClick(R.id.yes_butn)
     public void onViewClicked() {
         if (NoFastClickUtils.isFastClick()) {
-        }else {
+        } else {
             Map map = new HashMap();
-            map.put("param","picImg");
-            OkHttpRequest.uploadFile(this, "http://39.155.221.165:8080/image/upload", outputFile, "yhr.jpg", map, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    ToastUtils.showToast(String.valueOf(e));
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    //返回的图片地址
-                    //LogUtils.i("返回图片",response.body().string());
-                    TakePhotoBean takePhotoBean = GsonUtils.getBean(response.body().string(), TakePhotoBean.class);
-                    if(takePhotoBean != null && 0 == (takePhotoBean.getCode())){
-                        String picImg = takePhotoBean.getContent().toString();
-                        sp = getSharedPreferences("logintoken", 0);
-                        token = sp.getString("token", "");
-                        preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this,"Bearer "+token,picImg);
-                    }else{
-                        //ToastUtils.showToast("返回失败");
+            map.put("param", "picImg");
+            if (outputFile == null || TextUtils.isEmpty(outputFile + "")) {
+                sp = getSharedPreferences("logintoken", 0);
+                token = sp.getString("token", "");
+                preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this, "Bearer " + token, photo);
+            } else {
+                OkHttpRequest.uploadFile(this, "http://39.155.221.165:8080/image/upload", outputFile, "yhr.jpg", map, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        ToastUtils.showToast(String.valueOf(e));
                     }
-                }
-            });
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        //返回的图片地址
+                        //LogUtils.i("返回图片",response.body().string());
+                        TakePhotoBean takePhotoBean = GsonUtils.getBean(response.body().string(), TakePhotoBean.class);
+                        if (takePhotoBean != null && 0 == (takePhotoBean.getCode())) {
+                            String picImg = takePhotoBean.getContent().toString();
+                            sp = getSharedPreferences("logintoken", 0);
+                            token = sp.getString("token", "");
+                        /*if (TextUtils.isEmpty(picImg)||picImg==null){
+                            picImg = photo;
+                        }*/
+                            preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this, "Bearer " + token, picImg);
+                        } else {
+                            //ToastUtils.showToast("返回失败");
+                        }
+                    }
+                });
+            }
         /*File file = new File(filepath);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
@@ -268,8 +288,8 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     //保存头像
     @Override
     public void onPreservationPictureSuccess(PreservationPictureBean preservationPictureBean) {
-        if (preservationPictureBean.getCode()==0){
-            Transparent.showSuccessMessage(this,"修改头像成功!");
+        if (preservationPictureBean.getCode() == 0) {
+            Transparent.showSuccessMessage(this, "修改头像成功!");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -281,8 +301,10 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                     }
                 }
             }).start();
-        }else {
+        } else if (preservationPictureBean.getCode() == 401) {
             initDialogToLogin();
+        } else {
+            ToastUtils.showToast("请选择照片");
         }
     }
 
@@ -291,11 +313,11 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(TakePhotoActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -316,6 +338,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
     public void onPreservationPictureError(String msg) {
         ToastUtils.showToast(msg);
     }
+
     //上传头像
     @Override
     public void onTakePhotoSuccess(TakePhotoBean takePhotoBean) {
@@ -332,4 +355,5 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
         activityComponent.inject(this);
         return preservationPicturePresenter;
     }
+
 }

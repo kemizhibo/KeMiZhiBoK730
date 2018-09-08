@@ -1,7 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview;
 
 
+import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
+import com.kemizhibo.kemizhibo.yhr.bean.LectureBean;
+import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.ForTeachPlayUrlBean;
+import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.InitLectureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsVideoUrlBean;
@@ -14,20 +18,26 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingDetai
  */
 
 public interface LiveRoomDetailsView extends BaseView {
-    //获取详情信息
-    void onLiveRoomDetailsSuccess(LiveRoomDetailsBean liveRoomDetailsBean);
-    void onLiveRoomDetailsError(String msg);
 
-    //获取视频地址
-    void onLiveRoomDetailsVideoUrlSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
-    void onLiveRoomDetailsVideoUrlError(String msg);
-    //获取视频地址2
-    void onLiveRoomDetailsVideoUrl2Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
-    void onLiveRoomDetailsVideoUrl2Error(String msg);
-    //获取视频地址3
-    void onLiveRoomDetailsVideoUrl3Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
-    void onLiveRoomDetailsVideoUrl3Error(String msg);
-    //获取视频地址4
-    void onLiveRoomDetailsVideoUrl4Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean);
-    void onLiveRoomDetailsVideoUrl4Error(String msg);
+    //完成一键授课
+    void onLectureSuccess(LectureBean lectureBean);
+    void onLectureError(String msg);
+
+    //预览一键授课
+    void onInitLectureSuccess(InitLectureBean initLectureBean);
+    void onInitLectureError(String msg);
+
+    //获取一键授课播放地址
+    void onForTeachPlayUrlSuccess(ForTeachPlayUrlBean forTeachPlayUrlBean);
+    void onForTeachPlayUrlError(String msg);
+    //获取一键授课播放地址
+    void onForTeachPlayUrl2Success(ForTeachPlayUrlBean forTeachPlayUrlBean);
+    void onForTeachPlayUrl2Error(String msg);
+    //获取一键授课播放地址
+    void onForTeachPlayUrl3Success(ForTeachPlayUrlBean forTeachPlayUrlBean);
+    void onForTeachPlayUrl3Error(String msg);
+    //获取一键授课播放地址
+    void onForTeachPlayUrl4Success(ForTeachPlayUrlBean forTeachPlayUrlBean);
+    void onForTeachPlayUrl4Error(String msg);
+
 }

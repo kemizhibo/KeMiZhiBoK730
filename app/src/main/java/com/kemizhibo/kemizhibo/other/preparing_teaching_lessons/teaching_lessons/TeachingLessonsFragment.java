@@ -31,7 +31,10 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.teaching_lessons
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDetailsActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.LiveRoomDetailsFinishActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.liaoinstan.springview.container.AliFooter;
@@ -130,10 +133,16 @@ public class TeachingLessonsFragment extends BaseFragment implements TeachingLes
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), CommonWebActivity.class);
-                intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.TEACH);
-                intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
-                startActivity(intent);
+                if (dataBeanList.get(position).getDocType()==5){
+                    Intent intent = new Intent(getActivity(), LiveRoomDetailsFinishActivity.class);
+                    intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId()+"");
+                    startActivity(intent);
+                }else if (dataBeanList.get(position).getDocType()==7){
+                    Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                    intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                    startActivity(intent);
+                }
             }
         });
     }

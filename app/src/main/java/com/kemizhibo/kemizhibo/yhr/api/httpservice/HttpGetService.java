@@ -224,13 +224,25 @@ public interface HttpGetService {
                                             @Query("moduleId") String moduleId,
                                             @Query("kemiVideoPlan") String kemiVideoPlan);
 
+    //一件授课预览（取值）
+    @GET("kemiapi/prepare/module/previewDoc")
+    Observable<ResponseBody> getInitLectureData(@Header("Authorization") String token,
+                                            @Query("moduleId") String moduleId);
+    //获取一键授课视频播放地址
+    @GET("kemiapi/course/getPlayUrl")
+    Observable<ResponseBody> getForTeachPlayUrlData(@Query("courseId") String courseId,
+                                                      @Query("videoType") String videoType,
+                                                      @Query("encryption") String encryption,
+                                                      @Query("videoClarity") String videoClarity,
+                                                      @Query("kpointId") String kpointId);
+
     @GET("kemiapi/recommend")
     Observable<ResponseBody> getRecommendData();
 
     @GET("kemiapi/microblog/init")
     Observable<ResponseBody> getDynamicData();
 
-    //创建课件接口
+
 
 
 

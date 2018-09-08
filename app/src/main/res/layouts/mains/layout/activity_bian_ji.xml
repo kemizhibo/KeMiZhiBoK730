@@ -3,8 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/linear_layout"
     android:orientation="vertical"
     tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterBianJiActivity">
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
     <include layout="@layout/pubic_title_bar"/>
     <include layout="@layout/line"/>
     <LinearLayout

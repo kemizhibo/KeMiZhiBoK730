@@ -72,6 +72,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     //dialog
     compile 'com.github.ithedan:BaseDialog:1.0'
+    //版本恩鞥更新
+    compile 'cn.hugeterry.updatefun:updatefun:1.9.0'
     //gson依赖
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -114,10 +116,10 @@ dependencies {
     implementation 'com.github.dueeeke.dkplayer:dkplayer-java:2.5.3'
     implementation 'com.github.dueeeke.dkplayer:dkplayer-armv7a:2.5.3'
     implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:2.5.3'
-
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     compile 'com.contrarywind:Android-PickerView:4.1.6'
     compile 'com.contrarywind:wheelview:4.0.8'
     implementation project(':mediapicker')
     compile 'com.github.delight-im:Android-AdvancedWebView:v3.0.0'
+    implementation project(':library')
 }

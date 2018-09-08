@@ -353,7 +353,7 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                 /*teacherSelectIndex = options1;
                 yearSelectIndex = option2;
                 monthSelectIndex = options3;*/
-                int userId = content.get(options1).getUserId();
+                int subPrimaryKeyId = content.get(options1).getSubPrimaryKeyId();
                 String year = yearItems.get(option2);
                 String monthStr = monthItems.get(options3);
                 try{
@@ -369,15 +369,15 @@ public class PersonCenterBeiShouKeJiLuActivity extends BaseActivity implements C
                     List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
                     if(currentIndex == 0){
                         PreparingLessonsFragment fragment= (PreparingLessonsFragment) fragmentList.get(0);
-                        fragment.onManagerFilterSelect(userId, time);
+                        fragment.onManagerFilterSelect(subPrimaryKeyId, time);
                     }else{
                         TeachingLessonsFragment fragment = (TeachingLessonsFragment) fragmentList.get(1);
-                        fragment.onManagerFilterSelect(userId, time);
+                        fragment.onManagerFilterSelect(subPrimaryKeyId, time);
                     }
                 }catch (Exception e){
 
                 }
-                Log.d("PersonCenterBeiShouKeJi", "userId:" + userId);
+                Log.d("PersonCenterBeiShouKeJi", "userId:" + subPrimaryKeyId);
                 Log.d("PersonCenterBeiShouKeJi", time);
             }
         }) .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {

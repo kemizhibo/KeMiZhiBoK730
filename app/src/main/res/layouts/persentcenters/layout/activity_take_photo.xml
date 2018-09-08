@@ -3,7 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/linear_layout"
     android:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
     <include layout="@layout/pubic_title_bar"/>
     <include layout="@layout/line"/>
 
@@ -23,15 +30,21 @@
         <Button
             android:id="@+id/yes_butn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/res_50dp"
             android:layout_weight="1"
-            android:text="选好了，就它了！"/>
+            android:background="@color/text_67c58c"
+            android:textColor="@color/white"
+            android:textSize="@dimen/res_textsize_15sp"
+            android:text="确定"/>
         <Button
             android:id="@+id/btnSelectPhoto"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/res_50dp"
+            android:background="@color/white"
             android:layout_weight="1"
-            android:text="快去选取一张美照"/>
+            android:textColor="@color/text_999999"
+            android:textSize="@dimen/res_textsize_15sp"
+            android:text="相册"/>
     </LinearLayout>
 
 </LinearLayout>

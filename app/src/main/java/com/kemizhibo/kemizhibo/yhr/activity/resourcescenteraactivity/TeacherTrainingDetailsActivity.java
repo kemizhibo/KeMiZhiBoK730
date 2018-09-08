@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -26,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
@@ -40,6 +42,8 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsVideo
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingDetailsVideoBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.TeacherTrainingDetailsVideoUrlBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentCommentEmpty;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentLoading;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.TeacherTrainingDetailsVideoPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
@@ -52,14 +56,19 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.TeacherTrainingDe
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.inject.Inject;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import static com.dueeeke.videoplayer.player.IjkVideoView.SCREEN_SCALE_MATCH_PARENT;
 
 public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrainingDetailsVideoPresenterImpl> implements TeacherTrainingDetailsVideoView {
@@ -100,12 +109,15 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     RelativeLayout pinglunLayout;
     @BindView(R.id.relativelayout)
     RelativeLayout relativelayout;
+    @BindView(R.id.detail_framlayout)
+    FrameLayout detailFramlayout;
     private BottomSheetDialog dialog;
     //教师培训直播收藏
     private CollectionBean collectionBeans;
     private String token;
     private String courseId;
     private String trim;
+    private long duration;
     //评论列表项
     CommentAdapter commentAdapter;
     private List<CommentBean.ContentBean.DataBean> commentList = new ArrayList<>();
@@ -132,7 +144,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     //private String watchTime;
     //上或者下拉的状态判断
     int isUp = 1;
-    private int page;
+    private int page = 1;
     private int p;
     private List<CommentBean.ContentBean.DataBean> data;
     private TeacherTrainingDetailsVideoBean.ContentBean content;
@@ -149,12 +161,33 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     @Override
     protected void initData() {
         //initVideo();
+        //展示列表
+        initComment();
         controller = new DefinitionController(this);
         //播放视频
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
         //watchTime = intent.getStringExtra("watchTime");
         //LogUtils.i("播放判断从浏览记录传回来的毫秒值",watchTime);
+    }
+
+    @Override
+    protected void getData() {
+        super.getData();
+        sp = getSharedPreferences("logintoken", 0);
+        token = sp.getString("token", "");
+        commentFrameLayout.setVisibility(View.VISIBLE);
+        commentSpringview.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.comment_frame_layout, new FramgmentLoading()).commit();
+        teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, page + "", "10", "4");
+        detailFramlayout.setVisibility(View.VISIBLE);
+        relativelayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.detail_framlayout, new FramgmentLoading()).commit();
+        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer " + token, courseId);
+        teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData2(this, "Bearer " + token, courseId, "HLS", "true", "SD");
+        teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData3(this, "Bearer " + token, courseId, "HLS", "true", "LD");
+        teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData4(this, "Bearer " + token, courseId, "HLS", "true", "UD");
+        isFlag = true;
     }
 
     @OnClick(R.id.video_back_butn)
@@ -196,18 +229,23 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onPutCommentSuccess(CommentDetailBean commentDetailBean) {
         //发表成功以后吧数据添加到评论列表中然后刷新适配器，刷新列表数据
         if (commentDetailBean.getCode() == 0) {
-            isUp=1;
-            teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
-            Transparent.showErrorMessage(this,"评论成功～");
-        } else {
+            isUp = 1;
+            page = 1;
+            teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, page + "", "10", "4");
+            commentAdapter.notifyDataSetChanged();
+            //isFlag=true;
+            Transparent.showErrorMessage(this, "评论成功～");
+        } else if (commentDetailBean.getCode() == 401) {
             initDialogToLogin();
+        } else {
+            //ToastUtils.showToast("当前不支持表情添加，敬请期待");
         }
         //然后把改评论的ID传给删除接口，判断是不是本人发的，长按时触发
     }
 
     @Override
     public void onPutCommentError(String msg) {
-        Transparent.showErrorMessage(this,"评论失败请重试～");
+        Transparent.showErrorMessage(this, "评论失败请重试～");
     }
 
 
@@ -216,8 +254,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onDeleteCommentSuccess(DeleteCommentBean deleteCommentBean) {
         //如果数据返回成功，就删除,刷新适配器
         if (deleteCommentBean.getCode() == 0) {
-            Transparent.showErrorMessage(this,"删除评论成功～");
+            isUp = 1;
+            page = 1;
             teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
+            commentAdapter.notifyDataSetChanged();
+            Transparent.showErrorMessage(this, "删除评论成功～");
         } else {
             initDialogToLogin();
         }
@@ -227,16 +268,20 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onDeleteCommentError(String msg) {
         Transparent.showErrorMessage(this, "删除评论失败请重试～");
     }
+
     //获取视屏详情信息
     @Override
     public void onTeacherTrainingDetailsVideoSuccess(TeacherTrainingDetailsVideoBean teacherTrainingDetailsVideoBean) {
         if (teacherTrainingDetailsVideoBean.getCode() == 0) {
             content = teacherTrainingDetailsVideoBean.getContent();
+            if (content.getVideoDuration()!=0){
+                duration = (long) content.getVideoDuration();
+            }
             initYingXiangDetailsVideoData();
             //判断是否收藏过
             isCollection();
-            //展示列表
-            initComment();
+            detailFramlayout.setVisibility(View.GONE);
+            relativelayout.setVisibility(View.VISIBLE);
             teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoUrlData(this, "Bearer " + token, courseId, "HLS", "true", "HD");
         } else {
             initDialogToLogin();
@@ -247,6 +292,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onTeacherTrainingDetailsVideoError(String msg) {
 
     }
+
     //获取视频播放地址
     @Override
     public void onTeacherTrainingDetailsVideoUrlSuccess(TeacherTrainingDetailsVideoUrlBean teacherTrainingDetailsVideoUrlBean) {
@@ -269,10 +315,10 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             collectionBeans = collectionBean;
             if (collectionBean.getMessage().equals("添加收藏成功")) {
                 yingxiangDetailsShoucangImageview.setImageResource(R.mipmap.dianzan_select);
-                Transparent.showErrorMessage(this,"收藏成功～");
+                Transparent.showErrorMessage(this, "收藏成功～");
             } else if (collectionBean.getMessage().equals("取消收藏成功")) {
                 yingxiangDetailsShoucangImageview.setImageResource(R.mipmap.dianzan_kong);
-                Transparent.showErrorMessage(this,"收藏已取消～");
+                Transparent.showErrorMessage(this, "收藏已取消～");
             }
         } else {
             initDialogToLogin();
@@ -282,7 +328,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
 
     @Override
     public void onGetCollectionError(String msg) {
-        Transparent.showErrorMessage(this,"收藏失败请重试～");
+        Transparent.showErrorMessage(this, "收藏失败请重试～");
     }
 
     //点赞
@@ -291,7 +337,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         if (getLikeBean.getCode() == 0) {
             if ("CANCEL".equals(getLikeBean.getContent())) {
                 comment_dianzan.setBackgroundResource(R.mipmap.dianzan_2);
-            } else  {
+            } else {
                 comment_dianzan.setBackgroundResource(R.mipmap.getlike_select_2);
             }
         } else {
@@ -325,7 +371,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
      * func:弹出评论框
      */
     private void showCommentDialog() {
-        dialog = new BottomSheetDialog(this,R.style.BottomSheetEdit);
+        dialog = new BottomSheetDialog(this, R.style.BottomSheetEdit);
         View commentView = LayoutInflater.from(this).inflate(R.layout.comment_dialog_layout, null);
         commentText = (EditText) commentView.findViewById(R.id.dialog_comment_et);
         bt_comment1 = (Button) commentView.findViewById(R.id.dialog_comment_bt);
@@ -342,7 +388,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             @Override
             public void onClick(View view) {
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
+                } else {
                     //正常点击的逻辑
                     trim = commentText.getText().toString().trim();
                     if (!TextUtils.isEmpty(trim)) {
@@ -379,29 +425,17 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         dialog.show();
     }
 
-    @Override
-    protected void getData() {
-        super.getData();
-        sp = getSharedPreferences("logintoken", 0);
-        token = sp.getString("token", "");
-        teacherTrainingDetailsVideoPresenter.getTeacherTrainingDetailsVideoData(this, "Bearer " + token, courseId);
-        teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(this, "Bearer " + token, courseId, "1", "10", "4");
-        teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData2(this, "Bearer " + token, courseId, "HLS", "true", "SD");
-        teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData3(this, "Bearer " + token, courseId, "HLS", "true", "LD");
-        teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData4(this, "Bearer " + token, courseId, "HLS", "true", "UD");
-        isFlag = true;
-    }
 
     private void initDialogToLogin() {
         CustomDialog.Builder builder = new CustomDialog.Builder(this);
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(TeacherTrainingDetailsActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -431,12 +465,12 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         } else {
             yingxiangDetailsVideoJieshao.setText(content.getContext().toString().trim());
         }
-        //评论的数量
+        /*//评论的数量
         if (0==tatle.getTotal()){
             yingxiangDetailsCommentNumTxt.setText("暂无评论");
         }else {
             yingxiangDetailsCommentNumTxt.setText("评论(" + tatle.getTotal() + ")");
-        }
+        }*/
     }
 
     private void isCollection() {
@@ -459,11 +493,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         player.setScreenScale(SCREEN_SCALE_MATCH_PARENT);
         player.setVideoController(controller);
         player.setTitle("视屏详情");
-        if (content.getWatchTime()==0){
+        if (content.getWatchTime() == 0) {
             player.skipPositionWhenPlay(0);
             player.start();
             teacherTrainingDetailsVideoPresenter.getOneLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "", "", courseId, "", "0");
-        }else {
+        } else {
             player.skipPositionWhenPlay(content.getWatchTime());
             player.start();
             //设置时间
@@ -502,15 +536,39 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     @Override
     public void onGetMoreLookSuccess(OneLookBean oneLookBean) {
         //视频总时长减去当前时长
-        if (player.getDuration()-content.getWatchTime()<=10000){
+        //视频总时长减去当前时长
+        //ijkVideoView.release();
+        LogUtils.i("总时长是什么", player.getDuration() + "");
+        if (duration-currentPosition <= 10000) {
+            LogUtils.i("走这个了吗5", currentPosition + "");
+        } else {
+            //yingXiangDetailsVideoPresenter.getLastLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBean.getMessage(), courseId, String.valueOf(currentPosition), "1");
+            teacherTrainingDetailsVideoPresenter.getLastLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "0", "", courseId, "0", "1");
+            //stopTimer();
+            LogUtils.i("走这个了吗4", "00000000000000");
+        }
+        /*if (player.getDuration()-content.getWatchTime()<=10000){
             LogUtils.i("总时长",player.getDuration()+"");
             stopTimer();
             teacherTrainingDetailsVideoPresenter.getMoreLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "5000", oneLookBean.getMessage(), courseId, String.valueOf(currentPosition), "1");
-        }
+        }*/
     }
 
     @Override
     public void onGetMoreLookError(String msg) {
+
+    }
+
+    //播放完毕
+    @Override
+    public void onGetLastLookSuccess(OneLookBean oneLookBean) {
+        //如果成功，就给他干掉接口请求
+        LogUtils.i("走这个了吗", "一直在走");
+        stopTimer();
+    }
+
+    @Override
+    public void onGetLastLookError(String msg) {
 
     }
     //、、、、、、、、、、、视频播放的各种方法,第一次播放时记录位置，暂停时，看完时
@@ -567,19 +625,35 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onYingXiangDetailsVideoCommentSuccess(CommentBean commentBean) {
         data = commentBean.getContent().getData();
         tatle = commentBean.getContent();
-            if (isUp == 1) {
-                commentList.clear();
-                commentList.addAll(commentBean.getContent().getData());
-                if (commentList.size() > 0) {
-                    if (isFlag) {
-                        commentAdapter.notifyDataSetChanged();
-                    }
-            } else if (isUp == 2) {
-                commentList.addAll(commentBean.getContent().getData());
-                    if (isFlag) {
-                        commentAdapter.notifyDataSetChanged();
-                    }
+        if (isUp == 1) {
+            commentList.clear();
+            commentList.addAll(data);
+            if (commentList.size() > 0) {
+                //评论的数量
+                if (0 == tatle.getTotal()) {
+                    yingxiangDetailsCommentNumTxt.setText("暂无评论");
+                } else {
+                    yingxiangDetailsCommentNumTxt.setText("评论(" + tatle.getTotal() + ")");
+                }
+                commentFrameLayout.setVisibility(View.GONE);
+                commentSpringview.setVisibility(View.VISIBLE);
+            } else {
+                //展示为空图片
+                commentFrameLayout.setVisibility(View.VISIBLE);
+                commentSpringview.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.comment_frame_layout, new FramgmentCommentEmpty()).commit();
+                yingxiangDetailsCommentNumTxt.setText("暂无评论");
             }
+            commentAdapter.notifyDataSetChanged();
+        } else if (isUp == 2) {
+            commentList.addAll(data);
+            commentAdapter.notifyDataSetChanged();
+                /*if (isFlag) {
+                }*/
+        } else {
+            commentList.clear();
+            commentList.addAll(data);
+            commentAdapter.notifyDataSetChanged();
         }
     }
 
@@ -598,20 +672,30 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (NoFastClickUtils.isFastClick()) {
                     ToastUtils.showToast("点击太快了，请休息休息您的手指");
-                }else {
+                } else {
                     comment_dianzan = (ImageView) view.findViewById(R.id.comment_dianzan);
                     p = position;
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
                     String targetId = String.valueOf(commentList.get(position).getCommentId());
+                    //改变点赞状态，并且刷新数据
+                    if (commentList.get(position).getPraiseHistory() == 1) {
+                        commentList.get(position).setPraiseHistory(0);
+                        commentList.set(position, commentList.get(position));
+                    } else {
+                        commentList.get(position).setPraiseHistory(1);
+                        commentList.set(position, commentList.get(position));
+                    }
+                    commentAdapter.notifyDataSetChanged();
                     teacherTrainingDetailsVideoPresenter.getLikeData(TeacherTrainingDetailsActivity.this, "Bearer " + token, targetId, "4");
+                    isFlag = true;
                 }
             }
         });
         //删除
-        commentAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+        commentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 commentId = String.valueOf(commentList.get(position).getCommentId());
                 //取出用户ID
                 sp = getSharedPreferences("logintoken", 0);
@@ -619,7 +703,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                 if (commentList.get(position).getUserId() == userId) {
                     showDeleteComentDialog();
                 }
-                return true;
             }
         });
         commentRecyclerview.setAdapter(commentAdapter);
@@ -633,7 +716,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                         isUp = 1;
                         page = 1;
                         teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(TeacherTrainingDetailsActivity.this, "Bearer " + token, courseId, String.valueOf(page), "10", "4");
-                        isFlag=true;
+                        //isFlag=true;
                         commentSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -647,7 +730,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                         isUp = 2;
                         page++;
                         teacherTrainingDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(TeacherTrainingDetailsActivity.this, "Bearer " + token, courseId, String.valueOf(page), "10", "4");
-                        isFlag=true;
+                        //isFlag=true;
                         commentSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -679,7 +762,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
             @Override
             public void onClick(View view) {
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
+                } else {
                     //请求删除接口
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
@@ -699,13 +782,12 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     }
 
 
-
     @OnClick({R.id.yingxiang_details_shoucang_butn, R.id.detail_page_do_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.yingxiang_details_shoucang_butn:
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
+                } else {
                     //点击收藏判断是否登录，登录成功改变图片，失败弹出popwindow
                     sp = getSharedPreferences("logintoken", 0);
                     token = sp.getString("token", "");
@@ -723,8 +805,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onLiveRoomDetailsVideoUrl2Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
         LiveRoomDetailsVideoUrlBean contentUrlBean = liveRoomDetailsVideoUrlBean;
         str2 = contentUrlBean.getContent();
-        LogUtils.i("请求到的地址2", str2);
-
     }
 
     @Override
@@ -736,8 +816,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onLiveRoomDetailsVideoUrl3Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
         LiveRoomDetailsVideoUrlBean contentUrlBean = liveRoomDetailsVideoUrlBean;
         str3 = contentUrlBean.getContent();
-        LogUtils.i("请求到的地址3", str3);
-
     }
 
     @Override
@@ -749,8 +827,6 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
     public void onLiveRoomDetailsVideoUrl4Success(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
         LiveRoomDetailsVideoUrlBean contentUrlBean = liveRoomDetailsVideoUrlBean;
         str4 = contentUrlBean.getContent();
-        LogUtils.i("请求到的地址4", str4);
-
     }
 
     @Override

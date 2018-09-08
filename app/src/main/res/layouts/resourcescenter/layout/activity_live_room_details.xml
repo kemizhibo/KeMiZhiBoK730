@@ -58,23 +58,7 @@
                         android:layout_width="@dimen/res_0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="视频的大标题"/>
-                    <LinearLayout
-                        android:id="@+id/yingxiang_details_shoucang_butn"
-                        android:gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <Button
-                            android:id="@+id/finish_butn"
-                            android:text="完成授课"
-                            android:layout_marginRight="@dimen/res_10dp"
-                            android:textSize="@dimen/text_size_12sp"
-                            android:textColor="@color/white"
-                            android:background="@mipmap/wanchengshouke"
-                            android:layout_width="@dimen/res_68dp"
-                            android:layout_height="@dimen/res_28dp" />
-                    </LinearLayout>
-
+                        android:text=""/>
                 </LinearLayout>
 
                 <View

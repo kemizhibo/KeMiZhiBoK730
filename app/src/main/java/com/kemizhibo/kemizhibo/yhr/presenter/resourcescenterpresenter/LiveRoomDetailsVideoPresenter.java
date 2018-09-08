@@ -13,12 +13,13 @@ import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.TeacherTrainingDe
 
 public interface LiveRoomDetailsVideoPresenter extends BasePresenter<LiveRoomDetailsView> {
 
-    void getLiveRoomDetailsVideoData(BaseActivity activity, String token,String courseId);
-
-    //获取视频地址
-    void getLiveRoomDetailsVideoUrlData(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
-    void getLiveRoomDetailsVideoUrlData2(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
-    void getLiveRoomDetailsVideoUrlData3(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
-    void getLiveRoomDetailsVideoUrlData4(BaseActivity activity,String token,String courseId,String videoType,String encryption,String videoClarity);
-
+    //完成一键授课
+    void getLectureData(BaseActivity activity, String token,String moduleId, String kemiVideoPlan);
+    //预览一件授课
+    void getInitLectureData(BaseActivity activity, String token,String moduleId);
+    //获取一键授课播放地址i
+    void getForTeachPlayUrlData(BaseActivity activity, String courseId,String videoType, String encryption,String videoClarity,String kpointId);
+    void getForTeachPlayUrlData2(BaseActivity activity, String courseId,String videoType, String encryption,String videoClarity,String kpointId);
+    void getForTeachPlayUrlData3(BaseActivity activity, String courseId,String videoType, String encryption,String videoClarity,String kpointId);
+    void getForTeachPlayUrlData4(BaseActivity activity, String courseId,String videoType, String encryption,String videoClarity,String kpointId);
 }

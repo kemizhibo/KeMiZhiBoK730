@@ -17,13 +17,29 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
     </com.liaoinstan.springview.widget.SpringView>
-    <com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView
+    <com.yyydjk.library.DropDownMenu
+        android:id="@+id/dropDownMenu"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ddmenuTextSize="12sp"
+        app:ddtextUnselectedColor="@color/drop_down_unselected"
+        app:ddtextSelectedColor="#67c58c"
+        app:dddividerColor="@color/gray"
+        app:ddunderlineColor="@color/gray"
+        app:ddmenuMenuHeightPercent="0.5"
+        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
+        app:ddmaskColor="@color/mask_color"
+        app:ddmenuBackgroundColor="@color/white"
+        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon" />
+    <!--<com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView
         android:orientation="vertical"
         android:id="@+id/teacher_training_xiala_dropDownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:duration="300">
-        <!-- 第一个布局是顶部layout -->
+        &lt;!&ndash; 第一个布局是顶部layout &ndash;&gt;
         <LinearLayout
             android:id="@+id/teacher_training_shaixuan_butn"
             android:layout_width="match_parent"
@@ -55,7 +71,7 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <!-- 第二个布局是筛选条件的layout -->
+        &lt;!&ndash; 第二个布局是筛选条件的layout &ndash;&gt;
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,5 +133,5 @@
                 </android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
-    </com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView>
+    </com.kemizhibo.kemizhibo.yhr.utils.DropDownMenuView>-->
 </FrameLayout>

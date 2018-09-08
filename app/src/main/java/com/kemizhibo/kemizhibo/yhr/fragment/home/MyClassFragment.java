@@ -183,11 +183,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
             }
         });
         myclassSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        if (myclassBean == null) {
-            myclassSpring.setFooter(new AliFooter(getContext(), R.drawable.ali, false));
-        } else {
-            myclassSpring.setFooter(new AliFooter(getContext(), true));
-        }
+        myclassSpring.setFooter(new AliFooter(getContext(), true));
     }
 
 

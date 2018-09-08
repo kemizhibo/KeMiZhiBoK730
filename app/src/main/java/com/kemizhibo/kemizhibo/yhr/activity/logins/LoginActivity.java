@@ -117,6 +117,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
     @Override
     public void onLoginError(String msg) {
         Transparent.showErrorMessage(this,"登录失败请重试！");
+        LogUtils.i("登录失败为什么呢",msg);
     }
 
     //获取用户信息

@@ -4,6 +4,12 @@
     android:id="@+id/relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/detail_framlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
     <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
         android:layout_alignParentTop="true"
         android:id="@+id/player"
@@ -32,7 +38,7 @@
                 <RelativeLayout
                     android:id="@+id/jieshao_relativelayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                     <LinearLayout
                         android:id="@+id/detail_page_above_container"
                         android:layout_width="match_parent"
@@ -182,7 +188,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#000000"
-                            android:text="评论数"/>
+                            android:text="评论"/>
                     </LinearLayout>
                     <FrameLayout
                         android:id="@+id/comment_frame_layout"

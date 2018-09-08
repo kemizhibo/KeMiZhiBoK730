@@ -1,9 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -11,11 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.activity.logins.FinishActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.logins.WangJiActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.logins.XiuGaiActivity;
-import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SendYanZhengMaPresenterImpl;
@@ -27,9 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SendYanZhengMaView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -86,11 +78,9 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
                 }else {
                     if (TextUtils.isEmpty(putPhoneNum.getText().toString())){
                         putPhoneNum.setError("请先输入您的手机号码");
-                        //ToastUtils.showToast("请先输入您的手机号码");
                     }
                     else if (!PhoneFormatCheckUtils.isChinaPhoneLegal(putPhoneNum.getText().toString())&&!PhoneFormatCheckUtils.isHKPhoneLegal(putPhoneNum.getText().toString())&&!PhoneFormatCheckUtils.isPhoneLegal(putPhoneNum.getText().toString())){
                         putPhoneNum.setError("请输入正确的手机号码");
-                        //ToastUtils.showToast("请输入正确的手机号码");
                     }
                     else{
                         sp = getSharedPreferences("logintoken", 0);
@@ -103,7 +93,7 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
                 if (NoFastClickUtils.isFastClick()) {
                 }else {
                     if (TextUtils.isEmpty(putYanzhengma.getText().toString().trim())){
-                        ToastUtils.showToast("验证码不能为空");
+                        putYanzhengma.setError("请输入验证码");
                     }else{
                         sp = getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
@@ -171,14 +161,16 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         if (sendYanZhengMaBean.getCode()==0){
             Intent intent = new Intent(this, ChangePhoneFinishActivity.class);
             startActivity(intent);
-        }else {
+        }else if (sendYanZhengMaBean.getCode()==401){
             initDialogToLogin();
+        }else {
+            putYanzhengma.setError("验证码错误请重新输入");
         }
     }
 
     @Override
     public void onNewPhoneError(String msg) {
-        ToastUtils.showToast("验证码错误，请重新输入");
+        putYanzhengma.setError("验证码错误请重新输入");
     }
 
     @Override

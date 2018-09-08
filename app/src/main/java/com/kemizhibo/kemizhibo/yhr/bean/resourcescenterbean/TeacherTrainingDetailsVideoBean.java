@@ -104,7 +104,7 @@ public class TeacherTrainingDetailsVideoBean {
         private String courseType;
         private Object knowledge;
         private Object liveStartDuration;
-        private Object videoDuration;
+        private int videoDuration;
         private String liveStatus;
         private Object teacherName;
         private Object liveBeginTime;
@@ -222,11 +222,11 @@ public class TeacherTrainingDetailsVideoBean {
             this.liveStartDuration = liveStartDuration;
         }
 
-        public Object getVideoDuration() {
+        public int getVideoDuration() {
             return videoDuration;
         }
 
-        public void setVideoDuration(Object videoDuration) {
+        public void setVideoDuration(int videoDuration) {
             this.videoDuration = videoDuration;
         }
 

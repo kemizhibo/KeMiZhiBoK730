@@ -3,8 +3,17 @@ package com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl;
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.bean.LectureBean;
+import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.ForTeachPlayUrlBean;
+import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.InitLectureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.LiveRoomDetailsVideoUrlBean;
+import com.kemizhibo.kemizhibo.yhr.interactor.LectureIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.forteachinterractor.ForTeachPlayUrlIteractor;
+import com.kemizhibo.kemizhibo.yhr.interactor.forteachinterractor.ForTeachPlayUrlIteractor2;
+import com.kemizhibo.kemizhibo.yhr.interactor.forteachinterractor.ForTeachPlayUrlIteractor3;
+import com.kemizhibo.kemizhibo.yhr.interactor.forteachinterractor.ForTeachPlayUrlIteractor4;
+import com.kemizhibo.kemizhibo.yhr.interactor.forteachinterractor.InitLectureIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LiveRoomDetailsVideoIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LiveRoomDetailsVideoUrlIteractor;
 import com.kemizhibo.kemizhibo.yhr.interactor.resourcescenterinteractor.LiveRoomDetailsVideoUrlIteractor2;
@@ -25,90 +34,108 @@ public class LiveRoomDetailsVideoPresenterImpl extends BasePresenterImpl<LiveRoo
     @Inject
     public LiveRoomDetailsVideoIteractor liveRoomDetailsVideoIteractor ;
     @Inject
-    public LiveRoomDetailsVideoUrlIteractor liveRoomDetailsVideoUrlIteractor ;
+    public LectureIteractor lectureIteractor;
     @Inject
-    public LiveRoomDetailsVideoUrlIteractor2 liveRoomDetailsVideoUrlIteractor2 ;
+    public InitLectureIteractor initLectureIteractor;
     @Inject
-    public LiveRoomDetailsVideoUrlIteractor3 liveRoomDetailsVideoUrlIteractor3 ;
+    public ForTeachPlayUrlIteractor forTeachPlayUrlIteractor;
     @Inject
-    public LiveRoomDetailsVideoUrlIteractor4 liveRoomDetailsVideoUrlIteractor4 ;
+    public ForTeachPlayUrlIteractor2 forTeachPlayUrlIteractor2;
+    @Inject
+    public ForTeachPlayUrlIteractor3 forTeachPlayUrlIteractor3;
+    @Inject
+    public ForTeachPlayUrlIteractor4 forTeachPlayUrlIteractor4;
 
     @Inject
     public LiveRoomDetailsVideoPresenterImpl() {}
 
     @Override
-    public void getLiveRoomDetailsVideoData(BaseActivity activity,String token, String courseId) {
-        liveRoomDetailsVideoIteractor.loadLiveRoomDetailsVideoData(activity, new IGetDataDelegate<LiveRoomDetailsBean>() {
+    public void getLectureData(BaseActivity activity, String token, String moduleId, String kemiVideoPlan) {
+        lectureIteractor.loadLectureData(activity, new IGetDataDelegate<LectureBean>() {
             @Override
-            public void getDataSuccess(LiveRoomDetailsBean liveRoomDetailsBean) {
-                mPresenterView.onLiveRoomDetailsSuccess(liveRoomDetailsBean);
+            public void getDataSuccess(LectureBean lectureBean) {
+                mPresenterView.onLectureSuccess(lectureBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onLiveRoomDetailsError(errmsg);
+                mPresenterView.onLectureError(errmsg);
             }
-        },token,courseId);
-    }
-
-
-    @Override
-    public void getLiveRoomDetailsVideoUrlData(BaseActivity activity, String token,String courseId, String videoType, String encryption, String videoClarity) {
-        liveRoomDetailsVideoUrlIteractor.loadLiveRoomDetailsVideoUrlData(activity, new IGetDataDelegate<LiveRoomDetailsVideoUrlBean>() {
-            @Override
-            public void getDataSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
-                mPresenterView.onLiveRoomDetailsVideoUrlSuccess(liveRoomDetailsVideoUrlBean);
-            }
-
-            @Override
-            public void getDataError(String errmsg) {
-                mPresenterView.onLiveRoomDetailsVideoUrlError(errmsg);
-            }
-        },token,courseId,videoType,encryption,videoClarity);
+        },token,moduleId,kemiVideoPlan);
     }
 
     @Override
-    public void getLiveRoomDetailsVideoUrlData2(BaseActivity activity, String token, String courseId, String videoType, String encryption, String videoClarity) {
-        liveRoomDetailsVideoUrlIteractor2.loadLiveRoomDetailsVideoUrlData(activity, new IGetDataDelegate<LiveRoomDetailsVideoUrlBean>() {
+    public void getForTeachPlayUrlData2(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity, String kpointId) {
+        forTeachPlayUrlIteractor2.loadForTeachPlayUrlData(activity, new IGetDataDelegate<ForTeachPlayUrlBean>() {
             @Override
-            public void getDataSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
-                mPresenterView.onLiveRoomDetailsVideoUrl2Success(liveRoomDetailsVideoUrlBean);
+            public void getDataSuccess(ForTeachPlayUrlBean forTeachPlayUrlBean) {
+                mPresenterView.onForTeachPlayUrl2Success(forTeachPlayUrlBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onLiveRoomDetailsVideoUrl2Error(errmsg);
+                mPresenterView.onForTeachPlayUrl2Error(errmsg);
             }
-        },token,courseId,videoType,encryption,videoClarity);
+        },courseId,videoType,encryption,videoClarity,kpointId);
     }
 
     @Override
-    public void getLiveRoomDetailsVideoUrlData3(BaseActivity activity, String token, String courseId, String videoType, String encryption, String videoClarity) {
-        liveRoomDetailsVideoUrlIteractor3.loadLiveRoomDetailsVideoUrlData(activity, new IGetDataDelegate<LiveRoomDetailsVideoUrlBean>() {
+    public void getForTeachPlayUrlData3(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity, String kpointId) {
+        forTeachPlayUrlIteractor3.loadForTeachPlayUrlData(activity, new IGetDataDelegate<ForTeachPlayUrlBean>() {
             @Override
-            public void getDataSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
-                mPresenterView.onLiveRoomDetailsVideoUrl3Success(liveRoomDetailsVideoUrlBean);
+            public void getDataSuccess(ForTeachPlayUrlBean forTeachPlayUrlBean) {
+                mPresenterView.onForTeachPlayUrl3Success(forTeachPlayUrlBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onLiveRoomDetailsVideoUrl3Error(errmsg);
+                mPresenterView.onForTeachPlayUrl3Error(errmsg);
             }
-        },token,courseId,videoType,encryption,videoClarity);
+        },courseId,videoType,encryption,videoClarity,kpointId);
     }
 
     @Override
-    public void getLiveRoomDetailsVideoUrlData4(BaseActivity activity, String token, String courseId, String videoType, String encryption, String videoClarity) {
-        liveRoomDetailsVideoUrlIteractor4.loadLiveRoomDetailsVideoUrlData(activity, new IGetDataDelegate<LiveRoomDetailsVideoUrlBean>() {
+    public void getForTeachPlayUrlData4(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity, String kpointId) {
+        forTeachPlayUrlIteractor4.loadForTeachPlayUrlData(activity, new IGetDataDelegate<ForTeachPlayUrlBean>() {
             @Override
-            public void getDataSuccess(LiveRoomDetailsVideoUrlBean liveRoomDetailsVideoUrlBean) {
-                mPresenterView.onLiveRoomDetailsVideoUrl4Success(liveRoomDetailsVideoUrlBean);
+            public void getDataSuccess(ForTeachPlayUrlBean forTeachPlayUrlBean) {
+                mPresenterView.onForTeachPlayUrl4Success(forTeachPlayUrlBean);
             }
 
             @Override
             public void getDataError(String errmsg) {
-                mPresenterView.onLiveRoomDetailsVideoUrl4Error(errmsg);
+                mPresenterView.onForTeachPlayUrl4Error(errmsg);
             }
-        },token,courseId,videoType,encryption,videoClarity);
+        },courseId,videoType,encryption,videoClarity,kpointId);
+    }
+
+    @Override
+    public void getForTeachPlayUrlData(BaseActivity activity, String courseId, String videoType, String encryption, String videoClarity, String kpointId) {
+        forTeachPlayUrlIteractor.loadForTeachPlayUrlData(activity, new IGetDataDelegate<ForTeachPlayUrlBean>() {
+            @Override
+            public void getDataSuccess(ForTeachPlayUrlBean forTeachPlayUrlBean) {
+                mPresenterView.onForTeachPlayUrlSuccess(forTeachPlayUrlBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onForTeachPlayUrlError(errmsg);
+            }
+        },courseId,videoType,encryption,videoClarity,kpointId);
+    }
+
+    @Override
+    public void getInitLectureData(BaseActivity activity, String token, String moduleId) {
+        initLectureIteractor.loadInitLectureData(activity, new IGetDataDelegate<InitLectureBean>() {
+            @Override
+            public void getDataSuccess(InitLectureBean initLectureBean) {
+                mPresenterView.onInitLectureSuccess(initLectureBean);
+            }
+
+            @Override
+            public void getDataError(String errmsg) {
+                mPresenterView.onInitLectureError(errmsg);
+            }
+        },token,moduleId);
     }
 }

@@ -1,18 +1,13 @@
 package com.kemizhibo.kemizhibo.yhr;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
-import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 
 /**
@@ -174,7 +169,7 @@ public abstract class LoadingPager extends FrameLayout {
 
     /** 服务器返回状态枚举 */
     public enum LoadResult {
-        error(STATE_ERROR),empty(STATE_EMPTY),success(STATE_SUCCESS);
+        loading(STATE_LOADING),error(STATE_ERROR),empty(STATE_EMPTY),success(STATE_SUCCESS);
         int value ;
         LoadResult(int value){
             this.value = value ;

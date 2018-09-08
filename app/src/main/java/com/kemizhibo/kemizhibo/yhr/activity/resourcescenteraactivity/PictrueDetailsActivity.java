@@ -1,13 +1,8 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,10 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
-import com.example.zhouwei.library.CustomPopWindow;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.ViewPagerAdapter;
@@ -29,6 +20,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.OneLookBean;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.PictureBean;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentError;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentLoading;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.PicturePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
@@ -36,13 +28,9 @@ import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.PictureView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -59,8 +47,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     public PicturePresenterImpl picturePresenter;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
-    /*@BindView(R.id.linear_layout)
-    LinearLayout linearLayout;*/
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.pictrue_details_title)
@@ -70,26 +56,12 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     //图文详情信息
     private PictureBean.ContentBean content;
     private List<PictureBean.ContentBean.ImageTextListBean> listBeanArrayList = new ArrayList<>();
-    //初始化popwindow
-    private CustomPopWindow mCustomPopWindow;
-    //json解析出来的标题和图片集合
-    private String text;
-    private String l;
     private String courseId;
     private String token;
-    private BottomSheetDialog dialog;
     //图文详情收藏
     private CollectionBean collectionBeans;
     private SharedPreferences sp;
     private ViewPagerAdapter viewPagerAdapter;
-    private AlertDialog dialogOk;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            if(msg.what==0){
-                dialogOk.dismiss();
-            }
-        }
-    };
 
     @Override
     protected int getLayoutId() {
@@ -99,6 +71,9 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     @Override
     protected void getData() {
         super.getData();
+        frameLayout.setVisibility(View.VISIBLE);
+        relativelayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentLoading()).commit();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         picturePresenter.getPictureData(this, "Bearer " + token, courseId);
@@ -112,17 +87,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
     }
-
-    /*private void initJsonData() {
-        List<Map> list = JSON.parseArray(content.getImageText(), Map.class);
-        for (int i = 0; i < list.size(); i++) {
-            Map map = list.get(i);
-            pictureAndTextList.add((PictureAndText) map.get("text"));
-            pictureAndTextList.add((PictureAndText) map.get("imgList"));
-        }
-        LogUtils.i("几何中",pictureAndTextList.toString());
-    }*/
-
 
     private void bindTitleBar() {
         publicTitleBarRoot.setLeftImageResouse(R.drawable.ic_back).setLeftLinearLayoutListener(new TapBarLayout.LeftOnClickListener() {
@@ -170,33 +134,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         frameLayout.setVisibility(View.GONE);
         relativelayout.setVisibility(View.VISIBLE);
         pictrueDetailsTitle.setText(content.getCourseName());
-        //图片标题
-        /*for (int i = 0;i<listBeanArrayList.size();i++){
-            String text = listBeanArrayList.get(i).getText();
-            pictrueDetailsTitle.setText(text);
-            List<String> imgList = listBeanArrayList.get(i).getImgList();
-            for (int j = 0;j<imgList.size();j++){
-                String s = imgList.get(j).toString();
-                Glide.with(this).load(s)
-                        .error(R.mipmap.milier)
-                        .placeholder(R.mipmap.milier)
-                        .into(pictrueDetailsImageview);
-            }
-        }*/
         viewPagerAdapter.notifyDataSetChanged();
-
-
-
-        /*//设置内置样式
-        pictrueDetailsViewpager.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                //设置指示器的位置，小点点，左中右。
-                .setIndicatorGravity(BannerConfig.CENTER);
-        //设置图片加载器，图片加载器在下方
-        pictrueDetailsViewpager.setImageLoader(new MyLoader());
-        //设置图片网址或地址的集合
-        pictrueDetailsViewpager.setImages(l);
-        pictrueDetailsViewpager.setBannerAnimation(Transformer.Accordion);
-        pictrueDetailsViewpager.isAutoPlay(false).start();*/
     }
 
     @Override
@@ -212,10 +150,10 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
             collectionBeans = collectionBean;
             if (collectionBean.getMessage().equals("添加收藏成功")) {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_select);
-                Transparent.showErrorMessage(this,"收藏成功～");
+                Transparent.showErrorMessage(this, "收藏成功～");
             } else if (collectionBean.getMessage().equals("取消收藏成功")) {
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
-                Transparent.showErrorMessage(this,"取消收藏成功～");
+                Transparent.showErrorMessage(this, "取消收藏成功～");
             }
         } else {
             initDialogToLogin();
@@ -227,11 +165,11 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(PictrueDetailsActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -250,7 +188,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onGetCollectionError(String msg) {
-        Transparent.showErrorMessage(this,"收藏失败请重试～");
+        Transparent.showErrorMessage(this, "收藏失败请重试～");
     }
 
     @Override
@@ -273,10 +211,11 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
     @OnClick(R.id.pictrue_details_collection)
     public void onViewClicked() {
         if (NoFastClickUtils.isFastClick()) {
-        }else {
+        } else {
             sp = getSharedPreferences("logintoken", 0);
             token = sp.getString("token", "");
             picturePresenter.getCollectionData(this, "Bearer " + token, courseId);
         }
     }
+
 }

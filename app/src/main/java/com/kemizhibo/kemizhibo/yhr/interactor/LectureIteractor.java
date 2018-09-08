@@ -1,16 +1,11 @@
 package com.kemizhibo.kemizhibo.yhr.interactor;
 
-import android.content.Context;
-
 import com.kemizhibo.kemizhibo.yhr.api.IGetDataDelegate;
 import com.kemizhibo.kemizhibo.yhr.api.LectureApi;
-import com.kemizhibo.kemizhibo.yhr.api.tokenapi.GetLoginApi;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LectureBean;
-import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
 import com.zhxu.library.http.HttpManager;
 import com.zhxu.library.listener.HttpOnNextListener;
-
 import javax.inject.Inject;
 
 /**

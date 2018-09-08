@@ -1,26 +1,24 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangeUserBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentLoading;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.GetUserPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
@@ -30,13 +28,9 @@ import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.Validator;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.GetUserView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnFocusChange;
 
 public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenterImpl> implements GetUserView {
 
@@ -65,6 +59,10 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     TextView personPhoneEdittext;
     @BindView(R.id.finish_butn)
     Button finishButn;
+    @BindView(R.id.frame_layout)
+    FrameLayout frameLayout;
+    @BindView(R.id.linear_layout)
+    LinearLayout linearLayout;
 
 
     private GetUserBean.ContentBean userBean;
@@ -78,10 +76,11 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     private String email;
     private SharedPreferences sp;
     private String mobile;
+    private boolean isIdCard;
     private boolean isemail;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            if(msg.what==0){
+            if (msg.what == 0) {
                 PersonCenterBianJiActivity.this.finish();
             }
         }
@@ -106,6 +105,9 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
     @Override
     protected void getData() {
         super.getData();
+        frameLayout.setVisibility(View.VISIBLE);
+        linearLayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentLoading()).commit();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         getUserPresenter.getUserData(this, "Bearer " + token);
@@ -124,72 +126,82 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
 
     @Override
     public void onUserSuccess(GetUserBean getUserBean) {
-        userBean = getUserBean.getContent();
-        //g给输入框设置默认值
-        school = (String) getUserBean.getContent().getSchool();
-        realname = getUserBean.getContent().getRealName();
-        subject = (String) getUserBean.getContent().getSubject();
-        grade = getUserBean.getContent().getGrade();
-        address = getUserBean.getContent().getAddress();
-        idcard = (String) getUserBean.getContent().getIdCardNo();
-        email = (String) getUserBean.getContent().getEmail();
-        mobile = getUserBean.getContent().getMobile();
-        //手机号码
-        personPhoneEdittext.setText(mobile);
-        //学校
-        if (school.equals(null) || school.equals("")) {
-            school = "";
-        } else {
-            personSchoolNameEdittext.setText(school);
-        }
-        //名字
-        if (realname.equals(null) || realname.equals("")) {
-            realname = "";
-        } else {
-            personLianxirenEdittext.setText(realname);
-        }
-        //学科
-        if (subject.equals(null) || subject.equals("")) {
-            subject = "";
-        } else {
-            personTypeEdittext.setText(subject);
-        }
-        //年级
-        if (grade.equals(null) || grade.equals("")) {
-            grade = "";
-        } else {
-            personGradleEdittext.setText(grade);
-        }
-        //地址
-        if (address.equals(null) || address.equals("")) {
-            address = "";
-        } else {
-            personAddressEdittext.setText(address);
-        }
-        //身份证号码
-        if (idcard.equals(null) || idcard.equals("")) {
-            idcard = "";
-        } else {
-            personIdcardEdittext.setText(idcard);
-        }
-        //邮箱
-        if (email.equals(null) || email.equals("")) {
-            email = "";
-        } else {
-            personEmailEdittext.setText(email);
+        if (getUserBean.getCode()==0){
+            userBean = getUserBean.getContent();
+            //g给输入框设置默认值
+            if (TextUtils.isEmpty(getUserBean.getContent().getSchool())||getUserBean.getContent().getSchool()==null){
+                personSchoolNameEdittext.setText("");
+            }else {
+                school = (String) getUserBean.getContent().getSchool();
+                //学校
+                personSchoolNameEdittext.setText(school);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getRealName())||getUserBean.getContent().getRealName()==null){
+                personLianxirenEdittext.setText("");
+            }else {
+                realname = getUserBean.getContent().getRealName();
+                //名字
+                personLianxirenEdittext.setText(realname);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getSubject())||getUserBean.getContent().getSubject()==null){
+                personTypeEdittext.setText("");
+            }else {
+                subject = (String) getUserBean.getContent().getSubject();
+                //学科
+                personTypeEdittext.setText(subject);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getGrade())||getUserBean.getContent().getGrade()==null){
+                personGradleEdittext.setText("");
+            }else {
+                grade = getUserBean.getContent().getGrade();
+                //年级
+                personGradleEdittext.setText(grade);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getAddress())||getUserBean.getContent().getAddress()==null){
+                personAddressEdittext.setText("");
+            }else {
+                address = getUserBean.getContent().getAddress();
+                //地址
+                personAddressEdittext.setText(address);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getIdCardNo())||getUserBean.getContent().getIdCardNo()==null){
+                personIdcardEdittext.setText("");
+            }else {
+                idcard = (String) getUserBean.getContent().getIdCardNo();
+                //身份证号码
+                personIdcardEdittext.setText(idcard);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getEmail())||getUserBean.getContent().getEmail()==null){
+                personEmailEdittext.setText("");
+            }else {
+                email = (String) getUserBean.getContent().getEmail();
+                //邮箱
+                personEmailEdittext.setText(email);
+            }
+            if (TextUtils.isEmpty(getUserBean.getContent().getMobile())||getUserBean.getContent().getMobile()==null){
+                personPhoneEdittext.setText("");
+            }else {
+                mobile = getUserBean.getContent().getMobile();
+                //手机号码
+                personPhoneEdittext.setText(mobile);
+            }
+            frameLayout.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.VISIBLE);
+        }else if (getUserBean.getCode()==401){
+            initDialogToLogin();
         }
     }
 
     @Override
     public void onUserError(String msg) {
-
+        LogUtils.i("个人信息",msg);
     }
 
     //更改用户信息
     @Override
     public void onChangeUserSuccess(ChangeUserBean changeUserBean) {
         if (changeUserBean.getCode() == 0) {
-            Transparent.showSuccessMessage(this,"修改成功!");
+            Transparent.showSuccessMessage(this, "修改成功!");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -211,11 +223,11 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(PersonCenterBianJiActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -249,10 +261,10 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
         switch (view.getId()) {
             case R.id.person_change_phone:
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
+                } else {
                     //回传值
-                    Intent intent = new Intent(this,ChangePhoneActivity.class);
-                    intent.putExtra("mobile",mobile);
+                    Intent intent = new Intent(this, ChangePhoneActivity.class);
+                    intent.putExtra("mobile", mobile);
                     startActivity(intent);
                     //startActivityForResult(intent,1000);
                     //startActivity(new Intent(this, ChangePhoneActivity.class));
@@ -266,29 +278,39 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                 subject = personTypeEdittext.getText().toString();
                 grade = personGradleEdittext.getText().toString();
                 address = personAddressEdittext.getText().toString();
-                boolean idCard = Validator.isIDCard(personIdcardEdittext.getText().toString().trim());
-                if (TextUtils.isEmpty(personIdcardEdittext.getText().toString().trim())){
+                if (!TextUtils.isEmpty(personIdcardEdittext.getText().toString().trim())){
+                    isIdCard = Validator.isIDCard(personIdcardEdittext.getText().toString().trim());
+                }else {
+                    personIdcardEdittext.setError("请在此输入身份证号码");
+                    personIdcardEdittext.requestFocus();
+                }
+                if (TextUtils.isEmpty(personIdcardEdittext.getText().toString().trim())) {
                     personIdcardEdittext.setError("请输入身份证号码");
                     personIdcardEdittext.requestFocus();
-                }else if (idCard==false){
+                } else if (isIdCard == false) {
                     personIdcardEdittext.setError("请输入正确的身份证号码");
                     personIdcardEdittext.requestFocus();
-                }else {
+                } else {
                     idcard = personIdcardEdittext.getText().toString().trim();
-                    isemail = Validator.isEmail(personEmailEdittext.getText().toString().trim());
-                    if (TextUtils.isEmpty(personEmailEdittext.getText().toString().trim())){
+                    if (!TextUtils.isEmpty(personEmailEdittext.getText().toString().trim())){
+                        isemail = Validator.isEmail(personEmailEdittext.getText().toString().trim());
+                    }else {
                         personEmailEdittext.setError("请输入邮箱");
                         personEmailEdittext.requestFocus();
-                    }else if (isemail ==false){
+                    }
+                    if (TextUtils.isEmpty(personEmailEdittext.getText().toString().trim())) {
+                        personEmailEdittext.setError("请在此输入邮箱");
+                        personEmailEdittext.requestFocus();
+                    } else if (isemail == false) {
                         personEmailEdittext.setError("请输入正确的邮箱");
                         personEmailEdittext.requestFocus();
-                    }else {
+                    } else {
                         this.email = personEmailEdittext.getText().toString().trim();
                     }
                 }
 
-                if (idCard==true&&isemail==true){
-                    getUserPresenter.getChangeUserData(this, "Bearer " + token, school, realname, grade,subject, idcard, this.email, address);
+                if (isIdCard == true && isemail == true) {
+                    getUserPresenter.getChangeUserData(this, "Bearer " + token, school, realname, grade, subject, idcard, this.email, address);
                 }
                 break;
         }
