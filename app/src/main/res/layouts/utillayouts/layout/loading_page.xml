@@ -10,8 +10,8 @@
     <ProgressBar
         android:id="@+id/loadingBar"
         style="?android:attr/progressBarStyleLarge"
-        android:layout_width="@dimen/loading_pb_width"
-        android:layout_height="@dimen/loading_pb_height"
+        android:layout_width="@dimen/wifi_setting_height"
+        android:layout_height="@dimen/wifi_setting_height"
         android:layout_gravity="center_horizontal" />
 
     <TextView

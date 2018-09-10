@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
+import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SendYanZhengMaBean;
@@ -146,6 +148,7 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     public void onOldPhoneSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
         if (sendYanZhengMaBean.getCode() == 0) {
             Intent intent = new Intent(ChangePhoneActivity.this, SetNewPhoneActivity.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         } else if (sendYanZhengMaBean.getCode()==500){
             personChangeEdittext.setError("验证码错误，请重新输入");
@@ -176,4 +179,18 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         activityComponent.inject(this);
         return sendYanZhengMaPresenter;
     }
+
+    /*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode== MyApplication.YINGXIANG_TO_PICK_req&&resultCode==MyApplication.YINGXIANG_TO_PICK_res){
+            *//*Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();*//*
+            try{
+                MainActivity activity = new MainActivity();
+                activity.exit();
+            }catch (Exception e){}
+        }
+    }*/
 }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/first_ll">
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/forteaching_shaixuan_butn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/res_40dp"
@@ -29,22 +30,48 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/res_10dp"
             android:src="@mipmap/xiala_2" />
-    </RelativeLayout>
-
-    <com.liaoinstan.springview.widget.SpringView
+    </RelativeLayout>-->
+    <!--<com.liaoinstan.springview.widget.SpringView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spring_view">
-
         <GridView
             android:id="@+id/grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:numColumns="2">
-
         </GridView>
-
+    </com.liaoinstan.springview.widget.SpringView>-->
+    <com.liaoinstan.springview.widget.SpringView
+        android:layout_marginTop="@dimen/res_48dp"
+        android:layout_marginLeft="@dimen/res_10dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:id="@+id/spring_view">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
     </com.liaoinstan.springview.widget.SpringView>
+    <com.yyydjk.library.DropDownMenu
+        android:id="@+id/dropDownMenu"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ddmenuTextSize="12sp"
+        app:ddtextUnselectedColor="@color/drop_down_unselected"
+        app:ddtextSelectedColor="#67c58c"
+        app:dddividerColor="@color/gray"
+        app:ddunderlineColor="@color/gray"
+        app:ddmenuMenuHeightPercent="0.5"
+        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
+        app:ddmaskColor="@color/mask_color"
+        app:ddmenuBackgroundColor="@color/white"
+        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon" />
 
-</LinearLayout>
+</FrameLayout>
 

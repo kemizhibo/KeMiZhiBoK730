@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -63,6 +64,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     private SharedPreferences sp;
     private String token;
     private int itemCount;
+    ImageView contentView;
     @Inject
     public TeacherTrainingPresenterImpl teacherTrainingPresenter;
 
@@ -150,12 +152,35 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
             if (isUp == 1) {
                 teacherTrainingData.clear();
                 teacherTrainingData.addAll(teacherTrainingBean.getContent().getData());
-                if (teacherTrainingData.size() == 0) {
-                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
-                    setState(LoadingPager.LoadResult.empty);
-                } else {
-                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
+                if (teacherTrainingData.size() > 0) {
+                    contentView.setVisibility(View.GONE);
+                    teacherTrainingRecyclerview.setVisibility(View.VISIBLE);
                     setState(LoadingPager.LoadResult.success);
+                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
+                } else {
+                    teacherTrainingRecyclerview.setVisibility(View.INVISIBLE);
+                    contentView.setVisibility(View.VISIBLE);
+                    contentView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            materialEdition = "";
+                            subjectId = "";
+                            semester = "";
+                            isUp = 1;
+                            currentPage = 1;
+                            //mDropDownMenu.setTabText(headers[0]);
+                            initialize();
+                            //设置头部为固定的通用样式
+                            cityAdapter.setCheckItem(0);
+                            ageAdapter.setCheckItem(0);
+                            sexAdapter.setCheckItem(0);
+                            sp = getContext().getSharedPreferences("logintoken", 0);
+                            token = sp.getString("token", "");
+                            setState(LoadingPager.LoadResult.loading);
+                            teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer "+token,"TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
+                        }
+                    });
+                    teacherTrainingFragmentAdapter.notifyDataSetChanged();
                 }
             } else if (isUp == 2) {
                 if (itemCount >= teacherTrainingBean.getContent().getTotal()) {
@@ -174,6 +199,15 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
             initDialogToLogin();
         }else {
             setState(LoadingPager.LoadResult.error);
+        }
+    }
+
+    public void initialize(){
+        materialEdition = "";
+        subjectId = "";
+        semester = "";
+        if(null != mDropDownMenu && mDropDownMenu.isShowing()){
+            mDropDownMenu.closeMenu();
         }
     }
 
@@ -357,7 +391,9 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
             }
         });
         //好像文字的水印
-        TextView contentView = new TextView(getContext());
+        contentView = new ImageView(getContext());
+        contentView.setImageResource(R.mipmap.zanwusucai);
+        contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
 

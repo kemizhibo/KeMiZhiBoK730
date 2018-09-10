@@ -98,6 +98,32 @@ public interface HttpGetService {
                                           @Field("courseId") String courseId,
                                           @Field("watchTime") String watchTime,
                                           @Field("isEnd") String isEnd);
+
+    //备课中心列表
+    @FormUrlEncoded
+    @POST("kemiapi/prepare/module/prepareList")
+    Observable<ResponseBody> getBeiKeData(@Header("Authorization") String token,
+                                            @Field("materialId") String materialId,
+                                            @Field("gradeId") String gradeId,
+                                            @Field("semesterId") String semesterId,
+                                            @Field("requestSource") String requestSource,
+                                            @Field("currentPage") String currentPage,
+                                            @Field("pageSize") String pageSize);
+    //授课中心列表
+    @GET("kemiapi/prepare/module/planList")
+    Observable<ResponseBody> getShouKeData(@Header("Authorization") String token,
+                                          @Query("materialId") String materialId,
+                                          @Query("requestSource") String requestSource,
+                                          @Query("gradeId") String gradeId,
+                                          @Query("pageSize") String pageSize,
+                                           @Query("currentPage") String currentPage,
+                                           @Query("type") String type);
+
+    //用户方案列表
+    @GET("kemiapi/prepare/module/getUserPlan")
+    Observable<ResponseBody> getUserPlanData(@Header("Authorization") String token,
+                                           @Query("courseId") String courseId,
+                                           @Query("lastPlan") String lastPlan);
  /*//第二次及以后播放视频记录
  @FormUrlEncoded
  @POST("kemiapi/user/watchHistory/putForB")

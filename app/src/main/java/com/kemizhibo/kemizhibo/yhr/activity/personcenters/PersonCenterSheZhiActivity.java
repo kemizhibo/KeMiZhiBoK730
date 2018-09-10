@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -85,6 +84,7 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
         switch (view.getId()) {
             case R.id.change_pwd_layout:
                 Intent intent = new Intent(PersonCenterSheZhiActivity.this,ChangePwdActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.clear_layout:

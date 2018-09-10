@@ -11,6 +11,8 @@ import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.yhr.MyApplication;
+import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.FinishActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
@@ -67,4 +69,18 @@ public class ChangePhoneFinishActivity extends BaseActivity {
         publicTitleBarRoot.changeTitleBar("修改手机号");
         publicTitleBarRoot.buildFinish();
     }
+
+    /*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode== MyApplication.YINGXIANG_TO_PICK_req&&resultCode==MyApplication.YINGXIANG_TO_PICK_res){
+            *//*Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();*//*
+            try{
+                MainActivity activity = new MainActivity();
+                activity.exit();
+            }catch (Exception e){}
+        }
+    }*/
 }

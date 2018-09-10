@@ -135,4 +135,5 @@ public class ForTeachingFragment extends BaseFragment {
             startActivity(new Intent(getContext(), ForTeachSearchActivity.class));
         }
     }
+
 }

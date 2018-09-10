@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,10 +31,12 @@ import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
+import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
+import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
@@ -117,7 +121,8 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
 
     @Override
     public void onEmptyViewClick() {
-
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.gotoDownloadFragment();
     }
 
 

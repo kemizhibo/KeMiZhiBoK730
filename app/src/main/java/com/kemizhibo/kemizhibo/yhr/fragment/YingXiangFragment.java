@@ -247,6 +247,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     currentPage = 1;
                     isUp = 1;
                     knowledgeIdI = position;
+                    setState(LoadingPager.LoadResult.loading);
                     filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", currentPage+"", "10", materialEdition, subjectId, semester, knowledgeId);
                 }
                 mDropDownMenu.closeMenu();
@@ -255,7 +256,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
 
         //中间显示区域
         contentView = new ImageView(getContext());
-        contentView.setImageResource(R.drawable.zanwusucai);
+        contentView.setImageResource(R.mipmap.zanwusucai);
         contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
@@ -329,11 +330,27 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     setState(LoadingPager.LoadResult.success);
                     yingXiangFragmentAdapter.notifyDataSetChanged();
                 }else {
-                    //yinxiangSpring.setVisibility(View.INVISIBLE);
                     yinxiangRecyclerview.setVisibility(View.INVISIBLE);
-                    //mDropDownMenu.setVisibility(View.INVISIBLE);
-                    //setState(LoadingPager.LoadResult.empty);
                     contentView.setVisibility(View.VISIBLE);
+                    contentView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            knowledgeId="";
+                            isUp = 1;
+                            currentPage = 1;
+                            constellationAdapter.setCheckItem(0);
+                            mDropDownMenu.setTabText(headers[0]);
+                            initialize();
+                            //设置头部为固定的通用样式
+                        /*cityAdapter.setCheckItem(0);
+                        ageAdapter.setCheckItem(0);
+                        sexAdapter.setCheckItem(0);*/
+                            sp = getContext().getSharedPreferences("logintoken", 0);
+                            token = sp.getString("token", "");
+                            setState(LoadingPager.LoadResult.loading);
+                            filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                        }
+                    });
                     yingXiangFragmentAdapter.notifyDataSetChanged();
                 }
             } else if (isUp == 2) {

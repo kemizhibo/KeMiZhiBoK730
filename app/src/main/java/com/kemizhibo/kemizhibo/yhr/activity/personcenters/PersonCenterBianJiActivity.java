@@ -213,8 +213,10 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                     }
                 }
             }).start();
-        } else {
+        } else if(changeUserBean.getCode() == 401){
             initDialogToLogin();
+        }else {
+
         }
     }
 

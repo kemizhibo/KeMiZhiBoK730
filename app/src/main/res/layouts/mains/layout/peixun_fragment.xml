@@ -10,7 +10,7 @@
         android:id="@+id/teacher_trainingg_spring"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff">
+        android:background="@color/white">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/teacher_training_recyclerview"
             android:layout_width="match_parent"

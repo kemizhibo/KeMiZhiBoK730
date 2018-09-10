@@ -19,7 +19,6 @@ import javax.inject.Inject;
 public class FilterIteractor {
 
     private IGetDataDelegate<FilterBean> mDelegate;
-    private Context context;
 
     @Inject
     public FilterIteractor() {}

@@ -3,6 +3,8 @@ package com.kemizhibo.kemizhibo.yhr.di.component;
 import android.app.Activity;
 import android.content.Context;
 
+import com.kemizhibo.kemizhibo.other.preparing_center.ForTeanchingFirstFragment;
+import com.kemizhibo.kemizhibo.other.preparing_online.ForTeanchingSecondFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.LiveRoomFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PeiXunFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
@@ -46,5 +48,7 @@ public interface FragmentComponent {
     void inject(LiveRoomFragment fragment);
     void inject(MyClassFragment fragment);
     void inject(MaterialRecommendedFragment fragment);
+    void inject(ForTeanchingFirstFragment fragment);
+    void inject(ForTeanchingSecondFragment fragment);
 }
 

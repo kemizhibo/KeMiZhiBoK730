@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:id="@+id/second_ll">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/forteaching_shaixuan_butn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/res_40dp"
@@ -30,21 +31,33 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/res_10dp"
             android:src="@mipmap/xiala_2" />
-    </RelativeLayout>
-
+    </RelativeLayout>-->
     <com.liaoinstan.springview.widget.SpringView
+        android:layout_marginTop="@dimen/res_48dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/spring_view">
-
-        <ListView
-            android:id="@+id/list_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_View"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null">
-
-        </ListView>
-
+            android:scrollbars="vertical">
+        </android.support.v7.widget.RecyclerView>
     </com.liaoinstan.springview.widget.SpringView>
-
-</LinearLayout>
+    <com.yyydjk.library.DropDownMenu
+        android:id="@+id/dropDownMenu"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ddmenuTextSize="12sp"
+        app:ddtextUnselectedColor="@color/drop_down_unselected"
+        app:ddtextSelectedColor="#67c58c"
+        app:dddividerColor="@color/gray"
+        app:ddunderlineColor="@color/gray"
+        app:ddmenuMenuHeightPercent="0.5"
+        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
+        app:ddmaskColor="@color/mask_color"
+        app:ddmenuBackgroundColor="@color/white"
+        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon" />
+</FrameLayout>

@@ -21,7 +21,7 @@ public class FuWuActivity extends BaseActivity {
     @Override
     protected void initData() {
         bindTitleBar();
-        fuwuText.setText("4564646464864864864674864+4896486");
+        fuwuText.setText("11111111111111111111111111111111111111111");
     }
 
     private void bindTitleBar() {

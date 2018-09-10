@@ -64,6 +64,7 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     public void gotoDownloadFragment(){
         mainRgBottom.check(R.id.main_rb_forteaching);
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -73,10 +74,10 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     protected void initData() {
         initFragment();
         initListener();
-        UpdateKey.API_TOKEN = "fir.im账号的API_TOKEN";
-        UpdateKey.APP_ID = "APP的应用ID";
+        UpdateKey.API_TOKEN = "136e76f4105816219f9c9ca06684ab35";
+        UpdateKey.APP_ID = "com.kemizhibo.kemizhibo";
         //下载方式:
-        //UpdateKey.DialogOrNotification=UpdateKey.WITH_DIALOG;通过Dialog来进行下载
+        UpdateKey.DialogOrNotification=UpdateKey.WITH_DIALOG;//通过Dialog来进行下载
         //UpdateKey.DialogOrNotification=UpdateKey.WITH_NOTIFITION;通过通知栏来进行下载(默认)
         UpdateFunGO.init(this);
     }

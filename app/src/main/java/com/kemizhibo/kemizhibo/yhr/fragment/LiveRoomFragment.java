@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -76,6 +77,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     int isUp = 1;
     private Intent intent;
     private Bundle bundle;
+    ImageView contentView;
     private int currentPage = 1;
     private int itemCount = 0;
     private String headers[] = {"教材", "年级", "学期", "分类"};
@@ -161,21 +163,43 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
             if (isUp == 1) {
                 liveDataBean.clear();
                 liveDataBean.addAll(liveRoomBean.getContent().getData());
-                LogUtils.i("数量1", liveDataBean.size() + "");
-                if (liveDataBean.size() == 0) {
-                    liveRoomFragmentAdapter.notifyDataSetChanged();
-                    setState(LoadingPager.LoadResult.empty);
-                } else {
-                    liveRoomFragmentAdapter.notifyDataSetChanged();
+                if (liveDataBean.size() > 0) {
+                    contentView.setVisibility(View.GONE);
+                    liveRoomRecyclerview.setVisibility(View.VISIBLE);
                     setState(LoadingPager.LoadResult.success);
+                    liveRoomFragmentAdapter.notifyDataSetChanged();
+                } else {
+                    liveRoomRecyclerview.setVisibility(View.INVISIBLE);
+                    contentView.setVisibility(View.VISIBLE);
+                    contentView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            materialEdition = "";
+                            knowledgeId = "";
+                            semester = "";
+                            subjectId = "";
+                            isUp = 1;
+                            currentPage = 1;
+                            //mDropDownMenu.setTabText(headers[0]);
+                            initialize();
+                            //设置头部为固定的通用样式
+                            cityAdapter.setCheckItem(0);
+                            ageAdapter.setCheckItem(0);
+                            sexAdapter.setCheckItem(0);
+                            constellationAdapter.setCheckItem(0);
+                            sp = getContext().getSharedPreferences("logintoken", 0);
+                            token = sp.getString("token", "");
+                            setState(LoadingPager.LoadResult.loading);
+                            liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
+                        }
+                    });
+                    liveRoomFragmentAdapter.notifyDataSetChanged();
                 }
             } else if (isUp == 2) {
                 if (itemCount >= liveRoomBean.getContent().getTotal()) {
-                    LogUtils.i("数量3", liveDataBean.size() + "");
                     ToastUtils.showToast("没有更多数据");
                 } else {
                     liveDataBean.addAll(liveRoomBean.getContent().getData());
-                    LogUtils.i("数量2", liveDataBean.size() + "");
                     if (liveDataBean.size() == 0) {
                         setState(LoadingPager.LoadResult.empty);
                     } else {
@@ -188,6 +212,16 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
             initDialogToLogin();
         } else {
             setState(LoadingPager.LoadResult.error);
+        }
+    }
+
+    public void initialize(){
+        materialEdition = "";
+        knowledgeId = "";
+        semester = "";
+        subjectId = "";
+        if(null != mDropDownMenu && mDropDownMenu.isShowing()){
+            mDropDownMenu.closeMenu();
         }
     }
 
@@ -402,7 +436,9 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
         });
 
         //好像文字的水印
-        TextView contentView = new TextView(getContext());
+        contentView = new ImageView(getContext());
+        contentView.setImageResource(R.mipmap.zanwusucai);
+        contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
 

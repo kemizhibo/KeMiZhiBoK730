@@ -256,7 +256,9 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
                    // startActivity(new Intent(getActivity(), PersonCenterSheZhiActivity.class));
-                    startActivityForResult(new Intent(getActivity(), PersonCenterSheZhiActivity.class),MyApplication.YINGXIANG_TO_PICK_req);
+                    intent = new Intent(getActivity(),PersonCenterSheZhiActivity.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivityForResult(intent,MyApplication.YINGXIANG_TO_PICK_req);
                 }
                 break;
         }

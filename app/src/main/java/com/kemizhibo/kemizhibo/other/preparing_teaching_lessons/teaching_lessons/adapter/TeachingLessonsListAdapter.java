@@ -88,7 +88,7 @@ public class TeachingLessonsListAdapter extends BaseAdapter {
             holder.logo.setImageURI(Uri.parse((String) dataBean.getLogo()));
         }
         if(null != holder.childAccount)
-            holder.childAccount.setText(dataBean.getPrepareName());
+        holder.childAccount.setText(dataBean.getPrepareName());
         holder.desc.setText(dataBean.getMaterialName() + " " + "(" + dataBean.getGradeName() + ("1".equals(dataBean.getSemester()) ? "上" : "下") + ")");
         holder.name.setText(dataBean.getCourseName());
         String time = dataBean.getCreateTime();
