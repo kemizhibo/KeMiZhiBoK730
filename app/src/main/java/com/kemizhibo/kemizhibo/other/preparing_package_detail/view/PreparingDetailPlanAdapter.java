@@ -151,7 +151,8 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Intent intent= new Intent(context, CommonWebActivity.class);
                     intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
-                    intent.putExtra(Constants.COURSE_ID,courseId);
+                    intent.putExtra(Constants.COURSE_ID, courseId);
+                    intent.putExtra(Constants.MODULE_ID, planBeanList.get(position).getModuleId());
                     context.startActivity(intent);
                 }
             });

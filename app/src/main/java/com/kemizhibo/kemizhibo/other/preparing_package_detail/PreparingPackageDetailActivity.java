@@ -75,6 +75,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     Handler mHandler = new Handler();
     private LoadingFragment loadingFragment;
     private LoadingErrorFragment loadingErrorFragment;
+    //private int moduleId;
     //private PreparingDetailAdapter preparingDetailAdapter;
 
     @Override
@@ -102,6 +103,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         builder.detectFileUriExposure();
         Intent intent = getIntent();
         courseId = intent.getIntExtra(Constants.COURSE_ID, 0);
+        //moduleId = intent.getIntExtra(Constants.MODULE_ID, 0);
         //courseId = 2832;
     }
 
@@ -131,6 +133,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         Intent intent = new Intent(this, CommonWebActivity.class);
         intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
         intent.putExtra(Constants.COURSE_ID, courseId);
+        //intent.putExtra(Constants.MODULE_ID, moduleId);
         startActivity(intent);
     }
 

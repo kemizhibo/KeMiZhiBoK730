@@ -273,6 +273,15 @@ public class PreparingLessonsBean {
             private Object planFinishTime;
             private int planIsFinish;
             private Object recordId;
+            private String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
 
             public Object getCourseId() {
                 return courseId;

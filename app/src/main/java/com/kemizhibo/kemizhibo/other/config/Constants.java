@@ -19,9 +19,12 @@ public class Constants {
     public static final String LOGIN = SERVER + "kemiapi/ketang/user/login";
     public static final String GET_USER_TEACH_PLAN = SERVER + "kemiapi/prepare/module/getUserPlan";
 
-    public static final String H5_MAKE = "http://demo.mulpush.cn/kemi/#/make/${id}";
-    public static final String H5_PREVIEW = "http://demo.mulpush.cn/kemi/#/preview/${id}";
-    public static final String H5_TEACH = "http://demo.mulpush.cn/kemi/#/lesson/${id}";
+    public static final String H5_SERVER = isDebug ? "http://39.155.221.165:8080/kemiketang/" : "";
+
+    public static final String H5_MAKE = H5_SERVER + "#/ppt/make/${id}";
+    public static final String H5_PREVIEW = H5_SERVER + "#/ppt/preview/${id}";
+    public static final String H5_TEACH = H5_SERVER + "#/ppt/lesson/${id}";
+    public static final String H5_RECORD = H5_SERVER + "#/ppt/record/${id}";
     public static final String H5_REPLACE_STR = "${id}";
 
     public static final int NET_ERROR_CODE = 12345;
@@ -45,6 +48,8 @@ public class Constants {
     public static final String COURSE_ID = "courseId";
 
     public static final String LASTPLAN = "lastPlan";
+
+    public static final String RECORD_ID = "recordId";
 
     public static final String MODULE_ID = "moduleId";
 

@@ -24,6 +24,7 @@ import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.load.LoadingEmptyFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingErrorFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.adapter.PreparingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.bean.PreparingLessonsBean;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter.PreparingLessonsPresenter;
@@ -133,15 +134,24 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), CommonWebActivity.class);
-                if(roleId == Constants.MANAGER_ROLE_ID){
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                //已授课 h5 未授课 ppt/在线制作
+                if(1 == dataBeanList.get(position).getPlanIsFinish()){
+                    if(7 == dataBeanList.get(position).getDocType()){
+                        Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                        intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                        intent.putExtra("url", dataBeanList.get(position).getUrl());
+                        startActivity(intent);
+                    }
                 }else{
-                    //子账号跳转授课页面，H5会自己获取备课状态
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.TEACH);
+                    Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                    intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                    startActivity(intent);
                 }
-                intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
-                startActivity(intent);
             }
         });
     }

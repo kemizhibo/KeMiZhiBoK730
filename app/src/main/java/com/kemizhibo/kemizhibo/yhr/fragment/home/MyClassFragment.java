@@ -29,6 +29,7 @@ import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
+import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
@@ -139,15 +140,26 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                 if (NoFastClickUtils.isFastClick()) {
                 }else {
                     courseId = myclassBean.get(position).getCourseId();
+                    int moduleId = myclassBean.get(position).getModuleId();
                     if (1 == myclassBean.get(position).getPrepareStatus()) {
                         Intent intent = new Intent(getActivity(), PreparingPackageDetailActivity.class);
                         intent.putExtra(Constants.COURSE_ID, courseId);
+                        //intent.putExtra(Constants.MODULE_ID, moduleId);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(getActivity(), CommonWebActivity.class);
-                        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
-                        intent.putExtra(Constants.MODULE_ID, myclassBean.get(position).getModuleId());
-                        startActivity(intent);
+                        //在线制作h5 其余百度文库
+                        int docType = myclassBean.get(position).getDocType();
+                        if(7 == docType){
+                            Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                            intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                            intent.putExtra(Constants.MODULE_ID, moduleId);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                            intent.putExtra("url", myclassBean.get(position).getUrl());
+                            startActivity(intent);
+                        }
+
                     /*commonPresenter.getUserTeachPlan();
                     show();*/
                     }

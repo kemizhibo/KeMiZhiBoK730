@@ -2159,7 +2159,7 @@ public class HomePageBean {
             private Object roomEnvironmentList;
             private int moduleId;
             private Object docName;
-            private Object docType;
+            private int docType;
             private Object dataSource;
             private Object userVideoLogo;
             private Object userUrl;
@@ -2183,6 +2183,15 @@ public class HomePageBean {
             private Object planFinishTime;
             private Object planIsFinish;
             private Object recordId;
+            private String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
 
             public int getCourseId() {
                 return courseId;
@@ -2680,11 +2689,11 @@ public class HomePageBean {
                 this.docName = docName;
             }
 
-            public Object getDocType() {
+            public int getDocType() {
                 return docType;
             }
 
-            public void setDocType(Object docType) {
+            public void setDocType(int docType) {
                 this.docType = docType;
             }
 

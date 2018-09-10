@@ -138,9 +138,10 @@ public class TeachingLessonsFragment extends BaseFragment implements TeachingLes
                     intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId()+"");
                     startActivity(intent);
                 }else if (dataBeanList.get(position).getDocType()==7){
+                    //在线授课已授课record
                     Intent intent = new Intent(getActivity(), CommonWebActivity.class);
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
-                    intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.RECORD);
+                    intent.putExtra(Constants.RECORD_ID, dataBeanList.get(position).getRecordId());
                     startActivity(intent);
                 }
             }

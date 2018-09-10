@@ -37,6 +37,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
     public static final String MAKE = "make";
     public static final String PREVIEW = "preview";
     public static final String TEACH = "teach";
+    public static final String RECORD = "record";
 
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
@@ -75,6 +76,9 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     break;
                 case TEACH:
                     url = Constants.H5_TEACH.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.MODULE_ID, 0)));
+                    break;
+                case RECORD:
+                    url = Constants.H5_RECORD.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.RECORD_ID, 0)));
                     break;
                 default:
                     break;
