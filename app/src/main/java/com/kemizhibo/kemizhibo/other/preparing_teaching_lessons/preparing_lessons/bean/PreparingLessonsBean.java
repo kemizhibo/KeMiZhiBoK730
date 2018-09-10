@@ -272,7 +272,7 @@ public class PreparingLessonsBean {
             private Object chapterName;
             private Object planFinishTime;
             private int planIsFinish;
-            private Object recordId;
+            private int recordId;
             private String url;
 
             public String getUrl() {
@@ -963,11 +963,11 @@ public class PreparingLessonsBean {
                 this.planIsFinish = planIsFinish;
             }
 
-            public Object getRecordId() {
+            public int getRecordId() {
                 return recordId;
             }
 
-            public void setRecordId(Object recordId) {
+            public void setRecordId(int recordId) {
                 this.recordId = recordId;
             }
         }

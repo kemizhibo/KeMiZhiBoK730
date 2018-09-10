@@ -148,8 +148,8 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
                     }
                 }else{
                     Intent intent = new Intent(getActivity(), CommonWebActivity.class);
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
-                    intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.RECORD);
+                    intent.putExtra(Constants.RECORD_ID, dataBeanList.get(position).getRecordId());
                     startActivity(intent);
                 }
             }
