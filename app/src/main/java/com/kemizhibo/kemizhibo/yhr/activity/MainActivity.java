@@ -21,6 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ResourceLibraryFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
+import com.kemizhibo.kemizhibo.yhr.utils.SysApplication;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 import java.util.ArrayList;
@@ -72,13 +73,14 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
 
     @Override
     protected void initData() {
+        SysApplication.getInstance().addActivity(this);
         initFragment();
         initListener();
         UpdateKey.API_TOKEN = "136e76f4105816219f9c9ca06684ab35";
         UpdateKey.APP_ID = "com.kemizhibo.kemizhibo";
         //下载方式:
         UpdateKey.DialogOrNotification=UpdateKey.WITH_DIALOG;//通过Dialog来进行下载
-        //UpdateKey.DialogOrNotification=UpdateKey.WITH_NOTIFITION;通过通知栏来进行下载(默认)
+        //UpdateKey.DialogOrNotification=UpdateKey.WITH_NOTIFITION;//通过通知栏来进行下载(默认)
         UpdateFunGO.init(this);
     }
 

@@ -18,16 +18,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
 import java.util.List;
+
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.OPERATE_KEY;
 
 /**
  * Created by asus on 2018/8/1.
@@ -37,6 +39,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
     private FragmentManager supportFragmentManager;
     private PreparingPackageDetailBean.ContentBean.AppMaterialBean material;
     private Context context;
+    private String docId;
 
 
     public PreparingDetailAdapter(Context context, PreparingPackageDetailBean.ContentBean.AppMaterialBean material, FragmentManager supportFragmentManager) {
@@ -70,7 +73,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
         LinearLayout mlinearLayout = convertView.findViewById(R.id.base);
         switch (position) {
             case 0://视频
-                final List<PreparingPackageDetailBean.ContentBean.DataBean> kemiVideo = material.getKemiVideo();
+                final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiVideoBean> kemiVideo = material.getKemiVideo();
                 if (kemiVideo.size() > 0) {
                     View view = View.inflate(context, R.layout.sucai_kemi_shipin_item, null);
                     ViewPager mviewPager = (ViewPager) view.findViewById(R.id.kemi_shipinviewpager);
@@ -79,15 +82,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     mviewPager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
                         @Override
                         public Object instantiateItem(ViewGroup container, int position) {
-                            MyFragment myFragment = (MyFragment) super.instantiateItem(container, position);;
+                            MyFragment myFragment = (MyFragment) super.instantiateItem(container, position);
                             Bundle bundle = new Bundle();
                             Log.i("====sucaiposition====", "加载视频");
                             bundle.putInt("courseid", kemiVideo.get(position).getCourseId());
                             bundle.putInt("moduleid", kemiVideo.get(position).getModuleId());
-                            bundle.putString("url", kemiVideo.get(position).getUrl());
+                            bundle.putString("url", String.valueOf(kemiVideo.get(position).getUrl()));
                             bundle.putInt("kpointId", kemiVideo.get(position).getKpointId());
                             bundle.putString("logo", kemiVideo.get(position).getVideoLogo());
-                            bundle.putString("introduce", kemiVideo.get(position).getVideoIntroduce());
+                            bundle.putString("introduce", String.valueOf(kemiVideo.get(position).getVideoIntroduce()));
                             bundle.putString("title", kemiVideo.get(position).getDocName());
                             myFragment.setArguments(bundle);
                             return myFragment;
@@ -120,7 +123,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 break;
 
             case 1://图片
-                final List<PreparingPackageDetailBean.ContentBean.DataBean> kemiPic = material.getKemiPic();
+                final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiPicBean> kemiPic = material.getKemiPic();
                 if (kemiPic.size() > 0) {
                     View view1 = View.inflate(context, R.layout.sucai_kemi_tupian_item, null);
                     ViewPager mPicviewPager = (ViewPager) view1.findViewById(R.id.viewpager);
@@ -163,9 +166,9 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 }
                 break;
             case 2://KEMIppt
-                List<PreparingPackageDetailBean.ContentBean.DataBean> kemiPpt = material.getKemiPpt();
+                List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiPptBean> kemiPpt = material.getKemiPpt();
                 if (null != kemiPpt && kemiPpt.size() > 0) {
-                    for (PreparingPackageDetailBean.ContentBean.DataBean kpt : kemiPpt) {
+                    for (final PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiPptBean kpt : kemiPpt) {
                         View view2 = View.inflate(context, R.layout.ppt_item, null);
                         ImageView icon = null;
                         icon = view2.findViewById(R.id.tianjia_icon);
@@ -184,12 +187,13 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         final String contentIds = kpt.getContentIds();
                         //RequestUtil.requestPPT((Activity) context, mppt, mcheckppt, mdownppt, 3, moduleId);
                         mppt.setText(docName);
-                        final PreparingPackageDetailBean.ContentBean.DataBean mkpt = kpt;
+                        final PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiPptBean mkpt = kpt;
                         mcheckppt.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true
-                                goPreview(mkpt.getUrl());
+                                docId = kpt.getDocId();
+                                goPreview();
                                 //getDocMessage((Activity) context, String.valueOf(mkpt.getDocId()), null, 3, true);
                             }
                         });
@@ -206,9 +210,9 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
                 break;
             case 3://文档
-                List<PreparingPackageDetailBean.ContentBean.DataBean> kemiWord = material.getKemiWord();
+                List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiWordBean> kemiWord = material.getKemiWord();
                 if (null != kemiWord && kemiWord.size() > 0) {
-                    for (PreparingPackageDetailBean.ContentBean.DataBean kwd : kemiWord) {
+                    for (final PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiWordBean kwd : kemiWord) {
                         View view3 = View.inflate(context, R.layout.wendang_item, null);
                         TextView mwendang = (TextView) view3.findViewById(R.id.mword);
                         final TextView mdown = (TextView) view3.findViewById(R.id.mdown);
@@ -216,12 +220,12 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         mlinearLayout.addView(view3);
                         int moduleId1 = kwd.getModuleId();
                         //RequestUtil.requestDoc((Activity) context, mwendang, mdown, mcheck, 1, moduleId1);
-                        final PreparingPackageDetailBean.ContentBean.DataBean mkwd = kwd;
+                        final PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiWordBean mkwd = kwd;
                         mwendang.setText(kwd.getDocName());
                         mdown.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtils.showToast("开始下载");
+                                //ToastUtils.showToast("开始下载");
                                 //   if (url != null) {
                                 //getDocMessage((Activity) context, String.valueOf(mkwd.getDocId()), mdown, 1, false);
                                 //  }
@@ -255,16 +259,17 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //isjump = true;
                                 //LogUtils.i("DocId", "mkel.getDocId():" + mkwd.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(mkwd.getDocId()), mcheck, 1, true);
-                                goPreview(mkwd.getUrl());
+                                docId = kwd.getDocId();
+                                goPreview();
                             }
                         });
                     }
                 }
                 break;
             case 4://表格
-                List<PreparingPackageDetailBean.ContentBean.DataBean> kemiExcel = material.getKemiExcel();
+                List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiExcelBean> kemiExcel = material.getKemiExcel();
                 if (null != kemiExcel && kemiExcel.size() > 0) {
-                    for (PreparingPackageDetailBean.ContentBean.DataBean kel : kemiExcel) {
+                    for (PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiExcelBean kel : kemiExcel) {
                         View view4 = View.inflate(context, R.layout.wendang_item, null);
                         ImageView icon = (ImageView) view4.findViewById(R.id.icon);
                         icon.setImageResource(R.drawable.excel);
@@ -277,12 +282,12 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         mlinearLayout.addView(view4);
                         int moduleId2 = kel.getModuleId();
                         //RequestUtil.requestDoc((Activity) context, mexcal, mexcaldown, mexcalcheck, 2, moduleId2);
-                        final PreparingPackageDetailBean.ContentBean.DataBean mkel = kel;
+                        final PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiExcelBean mkel = kel;
                         mexcal.setText(mkel.getDocName());
                         mexcaldown.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtils.showToast("开始下载");
+                                //ToastUtils.showToast("开始下载");
                                 //   if (url != null) {
                                 //getDocMessage((Activity) context, String.valueOf(mkel.getDocId()), mexcaldown, 2, false);
                                 //  }
@@ -315,7 +320,8 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;
-                                goPreview(mkel.getUrl());
+                                docId = mkel.getDocId();
+                                goPreview();
                                 //getDocMessage((Activity) context, String.valueOf(mkel.getDocId()), mexcalcheck, 2, true);
                             }
                         });
@@ -324,7 +330,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
                 break;
             case 5://用户视频
-                final List<PreparingPackageDetailBean.ContentBean.DataBean> userVideo = material.getUserVideo();
+                final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserVideoBean> userVideo = material.getUserVideo();
                 if (userVideo.size() > 0) {
                     View view5 = View.inflate(context, R.layout.sucai_shipin_item, null);
                     ViewPager musershipinviewpager = (ViewPager) view5.findViewById(R.id.shipinviewpager);
@@ -368,7 +374,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 break;
 
             case 6://用户图片
-                final List<PreparingPackageDetailBean.ContentBean.DataBean> userPic = material.getUserPic();
+                final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserPicBean> userPic = material.getUserPic();
                 if (userPic.size() > 0) {
                     View view6 = View.inflate(context, R.layout.sucai_tupian_item, null);
                     ViewPager mUserviewPager = (ViewPager) view6.findViewById(R.id.user_viewpager);
@@ -409,10 +415,10 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 }
                 break;
             case 7://用户ppt
-                List<PreparingPackageDetailBean.ContentBean.DataBean> userPpt = material.getUserPpt();
+                List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserPptBean> userPpt = material.getUserPpt();
 
                 if (null != userPpt && userPpt.size() > 0) {
-                    for (final PreparingPackageDetailBean.ContentBean.DataBean upt : userPpt) {
+                    for (final PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserPptBean upt : userPpt) {
                         View view7 = View.inflate(context, R.layout.ppt_item, null);
                         ImageView icn = null;
                         icn = view7.findViewById(R.id.tianjia_icon);
@@ -430,14 +436,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         final String docName1 = upt.getDocName();
                         final String contentIds1 = upt.getContentIds();
                         //RequestUtil.requestPPT((Activity) context, mPpt, mCheckppt, mdownppt1, 3, moduleId1);
-                        final PreparingPackageDetailBean.ContentBean.DataBean mupt = upt;
+                        final PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserPptBean mupt = upt;
                         mPpt.setText(mupt.getDocName());
 
                         mCheckppt.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //isjump = true;
-                                goPreview(upt.getUrl());
+                                //isjump = true;\
+                                docId = mupt.getDocId();
+                                goPreview();
                                 //getDocMessage((Activity) context, String.valueOf(mupt.getDocId()), mCheckppt, 3, true);
                             }
                         });
@@ -452,12 +459,11 @@ public class PreparingDetailAdapter extends BaseAdapter {
                     }
                 }
 
-
                 break;
             case 8://用户文档
-                List<PreparingPackageDetailBean.ContentBean.DataBean> userWord = material.getUserWord();
+                List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserWordBean> userWord = material.getUserWord();
                 if (null != userWord && userWord.size() > 0) {
-                    for (final PreparingPackageDetailBean.ContentBean.DataBean uwd : userWord) {
+                    for (final PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserWordBean uwd : userWord) {
                         View view8 = View.inflate(context, R.layout.wendang_item, null);
                         TextView muserwendang = (TextView) view8.findViewById(R.id.mword);
                         final TextView muserdown = (TextView) view8.findViewById(R.id.mdown);
@@ -465,12 +471,12 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         mlinearLayout.addView(view8);
                         int moduleId3 = uwd.getModuleId();
                         //RequestUtil.requestDoc((Activity) context, muserwendang, muserdown, musercheck, 1, moduleId3);
-                        final PreparingPackageDetailBean.ContentBean.DataBean muwd = uwd;
+                        final PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserWordBean muwd = uwd;
                         muserwendang.setText(muwd.getDocName());
                         muserdown.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtils.showToast("开始下载");
+                                //ToastUtils.showToast("开始下载");
                                 //   if (url != null) {
                                 //getDocMessage((Activity) context, String.valueOf(muwd.getDocId()), muserdown, 1, false);
                                 //  }
@@ -502,7 +508,8 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;
-                                goPreview(muwd.getUrl());
+                                docId = muwd.getDocId();
+                                goPreview();
                                 //LogUtils.i("DocId", "mkel.getDocId():" + uwd.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(muwd.getDocId()), musercheck, 1, true);
                             }
@@ -512,9 +519,9 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
                 break;
             case 9://用户表格
-                List<PreparingPackageDetailBean.ContentBean.DataBean> userExcel = material.getUserExcel();
+                List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserExcelBean> userExcel = material.getUserExcel();
                 if (null != userExcel && userExcel.size() > 0) {
-                    for (PreparingPackageDetailBean.ContentBean.DataBean uel : userExcel) {
+                    for (PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserExcelBean uel : userExcel) {
                         View view9 = View.inflate(context, R.layout.wendang_item, null);
                         ImageView icon = (ImageView) view9.findViewById(R.id.icon);
                         icon.setImageResource(R.drawable.excel);
@@ -527,12 +534,12 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         mlinearLayout.addView(view9);
                         int moduleId4 = uel.getModuleId();
                         //RequestUtil.requestDoc((Activity) context, muserexcalword, muserexcalmdown, muserexcalcheck, 2, moduleId4);
-                        final PreparingPackageDetailBean.ContentBean.DataBean muel = uel;
+                        final PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserExcelBean muel = uel;
                         muserexcalword.setText(muel.getDocName());
                         muserexcalmdown.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtils.showToast("开始下载");
+                                //ToastUtils.showToast("开始下载");
                                 //   if (url != null) {
                                 //RequestUtil.getDocMessage((Activity) context, String.valueOf(muel.getDocId()), muserexcalmdown, 2, false);
                                 //  }
@@ -564,7 +571,8 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;
-                                goPreview(muel.getUrl());
+                                docId = muel.getDocId();
+                                goPreview();
                                 //RequestUtil.getDocMessage((Activity) context, String.valueOf(muel.getDocId()), muserexcalcheck, 2, true);
                             }
                         });
@@ -574,14 +582,14 @@ public class PreparingDetailAdapter extends BaseAdapter {
             default:
                 break;
         }
-
-
         return convertView;
     }
 
-    private void goPreview(String url) {
-        Intent intent = new Intent(context, PreviewActivity.class);
-        intent.putExtra("url", url);
+    private void goPreview() {
+        Intent intent = new Intent(context, CommonWebActivity.class);
+        //intent.putExtra("url", url);
+        intent.putExtra(OPERATE_KEY, LOCAL);
+        intent.putExtra("docId", docId);
         context.startActivity(intent);
     }
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+	    <!-- <link rel="shortcut icon" href="../images/tit.png" type="image/x-icon" /> -->
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<!-- <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.3.5/skins/default/aliplayer-min.css" /> -->
+		<!-- <script src="//g.alicdn.com/de/prismplayer/2.3.5/aliplayer-h5-min.js" type="text/javascript" charset="utf-8"></script> -->
+		<script src="http://static.bcedocument.com/reader/v2/doc_reader_v2.js"></script>
+		<title>科米课堂</title>
+		<!-- <script src="../js/jquery-3.1.1.js"></script> -->
+		<!-- <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script> -->
+	</head>
+	<style type="text/css">
+	 body{
+		 margin:0;
+		 padding:0
+	 }
+		.loading2 {
+		    display: block;
+		    position: absolute;
+		    top: 0;
+		}
+		.wenku-toolsbar-menu{
+			margin-right: 0px
+		}
+		.wenku-toolsbar-mod{
+			width: 100%
+		}
+
+		.head{
+			height: 42px;
+			line-height: 42px;
+			border-bottom: 1px solid #eee;
+			background-color: #fff;
+			text-align: center;
+			box-shadow: 0 2.5px 5px #aaa
+		}
+		.head>img{
+		  float:left;
+		  position: relative;
+		  top: 16px;
+		  margin-left: 22px;
+		  width: 15px;
+		  height: 15px;
+		}
+	 .head>span>img{position: relative;top: 4px;width: 70px;}
+	 #reader{
+		 padding-top: 5px;
+		 min-height: 100%;
+		}
+	</style>
+
+	<body>
+
+		<div style='overflow:hidden'>
+
+		<div class="head">
+			<img src='./images/icon-back-.png' onclick = btnBack()>
+			<span><img src='./images/logo.png'></span>
+		</div>
+
+		<div id="reader"></div>
+	</div>
+
+		<!-- <div id="total" style="margin-bottom: 0px;"></div> -->
+<script type="text/javascript">
+
+function btnBack(){
+
+	 window.android.back();
+
+}
+
+	var url = window.location.href;
+	var docId = url.split('=')[1];
+	// var roomWidth = document.body.clientWidth;
+	var roomWidth =  window.screen.width;
+	var roomHeight = window.screen.height;
+	var relWidth = roomWidth;
+	// console.log(roomWidth)
+	//
+  // console.log(roomHeight);
+  // console.log(window.screen.height )
+	document.getElementById('reader').style.height = roomHeight-48+'px'
+
+    var option = {
+        docId: docId,
+        token: "TOKEN",
+        host: "BCEDOC",
+        width:relWidth, // 文档容器宽
+        pn: 1, // 定位到第几页，可选
+        ready: function (handler) { // 设置字体大小和颜色, 背景颜色（可设置白天黑夜模式）
+            handler.setFontSize(1);
+            handler.setBackgroundColor("#000");
+            handler.setFontColor("#fff");
+
+        },
+        fontSize: "big",
+        toolbarConf: {
+            page: true, // 上下翻页箭头图标
+            pagenum: true, // 几分之几页
+            full: false, // 是否显示全屏图标,点击后全屏
+            copy: true, // 是否可以复制文档内容
+            position: "center", // 设置 toolbar中翻页和放大图标的位置(值有left/center)
+						zoom:false,
+        } //文档顶部工具条配置对象,必选
+
+    };
+    new Document("reader", option);
+
+
+
+</script>
+	</body>
+
+</html>

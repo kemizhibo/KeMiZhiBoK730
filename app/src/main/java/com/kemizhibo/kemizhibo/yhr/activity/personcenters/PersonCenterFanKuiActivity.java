@@ -1,17 +1,13 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +22,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.FeedBackBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.FeedBackPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.EmojiFilter;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
@@ -97,13 +93,14 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
 
             @Override
             public void afterTextChanged(Editable editable) {
+                //fankuiEdittext.setFilters(new InputFilter[]{new EmojiFilter()});
                 content = fankuiEdittext.getText().toString();
                 String num = String.valueOf(i- content.length());
                 /*SpannableStringBuilder builder = new SpannableStringBuilder("请在您账户中充值0.01元,进行身份验证");
                 ForegroundColorSpan span = new ForegroundColorSpan(Color.RED);
                 builder.setSpan(span, 8, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tv_tips.setText(builder);*/
-                fankuiText.setText("还可以输入"+num+"个字呢～");
+                fankuiText.setText("还可以输入"+num+"个字");
             }
         });
     }
@@ -150,7 +147,7 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
     @Override
     public void onFeedBackSuccess(FeedBackBean feedBackBean) {
         if (feedBackBean.getCode()==0){
-            Transparent.showSuccessMessage(this,"提交成功!");
+            Transparent.showSuccessMessage(this,"提交成功,感谢您提出的宝贵意见!");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -162,9 +159,11 @@ public class PersonCenterFanKuiActivity extends BaseMvpActivity<FeedBackPresente
                     }
                 }
             }).start();
-         }else {
+         }else if (feedBackBean.getCode()==401||feedBackBean.getCode()==801){
             initDialogToLogin();
-         }
+         }else {
+            ToastUtils.showToast("网络连接中断，请检查您的网络状态");
+        }
     }
 
     private void initDialogToLogin() {

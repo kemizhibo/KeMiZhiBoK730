@@ -6,12 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -15,7 +15,7 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 
 public  class MyViewHolder {
-    public  TextView mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline,mdownppt1,mwendangother;
+    public  TextView xiugai_text,mppt, mmake, madj, mdown, mcheck,mdeleteword,mdeleteppt,mcheckppt,mdownppt,madjsucai,mcheckonline,mdeleteonline,mdownppt1,mwendangother;
     public  JZVideoPlayerStandard jcVideoPlayer,jcVideoPlayer_video;
     public  TextView mwendang;
     public  Button mbtn;
@@ -23,5 +23,5 @@ public  class MyViewHolder {
     public  LinearLayout mlinearLayout;
     public  ViewPager mviewPager,mshipinviewpager;
     public  TextView title;
-    public ImageView icon;
+    public ImageView icon,xiugai_img;
 }

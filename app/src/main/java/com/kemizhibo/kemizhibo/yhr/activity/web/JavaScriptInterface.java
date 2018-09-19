@@ -1,10 +1,10 @@
-package com.kemizhibo.kemizhibo.other.web;
+package com.kemizhibo.kemizhibo.yhr.activity.web;
 
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
+
 import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
-
 
 /**
  *
@@ -12,16 +12,16 @@ import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
 
 public class JavaScriptInterface {
 
-    private CommonWebView commonWebView;
+    private MyLiveRoomWebActivity webActivity;
     private Activity mActivity;
 
     public JavaScriptInterface(Activity activity){
         this.mActivity = activity;
     }
 
-    public JavaScriptInterface(Activity activity, CommonWebView commonWebView){
+    public JavaScriptInterface(Activity activity, MyLiveRoomWebActivity webActivity){
         this.mActivity = activity;
-        this.commonWebView = commonWebView;
+        this.webActivity = webActivity;
     }
 
     @JavascriptInterface
@@ -33,15 +33,16 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public void loadError(String errorCode){
-        if(null != commonWebView){
-            commonWebView.loadError(errorCode);
+        if(null != webActivity){
+            //webActivity.loadError(errorCode);
         }
     }
 
     @JavascriptInterface
     public void back(){
-        if(null != commonWebView){
-            commonWebView.back();
+        if(null != webActivity){
+            //webActivity.back();
         }
     }
+
 }

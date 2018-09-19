@@ -12,14 +12,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.ChangePwdBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.ChangePwdPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.SysApplication;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.ChangePwdView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import javax.inject.Inject;
@@ -44,10 +46,10 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             if(msg.what==0){
-                /*Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
-                startActivity(intent);*/
-                setResult(MyApplication.YINGXIANG_TO_PICK_res);
-                finish();
+                Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
+                startActivity(intent);
+                //关闭整个程序
+                SysApplication.getInstance().exit();
             }
         }
     };
@@ -65,6 +67,7 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
 
     @Override
     protected void initData() {
+        SysApplication.getInstance().addActivity(this);
         bindTitleBar();
     }
 
@@ -110,7 +113,7 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
                 newPwdEdittextAgin.setError("请输入新密码");
                 newPwdEdittextAgin.requestFocus();
             }else if (!isPwd(newpwd)) {
-                newPwdEdittext.setError("密码必须由6-20位字母和数字组成");
+                newPwdEdittext.setError("密码必须由8-20位字母和数字组成");
                 newPwdEdittext.requestFocus();
             } else if (!newpwd.equals(aginpwd)){
                 newPwdEdittextAgin.setError("两次密码不一致，请重新输入");
@@ -157,8 +160,10 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
                     }
                 }
             }).start();
-        } else {
+        } else if (changePwdBean.getCode() == 401||changePwdBean.getCode() == 801){
             initDialogToLogin();
+        }else {
+            Transparent.showErrorMessage(this, "短信发送失败，请重试");
         }
     }
 

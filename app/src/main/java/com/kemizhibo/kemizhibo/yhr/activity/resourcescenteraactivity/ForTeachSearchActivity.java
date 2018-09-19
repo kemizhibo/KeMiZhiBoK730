@@ -116,9 +116,10 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
                 searchRecyclerview.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentSearchEmpty()).commit();
             }
-
-        } else {
+        } else if (foreTeachSearchBean.getCode() == 401|foreTeachSearchBean.getCode() == 801){
             initDialogToLogin();
+        }else {
+
         }
     }
 

@@ -101,7 +101,6 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
 
     @Override
     public void onPictureSuccess(PictureBean pictureBean) {
-        LogUtils.i("456789", pictureBean.getContent().getImageText());
         if (pictureBean.getCode() == 0) {
             picturePresenter.getOneLookData(this, "Bearer " + token, "", "", courseId, "", "0");
             content = pictureBean.getContent();
@@ -124,7 +123,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
                 //填充数据
                 initPicture();
             }
-        } else {
+        } else if (pictureBean.getCode() == 401||pictureBean.getCode() == 801){
             initDialogToLogin();
         }
     }
@@ -155,7 +154,7 @@ public class PictrueDetailsActivity extends BaseMvpActivity<PicturePresenterImpl
                 pictrueDetailsImageview.setBackgroundResource(R.mipmap.dianzan_kong);
                 Transparent.showErrorMessage(this, "取消收藏成功～");
             }
-        } else {
+        } else if (collectionBean.getCode() == 401||collectionBean.getCode() == 801){
             initDialogToLogin();
         }
     }

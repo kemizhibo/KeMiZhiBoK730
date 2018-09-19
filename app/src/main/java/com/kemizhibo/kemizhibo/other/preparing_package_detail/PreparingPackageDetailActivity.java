@@ -135,6 +135,12 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         intent.putExtra(Constants.COURSE_ID, courseId);
         //intent.putExtra(Constants.MODULE_ID, moduleId);
         startActivity(intent);
+
+        /*Intent intent = new Intent(this.getApplicationContext(), CommonWebActivity.class);
+        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.LIVE);
+        intent.putExtra("courseId", "1005172");
+        //这里一定要获取到所在Activity再startActivity()；
+        this.startActivity(intent);*/
     }
 
     @Override
@@ -158,7 +164,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     Log.i("---plansize-", bean.getContent().getPlan().size() + "");
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
                     listViewshou.setAdapter(preparingDetailPlanAdapter);
-                    List<PreparingPackageDetailBean.ContentBean.DataBean> other = bean.getContent().getOther();
+                    List<PreparingPackageDetailBean.ContentBean.OtherBean> other = bean.getContent().getOther();
                     if (other.size() > 0) {
                         mnone.setVisibility(View.GONE);
                         listViewqi.setAdapter(new PreparingDetailOtherAdapter(PreparingPackageDetailActivity.this, other));
@@ -226,7 +232,7 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
             frameLayout.setVisibility(View.VISIBLE);
             mdetailescrollView.setVisibility(View.INVISIBLE);
             getSupportFragmentManager().openTransaction().replace(R.id.frame_layout, loadingFragment).commit();
-            detailPresenter.getPreparingPackageDetailData();;
+            detailPresenter.getPreparingPackageDetailData();
         }
     }
 }

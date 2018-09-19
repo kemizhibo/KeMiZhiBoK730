@@ -1,53 +1,35 @@
 package com.kemizhibo.kemizhibo.yhr.fragment.home;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterLiuLanActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.TeacherTrainingDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MaterialRecommendedAdapter;
-import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
-import com.liaoinstan.springview.container.AliFooter;
-import com.liaoinstan.springview.container.AliHeader;
-import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Author: yhr
@@ -59,17 +41,10 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
 
     @BindView(R.id.material_recommended_recyclerview)
     RecyclerView materialRecommendedRecyclerview;
-    @BindView(R.id.material_recommended_spring)
-    SpringView materialRecommendedSpring;
+    protected boolean isCreated = false;
 
     private Intent intent;
     private Bundle bundle;
-    private int currentPage;
-    //上或者下拉的状态判断
-    int isUp = 1;
-    //刷新适配器的判断
-    private boolean isFlag;
-
     //申明presenterImpl对象,推荐素材列表
     private List<HomePageBean.ContentBean.ReturnMaterialBean> materialBean = new ArrayList<>();;
     @Inject
@@ -90,6 +65,28 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 标记
+        isCreated = true;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isCreated) {
+            return;
+        }
+        if (isVisibleToUser) {
+            setState(LoadingPager.LoadResult.success);
+            sp = getContext().getSharedPreferences("logintoken", 0);
+            token = sp.getString("token", "");
+            homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
+            LogUtils.i("1111111","222222222222");
+        }
+    }
+
+    @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.material_recommended_fragment);
         ButterKnife.bind(this, view);
@@ -102,7 +99,6 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
         //设置适配器
         LinearLayoutManager myClassManage = new LinearLayoutManager(getContext());
         materialRecommendedRecyclerview.setLayoutManager(myClassManage);
-        materialRecommendedSpring.setType(SpringView.Type.FOLLOW);
         materialRecommendedAdapter = new MaterialRecommendedAdapter(R.layout.material_recommended_adapter, materialBean);
         materialRecommendedAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -131,34 +127,13 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
             }
         });
         materialRecommendedRecyclerview.setAdapter(materialRecommendedAdapter);
-        //上拉下拉
-        materialRecommendedSpring.setListener(new SpringView.OnFreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isUp = 1;
-                        currentPage = 1;
-                        sp = getContext().getSharedPreferences("logintoken", 0);
-                        token = sp.getString("token", "");
-                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
-                        materialRecommendedSpring.onFinishFreshAndLoad();
-                    }
-                }, 1000);
-            }
 
-            @Override
-            public void onLoadmore() {
-
-            }
-        });
-        materialRecommendedSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
 
     }
 
     @Override
     public void load() {
+        setState(LoadingPager.LoadResult.success);
         sp = getContext().getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
@@ -169,22 +144,19 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
 
     }
 
+
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         if (searchBean.getCode()==0){
-            if (isUp == 1) {
                 materialBean.clear();
                 materialBean.addAll(searchBean.getContent().getReturnMaterial());
                 if (materialBean==null){
                     setState(LoadingPager.LoadResult.empty);
                 }else {
                     setState(LoadingPager.LoadResult.success);
-                    if (isFlag) {
-                        materialRecommendedAdapter.notifyDataSetChanged();
-                    }
                 }
-            }
-        }else {
+            materialRecommendedAdapter.notifyDataSetChanged();
+        }else if (searchBean.getCode()==401||searchBean.getCode()==801){
             initDialogToLogin();
         }
     }
@@ -226,4 +198,5 @@ public class MaterialRecommendedFragment extends BaseMvpFragment<HomePagePresent
         fragmentComponent.inject(this);
         return homePagePresenter;
     }
+
 }

@@ -31,6 +31,7 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.FilterBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.forteachimpl.BeiKePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
@@ -75,7 +76,6 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
     private SharedPreferences sp;
     private String token;
     private int itemCount;
-    ImageView contentView;
 
     private String headers[] = {"教材", "年级", "学期"};
     private List<View> popupViews = new ArrayList<>();
@@ -86,6 +86,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
     private List<FilterBean.ContentBean.MaterialBean> filterMaterialdata;
     private List<FilterBean.ContentBean.GradeBean> filterGradedata;
     private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;
+    private ImageView contentView;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -98,8 +99,8 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
         View view = UIUtils.inflate(R.layout.forteaching_first_fragment);
         ButterKnife.bind(this, view);
         //展示教师培训的列表数据
-        initGetBeiKeData();
         initView();
+        initGetBeiKeData();
         return view;
     }
 
@@ -200,6 +201,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
         contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
+
 
     private void initGetBeiKeData() {
         //设置适配器
@@ -379,7 +381,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
 
     @Override
     public void onBeiKeError(String msg) {
-
+        LogUtils.i("错错错1",msg);
     }
 
     public void initialize(){
@@ -416,7 +418,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
 
     @Override
     public void onFilterError(String msg) {
-
+        LogUtils.i("错错错2",msg);
     }
 
     @Override

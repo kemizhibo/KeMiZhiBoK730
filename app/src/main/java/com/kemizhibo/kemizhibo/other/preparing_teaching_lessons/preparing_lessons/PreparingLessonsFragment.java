@@ -24,7 +24,6 @@ import com.kemizhibo.kemizhibo.other.load.LoadFailUtil;
 import com.kemizhibo.kemizhibo.other.load.LoadingEmptyFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingErrorFragment;
 import com.kemizhibo.kemizhibo.other.load.LoadingFragment;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.adapter.PreparingLessonsListAdapter;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.bean.PreparingLessonsBean;
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.presenter.PreparingLessonsPresenter;
@@ -34,20 +33,20 @@ import com.kemizhibo.kemizhibo.other.utils.PreferencesUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.OPERATE_KEY;
 
 /**
  * Created by Administrator on 2018/8/1.
@@ -67,6 +66,7 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
     private String startTime = "";
     private String userId = "0";
     private int roleId;
+    private String docId;
     private LoadingEmptyFragment loadingEmptyFragment;
     private LoadingErrorFragment loadingErrorFragment;
     private LoadingFragment loadingFragment;
@@ -142,9 +142,11 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
                         intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
                         startActivity(intent);
                     }else{
-                        Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                        /*Intent intent = new Intent(getActivity(), PreviewActivity.class);
                         intent.putExtra("url", dataBeanList.get(position).getUrl());
-                        startActivity(intent);
+                        startActivity(intent);*/
+                        docId = String.valueOf(dataBeanList.get(position).getDocId());
+                        goPreview();
                     }
                 }else{
                     Intent intent = new Intent(getActivity(), CommonWebActivity.class);
@@ -154,6 +156,14 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
                 }
             }
         });
+    }
+
+    private void goPreview() {
+        Intent intent = new Intent(getContext(), CommonWebActivity.class);
+        //intent.putExtra("url", url);
+        intent.putExtra(OPERATE_KEY, LOCAL);
+        intent.putExtra("docId", docId);
+        getContext().startActivity(intent);
     }
 
     @Override

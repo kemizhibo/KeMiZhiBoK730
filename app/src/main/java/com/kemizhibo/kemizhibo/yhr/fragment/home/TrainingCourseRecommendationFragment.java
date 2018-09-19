@@ -3,47 +3,34 @@ package com.kemizhibo.kemizhibo.yhr.fragment.home;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
-import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.PictrueDetailsActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity.YingXinagVideoDetailsActivity;
-import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.TrainingCourseRecommendationAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
-import com.liaoinstan.springview.container.AliFooter;
-import com.liaoinstan.springview.container.AliHeader;
-import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 
 /**
  * Author: yhr
@@ -57,14 +44,7 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     public HomePagePresenterImpl homePagePresenter;
     @BindView(R.id.training_course_recommendation_recyclerview)
     RecyclerView trainingCourseRecommendationRecyclerview;
-    @BindView(R.id.training_course_recommendation_spring)
-    SpringView trainingCourseRecommendationSpring;
-
-    private int currentPage;
-    //上或者下拉的状态判断
-    int isUp = 1;
-    //刷新适配器的判断
-    private boolean isFlag;
+    protected boolean isCreated = false;
 
     //申明presenterImpl对象,我的备课列表
     private List<HomePageBean.ContentBean.ReturnTrainBean> trainBean = new ArrayList<>();
@@ -85,6 +65,12 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
         return 0;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 标记
+        isCreated = true;
+    }
 
     @Override
     public View createSuccessView() {
@@ -99,7 +85,6 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
         //设置适配器
         LinearLayoutManager trainingCourseRecommendationManage = new LinearLayoutManager(getContext());
         trainingCourseRecommendationRecyclerview.setLayoutManager(trainingCourseRecommendationManage);
-        trainingCourseRecommendationSpring.setType(SpringView.Type.FOLLOW);
         trainingCourseRecommendationAdapter = new TrainingCourseRecommendationAdapter(R.layout.training_course_recommendation_adapter, trainBean);
         trainingCourseRecommendationAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -115,51 +100,29 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
             }
         });
         trainingCourseRecommendationRecyclerview.setAdapter(trainingCourseRecommendationAdapter);
-        //上拉下拉
-        trainingCourseRecommendationSpring.setListener(new SpringView.OnFreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isUp = 1;
-                        currentPage = 1;
-                        sp = getContext().getSharedPreferences("logintoken", 0);
-                        token = sp.getString("token", "");
-                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
-                        trainingCourseRecommendationSpring.onFinishFreshAndLoad();
-                    }
-                }, 1000);
-            }
-
-            @Override
-            public void onLoadmore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isUp = 2;
-                        currentPage++;
-                        sp = getContext().getSharedPreferences("logintoken", 0);
-                        token = sp.getString("token", "");
-                        homePagePresenter.getHomePageData(mActivity,"Bearer "+token);
-                        trainingCourseRecommendationSpring.onFinishFreshAndLoad();
-                    }
-                }, 1000);
-            }
-        });
-        trainingCourseRecommendationSpring.setHeader(new AliHeader(getContext(), R.drawable.ali, true));   //参数为：logo图片资源，是否显示文字
-        /*if (trainBean==null){
-            trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), R.drawable.ali,false));
-        }else {
-            trainingCourseRecommendationSpring.setFooter(new AliFooter(getContext(), true));
-        }*/
     }
 
     @Override
     public void load() {
+        setState(LoadingPager.LoadResult.success);
         sp = getContext().getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         homePagePresenter.getHomePageData(mActivity,"Bearer "+ token);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isCreated) {
+            return;
+        }
+        if (isVisibleToUser) {
+            setState(LoadingPager.LoadResult.success);
+            sp = getContext().getSharedPreferences("logintoken", 0);
+            token = sp.getString("token", "");
+            homePagePresenter.getHomePageData(mActivity,"Bearer "+ token);
+            LogUtils.i("1111111","1111111111111111111");
+        }
     }
 
     @Override
@@ -170,29 +133,15 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
     @Override
     public void onHomePageSuccess(HomePageBean searchBean) {
         if (searchBean.getCode()==0){
-            if (isUp == 1) {
                 trainBean.clear();
                 trainBean.addAll(searchBean.getContent().getReturnTrain());
                 if (trainBean==null){
                     setState(LoadingPager.LoadResult.empty);
                 }else {
                     setState(LoadingPager.LoadResult.success);
-                    if (isFlag) {
-                        trainingCourseRecommendationAdapter.notifyDataSetChanged();
-                    }
                 }
-            } else if (isUp == 2) {
-                trainBean.addAll(searchBean.getContent().getReturnTrain());
-                if (trainBean==null){
-                    setState(LoadingPager.LoadResult.empty);
-                }else {
-                    setState(LoadingPager.LoadResult.success);
-                    if (isFlag) {
-                        trainingCourseRecommendationAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        }else {
+            trainingCourseRecommendationAdapter.notifyDataSetChanged();
+        }else if (searchBean.getCode()==401||searchBean.getCode()==801){
             initDialogToLogin();
         }
     }
@@ -235,5 +184,4 @@ public class TrainingCourseRecommendationFragment extends BaseMvpFragment<HomePa
         lp.height = 260;
         window.setAttributes(lp);
     }
-
 }

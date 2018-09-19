@@ -88,6 +88,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.peixun_fragment);
         ButterKnife.bind(this, view);
+        contentView = new ImageView(getContext());
         //展示教师培训的列表数据
         initTeacherTrainingData();
         initView();
@@ -143,7 +144,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
 
     @Override
     public void onFilterError(String msg) {
-        LogUtils.i("报错了3",msg);
+
     }
 
     @Override
@@ -195,7 +196,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
                     }
                 }
             }
-        } else if (teacherTrainingBean.getCode()==401){
+        } else if (teacherTrainingBean.getCode()==401||teacherTrainingBean.getCode()==801){
             initDialogToLogin();
         }else {
             setState(LoadingPager.LoadResult.error);
@@ -213,6 +214,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
 
     @Override
     public void onTeacherTrainingError(String msg) {
+        LogUtils.i("对象是空2",msg);
         //加载失败的状态
         setState(LoadingPager.LoadResult.error);
     }
@@ -337,7 +339,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
                     isUp = 1;
                     teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                 } else {
-                    mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
                     materialEdition = filterMaterialdata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -359,7 +361,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
                     isUp = 1;
                     teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                 } else {
-                    mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
                     subjectId = filterGradedata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -381,7 +383,7 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
                     isUp = 1;
                     teacherTrainingPresenter.getTeacherTrainingData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage+"", "10", materialEdition, subjectId, semester, "", "");
                 } else {
-                    mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
                     semester = filterSemesterdata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -391,7 +393,6 @@ public class PeiXunFragment extends BaseMvpFragment<TeacherTrainingPresenterImpl
             }
         });
         //好像文字的水印
-        contentView = new ImageView(getContext());
         contentView.setImageResource(R.mipmap.zanwusucai);
         contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);

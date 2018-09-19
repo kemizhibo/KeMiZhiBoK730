@@ -124,7 +124,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".yhr.activity.web.MyLiveRoomWebActivity"
-            android:screenOrientation="landscape" />
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity"
             android:screenOrientation="portrait" />
@@ -132,7 +132,9 @@
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.ForTeachSearchActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsFinishActivity"></activity>
+        <activity android:name=".yhr.activity.resourcescenteraactivity.LiveRoomDetailsFinishActivity">
+
+        </activity>
     </application>
 
 </manifest>

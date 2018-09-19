@@ -95,6 +95,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;*/
     private List<FilterBean.ContentBean.ImgScienceBean> filterImgSciencedata;
     private ImageView contentView;
+    private ListView constellationView;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.yingxiang_fragment);
         ButterKnife.bind(this, view);
+        contentView = new ImageView(getContext());
         //影像素材展示列表的方法
         initYingXiangFragmentData();
         initView();
@@ -151,7 +153,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         sexView.setAdapter(sexAdapter);*/
 
         //init constellation
-        final ListView constellationView = new ListView(getContext());
+        constellationView = new ListView(getContext());
         constellationView.setDividerHeight(0);
         constellationAdapter = new ListImgScienceAdapter(getContext(), filterImgSciencedata);
         constellationView.setAdapter(constellationAdapter);
@@ -242,7 +244,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     knowledgeIdI = position;
                     filterPresenter.getYingXiangFragmentData(mActivity, "Bearer "+token,"YINGXIANGSUCAI", currentPage+"", "10", materialEdition, subjectId, semester, knowledgeId);
                 }else {
-                    mDropDownMenu.setTabText(filterImgSciencedata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterImgSciencedata.get(position).getSubjectName());
                     knowledgeId = filterImgSciencedata.get(position).getSubjectId()+"";
                     currentPage = 1;
                     isUp = 1;
@@ -255,7 +257,6 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
         });
 
         //中间显示区域
-        contentView = new ImageView(getContext());
         contentView.setImageResource(R.mipmap.zanwusucai);
         contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
@@ -366,7 +367,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                     }
                 }
             }
-        }else if (yingXiangFragmentBean.getCode()==401){
+        }else if (yingXiangFragmentBean.getCode()==401||yingXiangFragmentBean.getCode()==801){
             initDialogToLogin();
         }else {
             setState(LoadingPager.LoadResult.error);
@@ -375,6 +376,7 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
 
     @Override
     public void onYingXiangFragmentError(String msg) {
+        LogUtils.i("对象是空1",msg);
         //加载失败的状态
         setState(LoadingPager.LoadResult.error);
     }
@@ -443,6 +445,16 @@ public class YingXiangFragment extends BaseMvpFragment<FilterPresenterImpl> impl
                         currentPage = 1;
                         constellationAdapter.setCheckItem(0);
                         mDropDownMenu.setTabText(headers[0]);
+                        constellationAdapter.notifyDataSetChanged();
+                        /*constellationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                setState(LoadingPager.LoadResult.loading);
+                                constellationAdapter.setCheckItem(position);
+                                mDropDownMenu.setTabText(headers[0]);
+                                mDropDownMenu.closeMenu();
+                            }
+                        });*/
                         initialize();
                         //设置头部为固定的通用样式
                         /*cityAdapter.setCheckItem(0);

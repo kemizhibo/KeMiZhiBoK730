@@ -20,7 +20,6 @@ public class MyLiveRoomWebActivity extends BaseActivity {
     WebView wed;
     @BindView(R.id.activity_wed)
     RelativeLayout activityWed;
-    private String url;
 
     @Override
     protected int getLayoutId() {
@@ -31,21 +30,19 @@ public class MyLiveRoomWebActivity extends BaseActivity {
     protected void initData() {
         initview();
         SettingsP();
-        //url = "http://192.168.1.101:8080/kmzb/ng/#/roomDetail/releVideo${id}".replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra("courseId", 0)));
     }
 
     private void initview() {
         Intent intent = getIntent();
         String courseId = intent.getStringExtra("courseId");
-        //http://192.168.1.101:8080/ng/my-app/#/roomDetail
         //wed.loadUrl("http://192.168.1.101:8080/ng/#/roomDetail/releVideo?courseId="+courseId);
-        wed.loadUrl("http://192.168.1.101:8080/ng/my-app/#/roomDetail?courseId="+courseId);
+        wed.loadUrl("http://39.155.221.165:8080/guanchashi/#/observation/"+courseId);
     }
 
     private void SettingsP() {
         WebSettings seting = wed.getSettings();
         seting.setJavaScriptEnabled(true);//设置webview支持javascript脚本
-
+        wed.addJavascriptInterface(new JavaScriptInterface(this,this),"android");
         // 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         wed.setWebViewClient(new WebViewClient() {
             @Override

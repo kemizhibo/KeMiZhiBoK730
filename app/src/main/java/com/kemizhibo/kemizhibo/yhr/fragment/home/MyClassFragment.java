@@ -5,19 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonFilterBean;
@@ -29,7 +22,6 @@ import com.kemizhibo.kemizhibo.other.common.presenter.CommonPresenterImp;
 import com.kemizhibo.kemizhibo.other.common.view.CommonView;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDetailActivity;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
@@ -37,29 +29,25 @@ import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.homepageadapter.MyClassAdapter;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpFragment;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.HomePageBean;
-import com.kemizhibo.kemizhibo.yhr.fragment.ForTeachingFragment;
-import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentNext;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.homeimpl.HomePagePresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
-import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
 import com.kemizhibo.kemizhibo.yhr.view.homepagerview.HomePageView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.OPERATE_KEY;
 
 
 /**
@@ -76,7 +64,9 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     SpringView myclassSpring;
     private int currentPage;
     //上或者下拉的状态判断
+    protected boolean isCreated = false;
     int isUp = 1;
+    private String docId;
     //刷新适配器的判断
     private boolean isFlag;
     private CommonPresenter commonPresenter;
@@ -90,6 +80,12 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     private SharedPreferences sp;
     private String token;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 标记
+        isCreated = true;
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -101,6 +97,21 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
     @Override
     public int getEmptyPageLayoutId() {
         return 0;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isCreated) {
+            return;
+        }
+        if (isVisibleToUser) {
+            //setState(LoadingPager.LoadResult.success);
+            sp = getContext().getSharedPreferences("logintoken", 0);
+            token = sp.getString("token", "");
+            homePagePresenter.getHomePageData(mActivity, "Bearer " + token);
+            LogUtils.i("1111111","1111111111111111111");
+        }
     }
 
     @Override
@@ -155,11 +166,12 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                             intent.putExtra(Constants.MODULE_ID, moduleId);
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                            /*Intent intent = new Intent(getActivity(), PreviewActivity.class);
                             intent.putExtra("url", myclassBean.get(position).getUrl());
-                            startActivity(intent);
+                            startActivity(intent);*/
+                            docId = String.valueOf(myclassBean.get(position).getDocId());
+                            goPreview();
                         }
-
                     /*commonPresenter.getUserTeachPlan();
                     show();*/
                     }
@@ -236,7 +248,7 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
                     }
                 }
             }
-        } else {
+        } else if (searchBean.getCode() == 401||searchBean.getCode() == 801){
             initDialogToLogin();
         }
     }
@@ -333,5 +345,16 @@ public class MyClassFragment extends BaseMvpFragment<HomePagePresenterImpl> impl
         lp.width = 520;
         lp.height = 260;
         window.setAttributes(lp);
+    }
+
+    private void goPreview() {
+        /*Intent intent = new Intent(context, PreviewActivity.class);
+        intent.putExtra("url", url);
+        context.startActivity(intent);*/
+        Intent intent = new Intent(getContext(), CommonWebActivity.class);
+        //intent.putExtra("url", url);
+        intent.putExtra(OPERATE_KEY, LOCAL);
+        intent.putExtra("docId", docId);
+        getContext().startActivity(intent);
     }
 }

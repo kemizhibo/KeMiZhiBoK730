@@ -187,9 +187,12 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
             }
             frameLayout.setVisibility(View.GONE);
             linearLayout.setVisibility(View.VISIBLE);
-        }else if (getUserBean.getCode()==401){
+        }else if (getUserBean.getCode()==401||getUserBean.getCode()==801){
             initDialogToLogin();
+        }else {
+
         }
+        //Transparent.showErrorMessage(this, "短信发送失败，请重试");
     }
 
     @Override
@@ -213,10 +216,10 @@ public class PersonCenterBianJiActivity extends BaseMvpActivity<GetUserPresenter
                     }
                 }
             }).start();
-        } else if(changeUserBean.getCode() == 401){
+        } else if(changeUserBean.getCode() == 401||changeUserBean.getCode() == 801){
             initDialogToLogin();
         }else {
-
+            ToastUtils.showToast("网络连接中断，请检查您的网络状态");
         }
     }
 

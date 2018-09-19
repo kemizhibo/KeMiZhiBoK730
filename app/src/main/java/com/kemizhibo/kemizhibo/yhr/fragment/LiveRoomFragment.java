@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.activity.web.MyLiveRoomWebActivity;
@@ -53,6 +54,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LIVE;
 
 public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> implements LiveRoomView {
 
@@ -102,6 +105,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.kexue_fragment);
         ButterKnife.bind(this, view);
+        contentView = new ImageView(getContext());
         initView();
         //科学观察室展示列表的方法
         initLiveRoomFragmentData();
@@ -208,7 +212,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                     }
                 }
             }
-        } else if (liveRoomBean.getCode() == 401) {
+        } else if (liveRoomBean.getCode() == 401||liveRoomBean.getCode() == 801) {
             initDialogToLogin();
         } else {
             setState(LoadingPager.LoadResult.error);
@@ -227,6 +231,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
 
     @Override
     public void onLiveRoomError(String msg) {
+        LogUtils.i("对象是空3",msg);
         setState(LoadingPager.LoadResult.error);
     }
 
@@ -257,12 +262,12 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
                     //点击跳转web页面，并且传值
-                    Intent intent = new Intent(getActivity().getApplicationContext(), MyLiveRoomWebActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("courseId", String.valueOf(liveDataBean.get(position).getCourseId()));
-                    intent.putExtras(bundle);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.LIVE);
+                    intent.putExtra("courseId", String.valueOf(liveDataBean.get(position).getCourseId()));
                     //这里一定要获取到所在Activity再startActivity()；
                     getActivity().startActivity(intent);
+                    LogUtils.i("地址",String.valueOf(liveDataBean.get(position).getCourseId()));
                 }
             }
         });
@@ -359,7 +364,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                     isUp = 1;
                     liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                 } else {
-                    mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
                     materialEdition = filterMaterialdata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -381,7 +386,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                     isUp = 1;
                     liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                 } else {
-                    mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
                     subjectId = filterGradedata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -403,7 +408,7 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
                     isUp = 1;
                     liveRoomPresenter.getLiveRoomData(mActivity, "Bearer " + token, "SCIENCEROOM", currentPage + "", "10", materialEdition, subjectId, semester, knowledgeId);
                 } else {
-                    mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
                     semester = filterSemesterdata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -436,7 +441,6 @@ public class LiveRoomFragment extends BaseMvpFragment<LiveRoomPresenterImpl> imp
         });
 
         //好像文字的水印
-        contentView = new ImageView(getContext());
         contentView.setImageResource(R.mipmap.zanwusucai);
         contentView.setVisibility(View.GONE);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);

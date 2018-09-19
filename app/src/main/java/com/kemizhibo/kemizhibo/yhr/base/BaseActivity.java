@@ -1,5 +1,6 @@
 package com.kemizhibo.kemizhibo.yhr.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,8 +14,13 @@ import android.view.WindowManager;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -26,6 +32,9 @@ import static com.kemizhibo.kemizhibo.yhr.utils.ToastUtils.showToast;
  */
 
 public abstract class BaseActivity extends RxAppCompatActivity implements BaseView{
+    //返回推出应用集合
+   /* private List<Activity> activityList = new LinkedList<Activity>();
+    Activity activity = new Activity();*/
 
     protected ViewGroup title_bar = null ;
     Unbinder unbinder;
@@ -33,15 +42,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseVi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        //当系统版本为4.4或者4.4以上时可以使用沉浸式状态栏
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            //透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//
-////            StatusBarCompat.translucentStatusBar(this);
-//            //透明导航栏
-////            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        }
+        //返回推出应用
+       /* if (!activityList.contains(this)){
+            activityList.add(this);
+        }*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
@@ -62,6 +66,30 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseVi
         initData();
         MyApplication.verifyStoragePermissions(this);
     }
+    //fanhui 直接退出应用，关闭的是所有的activity
+    /*public void finishAllActivity(Activity mActivity) {
+        LogUtils.i("走了吗4",activityList.size()+"");
+        for (Activity activity : activityList) {
+            if (activity != null && activity != mActivity) {
+                activity.finish();
+                LogUtils.i("走了吗5",activityList.size()+"");
+            }
+        }
+        LogUtils.i("走了吗6",activityList.size()+"");
+    }*/
+    //关闭指定activity
+   /* public void finishActivity() {
+        LogUtils.i("走了吗1",activityList.size()+"");
+        for (Activity activity : activityList) {
+            if (activity != null) {
+                activity.finish();
+                LogUtils.i("走了吗2",activityList.size()+"");
+            }
+        }
+        LogUtils.i("走了吗",activityList.size()+"");
+    }*/
+
+
     /**
      * 布局ID
      * @return
@@ -77,6 +105,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseVi
 
     @Override
     protected void onDestroy() {
+        /*if (activityList.contains(this)){
+            activityList.remove(this);
+        }*/
         if (this.unbinder != null) {
             this.unbinder.unbind();
         }

@@ -67,7 +67,7 @@ public class XiuGaiActivity extends BaseMvpActivity<ResetPwdPresenterImpl> imple
                         xiugaiPwd.setError("密码不能为空");
                         xiugaiPwd.requestFocus();
                     } else if (!isPwd(xiugaiPwd.getText().toString().trim())) {
-                        xiugaiPwd.setError("密码必须由6-20位字母和数字组成");
+                        xiugaiPwd.setError("密码必须由8-20位字母和数字组成");
                         xiugaiPwd.requestFocus();
                     } else if (TextUtils.isEmpty(querenPwd.getText().toString().trim()) || !querenPwd.getText().toString().trim().equals(xiugaiPwd.getText().toString().trim())) {
                         querenPwd.setError("两次密码输入不一致");
@@ -83,7 +83,7 @@ public class XiuGaiActivity extends BaseMvpActivity<ResetPwdPresenterImpl> imple
 
     //密码规则
     public static boolean isPwd(String str) {
-        String strpwd = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$";
+        String strpwd = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$";
         Pattern p = Pattern.compile(strpwd);
         Matcher m = p.matcher(str);
         return m.matches();

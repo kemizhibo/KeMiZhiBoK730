@@ -16,11 +16,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.common.bean.CommonUserTeachPlanBean;
@@ -69,8 +69,8 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
     RecyclerView recyclerView;
     @BindView(R.id.spring_view)
     SpringView springView;
-    @BindView(R.id.dropDownMenu)
-    DropDownMenu mDropDownMenu;
+    /*@BindView(R.id.dropDownMenu)
+    DropDownMenu mDropDownMenu;*/
 
     private List<TeachingLessonsBean.ContentBean.DataBean> dataBeans = new ArrayList<>();
     ShouKeAdapter shouKeAdapter;
@@ -84,7 +84,6 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
     private SharedPreferences sp;
     private String token;
     private int itemCount;
-    ImageView contentView;
     private String courseId;
 
     private String headers[] = {"教材", "年级", "学期"};
@@ -97,7 +96,10 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
     private List<FilterBean.ContentBean.GradeBean> filterGradedata;
     private List<FilterBean.ContentBean.SemesterBean> filterSemesterdata;
     private List<CommonUserTeachPlanBean.ContentBean> planBeanList = new ArrayList<>();
-   /* private int materialSelectI = -1;
+    private ImageView contentView;
+    private PopupWindow planPop;
+    private DropDownMenu mDropDownMenu;
+    /* private int materialSelectI = -1;
     private int gradeSelectI = -1;
     private int semesterSelectI = -1;*/
 
@@ -110,13 +112,13 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
     @Override
     public View createSuccessView() {
         View view = UIUtils.inflate(R.layout.forteaching_second_fragment);
+        mDropDownMenu = view.findViewById(R.id.dropDownMenu);
         ButterKnife.bind(this, view);
         //展示教师培训的列表数据
         initGetShouKeData();
         initView();
         return view;
     }
-
 
     private void initGetShouKeData() {
         //设置适配器
@@ -128,11 +130,16 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
         shouKeAdapter = new ShouKeAdapter(R.layout.item_preparing_online_list, dataBeans);
         shouKeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 if (NoFastClickUtils.isFastClick()) {
                 } else {
-                    courseId = String.valueOf(dataBeans.get(position).getCourseId());
-                   shouKePresenter.getUserPlanData(mActivity,"Bearer "+token,courseId,"false");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            courseId = String.valueOf(dataBeans.get(position).getCourseId());
+                            shouKePresenter.getUserPlanData(mActivity,"Bearer "+token,courseId,"false");
+                        }
+                    });
                 }
             }
         });
@@ -243,7 +250,6 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
                     currentPage = 1;
                     isUp = 1;
                     shouKePresenter.getShouKeData(mActivity, "Bearer " + token, materialEdition, subjectId, semester, "10", currentPage + "", "app");
-                    LogUtils.i("于杰888",subjectId);
                 } else {
                     mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
                     subjectId = filterGradedata.get(position).getSubjectId() + "";
@@ -278,19 +284,28 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
         });
         //好像文字的水印
         contentView = new ImageView(getContext());
+        LogUtils.i("报错2","123");
         contentView.setImageResource(R.mipmap.zanwusucai);
-        contentView.setVisibility(View.GONE);
+        LogUtils.i("报错3","123");
+        contentView.setVisibility(View.INVISIBLE);
+        LogUtils.i("报错4","123");
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
+        LogUtils.i("报错5","123");
     }
 
-    @Override
+    /*@Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         //退出activity前关闭菜单
         if (mDropDownMenu.isShowing()) {
             mDropDownMenu.closeMenu();
         }
-    }
+        //生命周期中获取的弹窗的影藏和显示
+        if(null != planPop && planPop.isShowing()){
+            planPop.dismiss();
+        }
+
+    }*/
 
     @Override
     public void load() {
@@ -299,7 +314,6 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
         isUp=1;
         //筛选条件
         shouKePresenter.getShouKeData(mActivity, "Bearer " + token, materialEdition, subjectId, semester, "10", currentPage + "", "app");
-        LogUtils.i("于杰4",materialEdition+"+++"+subjectId+"+++"+semester+"+++"+currentPage);
         shouKePresenter.getFilterData(mActivity);
     }
 
@@ -314,13 +328,15 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
                     recyclerView.setVisibility(View.VISIBLE);
                     setState(LoadingPager.LoadResult.success);
                     shouKeAdapter.notifyDataSetChanged();
-                    LogUtils.i("于杰7",dataBeans.size()+"");
                 } else {
                     recyclerView.setVisibility(View.INVISIBLE);
                     contentView.setVisibility(View.VISIBLE);
+                    LogUtils.i("报错6","123");
+                    shouKeAdapter.notifyDataSetChanged();
                     contentView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            LogUtils.i("报错7","123");
                             materialEdition = "";
                             subjectId = "";
                             semester = "";
@@ -338,7 +354,7 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
                             shouKePresenter.getShouKeData(mActivity, "Bearer " + token, materialEdition, subjectId, semester, "10", currentPage + "", "app");
                         }
                     });
-                    shouKeAdapter.notifyDataSetChanged();
+                    //shouKeAdapter.notifyDataSetChanged();
                 }
             } else if (isUp == 2) {
                 if (itemCount >= teachingLessonsBean.getContent().getTotal()) {
@@ -362,7 +378,7 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
 
     @Override
     public void onShouKeError(String msg) {
-        LogUtils.i("于杰1",msg);
+        LogUtils.i("报错1",msg);
     }
 
     @Override
@@ -390,24 +406,28 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
 
     @Override
     public void onFilterError(String msg) {
-        LogUtils.i("于杰2",msg);
     }
 
     //获取用户方案列表
     @Override
     public void onUserPlanSuccess(CommonUserTeachPlanBean commonUserTeachPlanBean) {
-        planBeanList.clear();
-        planBeanList.addAll(commonUserTeachPlanBean.getContent());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showPlanPop();
-            }
-        });
+        if (commonUserTeachPlanBean.getCode()==0){
+            planBeanList.clear();
+            planBeanList.addAll(commonUserTeachPlanBean.getContent());
+            showPlanPop();
+        }else if (commonUserTeachPlanBean.getCode()==401||commonUserTeachPlanBean.getCode()==801){
+            //登录过期
+            ToastUtils.showToast("登录过期");
+        }else {
+            ToastUtils.showToast("获取授课方案列表错误");
+        }
     }
+
+
     //方案列表
     private void showPlanPop() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_plan, null, false);
+        final LinearLayout linearLayout = view.findViewById(R.id.pop_layout);
         final ListView planList = view.findViewById(R.id.plan_list);
         final PlanListAdapter planListAdapter = new PlanListAdapter(getActivity(), planBeanList);
         planList.setAdapter(planListAdapter);
@@ -421,16 +441,30 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
                             planBeanList.get(i).setChecked(true);
                         }else{
                             planBeanList.get(i).setChecked(false);
-                        }
                     }
+                }
                 }else{
                     planBeanList.get(position).setChecked(false);
                 }
                 planListAdapter.notifyDataSetChanged();
             }
         });
+        planPop = new PopupWindow(getActivity());
+        planPop.setContentView(view);
+        planPop.setWidth(733);
+        planPop.setHeight(400);
+        planPop.setOutsideTouchable(true);
+        planPop.setBackgroundDrawable(new BitmapDrawable());
+        planPop.setFocusable(true);
+        //planPop.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
+        planPop.showAtLocation(linearLayout, Gravity.CENTER, 0, 0);
+        planPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                initialize();
+            }
+        });
         RelativeLayout goTeach = view.findViewById(R.id.go_teach_rl);
-        final PopupWindow planPop = new PopupWindow(getActivity());
         goTeach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -442,7 +476,6 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
                         //视频
                         Intent intent = new Intent(getActivity(), LiveRoomDetailsActivity.class);
                         intent.putExtra(Constants.MODULE_ID, String.valueOf(planBeanList.get(selectIndex).getModuleId()));
-                        LogUtils.i("取值",String.valueOf(planBeanList.get(selectIndex).getModuleId()));
                         startActivity(intent);
                     }else{
                         Intent intent = new Intent(getActivity(), CommonWebActivity.class);
@@ -455,24 +488,10 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
                 }
             }
         });
-        planPop.setContentView(view);
-        planPop.setWidth(733);
-        planPop.setHeight(400);
-        planPop.setFocusable(true);
-        planPop.setOutsideTouchable(true);
-        planPop.setBackgroundDrawable(new BitmapDrawable());
-        planPop.showAtLocation(getActivity().getCurrentFocus(), Gravity.CENTER, 0, 0);
-        planPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                //initialize();
-            }
-        });
     }
 
     @Override
     public void onUserPlanError(String msg) {
-        LogUtils.i("于杰3",msg);
     }
 
     private void initDialogToLogin() {
@@ -534,6 +553,10 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
         if(null != mDropDownMenu && mDropDownMenu.isShowing()){
             mDropDownMenu.closeMenu();
         }
+        //生命周期中获取的弹窗的影藏和显示
+        if(null != planPop && planPop.isShowing()){
+            planPop.dismiss();
+        }
     }
 
     private boolean isChecked() {
@@ -544,5 +567,17 @@ public class ForTeanchingSecondFragment extends BaseMvpFragment<ShouKePresenterI
             }
         }
         return false;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()) {
+
+        }else {
+            if(null != mDropDownMenu && mDropDownMenu.isShowing()){
+                mDropDownMenu.closeMenu();
+            }
+        }
     }
 }

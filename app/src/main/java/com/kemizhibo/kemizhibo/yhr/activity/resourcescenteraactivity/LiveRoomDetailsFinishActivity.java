@@ -1,25 +1,20 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.dueeeke.videoplayer.player.IjkPlayer;
 import com.dueeeke.videoplayer.player.PlayerConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LectureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.ForTeachPlayUrlBean;
@@ -27,14 +22,12 @@ import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.InitLectureBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.LiveRoomDetailsVideoPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionController;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.LiveRoomDetailsView;
-
 import java.util.LinkedHashMap;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
@@ -164,7 +157,35 @@ public class LiveRoomDetailsFinishActivity extends BaseMvpActivity<LiveRoomDetai
                 liveRoomDetailsVideoPresenter.getForTeachPlayUrlData3(this,courseId,"HLS","true","LD",kpointId);
                 liveRoomDetailsVideoPresenter.getForTeachPlayUrlData4(this,courseId,"HLS","true","UD",kpointId);
             }
+        }else if (initLectureBean.getCode() == 401||initLectureBean.getCode() == 801){
+            initDialogToLogin();
         }
+    }
+
+    private void initDialogToLogin() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(LiveRoomDetailsFinishActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        })
+                        .build();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override
@@ -181,9 +202,9 @@ public class LiveRoomDetailsFinishActivity extends BaseMvpActivity<LiveRoomDetai
             //获取不同清晰度的视频路径
             LinkedHashMap<String, String> videos = new LinkedHashMap<>();
             videos.put("标清", str1);
-            /*videos.put("高清", str2);
+            videos.put("高清", str2);
             videos.put("超清", str3);
-            videos.put("原画", str4);*/
+            videos.put("原画", str4);
             player.setDefinitionVideos(videos);
             player.setScreenScale(SCREEN_SCALE_MATCH_PARENT);
             player.setVideoController(controller);

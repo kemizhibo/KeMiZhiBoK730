@@ -272,8 +272,10 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                             picImg = photo;
                         }*/
                             preservationPicturePresenter.getPreservationPictureData(TakePhotoActivity.this, "Bearer " + token, picImg);
-                        } else {
-                            //ToastUtils.showToast("返回失败");
+                        } else if (takePhotoBean.getCode()==401||takePhotoBean.getCode()==801){
+                            initDialogToLogin();
+                        }else {
+
                         }
                     }
                 });
@@ -301,7 +303,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
                     }
                 }
             }).start();
-        } else if (preservationPictureBean.getCode() == 401) {
+        } else if (preservationPictureBean.getCode() == 401||preservationPictureBean.getCode() == 801) {
             initDialogToLogin();
         } else {
             ToastUtils.showToast("请选择照片");
@@ -336,7 +338,7 @@ public class TakePhotoActivity extends BaseMvpActivity<PreservationPicturePresen
 
     @Override
     public void onPreservationPictureError(String msg) {
-        ToastUtils.showToast(msg);
+        Transparent.showSuccessMessage(this, "修改头像失败!");
     }
 
     //上传头像

@@ -4,6 +4,8 @@ package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
@@ -17,14 +19,17 @@ import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.SignOutBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.SignOutPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
-import com.kemizhibo.kemizhibo.yhr.utils.DataClearManager;
+import com.kemizhibo.kemizhibo.yhr.utils.CleanMessageUtil;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.SysApplication;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SignOutView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
+import static com.kemizhibo.kemizhibo.yhr.utils.CleanMessageUtil.clearAllCache;
 
 
 public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenterImpl> implements SignOutView {
@@ -50,6 +55,14 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
     private SharedPreferences sp;
     private String token;
     private Intent intent;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0){
+                finish();
+            }
+        }
+    };
+    private String totalCacheSize;
 
     @Override
     protected int getLayoutId() {
@@ -58,14 +71,21 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
 
     @Override
     protected void initData() {
+        SysApplication.getInstance().addActivity(this);
         bindTitleBar();
         //计算应用缓存大小
         try {
-            String totalCacheSize = DataClearManager.getTotalCacheSize(this);
+            totalCacheSize = CleanMessageUtil.getTotalCacheSize(this);
             clearNumText.setText(totalCacheSize);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
     }
 
     private void bindTitleBar() {
@@ -94,7 +114,7 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
                     builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            DataClearManager.cleanInternalCache(PersonCenterSheZhiActivity.this);
+                            clearAllCache(getApplicationContext());
                             clearNumText.setText("0.0KB");
                         }
                     });
@@ -133,9 +153,22 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
                   sp.edit().clear().commit();
               }
               setResult(MyApplication.YINGXIANG_TO_PICK_res);
-              finish();
-          }else {
+              Transparent.showSuccessMessage(this,"您的账号已退出登录");
+              new Thread(new Runnable() {
+                  @Override
+                  public void run() {
+                      try {
+                          Thread.sleep(1500);
+                          handler.sendEmptyMessage(0);
+                      } catch (InterruptedException e) {
+                          e.printStackTrace();
+                      }
+                  }
+              }).start();
+          }else if (signOutBean.getCode()==401||signOutBean.getCode()==801){
               initDialogToLogin();
+          }else {
+              ToastUtils.showToast("网络连接中断，请检查您的网络状态");
           }
     }
 
@@ -167,7 +200,7 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
 
     @Override
     public void onSignOutError(String msg) {
-        initDialogToLogin();
+        ToastUtils.showToast("网络连接中断，请检查您的网络状态");
     }
 
     @Override

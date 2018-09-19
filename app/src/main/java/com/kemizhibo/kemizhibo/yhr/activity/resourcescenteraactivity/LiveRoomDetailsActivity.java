@@ -17,6 +17,8 @@ import com.dueeeke.videoplayer.player.IjkPlayer;
 import com.dueeeke.videoplayer.player.PlayerConfig;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
+import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterFanKuiActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LectureBean;
 import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.ForTeachPlayUrlBean;
@@ -24,6 +26,8 @@ import com.kemizhibo.kemizhibo.yhr.bean.forteachbean.InitLectureBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.LiveRoomDetailsVideoPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionController;
 import com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.LiveRoomDetailsView;
@@ -166,12 +170,42 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
                 liveRoomDetailsVideoPresenter.getForTeachPlayUrlData3(this,courseId,"HLS","true","LD",kpointId);
                 liveRoomDetailsVideoPresenter.getForTeachPlayUrlData4(this,courseId,"HLS","true","UD",kpointId);
             }
+        }else if (initLectureBean.getCode() == 401||initLectureBean.getCode() == 801){
+            initDialogToLogin();
+        }else {
+
         }
+    }
+
+    private void initDialogToLogin() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        CustomDialog dialog =
+                builder.cancelTouchout(false)
+                        .view(R.layout.alertdialog_login)
+                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (NoFastClickUtils.isFastClick()) {
+                                }else {
+                                    Intent intent = new Intent(LiveRoomDetailsActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        })
+                        .build();
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = 520;
+        lp.height = 260;
+        window.setAttributes(lp);
     }
 
     @Override
     public void onInitLectureError(String msg) {
-
+        ToastUtils.showToast("网络连接中断，请检查您的网络状态");
     }
 
     //h获取一件授课的视频播放地址
@@ -183,13 +217,13 @@ public class LiveRoomDetailsActivity extends BaseMvpActivity<LiveRoomDetailsVide
             //获取不同清晰度的视频路径
             LinkedHashMap<String, String> videos = new LinkedHashMap<>();
             videos.put("标清", str1);
-            /*videos.put("高清", str2);
+            videos.put("高清", str2);
             videos.put("超清", str3);
-            videos.put("原画", str4);*/
+            videos.put("原画", str4);
             player.setDefinitionVideos(videos);
             player.setScreenScale(SCREEN_SCALE_MATCH_PARENT);
             player.setVideoController(controller);
-            player.setTitle("视屏详情");
+            player.setTitle("视频详情");
             player.start();
         }
     }

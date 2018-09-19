@@ -21,6 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.TimerUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.SendYanZhengMaView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import javax.inject.Inject;
@@ -105,10 +106,13 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
     public void onSendYanZhengMaSuccess(SendYanZhengMaBean sendYanZhengMaBean) {
         LogUtils.i("验证码",sendYanZhengMaBean.getCode()+"");
         if (sendYanZhengMaBean.getCode() == 0) {
+            Transparent.showErrorMessage(this, "短信已成功发送至您的手机，请注意查收");
             timerUtils = new TimerUtils(personChangeSendYanzhengma, 60000, 1000);
             timerUtils.start();
-        } else {
+        } else if (sendYanZhengMaBean.getCode() == 401||sendYanZhengMaBean.getCode() == 801){
             initDialogToLogin();
+        }else {
+            ToastUtils.showToast("网络连接中断，请检查您的网络状态");
         }
     }
 
@@ -140,7 +144,7 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
 
     @Override
     public void onSendYanZhengMaError(String msg) {
-        ToastUtils.showToast("短信发送失败，请重试");
+        Transparent.showErrorMessage(this, "短信发送失败，请重试");
     }
 
     //验证旧手机号
@@ -150,11 +154,11 @@ public class ChangePhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
             Intent intent = new Intent(ChangePhoneActivity.this, SetNewPhoneActivity.class);
             //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        } else if (sendYanZhengMaBean.getCode()==500){
+        } else if (sendYanZhengMaBean.getCode()==401||sendYanZhengMaBean.getCode()==801){
+            initDialogToLogin();
+        }else {
             personChangeEdittext.setError("验证码错误，请重新输入");
             personChangeEdittext.requestFocus();
-        }else {
-            initDialogToLogin();
         }
     }
 

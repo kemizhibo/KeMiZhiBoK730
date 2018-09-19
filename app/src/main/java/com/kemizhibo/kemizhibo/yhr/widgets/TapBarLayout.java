@@ -199,7 +199,6 @@ public class TapBarLayout extends RelativeLayout {
         if (leftResId != 0) {
             ImageView imageView = new ImageView(mContext);
             imageView.setImageResource(leftResId);
-
             LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(-2, -2);
             rl.gravity = Gravity.CENTER;
             mLeftLinearLayout.addView(imageView, rl);

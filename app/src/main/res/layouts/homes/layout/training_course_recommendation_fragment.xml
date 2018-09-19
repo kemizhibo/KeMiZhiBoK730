@@ -2,21 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white">
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/training_course_recommendation_spring"
-        android:layout_marginBottom="@dimen/res_15dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        app:type="follow">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/training_course_recommendation_recyclerview"
+            android:layout_marginBottom="@dimen/res_15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
-    </com.liaoinstan.springview.widget.SpringView>
 
 </LinearLayout>

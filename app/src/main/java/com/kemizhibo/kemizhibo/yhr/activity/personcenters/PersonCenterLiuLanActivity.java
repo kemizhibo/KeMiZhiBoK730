@@ -1,9 +1,9 @@
 package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -15,7 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter.LiuLanAdapter;
@@ -26,23 +29,34 @@ import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentEmpty;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.personcenter.LiuLanPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.DividerItemDecoration;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.personcenterview.LiuLanView;
 import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterImpl> implements LiuLanView, View.OnClickListener, LiuLanAdapter.OnItemClickListener {
     private static final int MYLIVE_MODE_CHECK = 0;
     private static final int MYLIVE_MODE_EDIT = 1;
     @BindView(R.id.liulan_frame_layout)
     FrameLayout liulanFrameLayout;
+    @BindView(R.id.bianji_img)
+    ImageView bianjiImg;
+    @BindView(R.id.bianji_relativelayout)
+    RelativeLayout bianjiRelativelayout;
     private int mEditMode = MYLIVE_MODE_CHECK;
     @Inject
     public LiuLanPresenterImpl liuLanPresenter;
@@ -85,9 +99,19 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
 
     @Override
     protected void initData() {
+        initbianji();
         bindTitleBar();
         //加载数据
         intiLiuLanData();
+    }
+
+    private void initbianji() {
+        bianjiRelativelayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updataEditMode();
+            }
+        });
     }
 
     @Override
@@ -96,7 +120,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         liuLanPresenter.getLiuLanData(this, "Bearer " + token, "1", "10");
-        isFlag=true;
+        isFlag = true;
     }
 
     private void bindTitleBar() {
@@ -106,35 +130,39 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
                 finish();
             }
         });
-        publicTitleBarRoot.setRightImageResouse(R.drawable.pan).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
+        /*publicTitleBarRoot.setRightImageResouse(R.drawable.pan).setRightLinearLayoutListener(new TapBarLayout.RightOnClickListener() {
             @Override
             public void onClick() {
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
-                    if (flag){
-                        publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
-                    }else{
-                        publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
-                    }
-                    flag =! flag;
+                } else {
                     updataEditMode();
                 }
             }
-        });
+        });*/
         publicTitleBarRoot.changeTitleBar("浏览记录");
         publicTitleBarRoot.buildFinish();
     }
 
     //弹出多选框
     private void updataEditMode() {
+        /*if (flag){
+            //publicTitleBarRoot.buildFinish();
+            publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
+        }else{
+            //publicTitleBarRoot.buildFinish();
+            publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
+        }
+        flag =! flag;*/
         mEditMode = mEditMode == MYLIVE_MODE_CHECK ? MYLIVE_MODE_EDIT : MYLIVE_MODE_CHECK;
         if (mEditMode == MYLIVE_MODE_EDIT) {
+            bianjiImg.setImageResource(R.drawable.qvxiao_2);
+            LogUtils.i("走吧1", "123");
             frameLayout.setVisibility(View.VISIBLE);
             editorStatus = true;
-            //publicTitleBarRoot.setRightImageResouse(R.drawable.qvxiao_2);
         } else {
+            bianjiImg.setImageResource(R.drawable.pan);
+            LogUtils.i("走吧2", "123");
             frameLayout.setVisibility(View.GONE);
-            //publicTitleBarRoot.setRightImageResouse(R.drawable.pan);
             editorStatus = false;
             clearAll();
         }
@@ -154,44 +182,46 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     @Override
     public void onLiuLanSuccess(LiuLanBean liuLanBean) {
         if (liuLanBean.getCode() == 0) {
-            if (isUp==1){
+            if (isUp == 1) {
                 mList.clear();
                 mList.addAll(liuLanBean.getContent().getData());
-                if (mList.size()>0){
+                if (mList.size() > 0) {
                     //切换控件
                     liulanFrameLayout.setVisibility(View.GONE);
                     liulanSpringview.setVisibility(View.VISIBLE);
                     if (isFlag) {
                         liuLanAdapter.notifyDataSetChanged();
                     }
-                }else {
+                } else {
                     //切换控件
                     liulanFrameLayout.setVisibility(View.VISIBLE);
                     liulanSpringview.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout, new FramgmentEmpty()).commit();
                 }
-            }else if (isUp==2){
-                if (liuLanAdapter.getMyLiveList().size()>=liuLanBean.getContent().getTotal()){
+            } else if (isUp == 2) {
+                if (liuLanAdapter.getMyLiveList().size() >= liuLanBean.getContent().getTotal()) {
                     ToastUtils.showToast("没有更多数据");
-                }else {
+                } else {
                     mList.addAll(liuLanBean.getContent().getData());
-                    if (mList.size()>0){
+                    if (mList.size() > 0) {
                         //切换控件
                         liulanFrameLayout.setVisibility(View.GONE);
                         liulanSpringview.setVisibility(View.VISIBLE);
                         if (isFlag) {
                             liuLanAdapter.notifyDataSetChanged();
                         }
-                    }else {
+                    } else {
                         //切换控件
                         liulanFrameLayout.setVisibility(View.VISIBLE);
                         liulanSpringview.setVisibility(View.GONE);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout,new FramgmentEmpty()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.liulan_frame_layout, new FramgmentEmpty()).commit();
                     }
                 }
             }
-        } else {
+        } else if (liuLanBean.getCode() == 401 || liuLanBean.getCode() == 801) {
             initDialogToLogin();
+        } else {
+            ToastUtils.showToast("网络连接中断，请检查您的网路状态");
         }
     }
 
@@ -200,11 +230,11 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
         CustomDialog dialog =
                 builder.cancelTouchout(false)
                         .view(R.layout.alertdialog_login)
-                        .addViewOnclick(R.id.yes_butn,new View.OnClickListener() {
+                        .addViewOnclick(R.id.yes_butn, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 if (NoFastClickUtils.isFastClick()) {
-                                }else {
+                                } else {
                                     Intent intent = new Intent(PersonCenterLiuLanActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -379,7 +409,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             @Override
             public void onClick(View v) {
                 if (NoFastClickUtils.isFastClick()) {
-                }else {
+                } else {
                     //删除接口
                     if (selectAllButn.getText().equals("取消全选")) {
                         liuLanPresenter.getClearLiuLanData(PersonCenterLiuLanActivity.this, "Bearer " + token);
@@ -416,14 +446,16 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             liuLanPresenter.getLiuLanData(this, "Bearer " + token, "1", "10");
             liuLanAdapter.notifyDataSetChanged();
             builder.dismiss();
-        }else {
+        } else if (clearLiuLanBean.getCode() == 401 || clearLiuLanBean.getCode() == 801) {
             initDialogToLogin();
+        } else {
+            Transparent.showSuccessMessage(this, "删除失败，请重试");
         }
     }
 
     @Override
     public void onClearLiuLanError(String msg) {
-          ToastUtils.showToast(msg);
+        Transparent.showSuccessMessage(this, "删除失败，请重试");
     }
 
     //删除一个或者多个浏览记录
@@ -444,14 +476,16 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             }
             liuLanAdapter.notifyDataSetChanged();
             builder.dismiss();
-        }else {
+        } else if (clearLiuLanBean.getCode() == 401 || clearLiuLanBean.getCode() == 801) {
             initDialogToLogin();
+        } else {
+            Transparent.showSuccessMessage(this, "删除失败，请重试");
         }
     }
 
     @Override
     public void onClearOneOrMoreLiuLanError(String msg) {
-        ToastUtils.showToast(msg);
+        Transparent.showSuccessMessage(this, "删除失败，请重试");
     }
 
     @Override
@@ -498,5 +532,4 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
             }
         }
     }
-
 }

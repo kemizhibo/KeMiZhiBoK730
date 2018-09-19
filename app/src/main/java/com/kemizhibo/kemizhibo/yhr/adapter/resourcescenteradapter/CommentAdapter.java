@@ -1,9 +1,13 @@
 package com.kemizhibo.kemizhibo.yhr.adapter.resourcescenteradapter;
 
+import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.bean.resourcescenterbean.CommentBean;
 import java.util.List;
@@ -23,10 +27,10 @@ public class CommentAdapter extends BaseQuickAdapter<CommentBean.ContentBean.Dat
 
     @Override
     protected void convert(BaseViewHolder helper, final CommentBean.ContentBean.DataBean item) {
-        Glide.with(mContext).load(item.getUserHead())
-                .error(R.mipmap.milier)
-                .placeholder(R.mipmap.milier)
-                .into(helper.<CircleImageView>getView(R.id.comment_teacher_touxiang));//头像
+        SimpleDraweeView simpleDraweeView = helper.getView(R.id.comment_teacher_touxiang);
+        if (!TextUtils.isEmpty(item.getUserHead())){
+            simpleDraweeView.setImageURI(Uri.parse(item.getUserHead()));
+        }
         //头像
         helper.setText(R.id.comment_teacher_name,item.getShowName());
         helper.setText(R.id.comment_time_txt,item.getAddtime());

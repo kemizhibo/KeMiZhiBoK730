@@ -7,9 +7,14 @@
     tools:context="com.kemizhibo.kemizhibo.yhr.activity.personcenters.FuWuActivity">
     <include layout="@layout/pubic_title_bar"/>
     <include layout="@layout/line"/>
-    <TextView
-        android:layout_marginTop="@dimen/res_20dp"
-        android:id="@+id/fuwu_text"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+            android:id="@+id/iv_xiangqing1"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView>
+    </ScrollView>
 </LinearLayout>

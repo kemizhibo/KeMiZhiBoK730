@@ -39,8 +39,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 1
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         aaptOptions.cruncherEnabled = false
         aaptOptions.useNewCruncher = false
@@ -55,8 +55,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    compile 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
+    compile 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -96,6 +97,8 @@ dependencies {
     compile 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     //搜索
     compile 'com.carson_ho:SearchLayout:1.0.1'
+    //加载长图
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     //bugly
     compile 'com.tencent.bugly:crashreport:latest.release'
     //侧滑

@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -22,7 +23,12 @@ import com.kemizhibo.kemizhibo.other.web.view.CommonWebView;
 import com.kemizhibo.kemizhibo.yhr.LoadingPager;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseActivity;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -38,6 +44,9 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
     public static final String PREVIEW = "preview";
     public static final String TEACH = "teach";
     public static final String RECORD = "record";
+    public static final String LOCAL = "local";
+    public static final String LIVE = "live";
+    private boolean isIntercept = false;
 
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
@@ -70,15 +79,30 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     if(0 != moduleId){
                         url = url.concat("?moduleId=" + moduleId);
                     }
+                    isIntercept = true;
+                    //url = "http://39.155.221.165:8080/guanchashi/#/observation/1005172";
+                    //isIntercept = false;
                     break;
                 case PREVIEW:
                     url = Constants.H5_PREVIEW.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.MODULE_ID, 0)));
+                    isIntercept = true;
                     break;
                 case TEACH:
                     url = Constants.H5_TEACH.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.MODULE_ID, 0)));
+                    isIntercept = true;
                     break;
                 case RECORD:
                     url = Constants.H5_RECORD.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.RECORD_ID, 0)));
+                    isIntercept = true;
+                    break;
+                case LOCAL:
+                    url = "file:///android_asset/docId.html"+ "?docId="+ intent.getStringExtra("docId");
+                    isIntercept = false;
+                    break;
+                case LIVE:
+                    //url = "http://39.155.221.165:8080/guanchashi/#/observation/"+intent.getStringExtra("courseId");
+                    url = "https://player.alicdn.com/aliplayer/index.html";
+                    isIntercept = false;
                     break;
                 default:
                     break;
@@ -88,6 +112,8 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
         frameLayout.addView(webView);
         WebSetting.getInstance().setWebViewSetting(webView.getSettings());
         webView.addJavascriptInterface(new JavaScriptInterface(this, this), "android");
+       //不跳出应用打开浏览器
+        webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
             //     在WebView开始加载网页时，显示进度框；加载完毕时，隐藏进度框
             public void onProgressChanged(WebView view, int newProgress) {
@@ -135,8 +161,6 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                 takeResource();
                 return true;
             }
-
-
         });
         Log.d("CommonWebActivity", url);
         webView.loadUrl(url);
@@ -234,10 +258,18 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && h5LoadComplete){
+        /*if(keyCode == KeyEvent.KEYCODE_BACK && h5LoadComplete){
+            webView.loadUrl("javascript:onBackPressed()");
+            return true;
+        }*/
+        if(keyCode == KeyEvent.KEYCODE_BACK && h5LoadComplete && isIntercept){
             webView.loadUrl("javascript:onBackPressed()");
             return true;
         }
+        /*if(keyCode==KeyEvent.KEYCODE_BACK && webView.canGoBack() && h5LoadComplete && !isIntercept){
+            webView.goBack();
+            return true;
+        }*/
         return super.onKeyDown(keyCode, event);
     }
 

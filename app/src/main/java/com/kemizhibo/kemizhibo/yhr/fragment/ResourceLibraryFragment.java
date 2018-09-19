@@ -182,6 +182,4 @@ public class ResourceLibraryFragment extends BaseFragment {
             return list_Title.get(position % list_Title.size());
         }
     }
-
-
 }

@@ -125,7 +125,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     @Override
     public void onUserSuccess(GetUserBean getUserBean) {
         if (getUserBean.getCode() == 0) {
-            setState(LoadingPager.LoadResult.success);
+            //setState(LoadingPager.LoadResult.success);
             userData = getUserBean.getContent();
             if (!TextUtils.isEmpty(userData.getSchool())){
                 personSchoolName.setText(userData.getSchool());
@@ -144,7 +144,8 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
                     guanliLayout.setVisibility(View.GONE);
                 }
             }
-        } else {
+            //setState(LoadingPager.LoadResult.success);
+        } else if (getUserBean.getCode() == 401||getUserBean.getCode() == 801){
             initDialogToLogin();
         }
     }
@@ -156,7 +157,7 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
 
     @Override
     public void onChangeUserSuccess(ChangeUserBean changeUserBean) {
-        setState(LoadingPager.LoadResult.success);
+        //setState(LoadingPager.LoadResult.success);
     }
 
     @Override
@@ -267,9 +268,6 @@ public class PersonCenterFragment extends BaseMvpFragment<GetUserPresenterImpl> 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode== MyApplication.YINGXIANG_TO_PICK_req&&resultCode==MyApplication.YINGXIANG_TO_PICK_res){
-            /*Intent intent = new Intent(getContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();*/
             try{
                 MainActivity activity = (MainActivity) getActivity();
                 activity.exit();

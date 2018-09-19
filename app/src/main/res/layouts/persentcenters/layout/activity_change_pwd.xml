@@ -87,7 +87,7 @@
             android:textColor="@color/text_999999"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密码6-20位且由字母和数字组成"/>
+            android:text="密码8-20位且由字母和数字组成"/>
     </LinearLayout>
     <include layout="@layout/line"/>
     <Button

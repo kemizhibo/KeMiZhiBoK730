@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
         <LinearLayout
             android:layout_marginLeft="@dimen/res_12dp"
@@ -10,18 +10,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <!--<ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/comment_teacher_touxiang"
                 android:layout_width="@dimen/res_57dp"
                 android:layout_height="@dimen/res_57dp"
-                android:background="@mipmap/milier"/>-->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/comment_teacher_touxiang"
-                android:layout_width="@dimen/res_57dp"
-                android:layout_height="@dimen/res_57dp"
-                android:src="@drawable/ic_launcher"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@android:color/white"/>
+                android:scaleType="centerCrop"
+                fresco:roundAsCircle="true"
+                fresco:placeholderImage="@mipmap/ic_launcher"
+                fresco:failureImage="@mipmap/ic_launcher"/>
             <LinearLayout
                 android:layout_marginLeft="@dimen/res_16dp"
                 android:orientation="vertical"

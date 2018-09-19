@@ -117,7 +117,7 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentSearchEmpty()).commit();
             }
 
-        } else {
+        } else if (searchBean.getCode() == 401||searchBean.getCode() == 801){
             initDialogToLogin();
         }
     }
@@ -176,14 +176,14 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                             //这里一定要获取到所在Activity再startActivity()；
                             SearchActivity.this.startActivity(intent);
                         }
-                    } /*else if (dataBeans.get(position).getFileType().equals("LIVE")) {
-                        Intent intent = new Intent(SearchActivity.this, TeacherTrainingDetailsActivity.class);
+                    } else if (dataBeans.get(position).getFileType().equals("LIVE")) {
+                        Intent intent = new Intent(SearchActivity.this, LiveRoomDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));
                         intent.putExtras(bundle);
                         //这里一定要获取到所在Activity再startActivity()；
                         SearchActivity.this.startActivity(intent);
-                    } */else {
+                    } else {
                         Intent intent = new Intent(SearchActivity.this, PictrueDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("courseId", String.valueOf(dataBeans.get(position).getCourseId()));

@@ -10,17 +10,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
+import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
-
 import java.util.List;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.OPERATE_KEY;
 
 /**
  * Created by asus on 2018/8/1.
@@ -28,10 +28,11 @@ import java.util.List;
 
 public class PreparingDetailOtherAdapter extends BaseAdapter {
 
-    private final List<PreparingPackageDetailBean.ContentBean.DataBean> otherBeanList;
+    private final List<PreparingPackageDetailBean.ContentBean.OtherBean> otherBeanList;
     private Handler mHandler;
 
     private Context context;
+    private String docId;
 
     //定义样式常量，注意常量值要从0开始
     private static final int TYPE_PPT = 1;//ppt
@@ -40,7 +41,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
     private int courseId;
     private int moduleId;
 
-    public PreparingDetailOtherAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> otherBeanList) {
+    public PreparingDetailOtherAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.OtherBean> otherBeanList) {
         this.context = context;
         this.otherBeanList = otherBeanList;
     }
@@ -85,7 +86,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         // 获取当前条目的类型
         int itemViewType = getItemViewType(position);
         final MyViewHolder holder;
-        ImageView icon = null;
+        //ImageView icon = null;
         if (convertView == null) {
             holder = new MyViewHolder();
             switch (itemViewType) {
@@ -98,7 +99,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                     break;
                 case TYPE_PPT://ppt
                     convertView = View.inflate(context, R.layout.ppt_item, null);
-                    icon = convertView.findViewById(R.id.tianjia_icon);
+                    holder.icon = convertView.findViewById(R.id.tianjia_icon);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mcheckppt = (TextView) convertView.findViewById(R.id.mcheckppt);
                     holder.mdownppt1 = (TextView) convertView.findViewById(R.id.mdownppt);
@@ -120,10 +121,10 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         Log.i("---otheritemViewType--", "" + itemViewType);
         if (itemViewType == TYPE_PPT) {
             if(2 == otherBeanList.get(position).getIsRepeatAdd()){
-                icon.setImageResource(R.drawable.yitianjia);
+                holder.icon.setImageResource(R.drawable.yitianjia);
             }
             holder.mdownppt1.setText(2 == otherBeanList.get(position).getIsRepeatAdd() ? "已添加" : "加入授课");
-            final ImageView icon2 = icon;
+            final ImageView icon2 = holder.icon;
             moduleId = otherBeanList.get(position).getModuleId();
             //RequestUtil.requestOtherPPT((Activity) context, holder.mppt, 3, moduleId);
             holder.mppt.setText(otherBeanList.get(position).getDocName());
@@ -142,7 +143,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goPreview(otherBeanList.get(position).getUrl());
+                    otherBeanList.get(position).getDocId();
+                    goPreview();
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
@@ -158,7 +160,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder.mdown.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtils.showToast("开始下载");
+                    //ToastUtils.showToast("开始下载");
                     //   if (url != null)
                     // RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mdown, 2, false);
                     //  }
@@ -191,7 +193,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    goPreview(otherBeanList.get(position).getUrl());
+                    otherBeanList.get(position).getCourseId();
+                    goPreview();
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 2, true);
                 }
             });
@@ -207,7 +210,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder.mdown.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtils.showToast("开始下载");
+                    //ToastUtils.showToast("开始下载");
                     //   if (url != null) {
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mdown, 1, false);
                     //  }
@@ -238,8 +241,9 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder.mcheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //isjump = true;
-                    goPreview(otherBeanList.get(position).getUrl());
+                    //isjump = true;\
+                    docId = otherBeanList.get(position).getDocId();
+                    goPreview();
                     //LogUtils.i("DocId", "mkel.getDocId():" + otherBeanList.get(position).getDocId());
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 1, true);
                 }
@@ -247,9 +251,14 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         }
         return convertView;
     }
-    private void goPreview(String url) {
-        Intent intent = new Intent(context, PreviewActivity.class);
+    private void goPreview() {
+        /*Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);
+        context.startActivity(intent);*/
+        Intent intent = new Intent(context, CommonWebActivity.class);
+        //intent.putExtra("url", url);
+        intent.putExtra(OPERATE_KEY, LOCAL);
+        intent.putExtra("docId", docId);
         context.startActivity(intent);
     }
 }

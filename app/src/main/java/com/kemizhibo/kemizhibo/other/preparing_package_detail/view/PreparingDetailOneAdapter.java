@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
@@ -24,25 +24,23 @@ import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.utils.DownloadUtil;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.UIUtils;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import cn.jzvd.JZVideoPlayerStandard;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.OPERATE_KEY;
 
 /**
  * Created by asus on 2018/8/1.
@@ -50,7 +48,7 @@ import okhttp3.Response;
 
 public class PreparingDetailOneAdapter extends BaseAdapter {
 
-    private final List<PreparingPackageDetailBean.ContentBean.DataBean> oneKeyBeanList;
+    private final List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList;
     private Handler mHandler;
 
     private Context context;
@@ -63,8 +61,9 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
     private int courseId;
     private int moduleId;
     private static final int TYPE_MAKE = 4;//在线制作
+    private String docId;
 
-    public PreparingDetailOneAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> oneKeyBeanList) {
+    public PreparingDetailOneAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList) {
         this.context = context;
         this.oneKeyBeanList = oneKeyBeanList;
     }
@@ -174,10 +173,13 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             /*holder.jcVideoPlayer.setUp(oneKeyBeanList.get(position).getUrl()
                     , 1, "");*/
             getPlayUrl(context, holder.jcVideoPlayer, courseId, oneKeyBeanList.get(position).getKpointId());
-            //holder.jcVideoPlayer.thumbImageView.setImageURI(Uri.parse(oneKeyBeanList.get(position).getVideoLogo()));
+            if (!TextUtils.isEmpty(oneKeyBeanList.get(position).getVideoLogo())||oneKeyBeanList.get(position).getVideoLogo()!=null){
+                holder.jcVideoPlayer.thumbImageView.setImageURI(Uri.parse(oneKeyBeanList.get(position).getVideoLogo()));
+            }
             loadLogo(oneKeyBeanList.get(position).getVideoLogo(), holder.jcVideoPlayer);
             holder.title.setText(oneKeyBeanList.get(position).getDocName());
-            holder.mbtn.setOnClickListener(new View.OnClickListener() {
+            holder.mbtn.setVisibility(View.GONE);
+            /*holder.mbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, CommonWebActivity.class);
@@ -186,7 +188,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                     intent.putExtra(Constants.MODULE_ID, moduleId);
                     context.startActivity(intent);
                 }
-            });
+            });*/
         } else if (itemViewType == TYPE_PPT) {
             if(2 == oneKeyBeanList.get(position).getIsRepeatAdd()){
                 holder.icon.setImageResource(R.drawable.yitianjia);
@@ -200,7 +202,8 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    goPreview(oneKeyBeanList.get(position).getUrl());
+                    docId = String.valueOf(oneKeyBeanList.get(position).getDocId());
+                    goPreview();
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
@@ -220,9 +223,9 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
             holder.mdown.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtils.showToast("开始下载");
+                    //ToastUtils.showToast("开始下载");
                     //   if (url != null) {
-                    DownloadUtil.get().download(oneKeyBeanList.get(position).getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
+                    DownloadUtil.get().download(String.valueOf(oneKeyBeanList.get(position).getUrl()), "KemiDownload", new DownloadUtil.OnDownloadListener() {
                         @Override
                         public void onDownloadSuccess() {
                             Activity activity = (Activity) context;
@@ -252,7 +255,8 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    goPreview(oneKeyBeanList.get(position).getUrl());
+                    docId = String.valueOf(oneKeyBeanList.get(position).getDocId());
+                    goPreview();
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 1, true);
                 }
             });
@@ -377,9 +381,14 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         }.execute();
     }
 
-    private void goPreview(String url) {
-        Intent intent = new Intent(context, PreviewActivity.class);
+    private void goPreview() {
+        /*Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);
+        context.startActivity(intent);*/
+        Intent intent = new Intent(context, CommonWebActivity.class);
+        //intent.putExtra("url", url);
+        intent.putExtra(OPERATE_KEY, LOCAL);
+        intent.putExtra("docId", docId);
         context.startActivity(intent);
     }
 }

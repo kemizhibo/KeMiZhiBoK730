@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +12,8 @@ import android.widget.TextView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.MainActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.SplashActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
-import com.kemizhibo.kemizhibo.yhr.bean.TokenBean;
 import com.kemizhibo.kemizhibo.yhr.bean.homepagerbean.VersionInformationBean;
 import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
@@ -25,11 +22,7 @@ import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
-
-import java.io.Serializable;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -48,7 +41,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
             if(msg.what==0)
                 startActivity(intent);
                 finish();
-        };
+        }
     };
 
 
@@ -68,7 +61,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
 
     @Override
     protected void initData() {
-
+        //finish();
     }
 
     @OnClick({R.id.login_wangji, R.id.login_butn})
@@ -111,7 +104,6 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
         }else {
             ToastUtils.showToast("账号或密码错误");
         }
-
     }
 
     @Override

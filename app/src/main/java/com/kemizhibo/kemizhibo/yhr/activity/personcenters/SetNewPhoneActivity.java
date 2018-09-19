@@ -110,8 +110,10 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         if (sendYanZhengMaBean.getCode()==0){
             timerUtils = new TimerUtils(getYanzhengma,60000,1000);
             timerUtils.start();
-        }else {
+        }else if (sendYanZhengMaBean.getCode()==401||sendYanZhengMaBean.getCode()==801){
             initDialogToLogin();
+        }else {
+
         }
     }
 
@@ -161,7 +163,7 @@ public class SetNewPhoneActivity extends BaseMvpActivity<SendYanZhengMaPresenter
         if (sendYanZhengMaBean.getCode()==0){
             Intent intent = new Intent(this, ChangePhoneFinishActivity.class);
             startActivity(intent);
-        }else if (sendYanZhengMaBean.getCode()==401){
+        }else if (sendYanZhengMaBean.getCode()==401||sendYanZhengMaBean.getCode()==801){
             initDialogToLogin();
         }else {
             putYanzhengma.setError("验证码错误请重新输入");

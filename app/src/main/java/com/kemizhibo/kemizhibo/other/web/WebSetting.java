@@ -1,8 +1,10 @@
 package com.kemizhibo.kemizhibo.other.web;
 
 import android.os.Build;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * WebView配置
@@ -24,6 +26,7 @@ public class WebSetting {
     }
 
     public void setWebViewSetting(WebSettings setting){
+        setting.setSupportMultipleWindows(true);
         setting.setJavaScriptEnabled(true);
         setting.setJavaScriptCanOpenWindowsAutomatically(true);
         setting.setDomStorageEnabled(true);

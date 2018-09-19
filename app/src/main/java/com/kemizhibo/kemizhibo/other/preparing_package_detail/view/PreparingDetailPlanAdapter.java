@@ -1,18 +1,15 @@
 package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.other.config.Constants;
 import com.kemizhibo.kemizhibo.other.config.OkHttpRequest;
@@ -20,20 +17,18 @@ import com.kemizhibo.kemizhibo.other.preparing_package_detail.PreparingPackageDe
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.MyViewHolder;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPPTBean;
 import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.PreparingPackageDetailBean;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.bean.RequestUtil;
-import com.kemizhibo.kemizhibo.other.preparing_package_detail.preview.PreviewActivity;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cn.jzvd.JZVideoPlayerStandard;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
+import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.OPERATE_KEY;
 
 /**
  * Created by asus on 2018/8/1.
@@ -41,10 +36,10 @@ import okhttp3.Response;
 
 public class PreparingDetailPlanAdapter extends BaseAdapter {
 
-    private final List<PreparingPackageDetailBean.ContentBean.DataBean> planBeanList;
+    private final List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList;
     private Handler mHandler;
-
     private Context context;
+    private String docId;
 
     //定义样式常量，注意常量值要从0开始
     private static final int TYPE_PPT = 0;//ppt
@@ -52,7 +47,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
     private int moduleId;
     private static final int TYPE_MAKE = 1;//在线制作
 
-    public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.DataBean> planBeanList, Handler mHandler) {
+    public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList, Handler mHandler) {
         this.context = context;
         this.planBeanList = planBeanList;
         this.mHandler = mHandler;
@@ -89,6 +84,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
     }
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Log.i("---size--", planBeanList.size() + "");
@@ -103,6 +99,12 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     convertView = View.inflate(context, R.layout.ppt_plan_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mcheckppt = convertView.findViewById(R.id.mcheckppt);
+                    holder.xiugai_img = convertView.findViewById(R.id.xiugai_img);
+                    holder.xiugai_text = convertView.findViewById(R.id.xiugai_text);
+                    if (planBeanList.get(position).isAllowUpdate()==true){
+                        holder.mcheckppt.setVisibility(View.VISIBLE);
+                        holder.xiugai_img.setVisibility(View.VISIBLE);
+                    }
                     holder.mdeleteppt = convertView.findViewById(R.id.mdeleteppt);
                     convertView.setTag(holder);
                     break;
@@ -111,6 +113,8 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     holder.mdeleteonline = convertView.findViewById(R.id.mdeleteonline);
                     holder.mcheckonline = convertView.findViewById(R.id.mcheckonline);
+                    /*holder.logoxiugai = convertView.findViewById(R.id.logoxiugai);
+                    holder.xiugai = convertView.findViewById(R.id.xiugai_text);*/
                     convertView.setTag(holder);
                     break;
                 default:
@@ -125,9 +129,11 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goPreview(planBeanList.get(position).getUrl());
+                    docId = planBeanList.get(position).getDocId();
+                    goPreview();
                 }
             });
+            //是在线制作的ppt有修改和查看功能吗，为授课完成跳哪，授课完成跳哪2
             holder.mdeleteppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -137,6 +143,9 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             //RequestUtil.requestOtherPPT((Activity) context, holder.mppt, moduleId, 3);
             holder.mppt.setText(planBeanList.get(position).getDocName());
         }else if (itemViewType == TYPE_MAKE) {
+            /*if (planBeanList.get(position).getp){
+
+            }*/
             moduleId = planBeanList.get(position).getModuleId();
             final int courseId = planBeanList.get(position).getCourseId();
             holder.mmake.setText(planBeanList.get(position).getDocName());
@@ -156,6 +165,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     context.startActivity(intent);
                 }
             });
+
         }
         return convertView;
     }
@@ -193,15 +203,18 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                         }
                     });
                 }
-
-
             }
         });
     }
 
-    private void goPreview(String url) {
-        Intent intent = new Intent(context, PreviewActivity.class);
+    private void goPreview() {
+        /*Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);
+        context.startActivity(intent);*/
+        Intent intent = new Intent(context, CommonWebActivity.class);
+        //intent.putExtra("url", url);
+        intent.putExtra(OPERATE_KEY, LOCAL);
+        intent.putExtra("docId", docId);
         context.startActivity(intent);
     }
 
