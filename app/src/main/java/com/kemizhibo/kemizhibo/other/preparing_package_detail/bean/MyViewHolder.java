@@ -4,6 +4,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,4 +25,5 @@ public  class MyViewHolder {
     public  ViewPager mviewPager,mshipinviewpager;
     public  TextView title;
     public ImageView icon,xiugai_img;
+    public RelativeLayout rel;
 }

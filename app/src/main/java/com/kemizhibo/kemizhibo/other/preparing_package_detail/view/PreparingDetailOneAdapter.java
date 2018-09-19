@@ -61,7 +61,6 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
     private int courseId;
     private int moduleId;
     private static final int TYPE_MAKE = 4;//在线制作
-    private String docId;
 
     public PreparingDetailOneAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.OneKeyBean> oneKeyBeanList) {
         this.context = context;
@@ -202,8 +201,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    docId = String.valueOf(oneKeyBeanList.get(position).getDocId());
-                    goPreview();
+                    goPreview(String.valueOf(oneKeyBeanList.get(position).getDocId()));
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
@@ -255,8 +253,8 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;
-                    docId = String.valueOf(oneKeyBeanList.get(position).getDocId());
-                    goPreview();
+
+                    goPreview(String.valueOf(oneKeyBeanList.get(position).getDocId()));
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(oneKeyBeanList.get(position).getDocId()), holder.mcheck, 1, true);
                 }
             });
@@ -381,7 +379,7 @@ public class PreparingDetailOneAdapter extends BaseAdapter {
         }.execute();
     }
 
-    private void goPreview() {
+    private void goPreview(String docId) {
         /*Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);*/

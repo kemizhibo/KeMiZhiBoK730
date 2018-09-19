@@ -39,7 +39,6 @@ public class PreparingDetailAdapter extends BaseAdapter {
     private FragmentManager supportFragmentManager;
     private PreparingPackageDetailBean.ContentBean.AppMaterialBean material;
     private Context context;
-    private String docId;
 
 
     public PreparingDetailAdapter(Context context, PreparingPackageDetailBean.ContentBean.AppMaterialBean material, FragmentManager supportFragmentManager) {
@@ -192,8 +191,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true
-                                docId = kpt.getDocId();
-                                goPreview();
+                                goPreview(kpt.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(mkpt.getDocId()), null, 3, true);
                             }
                         });
@@ -259,8 +257,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //isjump = true;
                                 //LogUtils.i("DocId", "mkel.getDocId():" + mkwd.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(mkwd.getDocId()), mcheck, 1, true);
-                                docId = kwd.getDocId();
-                                goPreview();
+                                goPreview(kwd.getDocId());
                             }
                         });
                     }
@@ -320,8 +317,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;
-                                docId = mkel.getDocId();
-                                goPreview();
+                                goPreview(mkel.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(mkel.getDocId()), mexcalcheck, 2, true);
                             }
                         });
@@ -443,8 +439,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;\
-                                docId = mupt.getDocId();
-                                goPreview();
+                                goPreview(mupt.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(mupt.getDocId()), mCheckppt, 3, true);
                             }
                         });
@@ -508,8 +503,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;
-                                docId = muwd.getDocId();
-                                goPreview();
+                                goPreview(muwd.getDocId());
                                 //LogUtils.i("DocId", "mkel.getDocId():" + uwd.getDocId());
                                 //getDocMessage((Activity) context, String.valueOf(muwd.getDocId()), musercheck, 1, true);
                             }
@@ -571,8 +565,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
                             @Override
                             public void onClick(View v) {
                                 //isjump = true;
-                                docId = muel.getDocId();
-                                goPreview();
+                                goPreview(muel.getDocId());
                                 //RequestUtil.getDocMessage((Activity) context, String.valueOf(muel.getDocId()), muserexcalcheck, 2, true);
                             }
                         });
@@ -585,7 +578,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void goPreview() {
+    private void goPreview(String docId) {
         Intent intent = new Intent(context, CommonWebActivity.class);
         //intent.putExtra("url", url);
         intent.putExtra(OPERATE_KEY, LOCAL);

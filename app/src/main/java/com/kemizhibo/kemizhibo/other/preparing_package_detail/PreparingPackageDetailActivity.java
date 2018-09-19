@@ -174,7 +174,6 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
         }
     }
 
-
     @Override
     public void error(String operate, final String errorCode) {
         runOnUiThread(new Runnable() {

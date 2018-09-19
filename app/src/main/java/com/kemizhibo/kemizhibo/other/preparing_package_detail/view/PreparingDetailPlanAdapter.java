@@ -39,12 +39,10 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
     private final List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList;
     private Handler mHandler;
     private Context context;
-    private String docId;
 
     //定义样式常量，注意常量值要从0开始
     private static final int TYPE_PPT = 0;//ppt
     private int courseId;
-    private int moduleId;
     private static final int TYPE_MAKE = 1;//在线制作
 
     public PreparingDetailPlanAdapter(Context context, List<PreparingPackageDetailBean.ContentBean.PlanBean> planBeanList, Handler mHandler) {
@@ -99,12 +97,6 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     convertView = View.inflate(context, R.layout.ppt_plan_item, null);
                     holder.mppt = (TextView) convertView.findViewById(R.id.mppt);
                     holder.mcheckppt = convertView.findViewById(R.id.mcheckppt);
-                    holder.xiugai_img = convertView.findViewById(R.id.xiugai_img);
-                    holder.xiugai_text = convertView.findViewById(R.id.xiugai_text);
-                    if (planBeanList.get(position).isAllowUpdate()==true){
-                        holder.mcheckppt.setVisibility(View.VISIBLE);
-                        holder.xiugai_img.setVisibility(View.VISIBLE);
-                    }
                     holder.mdeleteppt = convertView.findViewById(R.id.mdeleteppt);
                     convertView.setTag(holder);
                     break;
@@ -112,7 +104,9 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     convertView = View.inflate(context, R.layout.make_item, null);
                     holder.mmake = (TextView) convertView.findViewById(R.id.makeadj);
                     holder.mdeleteonline = convertView.findViewById(R.id.mdeleteonline);
+                    holder.rel = convertView.findViewById(R.id.picxiugai);
                     holder.mcheckonline = convertView.findViewById(R.id.mcheckonline);
+                    holder.mcheck = convertView.findViewById(R.id.mcheckppt);
                     /*holder.logoxiugai = convertView.findViewById(R.id.logoxiugai);
                     holder.xiugai = convertView.findViewById(R.id.xiugai_text);*/
                     convertView.setTag(holder);
@@ -124,13 +118,13 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             holder = (MyViewHolder) convertView.getTag();
         }
         Log.i("---itemViewType--", "" + itemViewType);
+        int moduleId;
         if (itemViewType == TYPE_PPT) {
             moduleId = planBeanList.get(position).getModuleId();
             holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    docId = planBeanList.get(position).getDocId();
-                    goPreview();
+                    goPreview(planBeanList.get(position).getDocId());
                 }
             });
             //是在线制作的ppt有修改和查看功能吗，为授课完成跳哪，授课完成跳哪2
@@ -155,25 +149,33 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
                     deletePPT(7, position);
                 }
             });
-            holder.mcheckonline.setOnClickListener(new View.OnClickListener() {
+            if(planBeanList.get(position).isAllowUpdate()){
+                holder.rel.setVisibility(View.VISIBLE);
+                holder.mcheckonline.setVisibility(View.VISIBLE);
+                holder.mcheckonline.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent= new Intent(context, CommonWebActivity.class);
+                        intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
+                        intent.putExtra(Constants.COURSE_ID, courseId);
+                        intent.putExtra(Constants.MODULE_ID, planBeanList.get(position).getModuleId());
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            holder.mcheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent= new Intent(context, CommonWebActivity.class);
-                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.MAKE);
-                    intent.putExtra(Constants.COURSE_ID, courseId);
-                    intent.putExtra(Constants.MODULE_ID, planBeanList.get(position).getModuleId());
-                    context.startActivity(intent);
+                    goPreview(planBeanList.get(position).getDocId());
                 }
             });
-
         }
         return convertView;
     }
 
     private void deletePPT(int i, final int position) {
         Map map = new HashMap();
-        Log.i("-pptmoduleId---", moduleId + "");
-        map.put("moduleId", String.valueOf(moduleId));
+        map.put("moduleId", String.valueOf(planBeanList.get(position).getModuleId()));
         map.put(Constants.DOCTYPE, String.valueOf(i));
         OkHttpRequest.doGet(context, OkHttpRequest.attachHttpGetParams(Constants.PREPARING_PACKAGE_DEL_URL, map), new Callback() {
             @Override
@@ -207,7 +209,7 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
         });
     }
 
-    private void goPreview() {
+    private void goPreview(String docId) {
         /*Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);*/

@@ -32,7 +32,6 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
     private Handler mHandler;
 
     private Context context;
-    private String docId;
 
     //定义样式常量，注意常量值要从0开始
     private static final int TYPE_PPT = 1;//ppt
@@ -122,6 +121,8 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         if (itemViewType == TYPE_PPT) {
             if(2 == otherBeanList.get(position).getIsRepeatAdd()){
                 holder.icon.setImageResource(R.drawable.yitianjia);
+            }else{
+                holder.icon.setImageResource(R.drawable.tianjia);
             }
             holder.mdownppt1.setText(2 == otherBeanList.get(position).getIsRepeatAdd() ? "已添加" : "加入授课");
             final ImageView icon2 = holder.icon;
@@ -143,8 +144,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
             holder.mcheckppt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    otherBeanList.get(position).getDocId();
-                    goPreview();
+                    goPreview(otherBeanList.get(position).getDocId());
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 3, true);
                 }
             });
@@ -194,7 +194,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     //isjump = true;
                     otherBeanList.get(position).getCourseId();
-                    goPreview();
+                    goPreview(otherBeanList.get(position).getDocId());
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 2, true);
                 }
             });
@@ -242,8 +242,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //isjump = true;\
-                    docId = otherBeanList.get(position).getDocId();
-                    goPreview();
+                    goPreview(otherBeanList.get(position).getDocId());
                     //LogUtils.i("DocId", "mkel.getDocId():" + otherBeanList.get(position).getDocId());
                     //RequestUtil.getDocMessage((Activity) context, String.valueOf(otherBeanList.get(position).getDocId()), holder.mcheck, 1, true);
                 }
@@ -251,7 +250,7 @@ public class PreparingDetailOtherAdapter extends BaseAdapter {
         }
         return convertView;
     }
-    private void goPreview() {
+    private void goPreview(String docId) {
         /*Intent intent = new Intent(context, PreviewActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);*/

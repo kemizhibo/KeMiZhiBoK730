@@ -395,6 +395,7 @@ public class RequestUtil {
                             PreparingPackageDetailActivity activity = (PreparingPackageDetailActivity) context;
                             if(null != activity){
                                 activity.onAddComplete();
+                                activity.onAddComplete();
                             }
                         }
                     });
