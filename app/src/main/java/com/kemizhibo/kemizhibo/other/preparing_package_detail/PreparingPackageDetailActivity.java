@@ -56,8 +56,14 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
     ListView listViewshou;
     @BindView(R.id.list_view_qi)
     ListView listViewqi;
-    @BindView(R.id.none)
-    TextView mnone;
+    @BindView(R.id.one_none)
+    TextView one_none;
+    @BindView(R.id.module_none)
+    TextView module_none;
+    @BindView(R.id.plan_none)
+    TextView plan_none;
+    @BindView(R.id.other_none)
+    TextView other_none;
     @BindView(R.id.detaile_scrollView)
     ScrollView mdetailescrollView;
     @BindView(R.id.frame_layout)
@@ -150,14 +156,85 @@ public class PreparingPackageDetailActivity extends BaseActivity implements Prep
                     frameLayout.setVisibility(View.GONE);
                     makeImg.setVisibility(View.VISIBLE);
                     PreparingDetailOneAdapter preparingDetailOneAdapter = new PreparingDetailOneAdapter(PreparingPackageDetailActivity.this, bean.getContent().getOneKey());
-                    listViewone.setAdapter(preparingDetailOneAdapter);
+                    if(null != bean.getContent().getOneKey() && bean.getContent().getOneKey().size() > 0){
+                        one_none.setVisibility(View.GONE);
+                        listViewone.setAdapter(preparingDetailOneAdapter);
+                    }
                      PreparingDetailAdapter preparingDetailAdapter = new PreparingDetailAdapter(PreparingPackageDetailActivity.this, bean.getContent().getAppMaterial(), getSupportFragmentManager());
-                    listViewsu.setAdapter(preparingDetailAdapter);
+                    if(null != bean.getContent().getAppMaterial()){
+                        int moduleCount = 0;
+                        try{
+                            PreparingPackageDetailBean.ContentBean.AppMaterialBean appMaterial = bean.getContent().getAppMaterial();
+                            for (int i = 0; i < 10; i++) {
+                                switch (i){
+                                    case 0:
+                                        if(null != appMaterial.getKemiVideo()){
+                                            moduleCount += appMaterial.getKemiVideo().size();
+                                        }
+                                        break;
+                                    case 1:
+                                        if(null != appMaterial.getKemiPic()){
+                                            moduleCount += appMaterial.getKemiPic().size();
+                                        }
+                                        break;
+                                    case 2:
+                                        if(null != appMaterial.getKemiPpt()){
+                                            moduleCount += appMaterial.getKemiPpt().size();
+                                        }
+                                        break;
+                                    case 3:
+                                        if(null != appMaterial.getKemiWord()){
+                                            moduleCount += appMaterial.getKemiWord().size();
+                                        }
+                                        break;
+                                    case 4:
+                                        if(null != appMaterial.getKemiExcel()){
+                                            moduleCount += appMaterial.getKemiExcel().size();
+                                        }
+                                        break;
+                                    case 5:
+                                        if(null != appMaterial.getUserVideo()){
+                                            moduleCount += appMaterial.getUserVideo().size();
+                                        }
+                                        break;
+                                    case 6:
+                                        if(null != appMaterial.getUserPic()){
+                                            moduleCount += appMaterial.getUserPic().size();
+                                        }
+                                        break;
+                                    case 7:
+                                        if(null != appMaterial.getUserPpt()){
+                                            moduleCount += appMaterial.getUserPpt().size();
+                                        }
+                                        break;
+                                    case 8:
+                                        if(null != appMaterial.getUserWord()){
+                                            moduleCount += appMaterial.getUserWord().size();
+                                        }
+                                        break;
+                                    case 9:
+                                        if(null != appMaterial.getUserExcel()){
+                                            moduleCount += appMaterial.getUserExcel().size();
+                                        }
+                                        break;
+                                }
+                            }
+                        }catch (Exception e){
+
+                        }
+                        if(moduleCount > 0){
+                            module_none.setVisibility(View.GONE);
+                            listViewsu.setAdapter(preparingDetailAdapter);
+                        }
+                    }
                     PreparingDetailPlanAdapter preparingDetailPlanAdapter = new PreparingDetailPlanAdapter(PreparingPackageDetailActivity.this, bean.getContent().getPlan(), mHandler);
-                    listViewshou.setAdapter(preparingDetailPlanAdapter);
+                    if(null != bean.getContent().getPlan() && bean.getContent().getPlan().size() >0){
+                        plan_none.setVisibility(View.GONE);
+                        listViewshou.setAdapter(preparingDetailPlanAdapter);
+                    }
                     List<PreparingPackageDetailBean.ContentBean.OtherBean> other = bean.getContent().getOther();
                     if (other.size() > 0) {
-                        mnone.setVisibility(View.GONE);
+                        other_none.setVisibility(View.GONE);
                         listViewqi.setAdapter(new PreparingDetailOtherAdapter(PreparingPackageDetailActivity.this, other));
                     }
                 }
