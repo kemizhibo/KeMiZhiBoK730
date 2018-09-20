@@ -3,6 +3,7 @@ package com.kemizhibo.kemizhibo.other.preparing_package_detail.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import com.kemizhibo.kemizhibo.other.web.CommonWebActivity;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 
+import java.io.File;
 import java.util.List;
 
 import static com.kemizhibo.kemizhibo.other.web.CommonWebActivity.LOCAL;
@@ -230,12 +232,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //  }
                                 DownloadUtil.get().download(mkwd.getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
                                     @Override
-                                    public void onDownloadSuccess() {
-                                        Activity activity = (Activity) context;
+                                    public void onDownloadSuccess(final File file) {
+                                        final Activity activity = (Activity) context;
                                         activity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 mdown.setText("已下载");
+                                                Uri uri = Uri.fromFile(file);
+                                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+                                                activity.sendBroadcast(intent);
                                             }
                                         });
                                     }
@@ -291,12 +296,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //  }
                                 DownloadUtil.get().download(mkel.getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
                                     @Override
-                                    public void onDownloadSuccess() {
-                                        Activity activity = (Activity) context;
+                                    public void onDownloadSuccess(final File file) {
+                                        final Activity activity = (Activity) context;
                                         activity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 mexcaldown.setText("已下载");
+                                                Uri uri = Uri.fromFile(file);
+                                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+                                                activity.sendBroadcast(intent);
                                             }
                                         });
                                     }
@@ -477,12 +485,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //  }
                                 DownloadUtil.get().download(muwd.getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
                                     @Override
-                                    public void onDownloadSuccess() {
-                                        Activity activity = (Activity) context;
+                                    public void onDownloadSuccess(final File file) {
+                                        final Activity activity = (Activity) context;
                                         activity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 muserdown.setText("已下载");
+                                                Uri uri = Uri.fromFile(file);
+                                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+                                                activity.sendBroadcast(intent);
                                             }
                                         });
                                     }
@@ -539,12 +550,15 @@ public class PreparingDetailAdapter extends BaseAdapter {
                                 //  }
                                 DownloadUtil.get().download(muel.getUrl(), "KemiDownload", new DownloadUtil.OnDownloadListener() {
                                     @Override
-                                    public void onDownloadSuccess() {
-                                        Activity activity = (Activity) context;
+                                    public void onDownloadSuccess(final File file) {
+                                        final Activity activity = (Activity) context;
                                         activity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 muserexcalmdown.setText("已下载");
+                                                Uri uri = Uri.fromFile(file);
+                                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+                                                activity.sendBroadcast(intent);
                                             }
                                         });
                                     }

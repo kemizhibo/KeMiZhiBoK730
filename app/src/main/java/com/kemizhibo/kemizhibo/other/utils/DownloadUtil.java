@@ -1,5 +1,7 @@
 package com.kemizhibo.kemizhibo.other.utils;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
@@ -69,7 +71,7 @@ public class DownloadUtil {
                     }
                     fos.flush();
                     // 下载完成
-                    listener.onDownloadSuccess();
+                    listener.onDownloadSuccess(file);
                 } catch (Exception e) {
                     listener.onDownloadFailed();
                 } finally {
@@ -118,7 +120,7 @@ public class DownloadUtil {
         /**
          * 下载成功
          */
-        void onDownloadSuccess();
+        void onDownloadSuccess(File file);
 
         /**
          * @param progress
