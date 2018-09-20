@@ -3,8 +3,8 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'bugly'
 
 bugly {
-    appId = "f7e4244a8d" // 注册时分配的App ID
-    appKey = "8c64c63c-9387-4293-9b2a-746bb0f6f408" // 注册时分配的App Key
+    appId = "75f6e33e0c" // 注册时分配的App ID
+    appKey = "43f668ac-2a7c-445a-9cb6-b59e7e2a1b61" // 注册时分配的App Key
 }
 
 android {
@@ -31,6 +31,7 @@ android {
         }
     }
     compileSdkVersion 27
+
     defaultConfig {
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86"
@@ -74,7 +75,8 @@ dependencies {
     //dialog
     compile 'com.github.ithedan:BaseDialog:1.0'
     //版本恩鞥更新
-    compile 'cn.hugeterry.updatefun:updatefun:1.9.0'
+    //compile 'cn.hugeterry.updatefun:updatefun:2.0.6'
+    compile 'com.allenliu.versionchecklib:library:2.0.8'
     //gson依赖
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'

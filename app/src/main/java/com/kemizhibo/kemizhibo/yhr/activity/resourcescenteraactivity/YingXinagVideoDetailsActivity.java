@@ -1,7 +1,9 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetBehavior;
@@ -177,12 +179,23 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
         yingXiangDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData4(this, "Bearer " + token, courseId, "HLS", "true", "UD");
         //展示加载图片
         commentFrameLayout.setVisibility(View.VISIBLE);
-        commentSpringview.setVisibility(View.GONE);
+        commentRecyclerview.setVisibility(View.GONE);
         getSupportFragmentManager().beginTransaction().replace(R.id.comment_frame_layout, new FramgmentLoading()).commit();
         isUp = 1;
         page = 1;
         yingXiangDetailsVideoPresenter.getYingXiangDetailsVideoCommentData(YingXinagVideoDetailsActivity.this, "Bearer " + token, courseId, page + "", "10", "4");
         LogUtils.i("啊哈2","我已经在全速前进了");
+    }
+
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
     }
 
     @OnClick(R.id.video_back_butn)
@@ -533,8 +546,6 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
     @Override
     public void onGetOneLookSuccess(OneLookBean oneLookBean) {
         if (oneLookBean.getCode() == 0) {
-            if (!TextUtils.isEmpty(oneLookBean.getMessage())){
-
                 // 初始化定时器
                 oneLookBeanMessage = oneLookBean.getMessage();
                 // 初始化定时器
@@ -547,7 +558,6 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
                         yingXiangDetailsVideoPresenter.getMoreLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "5000", oneLookBeanMessage, courseId, String.valueOf(currentPosition), "0");
                     }
                 }, 0, 5000);
-            }
         }
     }
 
@@ -556,7 +566,7 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
         if (oneLookBean.getCode() == 0) {
             //视频总时长减去当前时长
             //ijkVideoView.release();
-            if (duration - currentPosition <= 10000) {
+            if (duration - currentPosition <= 2000) {
                 yingXiangDetailsVideoPresenter.getLastLookData(YingXinagVideoDetailsActivity.this, "Bearer " + token, "0", "", courseId, "0", "1");
             }
         }
@@ -680,13 +690,12 @@ public class YingXinagVideoDetailsActivity extends BaseMvpActivity<YingXiangDeta
                         yingxiangDetailsCommentNumTxt.setText("评论(" + tatle.getTotal() + ")");
                     }
                     commentFrameLayout.setVisibility(View.GONE);
-                    commentSpringview.setVisibility(View.VISIBLE);
+                    commentRecyclerview.setVisibility(View.VISIBLE);
                     commentAdapter.notifyDataSetChanged();
-                    LogUtils.i("啊哈3","我已经在全速前进了");
                 } else {
                     //展示为空图片
                     commentFrameLayout.setVisibility(View.VISIBLE);
-                    commentSpringview.setVisibility(View.GONE);
+                    commentRecyclerview.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.comment_frame_layout, new FramgmentCommentEmpty()).commit();
                     yingxiangDetailsCommentNumTxt.setText("暂无评论");
                     commentAdapter.notifyDataSetChanged();

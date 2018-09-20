@@ -71,7 +71,7 @@ public class PersonCenterSheZhiActivity extends BaseMvpActivity<SignOutPresenter
 
     @Override
     protected void initData() {
-        SysApplication.getInstance().addActivity(this);
+        //SysApplication.getInstance().addActivity(this);
         bindTitleBar();
         //计算应用缓存大小
         try {

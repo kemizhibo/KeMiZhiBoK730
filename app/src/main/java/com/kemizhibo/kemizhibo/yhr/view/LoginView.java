@@ -24,4 +24,8 @@ public interface LoginView extends BaseView{
     //获取版本信息
     void onVersionInformationSuccess( VersionInformationBean versionInformationBean);
     void onVersionInformationError(String msg);
+
+    /*//获取下载路劲
+    void onApkSuccess( ApkBean apkBean);
+    void onApkError(String msg);*/
 }

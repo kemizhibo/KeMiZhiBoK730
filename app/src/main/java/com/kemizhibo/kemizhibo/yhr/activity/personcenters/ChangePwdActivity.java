@@ -48,8 +48,9 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
             if(msg.what==0){
                 Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
                 startActivity(intent);
-                //关闭整个程序
-                SysApplication.getInstance().exit();
+                dialog.dismiss();
+                //关闭所有activity
+                //SysApplication.getInstance().exit();
             }
         }
     };
@@ -59,6 +60,7 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
     private String oldpwd;
     private String newpwd;
     private String aginpwd;
+    private AlertDialog dialog;
 
     @Override
     protected int getLayoutId() {
@@ -138,7 +140,7 @@ public class ChangePwdActivity extends BaseMvpActivity<ChangePwdPresenterImpl> i
             SharedPreferences sp = getSharedPreferences("logintoken", 0);
             SharedPreferences.Editor edit = sp.edit();
             edit.putString("pwd", newpwd).commit();
-            AlertDialog dialog = new AlertDialog.Builder(this).create();
+            dialog = new AlertDialog.Builder(this).create();
             dialog.setCancelable(false);
             dialog.show();
             Window window = dialog.getWindow();

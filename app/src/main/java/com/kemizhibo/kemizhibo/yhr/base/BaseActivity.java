@@ -1,7 +1,7 @@
 package com.kemizhibo.kemizhibo.yhr.base;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,17 +14,10 @@ import android.view.WindowManager;
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;
-import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
-import static com.kemizhibo.kemizhibo.yhr.utils.ToastUtils.showToast;
 
 
 /**
@@ -66,6 +59,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseVi
         initData();
         MyApplication.verifyStoragePermissions(this);
     }
+
+
     //fanhui 直接退出应用，关闭的是所有的activity
     /*public void finishAllActivity(Activity mActivity) {
         LogUtils.i("走了吗4",activityList.size()+"");

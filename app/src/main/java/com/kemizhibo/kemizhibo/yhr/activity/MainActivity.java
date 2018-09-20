@@ -1,16 +1,27 @@
 package com.kemizhibo.kemizhibo.yhr.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+
+import com.allenliu.versionchecklib.v2.AllenVersionChecker;
+import com.allenliu.versionchecklib.v2.builder.UIData;
+import com.allenliu.versionchecklib.v2.callback.RequestVersionListener;
+import com.kemizhibo.kemizhibo.BuildConfig;
 import com.kemizhibo.kemizhibo.R;
-import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
-import com.kemizhibo.kemizhibo.yhr.activity.personcenters.PersonCenterSheZhiActivity;
+import com.kemizhibo.kemizhibo.yhr.activity.personcenters.ChangePwdActivity;
 import com.kemizhibo.kemizhibo.yhr.base.BaseFragment;
 import com.kemizhibo.kemizhibo.yhr.base.BaseMvpActivity;
 import com.kemizhibo.kemizhibo.yhr.bean.LoginBean;
@@ -21,14 +32,14 @@ import com.kemizhibo.kemizhibo.yhr.fragment.HomePageFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.PersonCenterFragment;
 import com.kemizhibo.kemizhibo.yhr.fragment.ResourceLibraryFragment;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
-import com.kemizhibo.kemizhibo.yhr.utils.SysApplication;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import butterknife.BindView;
-import cn.hugeterry.updatefun.UpdateFunGO;
-import cn.hugeterry.updatefun.config.UpdateKey;
+
+import static com.kemizhibo.kemizhibo.yhr.utils.CleanMessageUtil.clearAllCache;
 
 /**
  * Author: yhr
@@ -43,6 +54,13 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     RadioGroup mainRgBottom;
     @Inject
     public GetLoginPresenterImpl getTokenPresenter;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what==0){
+
+            }
+        }
+    };
 
     /**
      * 之前显示的Fragment
@@ -73,26 +91,16 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
 
     @Override
     protected void initData() {
-        SysApplication.getInstance().addActivity(this);
+        //SysApplication.getInstance().addActivity(this);
         initFragment();
         initListener();
-        UpdateKey.API_TOKEN = "136e76f4105816219f9c9ca06684ab35";
-        UpdateKey.APP_ID = "com.kemizhibo.kemizhibo";
-        //下载方式:
-        UpdateKey.DialogOrNotification=UpdateKey.WITH_DIALOG;//通过Dialog来进行下载
-        //UpdateKey.DialogOrNotification=UpdateKey.WITH_NOTIFITION;//通过通知栏来进行下载(默认)
-        UpdateFunGO.init(this);
     }
 
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        UpdateFunGO.onResume(this);
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        UpdateFunGO.onStop(this);
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
     }
 
     @Override
@@ -226,21 +234,53 @@ public class MainActivity extends BaseMvpActivity<GetLoginPresenterImpl> impleme
     public void onUserError(String msg) {
 
     }
-    //版本跟新
+
+
+    //获取版本信息
     @Override
     public void onVersionInformationSuccess(VersionInformationBean versionInformationBean) {
-        /*// 解析json数据
-        if(versionInformationBean!=null){
-            versionNo = Integer.parseInt(versionInformationBean.getContent().getVersionNo());
-            //获取到服务器端版本号,对比本地的版本号
-            int localVersionCode = PackageUtils.getVersionCode(SplashActivity.this);
-            if (serverVersionCode > localVersionCode) {
-                //服务器端版本号大于本地版本号,弹出dialog提示更新
-                Message showUpdateDialog = Message.obtain();
-                showUpdateDialog.what = SHOW_UPDATE_DIALOG;
-                handler.sendMessage(showUpdateDialog);
+        //获取当前studio的版本
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+        if (versionInformationBean.getCode()==0){
+            int fileType = versionInformationBean.getContent().getFileType();
+            final String filePath = versionInformationBean.getContent().getFilePath();
+            if (versionCode>fileType){
+                try {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("确定要升级新版本吗？");
+                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AllenVersionChecker
+                                    .getInstance()
+                                    .requestVersion()
+                                    //.setRequestUrl("http://www.kemiketang.com/kemiapi/version/downloadAPK")
+                                    .request(new RequestVersionListener() {
+                                        @Nullable
+                                        @Override
+                                        public UIData onRequestVersionSuccess(String result) {
+                                            //拿到服务器返回的数据，解析，拿到downloadUrl和一些其他的UI数据
+                                            //如果是最新版本直接return null
+                                            return UIData.create().setDownloadUrl(filePath);
+                                        }
+
+                                        @Override
+                                        public void onRequestVersionFailure(String message) {
+
+                                        }
+                                    })
+                                    .excuteMission(MainActivity.this);
+                        }
+                    });
+                    builder.setNegativeButton("取消",null);
+                    builder.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }*/
+        }
+
     }
 
     @Override

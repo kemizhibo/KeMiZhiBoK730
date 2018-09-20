@@ -23,6 +23,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentSearchEmpty;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.SearchPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.SearchIView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -56,10 +57,10 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
     SearchAdapter searchAdapter;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
-    private List<SearchBean.ContentBean.DataBean> dataBeans;
+    private List<SearchBean.ContentBean.DataBean> dataBeans = new ArrayList<>();
     //上或者下拉的状态判断
     int isUp = 1;
-    private int currentPage;
+    private int currentPage = 1;
     private String coursename;
     private SharedPreferences sp;
     private String token;
@@ -70,7 +71,8 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
 
     @Override
     protected void initData() {
-
+        //加载数据
+        initSearchData();
         searchViewBox.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String courseName) {
@@ -102,21 +104,38 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
     @Override
     public void onSearchSuccess(SearchBean searchBean) {
         if (searchBean.getCode() == 0) {
-            dataBeans = new ArrayList<>();
-            //切换控件
-            frameLayout.setVisibility(View.GONE);
-            searchRecyclerview.setVisibility(View.VISIBLE);
-            dataBeans.addAll(searchBean.getContent().getData());
-            if (searchBean.getContent().getData().size()>0){
-                //加载数据
-               initSearchData();
-            }else {
+            if(isUp == 1){
                 //切换控件
-                frameLayout.setVisibility(View.VISIBLE);
-                searchRecyclerview.setVisibility(View.GONE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentSearchEmpty()).commit();
+                dataBeans.clear();
+                dataBeans.addAll(searchBean.getContent().getData());
+                if (searchBean.getContent().getData().size()>0){
+                    frameLayout.setVisibility(View.GONE);
+                    searchRecyclerview.setVisibility(View.VISIBLE);
+                    searchAdapter.notifyDataSetChanged();
+                }else {
+                    //切换控件
+                    frameLayout.setVisibility(View.VISIBLE);
+                    searchRecyclerview.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentSearchEmpty()).commit();
+                }
+            }else if (isUp==2){
+                if (searchAdapter.getData().size() >= searchBean.getContent().getTotal()) {
+                    ToastUtils.showToast("没有更多数据");
+                }else {
+                    //切换控件
+                    dataBeans.addAll(searchBean.getContent().getData());
+                    if (searchBean.getContent().getData().size()>0){
+                        frameLayout.setVisibility(View.GONE);
+                        searchRecyclerview.setVisibility(View.VISIBLE);
+                        searchAdapter.notifyDataSetChanged();
+                    }else {
+                        //切换控件
+                        frameLayout.setVisibility(View.VISIBLE);
+                        searchRecyclerview.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new FramgmentSearchEmpty()).commit();
+                    }
+                }
             }
-
         } else if (searchBean.getCode() == 401||searchBean.getCode() == 801){
             initDialogToLogin();
         }
@@ -205,7 +224,7 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                         currentPage = 1;
                         sp = getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        searchPresenter.getSearchData(SearchActivity.this, "Bearer " + token, "YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
+                        searchPresenter.getSearchData(SearchActivity.this, "Bearer " + token, "YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", currentPage+"", "10", coursename);
                         searchSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -220,7 +239,7 @@ public class SearchActivity extends BaseMvpActivity<SearchPresenterImpl> impleme
                         currentPage++;
                         sp = getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        searchPresenter.getSearchData(SearchActivity.this, "Bearer " + token, "YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", "1", "10", coursename);
+                        searchPresenter.getSearchData(SearchActivity.this, "Bearer " + token, "YINGXIANGSUCAI,BKEXUEGUAN,TEACHERCOURSE", currentPage+"", "10", coursename);
                         searchSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);

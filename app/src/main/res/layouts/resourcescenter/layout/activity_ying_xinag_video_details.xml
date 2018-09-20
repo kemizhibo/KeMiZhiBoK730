@@ -11,7 +11,6 @@
         android:visibility="gone">
     </FrameLayout>
     <com.kemizhibo.kemizhibo.yhr.utils.videoUtils.DefinitionIjkVideoView
-        android:layout_alignParentTop="true"
         android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="@dimen/res_375dp" >
@@ -196,7 +195,7 @@
             <FrameLayout
                 android:id="@+id/comment_frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/detail_page_above_container"
                 android:visibility="gone">
             </FrameLayout>

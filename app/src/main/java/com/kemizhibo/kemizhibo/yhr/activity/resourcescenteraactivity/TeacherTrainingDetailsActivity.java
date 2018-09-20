@@ -1,7 +1,9 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetBehavior;
@@ -167,7 +169,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         commentFrameLayout.setVisibility(View.VISIBLE);
-        commentSpringview.setVisibility(View.GONE);
+        commentRecyclerview.setVisibility(View.GONE);
         getSupportFragmentManager().beginTransaction().replace(R.id.comment_frame_layout, new FramgmentLoading()).commit();
         isUp = 1;
         page = 1;
@@ -180,6 +182,16 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
         teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData3(this, "Bearer " + token, courseId, "HLS", "true", "LD");
         teacherTrainingDetailsVideoPresenter.getLiveRoomDetailsVideoUrlData4(this, "Bearer " + token, courseId, "HLS", "true", "UD");
         isFlag = true;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
     }
 
     @OnClick(R.id.video_back_butn)
@@ -534,7 +546,7 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
 
     @Override
     public void onGetMoreLookSuccess(OneLookBean oneLookBean) {
-        if (duration-currentPosition <= 10000) {
+        if (duration-currentPosition <= 2000) {
         } else {
             teacherTrainingDetailsVideoPresenter.getLastLookData(TeacherTrainingDetailsActivity.this, "Bearer " + token, "0", "", courseId, "0", "1");
         }
@@ -621,11 +633,11 @@ public class TeacherTrainingDetailsActivity extends BaseMvpActivity<TeacherTrain
                         yingxiangDetailsCommentNumTxt.setText("评论(" + tatle.getTotal() + ")");
                     }
                     commentFrameLayout.setVisibility(View.GONE);
-                    commentSpringview.setVisibility(View.VISIBLE);
+                    commentRecyclerview.setVisibility(View.VISIBLE);
                 } else {
                     //展示为空图片
                     commentFrameLayout.setVisibility(View.VISIBLE);
-                    commentSpringview.setVisibility(View.GONE);
+                    commentRecyclerview.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.comment_frame_layout, new FramgmentCommentEmpty()).commit();
                     yingxiangDetailsCommentNumTxt.setText("暂无评论");
                 }

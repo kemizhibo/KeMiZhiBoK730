@@ -166,7 +166,12 @@ public class PreparingDetailPlanAdapter extends BaseAdapter {
             holder.mcheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goPreview(planBeanList.get(position).getDocId());
+                    //跳到h5在线预览
+                    //goPreview(planBeanList.get(position).getDocId());
+                    Intent intent= new Intent(context, CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                    intent.putExtra(Constants.MODULE_ID, planBeanList.get(position).getModuleId());
+                    context.startActivity(intent);
                 }
             });
         }

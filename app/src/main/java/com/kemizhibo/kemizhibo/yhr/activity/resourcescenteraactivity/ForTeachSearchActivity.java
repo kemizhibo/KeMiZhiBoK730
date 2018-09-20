@@ -26,6 +26,7 @@ import com.kemizhibo.kemizhibo.yhr.fragment.stateFragment.FramgmentSearchEmpty;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.resourcescenterimpl.ForTeachSearchPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.CustomDialog;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.view.resourcescenterapiview.ForeTeachSearchIView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -55,10 +56,10 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
     SpringView searchSpringview;
     @BindView(R.id.relativelayout)
     RelativeLayout relativelayout;
-    private List<ForTeachSearchBean.ContentBean.DataBean> dataBeans;
+    private List<ForTeachSearchBean.ContentBean.DataBean> dataBeans = new ArrayList<>();
     //上或者下拉的状态判断
     int isUp = 1;
-    private int currentPage;
+    private int currentPage = 1;
     private String coursename;
     private SharedPreferences sp;
     private String token;
@@ -71,6 +72,8 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
 
     @Override
     protected void initData() {
+        //加载数据
+        initSearchData();
         searchViewBox.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String courseName) {
@@ -102,20 +105,40 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
     @Override
     public void onForeTeachSearchSuccess(ForTeachSearchBean foreTeachSearchBean) {
         if (foreTeachSearchBean.getCode() == 0) {
-            dataBeans = new ArrayList<>();
-            //切换控件
-            frameLayout.setVisibility(View.GONE);
-            searchRecyclerview.setVisibility(View.VISIBLE);
-            dataBeans.addAll(foreTeachSearchBean.getContent().getData());
-            if (foreTeachSearchBean.getContent().getData().size() > 0) {
-                //加载数据
-                initSearchData();
-            } else {
-                //切换控件
-                frameLayout.setVisibility(View.VISIBLE);
-                searchRecyclerview.setVisibility(View.GONE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentSearchEmpty()).commit();
+            if (isUp==1){
+                dataBeans.clear();
+                dataBeans.addAll(foreTeachSearchBean.getContent().getData());
+                if (foreTeachSearchBean.getContent().getData().size() > 0) {
+                    //切换控件
+                    frameLayout.setVisibility(View.GONE);
+                    searchRecyclerview.setVisibility(View.VISIBLE);
+                    forTeachSearchAdapter.notifyDataSetChanged();
+                } else {
+                    //切换控件
+                    frameLayout.setVisibility(View.VISIBLE);
+                    searchRecyclerview.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentSearchEmpty()).commit();
+                    forTeachSearchAdapter.notifyDataSetChanged();
+                }
+            }else if (isUp==2){
+                if (forTeachSearchAdapter.getData().size() >= foreTeachSearchBean.getContent().getTotal()) {
+                    ToastUtils.showToast("没有更多数据");
+                }else {
+                    dataBeans.addAll(foreTeachSearchBean.getContent().getData());
+                    if (foreTeachSearchBean.getContent().getData().size() > 0) {
+                        frameLayout.setVisibility(View.GONE);
+                        searchRecyclerview.setVisibility(View.VISIBLE);
+                        forTeachSearchAdapter.notifyDataSetChanged();
+                    } else {
+                        //切换控件
+                        frameLayout.setVisibility(View.VISIBLE);
+                        searchRecyclerview.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FramgmentSearchEmpty()).commit();
+                        //forTeachSearchAdapter.notifyDataSetChanged();
+                    }
+                }
             }
+
         } else if (foreTeachSearchBean.getCode() == 401|foreTeachSearchBean.getCode() == 801){
             initDialogToLogin();
         }else {
@@ -175,7 +198,7 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
                         currentPage = 1;
                         sp = getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        forTeachSearchPresenter.getForTeachSearchData(ForTeachSearchActivity.this, "Bearer " + token, coursename, "10", "1");
+                        forTeachSearchPresenter.getForTeachSearchData(ForTeachSearchActivity.this, "Bearer " + token, coursename, "10", currentPage+"");
                         searchSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -190,7 +213,7 @@ public class ForTeachSearchActivity extends BaseMvpActivity<ForTeachSearchPresen
                         currentPage++;
                         sp = getSharedPreferences("logintoken", 0);
                         token = sp.getString("token", "");
-                        forTeachSearchPresenter.getForTeachSearchData(ForTeachSearchActivity.this, "Bearer " + token, coursename, "10", "1");
+                        forTeachSearchPresenter.getForTeachSearchData(ForTeachSearchActivity.this, "Bearer " + token, coursename, "10", currentPage+"");
                         searchSpringview.onFinishFreshAndLoad();
                     }
                 }, 1000);

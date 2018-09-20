@@ -166,5 +166,32 @@ public class VersionInformationBean {
         public void setGmtModified(long gmtModified) {
             this.gmtModified = gmtModified;
         }
+
+        @Override
+        public String toString() {
+            return "ContentBean{" +
+                    "fileId=" + fileId +
+                    ", fileName='" + fileName + '\'' +
+                    ", fileSize=" + fileSize +
+                    ", fileType=" + fileType +
+                    ", filePath='" + filePath + '\'' +
+                    ", versionNo='" + versionNo + '\'' +
+                    ", imprint='" + imprint + '\'' +
+                    ", appType=" + appType +
+                    ", isAvailable=" + isAvailable +
+                    ", gmtCreate=" + gmtCreate +
+                    ", gmtModified=" + gmtModified +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "VersionInformationBean{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", content=" + content +
+                ", page=" + page +
+                '}';
     }
 }

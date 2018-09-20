@@ -93,6 +93,7 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     break;
                 case RECORD:
                     url = Constants.H5_RECORD.replace(Constants.H5_REPLACE_STR, String.valueOf(intent.getIntExtra(Constants.RECORD_ID, 0)));
+                    LogUtils.i("施舍呢",url);
                     isIntercept = true;
                     break;
                 case LOCAL:
@@ -101,7 +102,9 @@ public class CommonWebActivity extends BaseActivity implements CommonWebView {
                     break;
                 case LIVE:
                     //url = "http://39.155.221.165:8080/guanchashi/#/observation/"+intent.getStringExtra("courseId");
-                    url = "https://player.alicdn.com/aliplayer/index.html";
+                    url = "http://www.kemizhibo.com/guanchashim/#/observation/"+intent.getStringExtra("courseId");
+                    LogUtils.i("好的",intent.getStringExtra("courseId"));
+                    //url = "https://player.alicdn.com/aliplayer/index.html";
                     isIntercept = false;
                     break;
                 default:

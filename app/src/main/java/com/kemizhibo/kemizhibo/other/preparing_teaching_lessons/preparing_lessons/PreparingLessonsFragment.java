@@ -134,17 +134,31 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //已授课 h5 未授课 ppt/在线制作
-                if(1 == dataBeanList.get(position).getPlanIsFinish()){
+                //已授课 h5 未授课 ppt/在线制作,现在只区分在线制作和上传ppt
+                if(7 == dataBeanList.get(position).getDocType()){
+                    Intent intent = new Intent(getActivity(), CommonWebActivity.class);
+                    intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
+                    intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
+                    startActivity(intent);
+                }else if (3 == dataBeanList.get(position).getDocType()){
+                        /*Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                        intent.putExtra("url", dataBeanList.get(position).getUrl());
+                        startActivity(intent);*/
+                    docId = String.valueOf(dataBeanList.get(position).getDocId());
+                    goPreview();
+                }else {
+                    ToastUtils.showToast("课件类型异常");
+                }
+                /*if(1 == dataBeanList.get(position).getPlanIsFinish()){
                     if(7 == dataBeanList.get(position).getDocType()){
                         Intent intent = new Intent(getActivity(), CommonWebActivity.class);
                         intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.PREVIEW);
                         intent.putExtra(Constants.MODULE_ID, dataBeanList.get(position).getModuleId());
                         startActivity(intent);
                     }else{
-                        /*Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                        *//*Intent intent = new Intent(getActivity(), PreviewActivity.class);
                         intent.putExtra("url", dataBeanList.get(position).getUrl());
-                        startActivity(intent);*/
+                        startActivity(intent);*//*
                         docId = String.valueOf(dataBeanList.get(position).getDocId());
                         goPreview();
                     }
@@ -153,7 +167,7 @@ public class PreparingLessonsFragment extends BaseFragment implements PreparingL
                     intent.putExtra(CommonWebActivity.OPERATE_KEY, CommonWebActivity.RECORD);
                     intent.putExtra(Constants.RECORD_ID, dataBeanList.get(position).getRecordId());
                     startActivity(intent);
-                }
+                }*/
             }
         });
     }

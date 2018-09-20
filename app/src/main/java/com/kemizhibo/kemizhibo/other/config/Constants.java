@@ -6,7 +6,8 @@ package com.kemizhibo.kemizhibo.other.config;
 
 public class Constants {
     public static final boolean isDebug = true;
-    public static final String SERVER = isDebug ? "http://39.155.221.165:8080/" : "";
+    //public static final String SERVER = isDebug ? "http://39.155.221.165:8080/" : "";
+    public static final String SERVER = isDebug ? "http://www.kemiketang.com/" : "";
 
     public static final String PREPARING_CENTER_URL = SERVER + "kemiapi/prepare/module/prepareList";
     public static final String PREPARING_ONLINE_URL = SERVER + "kemiapi/prepare/module/planList";
@@ -19,7 +20,7 @@ public class Constants {
     public static final String LOGIN = SERVER + "kemiapi/ketang/user/login";
     public static final String GET_USER_TEACH_PLAN = SERVER + "kemiapi/prepare/module/getUserPlan";
 
-    public static final String H5_SERVER = isDebug ? "http://39.155.221.165:8080/kemiketang/" : "";
+    public static final String H5_SERVER = isDebug ? "http://www.kemiketang.com/" : "";
 
     public static final String H5_MAKE = H5_SERVER + "#/ppt/make/${id}";
     public static final String H5_PREVIEW = H5_SERVER + "#/ppt/preview/${id}";

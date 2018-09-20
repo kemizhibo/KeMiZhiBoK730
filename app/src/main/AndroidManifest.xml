@@ -97,6 +97,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".other.preparing_package_detail.PreparingPackageDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
@@ -128,7 +129,6 @@
         <activity
             android:name=".yhr.activity.personcenters.PersonCenterGuanLiActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".other.preparing_package_detail.preview.PreviewActivity" />
         <activity
             android:name=".yhr.activity.resourcescenteraactivity.ForTeachSearchActivity"
             android:screenOrientation="portrait" />

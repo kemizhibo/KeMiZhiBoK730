@@ -4,7 +4,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-
 import com.kemizhibo.kemizhibo.yhr.MyApplication;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BasePresenter;
 import com.kemizhibo.kemizhibo.yhr.base.mvpbase.BaseView;

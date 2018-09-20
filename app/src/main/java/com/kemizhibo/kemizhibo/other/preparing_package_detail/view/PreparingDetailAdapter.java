@@ -73,7 +73,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
         switch (position) {
             case 0://视频
                 final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiVideoBean> kemiVideo = material.getKemiVideo();
-                if (kemiVideo.size() > 0) {
+                if (null!=kemiVideo&&kemiVideo.size() > 0) {
                     View view = View.inflate(context, R.layout.sucai_kemi_shipin_item, null);
                     ViewPager mviewPager = (ViewPager) view.findViewById(R.id.kemi_shipinviewpager);
                     mlinearLayout.addView(view);
@@ -117,18 +117,19 @@ public class PreparingDetailAdapter extends BaseAdapter {
                         }
                     });
 
+                }else {
+                    ToastUtils.showToast("该素材无内容");
                 }
 
                 break;
 
             case 1://图片
                 final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.KemiPicBean> kemiPic = material.getKemiPic();
-                if (kemiPic.size() > 0) {
+                if (null!=kemiPic&&kemiPic.size() > 0) {
                     View view1 = View.inflate(context, R.layout.sucai_kemi_tupian_item, null);
                     ViewPager mPicviewPager = (ViewPager) view1.findViewById(R.id.viewpager);
                     TextView madjsucai = (TextView) view1.findViewById(R.id.adj);
                     mlinearLayout.addView(view1);
-                    Log.i("pppppp", kemiPic.size() + "");
                     mPicviewPager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
                         @Override
                         public Object instantiateItem(ViewGroup container, int position) {
@@ -327,11 +328,10 @@ public class PreparingDetailAdapter extends BaseAdapter {
                 break;
             case 5://用户视频
                 final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserVideoBean> userVideo = material.getUserVideo();
-                if (userVideo.size() > 0) {
+                if (null!=userVideo&&userVideo.size() > 0) {
                     View view5 = View.inflate(context, R.layout.sucai_shipin_item, null);
                     ViewPager musershipinviewpager = (ViewPager) view5.findViewById(R.id.shipinviewpager);
                     mlinearLayout.addView(view5);
-                    Log.i("ppppppzzzz", userVideo.size() + "");
                     musershipinviewpager.setAdapter(new FragmentStatePagerAdapter(supportFragmentManager) {
                         @Override
                         public Object instantiateItem(ViewGroup container, int position) {
@@ -371,7 +371,7 @@ public class PreparingDetailAdapter extends BaseAdapter {
 
             case 6://用户图片
                 final List<PreparingPackageDetailBean.ContentBean.AppMaterialBean.UserPicBean> userPic = material.getUserPic();
-                if (userPic.size() > 0) {
+                if (null!=userPic&&userPic.size() > 0) {
                     View view6 = View.inflate(context, R.layout.sucai_tupian_item, null);
                     ViewPager mUserviewPager = (ViewPager) view6.findViewById(R.id.user_viewpager);
                     mlinearLayout.addView(view6);

@@ -8,7 +8,7 @@
         android:id="@+id/search_view_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textSizeSearch="@dimen/text_size_12sp"
+        app:textSizeSearch="@dimen/res_textsize_10sp"
         app:textColorSearch="@color/text_999999"
         app:textHintSearch="输入查询关键字"
         app:searchBlockHeight="150"

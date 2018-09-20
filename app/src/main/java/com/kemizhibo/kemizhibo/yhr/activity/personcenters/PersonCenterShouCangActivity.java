@@ -117,6 +117,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
     @Override
     protected void getData() {
         super.getData();
+        initCollectionData();
         sp = getSharedPreferences("logintoken", 0);
         token = sp.getString("token", "");
         collectionBoxPresenter.getCollectionBoxData(this, "Bearer " + token, "1", "10");
@@ -194,7 +195,7 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                 if (mList.size() > 0) {
                     shoucangFrameLayout.setVisibility(View.GONE);
                     collectionBoxSpringview.setVisibility(View.VISIBLE);
-                    initCollectionData();
+                    collectionBoxAdapter.notifyDataSetChanged();
                 } else {
                     //切换控件
                     shoucangFrameLayout.setVisibility(View.VISIBLE);
@@ -202,18 +203,22 @@ public class PersonCenterShouCangActivity extends BaseMvpActivity<CollectionBoxP
                     getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentShouCnagEmpty()).commit();
                 }
             } else if (isUp == 2) {
-                mList.clear();
-                //切换控件
-                shoucangFrameLayout.setVisibility(View.GONE);
-                collectionBoxSpringview.setVisibility(View.VISIBLE);
-                mList.addAll(collectionBoxBean.getContent().getData());
-                if (mList.size() > 0) {
-                    initCollectionData();
-                } else {
+                if (collectionBoxAdapter.getMyLiveList().size() >= collectionBoxBean.getContent().getTotal()) {
+                    ToastUtils.showToast("没有更多数据");
+                }else {
+                    //mList.clear();
                     //切换控件
-                    shoucangFrameLayout.setVisibility(View.VISIBLE);
-                    collectionBoxSpringview.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentShouCnagEmpty()).commit();
+                    shoucangFrameLayout.setVisibility(View.GONE);
+                    collectionBoxSpringview.setVisibility(View.VISIBLE);
+                    mList.addAll(collectionBoxBean.getContent().getData());
+                    if (mList.size() > 0) {
+                        collectionBoxAdapter.notifyDataSetChanged();
+                    } else {
+                        //切换控件
+                        shoucangFrameLayout.setVisibility(View.VISIBLE);
+                        collectionBoxSpringview.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.shoucang_frame_layout, new FramgmentShouCnagEmpty()).commit();
+                    }
                 }
             }
         } else if (collectionBoxBean.getCode() == 401 || collectionBoxBean.getCode() == 801) {

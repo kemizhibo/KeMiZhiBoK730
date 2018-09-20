@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import com.kemizhibo.kemizhibo.yhr.bean.personcenterbean.GetUserBean;
 import com.kemizhibo.kemizhibo.yhr.presenter.impl.GetLoginPresenterImpl;
 import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.NoFastClickUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.SysApplication;
 import com.kemizhibo.kemizhibo.yhr.utils.ToastUtils;
 import com.kemizhibo.kemizhibo.yhr.utils.Transparent;
 import com.kemizhibo.kemizhibo.yhr.view.LoginView;
@@ -36,6 +39,10 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
     TextView loginWangji;
     @BindView(R.id.login_butn)
     Button loginButn;
+    private boolean isoncl=true;
+    private long TOUCH_TIME = 0;
+    // 再点一次退出程序时间设置
+    private static final long WAIT_TIME = 2000L;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             if(msg.what==0)
@@ -99,7 +106,7 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
             SharedPreferences.Editor edit = sp.edit();
             LogUtils.i("LoginActivity", "token" + loginBean.getContent());
             edit.putString("token",loginBean.getContent()).
-                    putString("name",name).putString("pwd",pwd).commit();
+            putString("name",name).putString("pwd",pwd).commit();
             getTokenPresenter.getUserData(this,"Bearer "+loginBean.getContent().toString());
         }else {
             ToastUtils.showToast("账号或密码错误");
@@ -122,18 +129,21 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
             SharedPreferences.Editor edit = sp.edit();
             edit.putInt("userId", content.getUserId()).commit();
             intent = new Intent(LoginActivity.this, MainActivity.class);
-            Transparent.showSuccessMessage(this,"登录成功!");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                        handler.sendEmptyMessage(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+            if (isoncl){
+                Transparent.showSuccessMessage(this,"登录成功!");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                            handler.sendEmptyMessage(0);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }).start();
+                }).start();
+                isoncl=false;
+            }
         }
     }
 
@@ -164,5 +174,11 @@ public class LoginActivity extends BaseMvpActivity<GetLoginPresenterImpl> implem
         if(requestCode== MyApplication.YINGXIANG_TO_PICK_req&&resultCode==MyApplication.YINGXIANG_TO_PICK_res){
             finish();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        System.exit(0);
+        return true;
     }
 }

@@ -1,7 +1,10 @@
 package com.kemizhibo.kemizhibo.yhr.activity.resourcescenteraactivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +86,16 @@ public class LiveRoomDetailsFinishActivity extends BaseMvpActivity<LiveRoomDetai
                 })
                 //.autoRotate()//自动旋转屏幕
                 .build());
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
     }
 
 

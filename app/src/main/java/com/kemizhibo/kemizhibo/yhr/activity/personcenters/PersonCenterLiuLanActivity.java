@@ -3,7 +3,6 @@ package com.kemizhibo.kemizhibo.yhr.activity.personcenters;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.kemizhibo.kemizhibo.R;
 import com.kemizhibo.kemizhibo.yhr.activity.logins.LoginActivity;
 import com.kemizhibo.kemizhibo.yhr.adapter.personcenteradapter.LiuLanAdapter;
@@ -38,14 +36,10 @@ import com.kemizhibo.kemizhibo.yhr.widgets.TapBarLayout;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterImpl> implements LiuLanView, View.OnClickListener, LiuLanAdapter.OnItemClickListener {
@@ -80,7 +74,7 @@ public class PersonCenterLiuLanActivity extends BaseMvpActivity<LiuLanPresenterI
     //刷新适配器的判断
     private boolean isFlag;
     //当前条目数
-    private int page;
+    private int page = 1;
     //多选单选
     private LiuLanAdapter liuLanAdapter = null;
     private List<LiuLanBean.ContentBean.DataBean> mList = new ArrayList<>();

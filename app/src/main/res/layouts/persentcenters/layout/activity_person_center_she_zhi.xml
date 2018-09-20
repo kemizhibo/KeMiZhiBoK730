@@ -75,7 +75,7 @@
             android:layout_marginRight="@dimen/res_15dp"
             android:textSize="@dimen/res_textsize_17sp"
             android:textColor="@color/text_999999"
-            android:text="V1.0.0"/>
+            android:text="V1.0.1"/>
     </LinearLayout>
     <include layout="@layout/line"/>
     <View

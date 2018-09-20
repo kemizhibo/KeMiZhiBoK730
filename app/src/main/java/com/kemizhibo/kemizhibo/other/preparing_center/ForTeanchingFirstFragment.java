@@ -142,7 +142,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
                     beiKePresenter.getBeiKeData(mActivity, "Bearer " + token, materialEdition, subjectId, semester, "app", currentPage + "", "10");
                     //beiKePresenter.getBeiKeData(mActivity, "Bearer " + token, "TEACHERCOURSE", currentPage + "", "10", materialEdition, subjectId, semester, "", "");
                 } else {
-                    mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterMaterialdata.get(position).getSubjectName());
                     materialEdition = filterMaterialdata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -164,7 +164,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
                     isUp = 1;
                     beiKePresenter.getBeiKeData(mActivity, "Bearer " + token, materialEdition, subjectId, semester, "app", currentPage + "", "10");
                 } else {
-                    mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterGradedata.get(position).getSubjectName());
                     subjectId = filterGradedata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;
@@ -186,7 +186,7 @@ public class ForTeanchingFirstFragment extends BaseMvpFragment<BeiKePresenterImp
                     isUp = 1;
                     beiKePresenter.getBeiKeData(mActivity, "Bearer " + token, materialEdition, subjectId, semester, "app", currentPage + "", "10");
                 } else {
-                    mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
+                    //mDropDownMenu.setTabText(filterSemesterdata.get(position).getSubjectName());
                     semester = filterSemesterdata.get(position).getSubjectId() + "";
                     currentPage = 1;
                     isUp = 1;

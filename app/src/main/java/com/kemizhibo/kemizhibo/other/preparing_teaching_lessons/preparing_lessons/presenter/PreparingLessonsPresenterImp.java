@@ -10,6 +10,7 @@ import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lesson
 import com.kemizhibo.kemizhibo.other.preparing_teaching_lessons.preparing_lessons.view.PreparingLessonsView;
 import com.kemizhibo.kemizhibo.other.utils.GsonUtils;
 import com.kemizhibo.kemizhibo.other.utils.NetUtils;
+import com.kemizhibo.kemizhibo.yhr.utils.LogUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -53,7 +54,9 @@ public class PreparingLessonsPresenterImp implements PreparingLessonsPresenter{
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                PreparingLessonsBean bean = GsonUtils.getBean(response.body().string(), PreparingLessonsBean.class);
+                String string = response.body().string();
+                PreparingLessonsBean bean = GsonUtils.getBean(string, PreparingLessonsBean.class);
+                LogUtils.i("aaa",string);
                 if(bean != null && 0 == (bean.getCode())){
                     pageNum = DEFAULT_PAGE_NUM;
                     preparingLessonsView.refreshSuccess(bean);
